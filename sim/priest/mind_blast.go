@@ -9,7 +9,10 @@ import (
 const MindBlastRanks = 9
 
 var MindBlastSpellId = [MindBlastRanks + 1]int32{0, 8092, 8102, 8103, 8104, 8105, 8106, 10945, 10946, 10947}
-var MindBlastBaseDamage = [MindBlastRanks + 1][]float64{{0}, {42, 46}, {76, 83}, {115, 124}, {174, 184}, {225, 239}, {279, 297}, {354, 375}, {437, 461}, {508, 537}}
+
+// CSV's/Spell.csv: EffectBasePoints[1]+1 to EffectBasePoints[1]+EffectDieSides[0] (min-max).
+// Rank 9 (589 max) confirmed against the in-game tooltip on the private server.
+var MindBlastBaseDamage = [MindBlastRanks + 1][]float64{{0}, {42, 47}, {79, 87}, {124, 134}, {184, 196}, {239, 255}, {307, 327}, {382, 404}, {469, 496}, {557, 589}}
 var MindBlastSpellCoef = [MindBlastRanks + 1]float64{0, .268, .364, .429, .429, .429, .429, .429, .429, .429}
 var MindBlastManaCost = [MindBlastRanks + 1]float64{0, 50, 80, 110, 150, 185, 225, 265, 310, 350}
 var MindBlastLevel = [MindBlastRanks + 1]int{0, 10, 16, 22, 28, 34, 40, 46, 52, 58}

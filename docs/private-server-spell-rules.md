@@ -135,9 +135,41 @@ pipeline is broken.
     `go test ./sim/priest/...` produced a byte-identical `.results` (the
     default P1 shadow preset doesn't spec Mind Flay, so there was no golden
     to promote).
-  - **Rend** (`sim/warrior/rend.go`) — Go per-tick damage is consistently
-    ~25-30% below the DBC-implied value across all 4 ranks (medium
-    confidence). **NOT fixed** — flagged for follow-up, not yet touched.
+  - **Mind Blast — FIXED 2026-09-14** (`sim/priest/mind_blast.go`). Found and
+    decoded the `EffectDieSides` column (`Spell.csv` index 64) — the min-max
+    damage range is `EffectBasePoints[1]+1` to `EffectBasePoints[1]+
+    EffectDieSides[0]` (note the cross-slot pairing: the active base-points
+    value sits in effect slot 1, but its paired die-sides value sits in slot
+    0 — confirmed real, not a bug in the reverse-engineering, by cross-
+    checking against Shadow Word: Pain/Devouring Plague/Starshards, which all
+    have both values in the same slot 0 and zero variance). Rank 9's
+    resulting range (557-589) was independently confirmed against the user's
+    own in-game tooltip on the private server before any Go code changed.
+    All 9 ranks corrected; old values were under-tuned, growing worse at
+    higher ranks (e.g. rank 9 was 508-537, i.e. ~9% low at the low end and
+    ~9% low at the high end). `go test ./sim/priest/...` DPS changed from
+    239.272 to 246.667 on the default P1 shadow preset — golden `.results`
+    promoted (this preset does use Mind Blast, unlike Mind Flay above).
+  - **Smite — FIXED 2026-09-14** (`sim/priest/smite.go`), same
+    `EffectBasePoints[1]+EffectDieSides[0]` pattern as Mind Blast (identical
+    effect-slot structure across all 8 ranks). Applied the same fix, but
+    **not independently spot-checked against an in-game tooltip** the way
+    Mind Blast rank 9 was — confidence rests on the method being validated
+    elsewhere, not on direct confirmation for this specific spell. Verify
+    in-game if in doubt.
+  - **Holy Fire — checked, NOT fixed.** Has both a direct-damage effect and a
+    DoT effect, and unlike Mind Blast/Smite the effect-slot layout is NOT
+    consistent across ranks (rank 3 puts the direct-damage value in a
+    different slot than ranks 1, 2, 4-8). Rank 1's DoT recomputed cleanly to
+    match Go's existing value (30) using an offset pairing
+    (`EffectDieSides[i-1]` for `EffectBasePoints[i]`), but rank 2 did not (50
+    vs Go's 40) — the pairing rule doesn't generalize. Needs an in-game
+    tooltip check (like Mind Blast got) before touching.
+  - **Rend** (`sim/warrior/rend.go`) — `EffectDieSides` is 1 for every rank
+    (no random variance), which doesn't change the original finding: Go
+    per-tick damage is consistently ~25-30% below the DBC-implied value
+    across all 4 ranks (medium confidence). **NOT fixed** — flagged for
+    follow-up, not yet touched.
   - **Flame Shock** — inconsistent audit result, likely a column-mapping
     issue in the audit itself rather than a real Go bug (low confidence).
     **NOT fixed** — not pursued.
@@ -146,12 +178,17 @@ pipeline is broken.
     overall) has **NOT** been audited against `Spell.csv` for Go-mechanics
     correctness at all. A tooltip now showing a DBC-corrected value does
     **not** imply the Go code computing that spell's actual damage was
-    checked or changed — Mind Flay is the only exception. Treat any other
-    spell's simulated damage/duration as unverified against the private
-    server's dump until it's explicitly audited.
-  - No dice-sides/variance column has been reverse-engineered yet, so
-    direct-damage spells with min-max ranges (Frostbolt, Fireball, Backstab,
-    etc.) remain unauditable against Go with current tooling.
+    checked or changed. Treat any spell not listed above as fixed as
+    unverified against the private server's dump until it's explicitly
+    audited.
+  - `EffectDieSides` (`Spell.csv` column index 64) is now decoded and gives a
+    real min-max range for direct-damage spells, but the effect-slot pairing
+    between it and `EffectBasePoints` is confirmed to vary per spell (same
+    slot for Rend/SW:Pain/Devouring Plague/Starshards; cross-slot 1↔0 for
+    Mind Blast/Smite; inconsistent across ranks for Holy Fire) — do not
+    assume a single universal pairing rule without checking each spell's own
+    data, and prefer an in-game tooltip confirmation over the formula alone
+    when the two disagree.
 
 ## Reproducing / extending this
 
