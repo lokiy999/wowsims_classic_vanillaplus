@@ -177,14 +177,22 @@ pipeline is broken.
     (e.g. rank 6 was 904, corrected to 816). `go test ./sim/priest/...` DPS
     changed from 246.667 to 246.061 on the P1 shadow preset (small - Devouring
     Plague is a minor part of that rotation); golden `.results` promoted.
-  - **Holy Fire — checked, NOT fixed.** Has both a direct-damage effect and a
-    DoT effect, and unlike Mind Blast/Smite the effect-slot layout is NOT
-    consistent across ranks (rank 3 puts the direct-damage value in a
-    different slot than ranks 1, 2, 4-8). Rank 1's DoT recomputed cleanly to
-    match Go's existing value (30) using an offset pairing
-    (`EffectDieSides[i-1]` for `EffectBasePoints[i]`), but rank 2 did not (50
-    vs Go's 40) — the pairing rule doesn't generalize. Needs an in-game
-    tooltip check (like Mind Blast got) before touching.
+  - **Holy Fire — FIXED 2026-09-14** (`sim/priest/holy_fire.go`). Rank 8's
+    direct damage (481-604) and DoT total (225) were confirmed against the
+    user's own in-game tooltip screenshot, which also revealed a **10 sec
+    cooldown the Go code didn't implement at all** (added). The earlier
+    "inconsistent effect-slot layout" finding wasn't actually a bug in the
+    data - `EffectDieSides` is ROLE-based, not slot-based: `die[0]` always
+    pairs with whichever `EffectBasePoints` slot holds the direct-hit value
+    for that rank (slot 1 for every rank except rank 3, which uses slot 0),
+    and `die[1]` always pairs with the DoT slot. All 8 ranks recomputed with
+    this rule and all reconcile cleanly (rank 8 confirmed exactly; ranks 1-7
+    follow the identical formula but weren't independently screenshot-
+    verified). Old values were under-tuned on both the direct hit (rank 8:
+    355-449, ~24% low) and the DoT (rank 8: 145 vs 225, ~36% low), and the
+    missing cooldown meant the sim could spam Holy Fire far faster than the
+    game allows. `go test ./sim/priest/...` produced a byte-identical
+    `.results` (the P1 shadow preset doesn't cast Holy Fire).
   - **Rend** (`sim/warrior/rend.go`) — `EffectDieSides` is 1 for every rank
     (no random variance), which doesn't change the original finding: Go
     per-tick damage is consistently ~25-30% below the DBC-implied value
@@ -202,13 +210,18 @@ pipeline is broken.
     unverified against the private server's dump until it's explicitly
     audited.
   - `EffectDieSides` (`Spell.csv` column index 64) is now decoded and gives a
-    real min-max range for direct-damage spells, but the effect-slot pairing
-    between it and `EffectBasePoints` is confirmed to vary per spell (same
-    slot for Rend/SW:Pain/Devouring Plague/Starshards; cross-slot 1↔0 for
-    Mind Blast/Smite; inconsistent across ranks for Holy Fire) — do not
-    assume a single universal pairing rule without checking each spell's own
-    data, and prefer an in-game tooltip confirmation over the formula alone
-    when the two disagree.
+    real min-max range for direct-damage spells. The pairing between it and
+    `EffectBasePoints` is **ROLE-based, not slot-index-based**: for a
+    single-effect spell (Rend/SW:Pain/Devouring Plague/Starshards) both
+    values sit in slot 0 so this looks like same-slot pairing; for a
+    single-damage-effect spell whose value happens to live in a different
+    slot (Mind Blast/Smite, always slot 1), `die[0]` still pairs with it;
+    for a two-effect spell (Holy Fire), `die[0]` = direct-hit role and
+    `die[1]` = DoT role, tracking whichever `EffectBasePoints` slot holds
+    that role even when it moves between ranks (Holy Fire rank 3 vs. the
+    rest). Always resolve by role (which effect is the direct hit / the DoT
+    / etc.), never by raw column index, and prefer an in-game tooltip
+    confirmation over the formula alone when in doubt.
 
 ## Reproducing / extending this
 
