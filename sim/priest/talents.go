@@ -454,20 +454,21 @@ func (priest *Priest) applyConcentration() {
 	})
 }
 
-// Twin Disciplines (DBC): 10% chance after a Holy damage spell to make the next
-// Shadow damage spell free, and vice versa.
+// Twin Disciplines (DBC, spells 33822/33823/33824): 10/20/30% chance per rank
+// after a Holy damage spell to make the next Shadow damage spell free, and vice
+// versa. The applied buff (spell 33832) lasts 10s.
 func (priest *Priest) applyTwinDisciplines() {
 	if priest.Talents.TwinDisciplines == 0 {
 		return
 	}
 
-	const procChance = 0.10
+	procChance := 0.10 * float64(priest.Talents.TwinDisciplines)
 
 	makeFreeSpellAura := func(label string, school core.SpellSchool) *core.Aura {
 		schoolIdx := school.GetSchoolIndex()
 		return priest.RegisterAura(core.Aura{
 			Label:    label,
-			Duration: time.Second * 15,
+			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Unit.PseudoStats.SchoolCostMultiplier[schoolIdx] -= 100
 			},

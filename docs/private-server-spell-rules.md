@@ -190,6 +190,43 @@ pipeline is broken.
     missing cooldown meant the sim could spam Holy Fire far faster than the
     game allows. `go test ./sim/priest/...` produced a byte-identical
     `.results` (the P1 shadow preset doesn't cast Holy Fire).
+  - **Vampiric Embrace — logic bug FIXED 2026-09-14**
+    (`sim/priest/vampiric_embrace.go`). Values (10%/rank heal, 60s duration)
+    were already correct. But the `OnSpellHitTaken` hook fired for **any**
+    landed Shadow spell hitting the debuffed target, regardless of caster —
+    the DBC text is explicit ("of any Shadow spell damage **you** deal"). In
+    a solo sim this rarely mattered (no other Shadow-damage source hitting
+    the same target), but in a multi-caster raid sim it would over-heal by
+    counting every Shadow-damage source, not just the priest who cast it.
+    Added a `spell.Unit == &priest.Unit` check.
+  - **Talent audit 2026-09-14** — every currently-implemented priest talent
+    in `sim/priest/talents.go` was cross-checked against `Spell.csv`. Most
+    check out exactly: SilentResolve, ImprovedPowerWordFortitude, Meditation,
+    MentalStrength, ImprovedMemory, MentalAgility, ForceOfWill,
+    HolySpecialization, SearingLight, SpellWarding, SpiritualGuidance, Faith,
+    InnerFocus, Shadowform (the implemented +20% Shadow damage part; its
+    unimplemented -20% Shadow damage taken TODO is DBC-confirmed accurate),
+    Concentration (proc% and Clearcasting duration), MindOverlord,
+    ImprovedMindFlay, BurntSoul (proc%, magnitude, and duration),
+    ImprovedVampiricEmbrace, Darkness, ShadowAffinity.
+    - **Twin Disciplines — FIXED 2026-09-14.** Proc chance was hardcoded flat
+      at 10% for all 3 ranks; the DBC (spells 33822/33823/33824) confirms
+      10/20/30% per rank, the same progression every other ranked proc
+      talent in this file uses. Also fixed the granted buff's duration: Go
+      had 15s, but the actual applied buff (spell 33832) has
+      `DurationIndex`=1 → 10000ms (10s). `go test ./sim/priest/...` produced
+      a byte-identical `.results` (the P1 shadow preset has 0 points here).
+    - **Known partial implementations, not fixed** (out of scope for this
+      pass - flagged, not touched): Spell Focus's target-resistance-
+      reduction sub-effect ($s2, -10%/-20% target resist chance) isn't
+      modeled at all, only the hit-chance sub-effect is; Purifying Light's
+      Undead/Demon damage bonus sub-effect ($s2, +5%/+10%) isn't modeled;
+      Shadow Focus's Shadow-spell-range sub-effect ($s2) isn't modeled
+      (irrelevant to damage output, likely low priority). Spirit Tap's
+      simplification (flat aura instead of a real 50%/100%-per-rank
+      on-kill proc) was already a documented `TODO` before this audit and
+      remains one — the audit did confirm its underlying magnitude/duration
+      values (100% Spirit, 15s) are correct.
   - **Rend** (`sim/warrior/rend.go`) — `EffectDieSides` is 1 for every rank
     (no random variance), which doesn't change the original finding: Go
     per-tick damage is consistently ~25-30% below the DBC-implied value

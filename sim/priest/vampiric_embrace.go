@@ -26,7 +26,9 @@ func (priest *Priest) registerVampiricEmbraceSpell() {
 			Label:    "Vampiric Embrace (Health) - " + target.Label,
 			Duration: duration,
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+				// DBC: "heals party members for X% of any Shadow spell damage YOU deal" -
+				// only the priest who cast Vampiric Embrace, not any Shadow damage source.
+				if result.Landed() && spell.Unit == &priest.Unit && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
 					healthGained := result.Damage * healthReturnedMultuplier
 					for _, player := range partyPlayers {
 						player.GetCharacter().GainHealth(sim, healthGained, healthMetrics)
