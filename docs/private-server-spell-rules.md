@@ -190,15 +190,21 @@ pipeline is broken.
     missing cooldown meant the sim could spam Holy Fire far faster than the
     game allows. `go test ./sim/priest/...` produced a byte-identical
     `.results` (the P1 shadow preset doesn't cast Holy Fire).
-  - **Vampiric Embrace — logic bug FIXED 2026-09-14**
-    (`sim/priest/vampiric_embrace.go`). Values (10%/rank heal, 60s duration)
-    were already correct. But the `OnSpellHitTaken` hook fired for **any**
-    landed Shadow spell hitting the debuffed target, regardless of caster —
-    the DBC text is explicit ("of any Shadow spell damage **you** deal"). In
-    a solo sim this rarely mattered (no other Shadow-damage source hitting
-    the same target), but in a multi-caster raid sim it would over-heal by
-    counting every Shadow-damage source, not just the priest who cast it.
-    Added a `spell.Unit == &priest.Unit` check.
+  - **Vampiric Embrace — logic bug FIXED 2026-09-14, missing cooldown ADDED
+    2026-09-14** (`sim/priest/vampiric_embrace.go`). Values (10%/rank heal,
+    60s duration) were already correct. But the `OnSpellHitTaken` hook fired
+    for **any** landed Shadow spell hitting the debuffed target, regardless
+    of caster — the DBC text is explicit ("of any Shadow spell damage
+    **you** deal"). In a solo sim this rarely mattered (no other
+    Shadow-damage source hitting the same target), but in a multi-caster
+    raid sim it would over-heal by counting every Shadow-damage source, not
+    just the priest who cast it. Added a `spell.Unit == &priest.Unit` check.
+    Separately, per the user's own in-game report, added a **15 sec
+    cooldown** the Go code didn't have at all (same `Timer`/`Cooldown`
+    pattern as Mind Blast/Devouring Plague/Holy Fire) — not independently
+    re-derived from `Spell.csv` (no cooldown/recharge column has been
+    located in the dump yet; Holy Fire's cooldown was confirmed the same
+    way, from an in-game screenshot, not a decoded column).
   - **Talent audit 2026-09-14** — every currently-implemented priest talent
     in `sim/priest/talents.go` was cross-checked against `Spell.csv`. Most
     check out exactly: SilentResolve, ImprovedPowerWordFortitude, Meditation,
