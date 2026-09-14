@@ -161,13 +161,10 @@ pipeline is broken.
     ~9% low at the high end). `go test ./sim/priest/...` DPS changed from
     239.272 to 246.667 on the default P1 shadow preset — golden `.results`
     promoted (this preset does use Mind Blast, unlike Mind Flay above).
-  - **Smite — FIXED 2026-09-14** (`sim/priest/smite.go`), same
-    `EffectBasePoints[1]+EffectDieSides[0]` pattern as Mind Blast (identical
-    effect-slot structure across all 8 ranks). Applied the same fix, but
-    **not independently spot-checked against an in-game tooltip** the way
-    Mind Blast rank 9 was — confidence rests on the method being validated
-    elsewhere, not on direct confirmation for this specific spell. Verify
-    in-game if in doubt.
+  - **Smite — FIXED 2026-09-14, confirmed 2026-09-14** (`sim/priest/smite.go`),
+    same `EffectBasePoints[1]+EffectDieSides[0]` pattern as Mind Blast
+    (identical effect-slot structure across all 8 ranks). Rank 8 (371-415)
+    confirmed correct against the user's in-game tooltip.
   - **Devouring Plague — FIXED 2026-09-14** (`sim/priest/devouring_plague.go`).
     Pure periodic DoT, `EffectDieSides[0]` is 1 for every rank (no variance,
     same slot as `EffectBasePoints[0]` — the reliable same-slot pattern, not
