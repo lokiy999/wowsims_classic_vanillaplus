@@ -278,3 +278,27 @@ Then verify end-to-end in an actual browser (not just by inspecting
 description text and the `Channeled (N sec cast)` line, since a pipeline-level
 "looks correct" check on `db.json` alone would have missed both gaps described
 above.
+
+## TODO
+
+- **Talent-aware tooltips for Shadow Word: Pain and Vampiric Embrace**
+  (raised 2026-09-14, not started). Right now every spell's tooltip is
+  static text baked once from `Spell.csv`/Wowhead, completely independent
+  of the player's current talent build — real Wowhead works the same way
+  (a talent's effect shows on the talent's own tooltip, not merged into the
+  base spell's). The ask is to make SW:Pain's tooltip reflect Improved
+  Shadow Word: Pain's actual duration/mana-cost change, and Vampiric
+  Embrace's tooltip reflect Improved Vampiric Embrace's heal % change, live,
+  based on current talent points. There's no existing mechanism for this —
+  `spellIdTooltipOverride` (`ui/core/proto_utils/action_id.ts:552`) is the
+  closest existing thing, but it's a static spellId→spellId map, not
+  talent-reactive. Building this would mean, at tooltip-render time for
+  these two specific spells: read the live `priest.Talents.*` value,
+  recompute the real modified duration/mana-cost/heal% (already known -
+  see the FIXED entries above for SW:Pain and Vampiric Embrace), and
+  rewrite the relevant part of the tooltip HTML string before display
+  (targeted regex substitution, client-side, analogous to what
+  `gen_spell_value_overrides.py` already does once at build time for the
+  `Channeled (N sec cast)` fix, but done dynamically instead). Scope is
+  small per-spell, not a generic system - no Go/simulation changes needed,
+  this is purely cosmetic/display.

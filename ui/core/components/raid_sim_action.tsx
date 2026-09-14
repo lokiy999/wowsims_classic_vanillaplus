@@ -424,7 +424,7 @@ export class RaidSimResultsManager {
 		if (players.length === 1) {
 			const playerMetrics = players[0];
 			if (playerMetrics.getTargetIndex(filter) === null) {
-				const { chanceOfDeath, dps: dpsMetrics, dpasp: dpaspMetrics, tps: tpsMetrics, dtps: dtpsMetrics, tmi: tmiMetrics } = playerMetrics;
+				const { chanceOfDeath, dps: dpsMetrics, hps: hpsMetrics, dpasp: dpaspMetrics, tps: tpsMetrics, dtps: dtpsMetrics, tmi: tmiMetrics } = playerMetrics;
 
 				resultColumns.push({
 					name: 'DPS',
@@ -432,6 +432,15 @@ export class RaidSimResultsManager {
 					stdev: dpsMetrics.stdev,
 					classes: this.getResultsLineClasses('dps'),
 				});
+
+				if (hpsMetrics.avg) {
+					resultColumns.push({
+						name: 'HPS',
+						average: hpsMetrics.avg,
+						stdev: hpsMetrics.stdev,
+						classes: this.getResultsLineClasses('hps'),
+					});
+				}
 
 				if (dpaspMetrics.avg) {
 					resultColumns.push({
