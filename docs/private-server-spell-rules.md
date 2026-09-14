@@ -205,6 +205,24 @@ pipeline is broken.
     re-derived from `Spell.csv` (no cooldown/recharge column has been
     located in the dump yet; Holy Fire's cooldown was confirmed the same
     way, from an in-game screenshot, not a decoded column).
+  - **Vampiric Embrace — HPS-tracking bug FIXED 2026-09-14.** Its healing
+    used `Unit.GainHealth()` directly, which updates the health bar but
+    never populates `SpellMetrics.TotalHealing` - the field the sim's `hps`
+    aggregate is actually summed from (`unitMetrics.hps.Total +=
+    spellTargetMetrics.TotalHealing + ...TotalShielding`,
+    `sim/core/metrics_aggregator.go:433`). So Vampiric Embrace's healing was
+    always invisible to HPS, independent of overhealing. Fixed by routing
+    it through a proper internal healing spell (`ActionID.WithTag(1)`,
+    `ProcMask: ProcMaskSpellHealing`) using `CalcAndDealHealing` - the same
+    pattern `sim/shaman/water_totems.go`'s Healing Stream Totem uses -
+    instead of calling `GainHealth` directly. `dealHealingInternal`
+    (`sim/core/spell_result.go:544`) records the **pre-clamp** healing
+    amount into `TotalHealing`, so overhealing is now correctly included,
+    matching the HPS tooltip's stated design ("Healing+Shielding Per
+    Second, **including overhealing**"). Verified end-to-end in the
+    browser: added Vampiric Embrace to the live rotation (see "APL
+    priority" note below), ran a sim, and confirmed the sidebar now shows
+    a nonzero HPS next to DPS.
   - **Talent audit 2026-09-14** — every currently-implemented priest talent
     in `sim/priest/talents.go` was cross-checked against `Spell.csv`. Most
     check out exactly: SilentResolve, ImprovedPowerWordFortitude, Meditation,
@@ -284,6 +302,46 @@ Then verify end-to-end in an actual browser (not just by inspecting
 description text and the `Channeled (N sec cast)` line, since a pipeline-level
 "looks correct" check on `db.json` alone would have missed both gaps described
 above.
+
+## HPS display and rotation notes (2026-09-14)
+
+- **`ui/core/components/raid_sim_action.tsx`**: the individual-sim results
+  sidebar now shows an `HPS` line next to `DPS` whenever a sim actually
+  produces healing (gated on `hpsMetrics.avg`), not just for specs flagged
+  as "healing specs". Two things had to be fixed together for this to
+  actually work end-to-end, not just for a designated healer:
+  1. `makeToplineResultsContent()`'s single-player branch never pushed an
+     `HPS` `resultColumn` at all — only `DPS`/`DPASP`/`TPS`/`DTPS`/`TMI`/`COD`.
+  2. Even after adding it, the line stayed invisible: `.hide-healing-metrics`
+     (`ui/scss/core/sim_ui/_shared.scss`) force-hides every `.healing-metrics`
+     -classed element site-wide whenever `Sim.showHealingMetrics` is false,
+     which `Sim.applyDefaults()` sets purely from spec type
+     (`showHealingMetrics: isHealingSim`) — independent of whether *this*
+     particular sim run has any real healing data. Fixed by omitting the
+     `healing-metrics` category class from just this one topline push (kept
+     `results-sim-hps` for styling/tooltip lookup), so it's gated only by
+     the `hpsMetrics.avg` check, not by spec type. The old
+     `getResultsLineClasses('hps')` behavior (which the full-detail healing
+     tab and the healer specs still use) is untouched.
+- **APL priority-list pattern for "keep this buff up" style actions**: to
+  add "cast Vampiric Embrace if it's not on the current target, or has
+  <=15s remaining" to a rotation, the condition is
+  `or(not(auraIsActive(sourceUnit: CurrentTarget, auraId: <spellId>)),
+  cmp(auraRemainingTime(sourceUnit: CurrentTarget, auraId: <spellId>) <=
+  <seconds>))`. Raw JSON example (from `ui/shadow_priest/apls/p1.apl.json`):
+  ```json
+  {"action":{"condition":{"or":{"vals":[
+    {"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":15286}}}}},
+    {"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":15286}}},"rhs":{"const":{"val":"15"}}}}
+  ]}},"castSpell":{"spellId":{"spellId":15286}}}}
+  ```
+  Added to the checked-in `p1.apl.json` default preset (currently a no-op
+  there — that test's `P1Talents` is `""`, zero points, so Vampiric Embrace
+  never registers) and, via the app's own JSON Export → splice → Import
+  flow (far more reliable than drag-and-drop in the APL editor UI), to the
+  user's actual talented live rotation, where it correctly increased
+  Vampiric Embrace's cast rate from ~0.1 casts/fight (buried at the bottom
+  of the priority list, essentially never reached) to ~4-5 casts/fight.
 
 ## TODO
 

@@ -6,6 +6,7 @@
       "priorityList": [
         {"action":{"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":10894,"rank":8}}}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"10"}}}}]}},"castSpell":{"spellId":{"spellId":10894,"rank":8}}}},
+        {"action":{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":15286}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":15286}}},"rhs":{"const":{"val":"15"}}}}]}},"castSpell":{"spellId":{"spellId":15286}}}},
         {"action":{"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":14751}}},{"castSpell":{"spellId":{"spellId":19279,"rank":5}}}]}}},
         {"action":{"castSpell":{"spellId":{"spellId":10947,"rank":9}}}},
         {"action":{"castSpell":{"spellId":{"spellId":18807,"rank":6}}}}

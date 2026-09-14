@@ -438,7 +438,13 @@ export class RaidSimResultsManager {
 						name: 'HPS',
 						average: hpsMetrics.avg,
 						stdev: hpsMetrics.stdev,
-						classes: this.getResultsLineClasses('hps'),
+						// Deliberately omit the 'healing-metrics' category class here (unlike
+						// getResultsLineClasses('hps')): that class is force-hidden site-wide
+						// by .hide-healing-metrics for any non-healing spec, regardless of
+						// whether this particular sim produced real healing. We only want
+						// this topline summary to hide when there's genuinely no data (the
+						// hpsMetrics.avg check above), not based on spec type.
+						classes: this.resultMetricClasses['hps'],
 					});
 				}
 

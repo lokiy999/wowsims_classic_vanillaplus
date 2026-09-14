@@ -17,9 +17,21 @@ func (priest *Priest) registerVampiricEmbraceSpell() {
 	cdTimer := priest.NewTimer()
 
 	partyPlayers := priest.Env.Raid.GetPlayerParty(&priest.Unit).Players
-	healthMetrics := priest.NewHealthMetrics(actionID)
 	// DBC: Vampiric Embrace heals for 10% of Shadow damage; Improved Vampiric Embrace adds 10% per rank.
 	healthReturnedMultuplier := 0.10 + 0.10*float64(priest.Talents.ImprovedVampiricEmbrace)
+
+	// Routed through a real healing spell (instead of a direct GainHealth call) so it
+	// populates TotalHealing and shows up in the HPS metric - including overhealing,
+	// same as any other heal (dealHealingInternal records the pre-clamp amount).
+	healSpell := priest.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID.WithTag(1),
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+	})
 
 	priest.VampiricEmbraceAuras = priest.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
@@ -32,7 +44,7 @@ func (priest *Priest) registerVampiricEmbraceSpell() {
 				if result.Landed() && spell.Unit == &priest.Unit && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
 					healthGained := result.Damage * healthReturnedMultuplier
 					for _, player := range partyPlayers {
-						player.GetCharacter().GainHealth(sim, healthGained, healthMetrics)
+						healSpell.CalcAndDealHealing(sim, &player.GetCharacter().Unit, healthGained, healSpell.OutcomeHealing)
 					}
 				}
 			},
