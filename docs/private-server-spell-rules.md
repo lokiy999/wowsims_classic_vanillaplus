@@ -115,7 +115,8 @@ pipeline is broken.
   scoped to values/tooltip text only.
 - **Mana cost, range, requirements** — untouched (only the description div and
   the `Channeled (N sec cast)` line are corrected).
-- **The Go sim's actual combat math, except Mind Flay** —
+- **The Go sim's actual combat math, except Mind Flay, Mind Blast, Smite, and
+  Devouring Plague (see below)** —
   `sim/<class>/*.go` hardcodes damage, coefficients, tick counts, etc. as Go
   literals, independent of any tooltip. A tooltip correction never changes
   simulated numbers on its own. A one-off audit (2026-09-13, not committed as
@@ -157,6 +158,15 @@ pipeline is broken.
     Mind Blast rank 9 was — confidence rests on the method being validated
     elsewhere, not on direct confirmation for this specific spell. Verify
     in-game if in doubt.
+  - **Devouring Plague — FIXED 2026-09-14** (`sim/priest/devouring_plague.go`).
+    Pure periodic DoT, `EffectDieSides[0]` is 1 for every rank (no variance,
+    same slot as `EffectBasePoints[0]` — the reliable same-slot pattern, not
+    Mind Blast/Smite's cross-slot case), so `(EffectBasePoints+1) * 8 ticks`
+    applies directly with no ambiguity, same as Shadow Word: Pain/Starshards.
+    All 6 ranks corrected; old values were a consistent ~10-12% too high
+    (e.g. rank 6 was 904, corrected to 816). `go test ./sim/priest/...` DPS
+    changed from 246.667 to 246.061 on the P1 shadow preset (small - Devouring
+    Plague is a minor part of that rotation); golden `.results` promoted.
   - **Holy Fire — checked, NOT fixed.** Has both a direct-damage effect and a
     DoT effect, and unlike Mind Blast/Smite the effect-slot layout is NOT
     consistent across ranks (rank 3 puts the direct-damage value in a

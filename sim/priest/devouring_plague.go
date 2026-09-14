@@ -10,7 +10,12 @@ import (
 const DevouringPlagueRanks = 6
 
 var DevouringPlagueSpellId = [DevouringPlagueRanks + 1]int32{0, 2944, 19276, 19277, 19278, 19279, 19280}
-var DevouringPlagueBaseDamage = [DevouringPlagueRanks + 1]float64{0, 152, 272, 400, 544, 712, 904}
+
+// CSV's/Spell.csv: (EffectBasePoints[0]+1) * 8 ticks. EffectDieSides[0] is 1 for
+// every rank (no variance), same slot as EffectBasePoints - the reliable pattern
+// already confirmed on Shadow Word: Pain/Starshards, unlike Mind Blast/Smite's
+// cross-slot case.
+var DevouringPlagueBaseDamage = [DevouringPlagueRanks + 1]float64{0, 136, 248, 360, 488, 640, 816}
 var DevouringPlagueManaCost = [DevouringPlagueRanks + 1]float64{0, 215, 350, 495, 645, 810, 985}
 var DevouringPlagueLevel = [DevouringPlagueRanks + 1]int{0, 20, 28, 36, 44, 52, 60}
 
