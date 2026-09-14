@@ -122,6 +122,16 @@ pipeline is broken.
   simulated numbers on its own. A one-off audit (2026-09-13, not committed as
   code) cross-checked a handful of DoT/channeled spells against `Spell.csv`:
   - Shadow Word: Pain, Moonfire — Go values match the DBC exactly (high confidence).
+  - **Improved Shadow Word: Pain (talent) — mana-cost half FIXED 2026-09-14**
+    (`sim/priest/shadow_word_pain.go`). This talent has two effects (spells
+    15275/15317): +3/+6 sec duration (already correctly implemented as +1/+2
+    extra ticks) and a **5%/10% mana cost reduction that was TODO'd out and
+    never implemented**. Added `Multiplier: 100 -
+    5*priest.Talents.ImprovedShadowWordPain` to the spell's `ManaCostOptions`.
+    `go test ./sim/priest/...` produced a byte-identical `.results` — the P1
+    shadow preset's default talent build has 0 points in this talent, so
+    the mana-cost multiplier is a no-op (100) there; verify separately with a
+    talent build that actually invests in it.
   - **Mind Flay — FIXED 2026-09-13** (`sim/priest/mind_flay.go`). The private
     server extends Mind Flay to a 5-tick/5-sec channel (retail Classic is
     3-tick/3-sec); confirmed via `Spell.csv`'s `EffectAmplitude`=1000ms,

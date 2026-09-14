@@ -51,6 +51,8 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
+			// DBC (spells 15275/15317): Improved SW:Pain reduces mana cost by 5%/10%.
+			Multiplier: 100 - 5*priest.Talents.ImprovedShadowWordPain,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -67,7 +69,6 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			},
 
 			// DBC: Improved SW:Pain adds 1 tick per rank (+3s / +6s).
-			// TODO: it also reduces SW:Pain mana cost by 5%/10% - add later.
 			NumberOfTicks:    ticks + (priest.Talents.ImprovedShadowWordPain),
 			TickLength:       time.Second * 3,
 			BonusCoefficient: spellCoeff,
