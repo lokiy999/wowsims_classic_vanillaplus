@@ -356,9 +356,42 @@ above.
   (shifting every later `match[N]` index up by one - `rawAmount` is now
   `match[4]`, the rest reindexed accordingly) and rendering `(X overheal)`
   next to the line whenever `rawAmount - actualGain > 0.05`. Only applies
-  to gains (not spends) - there's no "under-spend" analog. Not yet visually
-  confirmed in-browser (the dev server was down when this was built) -
-  verify by hovering Log tab entries for a heal on an already-full-HP unit.
+  to gains (not spends) - there's no "under-spend" analog.
+
+  **Two more bugs found verifying this in-browser once the dev server came
+  back up (2026-09-15):**
+  1. `<span className="text-muted">` is Bootstrap's default dark gray,
+     meant for light backgrounds - on this app's dark theme it rendered at
+     ~invisible contrast (confirmed via `getComputedStyle`:
+     `rgba(33,37,41,0.75)` text on a page whose surrounding text is
+     `rgb(255,255,255)`). The data was correct in the DOM the whole time
+     (confirmed via `el.querySelector('.text-muted').textContent`) but
+     unreadable. Fixed by dimming via `opacity: 0.7` on the span instead of
+     `.text-muted`, which inherits (and stays visible against) whatever the
+     surrounding text color already is - no app-wide dark-theme override
+     for `.text-muted` exists to fix this more generally, so any other spot
+     using that Bootstrap class should be treated as suspect too.
+  2. Debugging *this* surfaced a real, unrelated, pre-existing Vampiric
+     Embrace bug that had nothing to do with the log display: nearly every
+     `Recovered 0.0 Health` line showed a debug `BaseHealing:0.0`, meaning
+     the heal amount computed to genuinely zero, not just "clamped to
+     zero". Root cause: `dealDamageInternal` (`sim/core/spell_result.go`)
+     only calls `OnSpellHitTaken` for **non-periodic** damage; DoT ticks go
+     through `OnPeriodicDamageTaken` instead. Vampiric Embrace's aura only
+     hooked `OnSpellHitTaken`, so a Shadow Priest's overwhelmingly-DoT
+     damage (Shadow Word: Pain, Devouring Plague, Mind Flay) never
+     triggered the heal at all - only the rare direct Mind Blast hit did,
+     alongside a flood of harmless-but-noisy zero-damage "spell landed"
+     trigger events from every other spell's initial application. **Fixed**
+     (`sim/priest/vampiric_embrace.go`) by hooking the same handler on both
+     `OnSpellHitTaken` and `OnPeriodicDamageTaken`, plus an early return
+     when the computed heal is `<= 0` to cut the log noise. Verified this
+     was a real, large-effect bug, not a rounding nit: in-browser HPS for
+     the user's live rotation went **43 -> 166** after this fix (nearly
+     4x) - Vampiric Embrace was healing for essentially nothing before,
+     across every session of this pipeline work back to whenever this
+     talent was first implemented, not just something introduced this
+     session.
 
 ## TODO
 

@@ -33,21 +33,32 @@ func (priest *Priest) registerVampiricEmbraceSpell() {
 		ThreatMultiplier: 1,
 	})
 
+	// DBC: "heals party members for X% of any Shadow spell damage YOU deal" -
+	// only the priest who cast Vampiric Embrace, not any Shadow damage source.
+	// Must be hooked on BOTH OnSpellHitTaken (direct hits, e.g. Mind Blast) and
+	// OnPeriodicDamageTaken (DoT ticks, e.g. Shadow Word: Pain/Devouring
+	// Plague/Mind Flay) - dealDamageInternal only calls OnSpellHitTaken for
+	// non-periodic damage (sim/core/spell_result.go), so a Shadow Priest's
+	// mostly-DoT damage would otherwise never trigger this heal at all.
+	onShadowDamageTaken := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if result.Landed() && spell.Unit == &priest.Unit && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+			healthGained := result.Damage * healthReturnedMultuplier
+			if healthGained <= 0 {
+				return
+			}
+			for _, player := range partyPlayers {
+				healSpell.CalcAndDealHealing(sim, &player.GetCharacter().Unit, healthGained, healSpell.OutcomeHealing)
+			}
+		}
+	}
+
 	priest.VampiricEmbraceAuras = priest.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
-			ActionID: actionID,
-			Label:    "Vampiric Embrace (Health) - " + target.Label,
-			Duration: duration,
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				// DBC: "heals party members for X% of any Shadow spell damage YOU deal" -
-				// only the priest who cast Vampiric Embrace, not any Shadow damage source.
-				if result.Landed() && spell.Unit == &priest.Unit && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-					healthGained := result.Damage * healthReturnedMultuplier
-					for _, player := range partyPlayers {
-						healSpell.CalcAndDealHealing(sim, &player.GetCharacter().Unit, healthGained, healSpell.OutcomeHealing)
-					}
-				}
-			},
+			ActionID:              actionID,
+			Label:                 "Vampiric Embrace (Health) - " + target.Label,
+			Duration:              duration,
+			OnSpellHitTaken:       onShadowDamageTaken,
+			OnPeriodicDamageTaken: onShadowDamageTaken,
 		})
 	})
 
