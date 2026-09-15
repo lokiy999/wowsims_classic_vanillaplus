@@ -746,13 +746,17 @@ export class ResourceChangedLog extends SimLog {
 	readonly valueBefore: number;
 	readonly valueAfter: number;
 	readonly isSpend: boolean;
+	// The raw amount requested before clamping to max (e.g. max health/mana).
+	// For a gain, this can exceed valueAfter-valueBefore - that excess is overheal/overcap.
+	readonly rawAmount: number;
 
-	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean) {
+	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean, rawAmount: number) {
 		super(params);
 		this.resourceType = resourceType;
 		this.valueBefore = valueBefore;
 		this.valueAfter = valueAfter;
 		this.isSpend = isSpend;
+		this.rawAmount = rawAmount;
 	}
 
 	toHTML(includeTimestamp = true) {
@@ -762,16 +766,18 @@ export class ResourceChangedLog extends SimLog {
 			const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
 			const resourceName = resourceNames.get(this.resourceType)!;
 			const resourceClass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
-			
+			const overheal = !this.isSpend ? this.rawAmount - signedDiff : 0;
+
 			return (
 				<>
 					{this.toPrefix(includeTimestamp)} {verb}{' '}
 					<strong className={resourceClass}>
 						{signedDiff.toFixed(1)} {resourceName}
 					</strong>
+					{overheal > 0.05 ? <span className="text-muted"> ({overheal.toFixed(1)} overheal)</span> : null}
 					{this.target ? <>{` on `} {this.target?.toHTML()}</> : null}
 					{` from `}
-					{this.newActionIdLink(this.actionId!)}. 
+					{this.newActionIdLink(this.actionId!)}.
 					({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
 				</>
 			);
@@ -788,21 +794,22 @@ export class ResourceChangedLog extends SimLog {
 	}
 
 	static parse(params: SimLogParams): Promise<ResourceChangedLog> | null {
-		// ((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) from (\{.*?\}) (?:on (\[[\w ]+\]) )?\((\d+\.?\d*) --> (\d+\.?\d*)\)
+		// ((Gained)|(Spent)) (\d+\.?\d*) ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) from (\{.*?\}) (?:on (\[[\w ]+\]) )?\((\d+\.?\d*) --> (\d+\.?\d*)\)
 
 		const match = params.raw.match(
-			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) (?:on (\[[\w ]+\]) )?from (\{.*?\}) \((\d+\.?\d*) --> (\d+\.?\d*)\)/,
+			/((Gained)|(Spent)) (\d+\.?\d*) ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) (?:on (\[[\w ]+\]) )?from (\{.*?\}) \((\d+\.?\d*) --> (\d+\.?\d*)\)/,
 		);
 		if (match) {
-			const resourceType = stringToResourceType(match[4]);
+			const rawAmount = match[4];
+			const resourceType = stringToResourceType(match[5]);
 			// combo points have an additional Target included in its log lines, adjust for that here
-			const valueBefore = match[13]
-			const valueAfter = match[14];
-			return ActionId.fromLogString(match[12])
+			const valueBefore = match[14]
+			const valueAfter = match[15];
+			return ActionId.fromLogString(match[13])
 				.fill(params.source?.index)
 				.then(cause => {
 					params.actionId = cause;
-					return new ResourceChangedLog(params, resourceType, parseFloat(valueBefore), parseFloat(valueAfter), match[1] == 'Spent');
+					return new ResourceChangedLog(params, resourceType, parseFloat(valueBefore), parseFloat(valueAfter), match[1] == 'Spent', parseFloat(rawAmount));
 				});
 		} else {
 			return null;

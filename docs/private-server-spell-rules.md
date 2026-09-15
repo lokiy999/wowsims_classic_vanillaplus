@@ -303,7 +303,7 @@ description text and the `Channeled (N sec cast)` line, since a pipeline-level
 "looks correct" check on `db.json` alone would have missed both gaps described
 above.
 
-## HPS display and rotation notes (2026-09-14)
+## HPS display and rotation notes (2026-09-14, overheal log 2026-09-15)
 
 - **`ui/core/components/raid_sim_action.tsx`**: the individual-sim results
   sidebar now shows an `HPS` line next to `DPS` whenever a sim actually
@@ -342,6 +342,23 @@ above.
   user's actual talented live rotation, where it correctly increased
   Vampiric Embrace's cast rate from ~0.1 casts/fight (buried at the bottom
   of the priority list, essentially never reached) to ~4-5 casts/fight.
+- **Overhealing shown in the Log tab (2026-09-15).**
+  `ui/core/proto_utils/logs_parser.tsx`'s `ResourceChangedLog` parses Go's
+  `"Gained %0.3f health from %s (%0.3f --> %0.3f)."` log line
+  (`sim/core/health.go`'s `GainHealth`), but its regex never captured the
+  raw requested amount (the first `%0.3f`) - only the pre/post health
+  values, which are already clamped to max HP. So a fully-overhealed cast
+  (e.g. Vampiric Embrace healing a full-HP solo-sim target, or any heal
+  landing on a topped-off tank) always displayed "Recovered 0.0 Health"
+  with no indication real healing happened, even after the HPS-tracking
+  fix above made that same healing show up correctly in the aggregate HPS
+  number. Fixed by adding a capturing group around that raw amount
+  (shifting every later `match[N]` index up by one - `rawAmount` is now
+  `match[4]`, the rest reindexed accordingly) and rendering `(X overheal)`
+  next to the line whenever `rawAmount - actualGain > 0.05`. Only applies
+  to gains (not spends) - there's no "under-spend" analog. Not yet visually
+  confirmed in-browser (the dev server was down when this was built) -
+  verify by hovering Log tab entries for a heal on an already-full-HP unit.
 
 ## TODO
 
