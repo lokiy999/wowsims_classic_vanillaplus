@@ -775,9 +775,9 @@ export class ResourceChangedLog extends SimLog {
 						{signedDiff.toFixed(1)} {resourceName}
 					</strong>
 					{/* Bootstrap's .text-muted is a dark gray meant for light backgrounds and is
-				    nearly invisible on this app's dark theme - dim via opacity instead, which
-				    inherits (and stays visible against) whatever the surrounding text color is. */}
-				{overheal > 0.05 ? <span style={{ opacity: 0.7 }}> ({overheal.toFixed(1)} overheal)</span> : null}
+				    nearly invisible on this app's dark theme - use an explicit gold color
+				    instead, which stays visible regardless of theme. */}
+				{overheal > 0.05 ? <span style={{ color: 'lab(76.3898% 14.5258 98.4589)' }}> ({overheal.toFixed(1)} overheal)</span> : null}
 					{this.target ? <>{` on `} {this.target?.toHTML()}</> : null}
 					{` from `}
 					{this.newActionIdLink(this.actionId!)}.
