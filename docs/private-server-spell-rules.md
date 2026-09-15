@@ -416,3 +416,60 @@ above.
   `Channeled (N sec cast)` fix, but done dynamically instead). Scope is
   small per-spell, not a generic system - no Go/simulation changes needed,
   this is purely cosmetic/display.
+
+## Open issues (TODO, not yet fixed)
+
+- **Mana-cost percentage reductions stack additively instead of
+  multiplicatively — flagged 2026-09-15, NOT fixed.** `ManaCostOptions.
+  Multiplier` (`sim/core/mana.go:304-317`) is a single `int32` percentage
+  that every talent/effect just subtracts from directly (e.g.
+  `spell.Cost.Multiplier -= 5*rank` in `applyMentalAgility`,
+  `sim/priest/talents.go:98`; `Multiplier: 100 - 5*rank` in Shadow Word:
+  Pain's config, `sim/priest/shadow_word_pain.go:55`), then applied once as
+  a single factor. Real WoW (confirmed against the user's own in-game log)
+  applies each source as its own sequential multiplicative step, rounding
+  after each: Shadow Word: Pain Rank 8 with Improved SW:Pain 2/2 (-10%) and
+  Mental Agility 3/3 (-15%) should cost `470 × 0.90 = 423` → `423 × 0.85 =
+  359.55` → rounds to **360** (matches the user's in-game reading exactly).
+  The sim instead computes `470 × (1 - 0.10 - 0.15) = 352.5` — off by
+  ~7.5 mana in this case, and the error grows with more stacked
+  reductions. Individual per-talent magnitudes (e.g. Mental Agility's
+  5/10/15%) were already DBC-audited and are correct in isolation — this
+  is purely a stacking-order/architecture issue. **Not priest-specific**:
+  `Cost.Multiplier` is touched in 43 places across every class's talent
+  files, so a real fix means changing the stacking model (e.g. an
+  `int32` sum → a multiplicative float chain) sim-wide, not a one-line
+  patch. Needs scoping/buy-in before starting.
+
+- **Mind Flay per-tick damage lower than in-game — flagged 2026-09-15,
+  NOT fixed, root cause not yet found.** User's in-game reading: Rank 6
+  Mind Flay, 5 ticks (tick count confirmed correct per the FIXED entry
+  above), **560 damage per tick**. Sim log for the same cast: **407.14**
+  per tick — about 27% low, too large a gap to be float/rounding display
+  noise. The total base damage per rank (`MindFlayBaseDamage`, e.g. 900
+  for Rank 6) was already independently verified against `Spell.csv`
+  (`(EffectBasePoints+1) * 5 ticks`, high confidence, see the FIXED entry
+  above) and end-to-end tested in a real sim run, so the base total is
+  probably not the culprit. Unexplored so far: the flat `0.15` spell
+  coefficient (`spellCoeff` in `sim/priest/mind_flay.go:57`, commented as
+  "classic penalty for mf having a slow effect" — no DBC citation) and
+  interaction with Shadow Weaving/Darkness/other %-damage talent stacking
+  on this specific spell. Needs the caster's Shadow Power/talent state at
+  cast time to reconstruct the expected number and isolate which factor
+  is off.
+
+  Back-of-envelope estimate (2026-09-15, math only, not verified against
+  `Spell.csv` or applied to code): using the sim's own numbers at
+  `coeff=0.15` — base damage/tick `900/5=180`, character sheet Shadow
+  Power `740`, observed tick `407.14` — solve `(180 + 0.15×740) × M =
+  407.14` → `M ≈ 1.3995` (the bundled Shadow Weaving/Darkness/etc.
+  multiplier, independent of the coefficient). Holding `base` and `M`
+  fixed and solving for the coefficient that yields the in-game 560:
+  `(180 + coeff×740) × 1.3995 = 560` → `coeff ≈ 0.298`, i.e. **~0.30**.
+  For comparison, `coeff=0.35` overshoots to `(180+0.35×740)×1.3995 ≈
+  614`. So if the true issue is purely this flat coefficient being
+  under-tuned, **~0.30 fits the single data point much better than
+  0.35** — but this is one sample, back-solved algebraically assuming
+  `M` and Shadow Power were constant at cast time; it has not been
+  cross-checked against `Spell.csv` and should be treated as a lead, not
+  a confirmed value.
