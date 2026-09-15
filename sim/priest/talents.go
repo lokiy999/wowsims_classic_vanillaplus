@@ -19,10 +19,6 @@ func (priest *Priest) ApplyTalents() {
 		priest.PseudoStats.ThreatMultiplier *= 1 - (.10 * float64(priest.Talents.SilentResolve))
 	}
 
-	if priest.Talents.ImprovedPowerWordFortitude > 0 {
-		priest.MultiplyStat(stats.Stamina, 1.0+.15*float64(priest.Talents.ImprovedPowerWordFortitude))
-	}
-
 	// DBC: 10/20/30% of mana regen continues while casting.
 	priest.PseudoStats.SpiritRegenRateCasting = []float64{0.0, 0.10, 0.20, 0.30}[priest.Talents.Meditation]
 
