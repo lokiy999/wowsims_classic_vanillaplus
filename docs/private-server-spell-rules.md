@@ -521,7 +521,32 @@ above.
   hypotheses, so almost any coefficient could fit with some M. A wide-SP
   sample makes the coefficient term dominate the total, separating the
   hypotheses clearly - exactly what happened here (0.30 held up on the
-  narrow range but broke once the 800 SP point was added). If more
-  precision is wanted, an even wider-range sample (near-0 SP to isolate M
-  cleanly, and/or SP pushed above 1000+ to further stress-test the
-  coefficient) would sharpen this further.
+  narrow range but broke once the 800 SP point was added).
+
+  **Fifth sample, low end (2026-09-16): SP=100, tick=282, same 1-stack
+  Shadow Weaving.** This is the low-SP counterpart test suggested above,
+  and it reverses the previous conclusion. At `coeff=1/3`:
+  `(180+100/3)×M=282` → `M=282/213.33=1.322` — a **4.5% outlier** against
+  the other four points' 1.264 cluster (at low SP the flat `180` base
+  dominates, so this is exactly where a wrong coefficient gets exposed;
+  1/3 fails the test). Re-checking `coeff=0.30` against all 5 points
+  instead:
+
+  | SP | 180+0.30×SP | Implied M |
+  |---|---|---|
+  | 100 | 210.0 | 282/210 = 1.3429 |
+  | 721 | 396.3 | 532/396.3 = 1.3424 |
+  | 733 | 399.9 | 536/399.9 = 1.3403 |
+  | 739 | 401.7 | 539/401.7 = 1.3418 |
+  | 800 | 420.0 | 565/420 = 1.3452 |
+
+  All five land within **0.37%** (M≈1.342-1.345), with the new SP=100
+  point sitting right in the middle of the cluster instead of breaking it.
+  **Revised conclusion: `coeff≈0.30` is confirmed (not 1/3), M≈1.342.**
+  The 1/3 hypothesis only looked good on the earlier 4-point set because
+  none of those points had a small-enough SP for the coefficient term to
+  matter much relative to the flat base - a good illustration of why a
+  low-SP sample is the more decisive test, as suggested above. Still
+  unverified against `Spell.csv` (that remains the real fix target: find
+  which `Spell.csv` column/formula actually produces ~0.30 for Mind Flay)
+  and not yet applied to code.
