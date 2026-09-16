@@ -54,7 +54,12 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	manaCost := MindFlayManaCost[rank]
 	level := MindFlayLevel[rank]
 
-	spellCoeff := 0.15 // classic penalty for mf having a slow effect
+	// Not present in Spell.csv (this DBC dump has no spell-power coefficient
+	// field for any spell - see docs/private-server-spell-rules.md). Derived
+	// empirically from 8 in-game Mind Flay tick samples across SP 45-800,
+	// which converge on ~0.307 with sub-1% residuals; 0.30 is the working
+	// value pending further verification.
+	spellCoeff := 0.30
 
 	tickLength := time.Second
 

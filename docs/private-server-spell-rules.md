@@ -576,7 +576,31 @@ above.
   **Current best estimate: `coeff≈0.30-0.31`, `M≈1.32-1.33`** (the ~0.307
   regression value and the earlier ~0.30 both sit inside this band; the
   small residual spread left is consistent with real in-game
-  damage-display rounding, not a wrong coefficient). Still unverified
-  against `Spell.csv` (that remains the real fix target: find which
-  `Spell.csv` column/formula actually produces ~0.30 for Mind Flay) and
-  not yet applied to code.
+  damage-display rounding, not a wrong coefficient).
+
+  **`Spell.csv` checked (2026-09-16) — no coefficient field exists.**
+  Searched every `float`-typed column (indices 73-75, 97-99, 112, 167-169,
+  identified from the CSV's own type header row) plus the known
+  `EffectBasePoints`/`EffectAmplitude` columns, across all 6 Mind Flay
+  ranks (15407, 17311-17314, 18807) and their tick sub-spells. All the
+  `float` columns are flat `0`/`1` across every rank (boolean-looking
+  flags, not a percentage). This 1.12-era DBC dump simply doesn't store a
+  spell-power coefficient anywhere - that only became data-driven in
+  later expansions; in vanilla/Classic it's a client-hardcoded
+  cast-time/channel-time formula, not a DBC field. (One useful
+  cross-check survived: rank 6's `EffectBasePoints[0]=179` → `+1=180`,
+  confirming the per-tick base used throughout this analysis.) So there is
+  no DBC value to verify ~0.30 against - the 8-sample empirical fit above
+  is the best evidence available.
+
+  **FIXED 2026-09-16** (`sim/priest/mind_flay.go`) - `spellCoeff` changed
+  from the old (undocumented, no citation) `0.15` to **`0.30`**, per the
+  empirical derivation above. This is **not DBC-verified** (see previous
+  paragraph - no such field exists to check against), it's back-solved
+  from live gameplay samples. If a cleaner value later gets independently
+  confirmed (e.g. the classic channel-coefficient formula
+  `tickLength/3.5 ≈ 0.2857` was tested against the same 8 points and
+  fits distinctly worse - a systematic ~5% upward drift in implied `M` as
+  SP increases, versus 0.30's flat sub-1% residuals - so it was rejected
+  in favor of the empirical value), update this entry and the code
+  together.
