@@ -208,6 +208,7 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			} else {
 				this.improvedAnchor.classList.remove('active');
 			}
+			this.updateLabelRankSuffix();
 		}
 		if (this.config.states >= 4 && this.config.improvedId2) {
 			if (this.currentValue > 2) {
@@ -252,5 +253,19 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 
 	showWhen() {
 		return this.config.actionId(this.modObject) != null && (!this.config.showWhen || this.config.showWhen(this.modObject));
+	}
+
+	/**
+	 * Appends a rank suffix (e.g. "(Improved)") to the input's label so the
+	 * currently-selected tristate rank is visible without relying solely on
+	 * the small icon badge.
+	 */
+	private updateLabelRankSuffix() {
+		if (!this.labelElem || !this.config.label) return;
+
+		const suffix = this.currentValue > 1 ? ' (Improved)' : '';
+		const text = this.config.label + suffix;
+		this.labelElem.textContent = text;
+		this.labelElem.title = text;
 	}
 }

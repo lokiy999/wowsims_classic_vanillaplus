@@ -762,3 +762,82 @@ diffs on request.
 the repo root or in `tools/`. Not referenced by anything I built this session;
 safe to delete if you don't need them, or ask and I'll check what each one is
 for before removing anything.
+
+---
+
+## Part C — Cross-faction buffs on Priest + tristate label fix (2026-09-16)
+
+Starting point: raid/individual buffs like Blessing of Kings (Alliance-only)
+and Mana Spring Totem (Horde-only) were hidden and zeroed out for the "wrong"
+faction, so a player couldn't select both even though nothing in the actual
+game mechanic prevents it in this sim (no real class/faction restriction is
+being modeled — it was just a UI/backend gate). Scoped to Shadow Priest first
+since that's the spec in use; the shared files below affect every other
+class/spec too, since Blessing of Kings + Mana Spring Totem is the same picker
+everywhere. The faction split for the *rest* of the buffs (Blessing of Wisdom,
+Strength of Earth, Devotion Aura, Judgement effects, etc.) was intentionally
+left alone — only these two were touched.
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+Removed the `showWhen: player => player.getFaction() === Faction.Alliance` /
+`...Horde` gates from the `BlessingOfKings` and `ManaSpringTotem` picker
+configs (~line 34 and ~line 233). This is what actually controls whether the
+icon renders at all for a given player — see `icon_picker.tsx`'s `showWhen()`,
+which also zeroes and hides the field when the check fails.
+
+### `sim/core/buffs.go`
+
+Removed the `&& isAlliance` guard on the `individualBuffs.BlessingOfKings`
+branch (~line 322) and changed `else if raidBuffs.ManaSpringTotem > 0 &&
+isHorde` to drop the `&& isHorde` (~line 373). These are the two conditions
+that actually decide whether `ApplyBuffs` registers the aura / adds the
+stats — the frontend gate alone wasn't enough, because even with both icons
+visible the backend was silently no-op'ing the "wrong" faction's buff.
+
+**Important — this requires a WASM rebuild, not just a frontend reload.**
+The in-browser sim runs as a separate WASM binary
+(`dist/classic/lib.wasm` — path depends on `BASE_DIR` in the `Makefile`,
+`classic` for this repo) built by `make wasm` / the `$(OUT_DIR)/lib.wasm`
+Makefile target. The dev server's `air` hot-reload (`make rundevserver`)
+only watches and rebuilds the **native Go server binary** — it does not
+rebuild the WASM file, and the WASM is a static asset served from disk, not
+proxied through any watcher. So after editing anything under `sim/`, the
+change is invisible in the browser until you rebuild the WASM manually:
+
+```bash
+GOOS=js GOARCH=wasm go build -o ./dist/classic/lib.wasm ./sim/wasm/
+```
+
+...then hard-refresh the page (Ctrl+Shift+R) — a normal reload can still
+serve the old cached `.wasm`. Symptom if you skip this: the buff icon toggles
+fine in the UI and `Simulate` runs without error, but the stat panel and sim
+results never reflect the change — it silently uses the previous WASM build.
+This bit us mid-session: the Go fix above was correct on the first try, but
+looked broken in the browser until the WASM was rebuilt.
+
+### `ui/core/components/input.tsx`
+
+Added a `protected labelElem?: HTMLLabelElement` field to the base `Input`
+class, set inside `buildLabel()` when the label `<label>` element is created.
+Previously the label element wasn't retained anywhere after being appended to
+the DOM, so subclasses had no way to update its text later.
+
+### `ui/core/components/icon_picker.tsx`
+
+Follow-up UX fix, prompted by: "why can I click twice on Mana Spring Totem
+and it changes the MP5 amount?" — the icon is a **tristate** picker
+(Missing → Regular → Improved, via `makeTristateRaidBuffInput`), and the only
+visual indicator of the "Improved" rank was a small icon badge in the corner
+(`improvedAnchor` gaining an `active` class) — nothing in the visible text
+said the rank had changed.
+
+Added a private `updateLabelRankSuffix()` method, called from
+`setInputValue()` whenever `config.states >= 3 && config.improvedId` (i.e.
+any tristate buff/debuff, not just Mana Spring Totem — this is the shared
+`IconPicker` component used by all of them: Battle Shout, Power Word:
+Fortitude, Strength of Earth Totem, Devotion Aura, etc.). It appends
+`" (Improved)"` to `this.labelElem`'s `textContent` and `title` when
+`currentValue > 1`, and reverts to the plain label otherwise. Pure frontend
+change — picked up by the normal dev-server hot reload, no WASM rebuild
+needed (only `sim/**/*.go` changes require that).

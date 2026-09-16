@@ -44,6 +44,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	readonly modObject: ModObject;
 
 	protected enabled = true;
+	protected labelElem?: HTMLLabelElement;
 	readonly changeEmitter = new TypedEvent<void>('input-change');
 	// Can be used to remove any events in addEventListener
 	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
@@ -83,7 +84,8 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 			<label htmlFor={config.id || undefined} className="form-label" title={config.label}>
 				{config.label}
 			</label>
-		);
+		) as HTMLLabelElement;
+		this.labelElem = label;
 
 		if (config.labelTooltip) {
 			const tippyInstance = tippy(label, {

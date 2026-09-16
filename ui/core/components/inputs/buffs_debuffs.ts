@@ -35,7 +35,6 @@ export const BlessingOfKings = withLabel(
 	makeBooleanIndividualBuffInput({
 		actionId: () => ActionId.fromSpellId(20217),
 		fieldName: 'blessingOfKings',
-		showWhen: player => player.getFaction() === Faction.Alliance,
 	}),
 	'Blessing of Kings',
 );
@@ -235,7 +234,6 @@ export const ManaSpringTotem = withLabel(
 		actionId: () => ActionId.fromSpellId(10497),
 		impId: ActionId.fromSpellId(16208),
 		fieldName: 'manaSpringTotem',
-		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	'Mana Spring Totem',
 );

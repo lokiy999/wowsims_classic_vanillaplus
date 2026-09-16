@@ -319,7 +319,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		character.AddStats(BuffSpellValues[ScrollOfSpirit])
 	}
 
-	if individualBuffs.BlessingOfKings && isAlliance {
+	if individualBuffs.BlessingOfKings {
 		MakePermanent(BlessingOfKingsAura(character))
 	}
 
@@ -370,7 +370,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 			updateStats = updateStats.Multiply(1.2)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ManaSpringTotem > 0 && isHorde {
+	} else if raidBuffs.ManaSpringTotem > 0 {
 		updateStats := BuffSpellValues[ManaSpring]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.25)
