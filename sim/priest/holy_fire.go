@@ -47,8 +47,17 @@ func (priest *Priest) getHolyFireConfig(rank int, cdTimer *core.Timer) core.Spel
 	manaCost := HolyFireManaCost[rank]
 	level := HolyFireLevel[rank]
 
-	directCoeff := 0.75
-	dotCoeff := 0.05
+	// Hybrid direct+DoT coefficient split (see docs/private-server-spell-rules.md
+	// "Deriving spell coefficients for hybrid direct+DoT spells"):
+	// castCoeff = castTime/3.5 = 3.5/3.5 = 1.0
+	// dotCoeff_raw = dotDuration/15 = 10/15 = 2/3
+	// direct = castCoeff^2 / (castCoeff+dotCoeff_raw) = 1 / (5/3) = 3/5 = 0.6
+	// dot (total) = dotCoeff_raw^2 / (castCoeff+dotCoeff_raw) = (4/9) / (5/3) = 4/15,
+	//   per-tick (5 ticks) = 4/75 = 0.05333...
+	// Empirically confirmed against live in-game samples 2026-09-16 (fits better
+	// than the old undocumented 0.75/0.05 pair on both components).
+	directCoeff := 3.0 / 5.0
+	dotCoeff := 4.0 / 75.0
 	castTime := time.Millisecond * 3500
 
 	return core.SpellConfig{

@@ -630,3 +630,93 @@ above.
   damage** - both look correct as implemented. Mana cost also
   cross-checked: `985 × 0.85` (Mental Agility 3/3) `= 837.25` → rounds to
   the user's reported 837, exact match.
+
+- **Smite coefficient confirmed correct (2026-09-16), no change.** Live
+  samples: SP=100 (n=10, avg 477) and SP=648 (n=1, avg 869). Two-point
+  solve: `coeff=(869-477)/(648-100)=392/548≈0.715`. Rank 8's cast time is
+  2.5s, and `castTime/3.5 = 2.5/3.5 = 0.7143` - the code's existing
+  `SmiteSpellCoef[8]=0.714` already matches this formula exactly, and the
+  empirical value confirms it. Base damage (371-415) was already
+  DBC-verified. **Smite needed no changes.**
+
+- **Holy Fire direct-hit coefficient — FIXED 2026-09-16**
+  (`sim/priest/holy_fire.go:50-51`). The old `directCoeff := 0.75` /
+  `dotCoeff := 0.05` had no citation (same red flag as Mind Flay's old
+  value). Live samples pointed at a real error: direct hit averaged 913
+  at SP=648 (n=6) and 580 at SP=100 (n=10) - two-point solve gives
+  `coeff=(913-580)/548≈0.608`, ~19% below the old `0.75`, consistent
+  across every estimate (0.571 single-sample, 0.622 two-point-noisy,
+  0.608 with better-averaged samples - converging, not drifting).
+
+  Unlike Mind Flay, this one resolved to an exact documented formula
+  rather than staying purely empirical - Holy Fire is a hybrid
+  direct+DoT spell, and Blizzard's engine splits one shared coefficient
+  budget between the two components (see the general method below).
+  Working the formula for Holy Fire (cast 3.5s, DoT 10s/5 ticks):
+  `castCoeff=3.5/3.5=1.0`, `dotCoeff_raw=10/15=2/3`,
+  `direct=1.0²/(1.0+2/3)=3/5=0.6`,
+  `dot_total=(2/3)²/(1.0+2/3)=4/15`, per-tick (÷5) `=4/75≈0.05333`.
+  This lands almost exactly on the empirical direct estimate (0.60 vs
+  ~0.608) and fits the DoT samples *better* than the old 0.05 did:
+
+  | SP | Actual DoT tick | Old (0.05) predicted | New (4/75) predicted |
+  |---|---|---|---|
+  | 100 | 50 | 50.0 | 50.33 |
+  | 648 | 79 | 77.4 (off by 1.6) | 79.5 (off by 0.5) |
+
+  Changed `directCoeff` to `3.0/5.0` and `dotCoeff` to `4.0/75.0`
+  (exact fractions, not decimal approximations).
+
+## Deriving spell coefficients for hybrid direct+DoT spells
+
+Some priest spells (Holy Fire is the current example; Devouring Plague's
+old heal component and other classes' spells like Immolate follow the
+same shape) deal damage two ways at once: an immediate hit, plus a DoT
+that ticks afterward. Blizzard's actual client engine does **not** give
+each component the full independent `castTime/3.5` coefficient - instead
+there is **one shared coefficient budget** for the whole spell, split
+between the direct and periodic components in proportion to how much
+"casting investment" each represents. The formula:
+
+```
+castCoeff    = castTime_seconds / 3.5      (direct-hit's own budget, uncapped here)
+dotCoeff_raw = dotDuration_seconds / 15     (DoT's own budget)
+
+direct_coefficient = castCoeff^2 / (castCoeff + dotCoeff_raw)
+dot_coefficient_total = dotCoeff_raw^2 / (castCoeff + dotCoeff_raw)
+dot_coefficient_per_tick = dot_coefficient_total / number_of_ticks
+```
+
+`dotDuration_seconds` is the DoT's *total* duration (ticks × tick
+length), not per-tick. Sanity check: `direct + dot_total` should land
+close to `max(castCoeff, dotCoeff_raw)`-ish territory, not simply sum to
+1.0 - don't expect a clean round number out of the sum, the individual
+direct/dot values are what matter.
+
+**How to tell if a spell needs this instead of a plain single coefficient:**
+it has both a direct hit *and* a DoT/HoT component from the same cast
+(check the Go `SpellConfig` for both `ApplyEffects` dealing an immediate
+hit *and* a populated `Dot:` block, as in `holy_fire.go`). A pure direct
+spell (Smite, Mind Blast) or pure DoT/channel (SW:Pain, Mind Flay,
+Devouring Plague) just uses `castTime/3.5` or a per-tick value directly -
+no splitting needed, as confirmed for Smite above.
+
+**Recommended process for verifying/deriving one of these in this repo:**
+1. Compute the formula's predicted values from the spell's cast time and
+   DoT duration (both are already in the Go config or `Spell.csv`'s
+   `DurationIndex`/cast time fields).
+2. Get live in-game samples at 2+ well-separated Spell Power values,
+   **averaged over as many casts as practical** (10+ ideally) to wash out
+   the direct hit's own random roll variance - a single cast's roll can
+   swing the direct-hit number ±10% or more on its own, which is enough
+   noise to mask a real coefficient error or manufacture a fake one.
+3. Two-point solve `coeff=(hit2-hit1)/(SP2-SP1)` per component (direct
+   and DoT separately - the DoT reading is far less noisy since ticks
+   have no random roll, so it converges with fewer samples, as it did for
+   both Devouring Plague and Holy Fire above).
+4. Compare the empirical coefficient against the formula's predicted
+   value. If they land within a percent or two of each other (as Holy
+   Fire's direct 0.608-empirical vs 0.60-formula did), trust the formula's
+   exact fraction over the noisier empirical decimal - it's the real
+   value, the empirical number was just approaching it through sample
+   noise.
