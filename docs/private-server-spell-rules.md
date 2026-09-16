@@ -473,3 +473,55 @@ above.
   `M` and Shadow Power were constant at cast time; it has not been
   cross-checked against `Spell.csv` and should be treated as a lead, not
   a confirmed value.
+
+  **Corroborating in-game samples (2026-09-15/16), all at Shadow Weaving
+  1 stack (1.02× taken multiplier) — every test the user runs uses this
+  same 1-stack condition:**
+
+  | Shadow Power | Tick damage |
+  |---|---|
+  | 739 | 539 |
+  | 721 | 532 |
+  | 733 | 536 |
+  | 800 | 565 |
+
+  The first three samples (SP 721-739, a ~2.5% range) initially favored
+  `coeff≈0.30` over `0.15`/`0.35` (see prior paragraph), but that range was
+  too narrow to be conclusive. The SP=800 sample was deliberately requested
+  as a wide-range discriminating test (see reasoning below the table) and
+  **it invalidates the 0.30 estimate**: re-solving `M` at `coeff=0.30`
+  across all four points now gives 1.340-1.345, a 0.37% spread (up from
+  0.15% on 3 points) — the fit degrades once the SP range widens.
+
+  Linear-regressing all 4 points as `tick = A + B×SP` (least squares):
+  `B≈0.4230`, `A≈226.5`. Since the model is `tick=(180+coeff×SP)×M`, i.e.
+  `A=180M` and `B=coeff×M`: `M=A/180≈1.258`, `coeff=B/M≈0.336` — close to
+  the clean fraction **1/3 (0.333)**. Solving `M` per-point at `coeff=1/3`
+  exactly:
+
+  | SP | 180+SP/3 | Implied M |
+  |---|---|---|
+  | 739 | 426.33 | 539/426.33 = 1.2643 |
+  | 721 | 420.33 | 532/420.33 = 1.2658 |
+  | 733 | 424.33 | 536/424.33 = 1.2631 |
+  | 800 | 446.67 | 565/446.67 = 1.2650 |
+
+  Spread: **0.08%** (M≈1.264±0.001) — the tightest fit found so far,
+  noticeably better than 0.30's 0.37% or 0.35's ~0.22% once all 4 points
+  are used. Current best working hypothesis: **the Mind Flay spell
+  coefficient should be ~1/3 (0.333), not the current 0.15**, with roughly
+  a 1.264 flat multiplier from other sources (Shadow Weaving 1 stack ×1.02
+  is part of this 1.264, the rest presumably Darkness/Shadowform/similar
+  talent bonuses) at this talent build. Still unverified against
+  `Spell.csv` and not yet applied to code — the reasoning above is pure
+  back-solving from in-game samples, not confirmed from spell data.
+
+  **Why SP=800 was the requested test:** with only the narrow 721-739
+  range, the coefficient's contribution to the tick barely moved between
+  hypotheses, so almost any coefficient could fit with some M. A wide-SP
+  sample makes the coefficient term dominate the total, separating the
+  hypotheses clearly - exactly what happened here (0.30 held up on the
+  narrow range but broke once the 800 SP point was added). If more
+  precision is wanted, an even wider-range sample (near-0 SP to isolate M
+  cleanly, and/or SP pushed above 1000+ to further stress-test the
+  coefficient) would sharpen this further.
