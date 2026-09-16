@@ -604,3 +604,29 @@ above.
   SP increases, versus 0.30's flat sub-1% residuals - so it was rejected
   in favor of the empirical value), update this entry and the code
   together.
+
+- **Devouring Plague Rank 6 was never registered — FIXED 2026-09-16**
+  (`sim/priest/devouring_plague.go:27`). The registration loop read
+  `for rank := 1; rank < DevouringPlagueRanks; rank++` with
+  `DevouringPlagueRanks=6`, which only registers ranks 1-5 - rank 6 (base
+  816, the top of the `DevouringPlagueBaseDamage`/`ManaCost`/`Level`
+  arrays) was silently never castable, unlike every other priest DoT in
+  this file which loops `rank <= Ranks`. Confirmed as a real bug (not
+  intentional) via the user's own in-game cast: Rank 6 Devouring Plague
+  exists on the private server (837 mana, 3 min CD). Changed to
+  `rank <= DevouringPlagueRanks`.
+
+  While investigating, also spot-checked the `spellCoeff := 0.063`
+  (line 45, uncited like Mind Flay's old value) against one live sample:
+  SP=739, 1-stack Shadow Weaving, tick=195, base/tick=816/8=102 (base
+  value independently confirmed against the user's own in-game tooltip -
+  816, matching the array exactly). Reusing the Mind Flay-derived
+  `M≈1.33` (same Shadow school, so the same Shadow Weaving/Darkness/
+  Shadowform stack applies - confirmed `Improved Mind Flay` only affects
+  pushback, not damage, so it doesn't contaminate this transfer):
+  `195 = (102 + coeff×739) × 1.33` → `coeff ≈ 0.060`, within ~5% of the
+  existing `0.063` - unlike Mind Flay's 2x error, this is within
+  single-sample noise. **No change made to the coefficient or base
+  damage** - both look correct as implemented. Mana cost also
+  cross-checked: `985 × 0.85` (Mental Agility 3/3) `= 837.25` → rounds to
+  the user's reported 837, exact match.
