@@ -1296,3 +1296,58 @@ floor(spirit_regen + flat_mp5*2/5)`), while this sim's `ManaTick()`
 value every 2s. At these stats that's roughly a 1-2 mana/tick difference
 (68.95 vs floored 68). Left alone for now — flagged in case someone wants to
 model the discrete flooring behavior later.
+
+---
+
+## Part J — New Shadow Priest "cast once" test rotation (2026-09-17)
+
+Request: a rotation that casts Shadowform on prepull (-1s), then Shadow Word:
+Pain → Vampiric Embrace → Mind Blast → Mind Flay, each exactly once, then
+stops casting for the rest of the fight — useful as a controlled test
+rotation (e.g. for checking a single spell's numbers in isolation, like the
+Mind Flay tick investigation earlier in this session).
+
+### New file: `ui/shadow_priest/apls/cast_once.apl.json`
+
+First version used `strictSequence` for the four casts. That was wrong:
+`APLActionStrictSequence` (`sim/core/apl_actions_sequences.go`) resets
+`curIdx` back to `0` and pops itself off the controlling-action stack once
+it finishes (`GetNextAction`) — by design, so it can be re-entered and run
+again, which is exactly what an opener sequence usually wants. Since this
+was the only entry in the priority list, once all 4 spells came off cooldown
+again the sequence would just start over from Shadow Word: Pain and repeat
+for as long as the fight lasted — confirmed by testing at the default
+~150s duration (looked fine) vs. a 600s fixed duration (visibly repeated).
+
+Fixed by switching to the plain `sequence` action instead (`APLActionSequence`,
+same file) — same ordered-cast behavier, but it does **not** auto-reset:
+`IsReady()` permanently returns `false` once `curIdx` reaches the end, and
+only an explicit `resetSequence` action (referencing it by name) would ever
+set it back to 0. Since nothing in this APL does that, the sequence now
+genuinely runs once and goes idle. Named it `"CastOnce"` (a `sequence`
+requires a `name` field; `strictSequence` doesn't take one).
+
+### `ui/shadow_priest/presets.ts`
+
+Imported the new JSON and added `APLCastOnce` (label `"Cast Once (SWP > VE
+> MB > MF)"`) to `APLPresets[Phase.Phase1]`, alongside the existing `"Shadow"`
+rotation — selectable from the Saved Rotations panel on the Rotation tab.
+
+Verified: at a fixed 600s duration, `Casts` for every one of the five spells
+(Shadowform, Shadow Word: Pain, Vampiric Embrace, Mind Blast, Mind Flay)
+stayed at exactly `1.0` — previously Mind Flay/SWP/etc. would show >1 on a
+long enough fight.
+
+### Aside, same session: Mind Flay tick count double-checked, not a bug
+
+While testing the above, "avg ticks per cast" for Mind Flay showed ~4.19 out
+of a possible 5 across 3000 iterations, which looked like a missing-tick bug
+at first. It isn't: Mind Flay is `SpellFlagBinary` (`sim/priest/mind_flay.go`),
+so the only hit/resist roll happens once, on the initial cast
+(`ApplyEffects`'s `CalcOutcome(..., OutcomeMagicHit)`); the periodic ticks
+themselves (`OutcomeTick`, `sim/core/spell_outcome.go:31`) always resolve as
+a hit with no further roll. Confirmed with a single fixed-duration iteration
+where the cast landed: exactly 5/5 ticks, `562.42 × 5 = 2.81K` matching the
+displayed total precisely. So `4.19` is just `hit_rate(~0.84) × 5`, averaging
+in the ~16% of iterations where the initial cast fully resisted (0 ticks that
+run) — not a per-tick miss mechanic, and not a bug. No code changed for this.

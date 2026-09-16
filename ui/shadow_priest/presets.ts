@@ -20,6 +20,7 @@ import {
 } from '../core/proto/common.js';
 import { ShadowPriest_Options as Options } from '../core/proto/priest.js';
 import { SavedTalents } from '../core/proto/ui.js';
+import CastOnceAPL from './apls/cast_once.apl.json';
 import P1APL from './apls/p1.apl.json';
 import P0BISGear from './gear_sets/p0.bis.gear.json';
 import P1BISGear from './gear_sets/p1.bis.gear.json';
@@ -46,9 +47,10 @@ export const DefaultGear = GearP0BIS;
 ///////////////////////////////////////////////////////////////////////////
 
 export const APLP1Shadow = PresetUtils.makePresetAPLRotation('Shadow', P1APL);
+export const APLCastOnce = PresetUtils.makePresetAPLRotation('Cast Once (SWP > VE > MB > MF)', CastOnceAPL);
 
 export const APLPresets = {
-	[Phase.Phase1]: [APLP1Shadow],
+	[Phase.Phase1]: [APLP1Shadow, APLCastOnce],
 };
 
 export const DefaultAPL = APLPresets[Phase.Phase1][0];
