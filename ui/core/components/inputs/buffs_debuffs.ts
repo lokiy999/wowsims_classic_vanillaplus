@@ -265,7 +265,6 @@ export const BlessingOfWisdom = withLabel(
 		actionId: () => ActionId.fromSpellId(25290),
 		impId: ActionId.fromSpellId(20245),
 		fieldName: 'blessingOfWisdom',
-		showWhen: player => player.getFaction() === Faction.Alliance,
 	}),
 	'Blessing of Wisdom',
 );
@@ -747,7 +746,7 @@ export const WORLD_BUFFS_CONFIG = [
 	{
 		config: MoldarsMoxie,
 		picker: IconPicker,
-		stats: [Stat.StatStamina],
+		stats: [Stat.StatHealth],
 	},
 	{
 		config: SlipKiksSavvy,

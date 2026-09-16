@@ -35,6 +35,11 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	shaman.PseudoStats.BlockValuePerStrength = .05 // 20 str = 1 block
 
+	// Set mana regen to 17 + Spirit/5 each 2s tick
+	shaman.SpiritManaRegenPerSecond = func() float64 {
+		return 8.5 + shaman.GetStat(stats.Spirit)/10
+	}
+
 	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon))
 	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(proto.WeaponImbue_FlametongueWeapon))
 	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(proto.WeaponImbue_FrostbrandWeapon))
@@ -139,7 +144,7 @@ type Shaman struct {
 
 	// Item set bonus hooks (must be set before Initialize() registers spells/totems,
 	// since item set bonuses are applied before Initialize() during character setup).
-	TotemEffectivenessBonusMultiplier      float64 // Increases the effect of Strength of Earth / Stoneskin totems (e.g. 0.20 for +20%).
+	TotemEffectivenessBonusMultiplier        float64 // Increases the effect of Strength of Earth / Stoneskin totems (e.g. 0.20 for +20%).
 	ElementalWeaponEnchantEffectivenessBonus float64 // Increases the effectiveness of elemental weapon enchants (e.g. 0.10 for +10%).
 }
 

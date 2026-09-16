@@ -364,13 +364,14 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		MakePermanent(GraceOfAirTotemAura(&character.Unit, multiplier))
 	}
 
-	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
+	if individualBuffs.BlessingOfWisdom > 0 {
 		updateStats := BuffSpellValues[BlessingOfWisdom]
 		if individualBuffs.BlessingOfWisdom == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.2)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ManaSpringTotem > 0 {
+	}
+	if raidBuffs.ManaSpringTotem > 0 {
 		updateStats := BuffSpellValues[ManaSpring]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.25)
@@ -1747,7 +1748,7 @@ func ApplyMoldarsMoxie(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "MoldarsMoxie",
 		Stats: []StatConfig{
-			{stats.Stamina, 1.15, true},
+			{stats.Health, 1.05, true},
 		},
 	})
 }

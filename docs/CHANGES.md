@@ -1144,3 +1144,155 @@ in `buffs_debuffs.ts` from `'10%'`/`'11%'`/`'12%'`/`'13%'` to `'(10%)'`/
 instead of "Blessing of Kings 11%" — matches the "(Improved)" suffix format
 tristate buffs use (see Part C). Applies to both the selected-value label
 and the dropdown option badges, since both pull from the same `text` field.
+
+---
+
+## Part G — Mol'dar's Moxie reworked to +5% max Health (2026-09-16)
+
+Request: change Mol'dar's Moxie (Dire Maul world buff) from its old +15%
+Stamina to "Health increased by 5% of maximum" instead.
+
+### `sim/core/buffs.go`
+
+`ApplyMoldarsMoxie`'s `makeExclusiveBuff` call had one `StatConfig`:
+`{stats.Stamina, 1.15, true}` (the `true` is `IsMultiplicative`). Changed to
+`{stats.Health, 1.05, true}` — same mechanism (a dynamic multiplicative
+stat dependency via `NewDynamicMultiplyStat`, see `makeExclusiveBuff`'s
+implementation a few hundred lines up), just targeting `stats.Health`
+directly at 1.05 instead of `stats.Stamina` at 1.15. Multiplying `Health`
+directly (rather than Stamina, which itself feeds into Health through a
+separate stat dependency) means this reads as "+5% of whatever your total
+Health already is" — matching the request literally, and correctly stacking
+after every other source of Health (gear, other Stamina buffs, etc.) since
+it's a dynamic dependency applied at `CharacterBuildPhaseBuffs`, not a
+one-time static add.
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+`MoldarsMoxie`'s `WORLD_BUFFS_CONFIG` entry: `stats: [Stat.StatStamina]` →
+`stats: [Stat.StatHealth]` — this is only used for EP-relevance filtering
+(`relevantStatOptions`, see `stat_options.ts`), so it doesn't change the
+buff's icon/behavior, just which specs' `displayStats`/`epStats` will surface
+it. Icon, tooltip, spell id (22818) all unchanged — same buff, different
+stat.
+
+Verified live: with no other Stamina/Health buffs active, toggling Mol'dar's
+Moxie moved Health from 4067 → 4270, exactly `4067 × 1.05`. Rebuilt
+`dist/classic/lib.wasm` (required — this is a `sim/core/*.go` change) and
+hard-refreshed before testing.
+
+---
+
+## Part H — Blessing of Wisdom shown/usable for Horde too (2026-09-16)
+
+Same faction-lock pattern as Part D's Blessing of Kings / Mana Spring Totem
+fix, just for Blessing of Wisdom this time: `showWhen: player =>
+player.getFaction() === Faction.Alliance` in `buffs_debuffs.ts`, and
+`&& isAlliance` in `buffs.go`.
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+Removed the `showWhen` Alliance check from `BlessingOfWisdom`'s
+`makeTristateIndividualBuffInput` config (~line 263) — same mechanism as
+before: this is what actually hides+zeroes the icon for the "wrong" faction.
+
+### `sim/core/buffs.go`
+
+The `BlessingOfWisdom`/`ManaSpringTotem` block (~line 367) had two bugs
+stacked on top of each other:
+- `individualBuffs.BlessingOfWisdom > 0 && isAlliance` — the same
+  faction gate as the frontend, needed removing for the same reason.
+- The two buffs were in an `if / else if`, meaning even a Horde character
+  who could somehow get both fields set would only ever get one of them
+  applied — never both. Blessing of Wisdom and Mana Spring Totem are
+  different spells from different sources (Paladin blessing vs. Shaman
+  totem) and stack in-game; the `else if` here looks like a leftover from
+  when the two were mutually exclusive by faction lock (never both
+  selectable at once, so the `else if` never mattered) rather than an
+  intentional exclusivity rule. Split into two separate `if` blocks so both
+  apply independently, matching the Blessing of Kings + Mana Spring Totem
+  precedent from Part D.
+
+Verified live (`localhost:8080/classic/shadow_priest`, Undead/Horde): MP5
+went 18 → 48 after enabling Blessing of Wisdom (+30 base MP5, unimproved
+rank), then → 73 after also enabling Mana Spring Totem (+25 more) — both
+stacking correctly for a Horde character. Rebuilt `dist/classic/lib.wasm`
+and hard-refreshed before testing (`sim/core/buffs.go` changed). No new
+console errors.
+
+---
+
+## Part I — Shaman mana regen missing its per-class Spirit coefficient (2026-09-16)
+
+Started from a user report that in-game (measured via their `BetterCharacterStats`
+addon, which reads the real Blizzard `GetRegenMPPerSpirit()` API) showed 170
+MP5 / 68 mana per 2s tick while not casting, on a Shadow Priest with 197
+Spirit and 18 flat MP5, no buffs — a noticeably higher number than the sim's
+own not-casting regen formula would produce.
+
+### Investigation
+
+The addon's own `docs/mana-regen.md` (in its repo, not this one) documents
+the server's real per-class Spirit-regen coefficients, each a flat "N + Spirit/D
+every 2s tick":
+
+| Class | Per 2s tick |
+|---|---|
+| Druid/Hunter/Paladin/Warlock | `15 + Spirit/5` |
+| Mage/Priest | `12.5 + Spirit/4` |
+| Shaman | `17 + Spirit/5` |
+
+`sim/core/mana.go`'s `SpiritManaRegenPerSecondDefault()` hardcodes only the
+first one (`7.5 + Spirit/10` per second, i.e. `15 + Spirit/5` per 2s tick) as
+a **fallback used by every class that doesn't override it** via the
+`unit.SpiritManaRegenPerSecond` function-pointer field. Checked which classes
+actually set that override (`grep -rn "SpiritManaRegenPerSecond\s*="`):
+`sim/priest/priest.go` and `sim/mage/mage.go` already had correct overrides
+(`6.25 + Spirit/8` per second = `12.5 + Spirit/4` per 2s tick, matching the
+table exactly). **Shaman had no override at all** — it was silently falling
+back to the Druid/Hunter/Paladin/Warlock coefficient instead of its own.
+
+Manually verified the Priest formula was already right before touching
+anything: with Spirit=197, MP5=18 (no buffs), the priest-specific formula
+gives `197/4 + 12.5 = 61.75` per tick from Spirit, `+18×2/5 = 7.2` from flat
+MP5, `floor(61.75+7.2) = 68` per 2s tick, `floor(68×2.5) = 170` MP5 —
+matching the user's reported numbers exactly. So the Priest coefficient
+itself was never the bug; the earlier confusion in this session came from
+comparing against `SpiritManaRegenPerSecondDefault()` directly instead of
+the priest-specific override that's actually used at runtime.
+
+### `sim/shaman/shaman.go`
+
+Added, right after the existing stat-dependency block in `NewShaman()`:
+
+```go
+// Set mana regen to 17 + Spirit/5 each 2s tick
+shaman.SpiritManaRegenPerSecond = func() float64 {
+    return 8.5 + shaman.GetStat(stats.Spirit)/10
+}
+```
+
+Same pattern as `priest.go`/`mage.go` — a closure over `shaman.GetStat`,
+assigned to the `SpiritManaRegenPerSecond` field so `ManaRegenPerSecondWhileCasting`/
+`WhileNotCasting` (`sim/core/mana.go`) pick it up automatically instead of
+falling through to the generic default.
+
+### `sim/core/mana.go`
+
+Updated the stale comment on `SpiritManaRegenPerSecondDefault()` — it said
+"All classes except Priest and Mage use this," which was already inaccurate
+even before this fix (Warlock's own pet has its own override too, just not
+the player). Now describes it as the Druid/Hunter/Paladin/Warlock coefficient
+specifically, with a pointer to where per-class overrides live.
+
+### Known remaining discrepancy (not fixed, flagged for awareness)
+
+Even with matching coefficients, the sim's number will still drift slightly
+from the in-game one over a long sim, because of a *modeling* difference, not
+a coefficient bug: the addon's own docs confirm the real server floors the
+combined tick once every 2s with **no fractional carry-over** (`tick_gain =
+floor(spirit_regen + flat_mp5*2/5)`), while this sim's `ManaTick()`
+(`sim/core/mana.go`) adds the continuous, unfloored `manaTickWhileNotCasting`
+value every 2s. At these stats that's roughly a 1-2 mana/tick difference
+(68.95 vs floored 68). Left alone for now — flagged in case someone wants to
+model the discrete flooring behavior later.
