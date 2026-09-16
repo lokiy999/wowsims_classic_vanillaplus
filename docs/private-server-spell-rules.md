@@ -546,7 +546,37 @@ above.
   The 1/3 hypothesis only looked good on the earlier 4-point set because
   none of those points had a small-enough SP for the coefficient term to
   matter much relative to the flat base - a good illustration of why a
-  low-SP sample is the more decisive test, as suggested above. Still
-  unverified against `Spell.csv` (that remains the real fix target: find
-  which `Spell.csv` column/formula actually produces ~0.30 for Mind Flay)
-  and not yet applied to code.
+  low-SP sample is the more decisive test, as suggested above.
+
+  **Three more samples, wide low-to-mid range (2026-09-16), same 1-stack
+  Shadow Weaving:** SP=45→tick=254 (lowest achievable in current gear),
+  SP=246→tick=339, SP=405→tick=404. Combined with the prior 5, this is now
+  **8 samples spanning SP 45-800 (an 18x range)**. Linear-regressing all 8
+  as `tick=A+B×SP`: `B≈0.4071`, `A≈238.6` → `M=A/180≈1.325`,
+  `coeff=B/M≈0.307`. Checking fit quality at `coeff=0.307, M=1.325`:
+
+  | SP | tick | Predicted | Diff |
+  |---|---|---|---|
+  | 45 | 254 | 256.9 | +1.1% |
+  | 100 | 282 | 279.3 | -1.0% |
+  | 246 | 339 | 338.6 | -0.1% |
+  | 405 | 404 | 403.4 | -0.1% |
+  | 721 | 532 | 531.9 | 0.0% |
+  | 733 | 536 | 536.8 | +0.1% |
+  | 739 | 539 | 539.3 | +0.1% |
+  | 800 | 565 | 564.1 | -0.2% |
+
+  All 8 within ~1%, across an 18x SP range - about as solid as back-
+  solving from in-game samples alone can get. `1/3` is now decisively
+  rejected: it systematically under-predicts every low-SP point by
+  3-4.4% (a consistent bias, not noise) - e.g. at SP=45,
+  `(180+45/3)×1.264≈246.5` vs actual 254; at SP=100, `≈269.6` vs actual
+  282.
+
+  **Current best estimate: `coeff≈0.30-0.31`, `M≈1.32-1.33`** (the ~0.307
+  regression value and the earlier ~0.30 both sit inside this band; the
+  small residual spread left is consistent with real in-game
+  damage-display rounding, not a wrong coefficient). Still unverified
+  against `Spell.csv` (that remains the real fix target: find which
+  `Spell.csv` column/formula actually produces ~0.30 for Mind Flay) and
+  not yet applied to code.
