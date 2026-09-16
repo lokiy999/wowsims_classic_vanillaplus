@@ -319,8 +319,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		character.AddStats(BuffSpellValues[ScrollOfSpirit])
 	}
 
-	if individualBuffs.BlessingOfKings {
-		MakePermanent(BlessingOfKingsAura(character))
+	if individualBuffs.BlessingOfKingsType != proto.BlessingOfKingsType_BlessingOfKingsNone {
+		MakePermanent(BlessingOfKingsAura(character, individualBuffs.BlessingOfKingsType))
 	}
 
 	if raidBuffs.SanctityAura && isAlliance {
@@ -472,13 +472,30 @@ func SanctityAuraAura(character *Character) *Aura {
 	})
 }
 
-func BlessingOfKingsAura(character *Character) *Aura {
+// Maps each Blessing of Kings variant to its total stat multiplier.
+//   - Normal: base spell, 10%.
+//   - ZgSet: Zandalar Vindicator's Regalia 3pc bonus, 11%.
+//   - Talented: Improved Blessing of Kings talent, 12%.
+//   - ZgSetTalented: both of the above, 13%.
+var BlessingOfKingsMultiplier = map[proto.BlessingOfKingsType]float64{
+	proto.BlessingOfKingsType_BlessingOfKingsNormal:        1.10,
+	proto.BlessingOfKingsType_BlessingOfKingsZgSet:         1.11,
+	proto.BlessingOfKingsType_BlessingOfKingsTalented:      1.12,
+	proto.BlessingOfKingsType_BlessingOfKingsZgSetTalented: 1.13,
+}
+
+func BlessingOfKingsAura(character *Character, kingsType proto.BlessingOfKingsType) *Aura {
+	multiplier := BlessingOfKingsMultiplier[kingsType]
+	if multiplier == 0 {
+		multiplier = 1.10
+	}
+
 	statDeps := []*stats.StatDependency{
-		character.NewDynamicMultiplyStat(stats.Stamina, 1.10),
-		character.NewDynamicMultiplyStat(stats.Agility, 1.10),
-		character.NewDynamicMultiplyStat(stats.Strength, 1.10),
-		character.NewDynamicMultiplyStat(stats.Intellect, 1.10),
-		character.NewDynamicMultiplyStat(stats.Spirit, 1.10),
+		character.NewDynamicMultiplyStat(stats.Stamina, multiplier),
+		character.NewDynamicMultiplyStat(stats.Agility, multiplier),
+		character.NewDynamicMultiplyStat(stats.Strength, multiplier),
+		character.NewDynamicMultiplyStat(stats.Intellect, multiplier),
+		character.NewDynamicMultiplyStat(stats.Spirit, multiplier),
 	}
 
 	return MakePermanent(character.RegisterAura(Aura{

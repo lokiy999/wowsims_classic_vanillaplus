@@ -549,6 +549,14 @@ enum SaygesFortune {
 	SaygesSpirit = 5;
 }
 
+enum BlessingOfKingsType {
+	BlessingOfKingsNone = 0;
+	BlessingOfKingsNormal = 1; // 10%, base spell.
+	BlessingOfKingsZgSet = 2; // 11%, Zandalar Vindicator's Regalia 3pc.
+	BlessingOfKingsTalented = 3; // 12%, Improved Blessing of Kings talent.
+	BlessingOfKingsZgSetTalented = 4; // 13%, both of the above.
+}
+
 // Buffs that affect the entire raid.
 // NextIndex: 36
 message RaidBuffs {
@@ -624,12 +632,12 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 16
+// NextIndex: 17
 message IndividualBuffs {
-	reserved 15;
-	reserved "dragonslayer_buff";
+	reserved 1, 15;
+	reserved "blessing_of_kings", "dragonslayer_buff";
 
-	bool blessing_of_kings = 1;
+	BlessingOfKingsType blessing_of_kings_type = 16;
 	TristateEffect blessing_of_wisdom = 2;
 	TristateEffect blessing_of_might = 3;
 	bool blessing_of_sanctuary = 4;

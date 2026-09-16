@@ -1,5 +1,6 @@
-import { Faction, SaygesFortune, Stat } from '../../proto/common';
+import { BlessingOfKingsType, Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
+import { IconEnumPicker } from '../icon_enum_picker';
 import {
 	makeBooleanDebuffInput,
 	makeBooleanIndividualBuffInput,
@@ -11,6 +12,7 @@ import {
 	makeTristateIndividualBuffInput,
 	makeTristateRaidBuffInput,
 	withLabel,
+	withOptionLabels,
 } from '../icon_inputs';
 import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
@@ -30,12 +32,50 @@ export const AllStatsBuff = withLabel(
 	'Mark of the Wild',
 );
 
-// Separate Strength buffs allow us to use a boolean pickers for Horde specifically
+// Enum picker so the extra stat variants (ZG set bonus / talented, which stack
+// with each other) can be selected from one icon instead of needing separate
+// toggles.
 export const BlessingOfKings = withLabel(
-	makeBooleanIndividualBuffInput({
-		actionId: () => ActionId.fromSpellId(20217),
-		fieldName: 'blessingOfKings',
-	}),
+	withOptionLabels(
+		makeEnumIndividualBuffInput({
+			fieldName: 'blessingOfKingsType',
+			direction: IconPickerDirection.Horizontal,
+			values: [
+				{
+					// No actionId/iconUrl, so this renders as a flat grey square
+					// (like the off state of the Intellect/Spirit/Stamina pickers)
+					// instead of a desaturated copy of the Kings icon.
+					color: 'grey',
+					value: BlessingOfKingsType.BlessingOfKingsNone,
+					tooltip: 'Disabled',
+				},
+				{
+					actionId: () => ActionId.fromSpellId(20217),
+					value: BlessingOfKingsType.BlessingOfKingsNormal,
+					text: '(10%)',
+					tooltip: 'Blessing of Kings (10%)',
+				},
+				{
+					actionId: () => ActionId.fromSpellId(20217),
+					value: BlessingOfKingsType.BlessingOfKingsZgSet,
+					text: '(11%)',
+					tooltip: "Blessing of Kings + Zandalar Vindicator's Regalia 3pc (11%)",
+				},
+				{
+					actionId: () => ActionId.fromSpellId(20217),
+					value: BlessingOfKingsType.BlessingOfKingsTalented,
+					text: '(12%)',
+					tooltip: 'Blessing of Kings + Improved Blessing of Kings talent (12%)',
+				},
+				{
+					actionId: () => ActionId.fromSpellId(20217),
+					value: BlessingOfKingsType.BlessingOfKingsZgSetTalented,
+					text: '(13%)',
+					tooltip: "Blessing of Kings + Zandalar Vindicator's Regalia 3pc + Improved Blessing of Kings talent (13%)",
+				},
+			],
+		}),
+	),
 	'Blessing of Kings',
 );
 
@@ -548,7 +588,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: BlessingOfKings,
-		picker: IconPicker,
+		picker: IconEnumPicker,
 		stats: [],
 	},
 	{

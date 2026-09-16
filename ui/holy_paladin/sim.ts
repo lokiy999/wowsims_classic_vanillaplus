@@ -2,7 +2,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
-import { Class, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../core/proto/common.js';
+import { BlessingOfKingsType, Class, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as HolyPaladinInputs from './inputs.js';
@@ -54,7 +54,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
+			blessingOfKingsType: BlessingOfKingsType.BlessingOfKingsNormal,
 			blessingOfSanctuary: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
 			blessingOfMight: TristateEffect.TristateEffectImproved,

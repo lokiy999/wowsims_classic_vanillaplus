@@ -25,6 +25,16 @@ export function withLabel<ModObject, T>(config: IconInputConfig<ModObject, T>, l
 	return config;
 }
 
+// Shows each dropdown option's text as a small badge on its icon (e.g. for an
+// enum picker whose options share one icon and need another way to be told
+// apart at a glance). Only applies to IconEnumPicker configs.
+export function withOptionLabels<ModObject, T>(config: IconInputConfig<ModObject, T>): IconInputConfig<ModObject, T> {
+	if (config.type == 'iconEnum') {
+		config.showOptionLabels = true;
+	}
+	return config;
+}
+
 interface BooleanInputConfig<T> {
 	actionId: (player: Player<Spec>) => ActionId | null;
 	fieldName: keyof T;

@@ -21,8 +21,8 @@ var castersWithElemental = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 		{
@@ -39,8 +39,8 @@ var castersWithElemental = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 		{
@@ -55,8 +55,8 @@ var castersWithElemental = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 		{
@@ -73,8 +73,8 @@ var castersWithElemental = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 	},
@@ -101,8 +101,8 @@ var castersWithResto = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 		{
@@ -119,8 +119,8 @@ var castersWithResto = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 		{
@@ -137,8 +137,8 @@ var castersWithResto = &proto.Party{
 			},
 			Consumes: &proto.Consumes{},
 			Buffs: &proto.IndividualBuffs{
-				BlessingOfKings:  true,
-				BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
+				BlessingOfKingsType: proto.BlessingOfKingsType_BlessingOfKingsNormal,
+				BlessingOfWisdom:    proto.TristateEffect_TristateEffectImproved,
 			},
 		},
 	},

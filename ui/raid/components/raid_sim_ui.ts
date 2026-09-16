@@ -5,7 +5,7 @@ import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../../co
 import { raidSimStatus } from '../../core/launched_sims.js';
 import { Player } from '../../core/player.js';
 import { Raid as RaidProto } from '../../core/proto/api.js';
-import { Class, Encounter as EncounterProto, TristateEffect } from '../../core/proto/common.js';
+import { BlessingOfKingsType, Class, Encounter as EncounterProto, TristateEffect } from '../../core/proto/common.js';
 import { Blessings } from '../../core/proto/paladin.js';
 import { BlessingsAssignments, RaidSimSettings } from '../../core/proto/ui.js';
 import { playerToSpec } from '../../core/proto_utils/utils.js';
@@ -149,7 +149,7 @@ export class RaidSimUI extends SimUI {
 				}
 
 				if (paladin.blessings[spec] == Blessings.BlessingOfKings) {
-					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfKings = true));
+					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfKingsType = BlessingOfKingsType.BlessingOfKingsNormal));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfMight) {
 					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfMight = TristateEffect.TristateEffectImproved));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfWisdom) {

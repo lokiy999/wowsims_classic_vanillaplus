@@ -841,3 +841,306 @@ Fortitude, Strength of Earth Totem, Devotion Aura, etc.). It appends
 `currentValue > 1`, and reverts to the plain label otherwise. Pure frontend
 change — picked up by the normal dev-server hot reload, no WASM rebuild
 needed (only `sim/**/*.go` changes require that).
+
+---
+
+## Part D — Blessing of Kings extra rank variants: 11% (ZG set), 12% (talented), 13% (both) (2026-09-16)
+
+Request: give Blessing of Kings more than an on/off toggle — a 11% rank
+representing Zandalar Vindicator's Regalia's 3pc set bonus, a 12% rank for
+the (homebrew, this server doesn't have a real Improved Blessing of Kings
+talent) "talented" case, and a 13% rank for both stacked together, on top of
+the existing plain 10%.
+
+Previously `blessing_of_kings` was a `bool` in the `IndividualBuffs` proto,
+so there was no room to add more than one non-zero state without breaking
+wire compatibility with every saved player/settings JSON that has that field
+set. Went with reserving the old field number and adding a new enum field
+rather than repurposing the bool in place.
+
+### `proto/common.proto`
+
+- Added `enum BlessingOfKingsType` (`BlessingOfKingsNone = 0`,
+  `BlessingOfKingsNormal = 1` (10%), `BlessingOfKingsZgSet = 2` (11%),
+  `BlessingOfKingsTalented = 3` (12%), `BlessingOfKingsZgSetTalented = 4`
+  (13%)).
+- In `IndividualBuffs`: `reserved 1, 15;` / `reserved "blessing_of_kings",
+  "dragonslayer_buff";` (the field-1 reservation is new; field 15 was
+  already reserved from earlier work). Added `BlessingOfKingsType
+  blessing_of_kings_type = 16;` as the replacement field.
+
+**Regenerating the proto bindings needed a local toolchain that wasn't
+already set up** — worth knowing for next time a proto field changes:
+- Go side: `protoc` (via the `node_modules/.bin/protoc` binary that
+  `@protobuf-ts/protoc` installs — no need for a separate system install) +
+  `protoc-gen-go`, installed with
+  `go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.33.0` (pinned
+  to match the `google.golang.org/protobuf` version in `go.mod`, since a
+  newer `protoc-gen-go` needs a newer Go than this repo's toolchain).
+  Regenerate with:
+  `./node_modules/.bin/protoc -I=./proto --go_out=./sim/core ./proto/*.proto`
+- TS side (already worked, no setup needed):
+  `npx protoc --ts_opt generate_dependencies --ts_out ui/core/proto --proto_path proto proto/api.proto`
+- Both outputs (`sim/core/proto/*.pb.go`, `ui/core/proto/*.ts`) are
+  gitignored generated files, so `git status` only shows `proto/common.proto`
+  changing even though the actual bindings were regenerated — that's
+  expected, not a sign the regen didn't happen.
+
+### `sim/core/buffs.go`
+
+- Added `BlessingOfKingsMultiplier`, a `map[proto.BlessingOfKingsType]float64`
+  (1.10 / 1.11 / 1.12 / 1.13) next to `BlessingOfKingsAura`.
+- `BlessingOfKingsAura(character *Character)` → `BlessingOfKingsAura(character
+  *Character, kingsType proto.BlessingOfKingsType) *Aura`. Looks up the
+  multiplier from the map (falls back to 1.10 if somehow not found) and uses
+  it for all 5 `NewDynamicMultiplyStat` calls instead of the old hardcoded
+  `1.10`.
+- The `ApplyBuffs` call site now checks `individualBuffs.BlessingOfKingsType
+  != proto.BlessingOfKingsType_BlessingOfKingsNone` instead of the old bool
+  check, and passes the type through.
+- `sim/core/test_utils.go` (`FullIndividualBuffs`) and
+  `sim/raid_bench_test.go` (7 call sites) updated from
+  `BlessingOfKings: true` to `BlessingOfKingsType:
+  proto.BlessingOfKingsType_BlessingOfKingsNormal` — these don't compile
+  otherwise once the proto field is gone.
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+`BlessingOfKings` changed from `makeBooleanIndividualBuffInput` (one spell
+icon, on/off) to `makeEnumIndividualBuffInput` with 4 values, all sharing the
+same action icon (spell 20217 — there's no separate icon art for these
+homebrew ranks) but distinguished by a `text` ("10%"/"11%"/"12%"/"13%") and a
+`tooltip` explaining what each represents. `RAID_BUFFS_CONFIG`'s entry for it
+changed `picker: IconPicker` → `picker: IconEnumPicker` to match (the
+existing `PickerStatOptions` union already supported this — see
+`stat_options.ts` — no type changes needed there).
+
+Every other file with `blessingOfKings: true` in a preset/default (13 files:
+`ui/warrior`, `ui/warlock`, `ui/tank_warrior`, `ui/rogue`,
+`ui/retribution_paladin`, `ui/restoration_druid`, `ui/hunter`,
+`ui/healing_priest`, `ui/feral_druid`, `ui/balance_druid`,
+`ui/restoration_shaman`, `ui/holy_paladin`, `ui/feral_tank_druid`) updated to
+`blessingOfKingsType: BlessingOfKingsType.BlessingOfKingsNormal` plus an
+added `BlessingOfKingsType` import — all defaulted to the plain 10% rank,
+same effective behavior as before. Also fixed one non-preset call site,
+`ui/raid/components/raid_sim_ui.ts`'s `modifyRaidProto` (assigns the
+Paladin-blessings-picker's choice onto raid members), the same way.
+
+### `ui/core/components/icon_enum_picker.tsx` — two bugs found and fixed while wiring this up
+
+1. **Label collision.** `IconEnumPicker`'s constructor does
+   `this.buttonText = this.rootElem.querySelector('label')` to grab its own
+   internal (initially-empty) label element for showing the selected option's
+   `text`. But the base `Input` class *also* appends a `<label
+   class="form-label">` — with the actual title text, e.g. "Blessing of
+   Kings" — whenever `config.label` is set (i.e. whenever something calls
+   `withLabel(...)`, as `buffs_debuffs.ts` does for every buff here).
+   `querySelector('label')` matches the *first* `<label>` in the DOM, which
+   is that outer title label, not the picker's own — so `setInputValue()`
+   ends up overwriting the "Blessing of Kings" title text with the selected
+   option's percentage (or blanking it entirely at zero value). This is why
+   Blessing of Kings had no visible label at all when first tested — a `git
+   grep` for `'king'` in `.form-label` elements came back empty. Existing
+   users of this component (`SaygesDarkFortune`) never hit it because they're
+   never wrapped in `withLabel`, so no outer label exists to collide with.
+   Fixed by giving the picker's internal label its own class
+   (`icon-picker-label`, reusing the small-badge style already defined for
+   `IconPicker`'s stack-counter label) instead of a bare `<label
+   class="form-label">`, and querying for that class specifically instead of
+   the generic `label` tag.
+2. **Indistinguishable options.** With all 4 Kings ranks sharing one icon,
+   the dropdown's individual option buttons were only told apart by a hover
+   tooltip — no visible difference at a glance. Added a small
+   `.icon-picker-label` badge (the corner-overlay style, reused from fix #1
+   above) onto each dropdown option `<a>` when `valueConfig.text` is set, so
+   "10%/11%/12%/13%" are readable directly in the dropdown without hovering.
+
+Verified live in the browser (`localhost:8080/classic/shadow_priest`,
+Troll/Horde priest so it'd catch any leftover faction gating too): selecting
+each rank moved Stamina/Intellect/Spirit by exactly the expected multiplier
+(e.g. 13% took Intellect 419 → 473, matching `419 × 1.13`), the label reads
+"Blessing of Kings" with a "13%" badge on the selected icon, and `Simulate`
+completed with no console errors.
+
+---
+
+## Part E — Follow-up: fixed Sayge's label regression, made BoK disableable (2026-09-16)
+
+Two problems reported after Part D landed:
+
+1. Sayge's Fortune's own label ("Sayge's Damage" etc., shown when a fortune
+   is selected) rendered as a tiny illegible corner badge instead of a normal
+   readable label — a visual regression **I introduced in Part D**, not
+   something pre-existing.
+2. Blessing of Kings had no way to turn it back off once a rank was picked
+   — the enum dropdown only listed the four non-zero ranks, nothing mapping
+   to `BlessingOfKingsNone`.
+
+### Root cause of #1
+
+Part D's fix for the label-collision bug (see Part D's `icon_enum_picker.tsx`
+writeup) avoided the collision by renaming the picker's own internal label's
+CSS class from `form-label` to `icon-picker-label` (a small corner-overlay
+badge style, borrowed from `IconPicker`'s stack-counter). That successfully
+stopped it from being confused with the outer static title label, but it
+also changed what that label *looks like* for every enum picker — including
+Sayge's, which has used that same internal label since before any of this
+session's changes, always styled as a normal `form-label`. So the "fix"
+solved the collision at the cost of visually breaking the thing it was
+supposed to preserve. Compounding it, Part D also added a small
+`.icon-picker-label` badge onto *each dropdown option* (not just the
+selected one) so Blessing of Kings' four identical-icon ranks could be told
+apart without hovering — which put the same tiny-badge treatment onto
+Sayge's individual options too, which it never had before and didn't need
+(its options already use visually distinct icons per fortune).
+
+### `ui/core/components/icon_enum_picker.tsx` (corrected)
+
+- Reverted the per-dropdown-option badge entirely (the `if
+  (valueConfig.text != undefined) { ... }` block inside the `values.forEach`
+  loop) — dropdown options are icon + hover-tooltip only again, same as
+  before Part D and same as every other picker's convention.
+- Fixed the actual label-collision bug properly instead of working around it
+  with a class rename: the picker's own button/label/menu elements are now
+  captured with `tsx-vanilla`'s `ref()` (the same pattern `IconPicker`
+  already uses for its own internal elements) instead of
+  `this.rootElem.querySelector(...)`. `querySelector('label')` was always
+  the wrong tool here — it matches the *first* `<label>` in the DOM
+  regardless of which component put it there, so it was structurally
+  guaranteed to misfire whenever `withLabel()` added an outer title label
+  before this component's own JSX ran. A `ref` captures the exact element
+  from the exact JSX that created it, with no ambiguity, so this fix doesn't
+  depend on CSS class naming at all. Restored the label's class to
+  `form-label`, matching its original look and matching every other picker's
+  title-label style.
+- Net effect: Sayge's Fortune (and every other `IconEnumPicker` user) looks
+  exactly like it did before Part D touched this file. Blessing of Kings'
+  outer title ("Blessing of Kings") and its own selected-rank label (e.g.
+  "13%") now render the same way too — no more special-cased badge styling,
+  which is what "shouldn't be an outlier" meant here.
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+Added a 5th entry to `BlessingOfKings`'s `values` array:
+`{ actionId: () => ActionId.fromSpellId(20217), value:
+BlessingOfKingsType.BlessingOfKingsNone, text: 'None', tooltip: 'Disabled' }`,
+placed first (mirrors how `SaygesDarkFortune` puts its own zero-value
+placeholder — `SaygesFortune.SaygesUnknown` — first in its list). Since this
+value now matches `zeroValue`, `IconEnumPicker.update()`'s existing
+`!this.config.equals(this.currentValue, this.config.zeroValue)` check
+renders it correctly as the inactive/grey state, no other code changes
+needed to make it "the disabled option."
+
+Verified live: selecting None after a rank drops Stamina/Intellect/Spirit
+back to their unbuffed values (confirmed 285/309/197, matching the value
+before any rank was ever picked), and the label reads "Blessing of Kings" /
+"None" in the same plain style as "Blessing of Kings" / "13%" or "Sayge's
+Dark Fortune" — no more tiny corner-badge outlier anywhere. No Go/WASM
+changes this round (frontend-only), no console errors from `Simulate`.
+
+---
+
+## Part F — Follow-up #2: alignment, grayscale-off, gray "None" square, badges back (2026-09-16)
+
+Four more things reported wrong with the Blessing of Kings picker after Part
+E:
+
+1. It wasn't lined up with Intellect / Moonkin Aura in the Raid Buffs grid.
+2. It didn't go grayscale when disabled.
+3. Its "off" state should look like a plain grey square, the way
+   Intellect/Spirit/Stamina look when nothing's selected — not a desaturated
+   copy of the Kings icon.
+4. The 10/11/12/13% badges (removed in Part E to fix Sayge's) should come
+   back — just without breaking Sayge's again.
+
+### Root cause of #1 (misalignment)
+
+`IconEnumPicker`'s constructor builds its own icon button + dropdown + label
+and appends them with `rootElem.appendChild(...)`. But the base `Input`
+class may have *already* appended a static title `<label>` (from
+`withLabel()`) before that point. `appendChild` adds after existing
+children, so the DOM order ended up **title label, then icon** — the
+opposite of `IconPicker`, which explicitly does `rootElem.prepend(this.
+rootAnchor)` to put its icon *before* the title label. That's what "in line
+with Intellect/Moonkin" actually means visually: icon first, then title —
+every other picker in the row does this, Blessing of Kings didn't.
+
+### Root cause of #2/#3 (not grayscale, not a plain square)
+
+Two separate things stacked up:
+
+- `ui/scss/core/components/_icon_enum_picker.scss` has `.icon-picker-button
+  { filter: none; }` scoped under `.icon-enum-picker-root`, unconditionally
+  overriding the base `.icon-picker-button { filter: grayscale(1); &.active
+  { filter: none; } }` rule from `_icon_picker.scss` for *every* icon in an
+  enum picker, active or not. This exists because Sayge's Fortune wants its
+  options shown in full color even before anything is picked (each option is
+  a genuinely different icon, so full color helps tell them apart at a
+  glance) — it's intentional there, just wrong once Blessing of Kings reused
+  the same component for something that needs an actual on/off look.
+- Separately, the "None" entry (added in Part E) used the same Kings
+  `actionId` as every other rank, just without the badge text — so even with
+  grayscale filtering fixed, it would've shown a desaturated crown icon, not
+  a blank square.
+
+Rather than touch the shared SCSS rule (which would re-introduce a
+Sayge's-only regression the opposite direction), fixed it at the config
+level: gave "None" a `color: 'grey'` value instead of an `actionId`/
+`iconUrl`. `IconEnumPicker.setImage()`'s existing color branch already
+clears `backgroundImage`/`href` and sets a flat background color — this is
+the exact same code path `MultiIconPicker` uses for its own blank/cleared
+state (see `updateButtonImage()` in `multi_icon_picker.ts`, the `else`
+branch), so "None" now renders identically to Intellect/Spirit/Stamina's off
+state without needing any filter/CSS changes at all.
+
+### `ui/core/components/icon_enum_picker.tsx`
+
+- `rootElem.appendChild(...)` → `rootElem.prepend(...)` for the icon
+  button + dropdown menu (fixes #1). The picker's own selected-value label
+  (`bt`/`buttonText`) is still `appendChild`ed separately, and *after* the
+  prepend, so the final DOM order is `<icon> <title label, if any> <own
+  value label>` — e.g. "[icon] Blessing of Kings 11%" or, for Sayge's which
+  has no title, "[icon] Sayge's Damage".
+- Added `showOptionLabels?: boolean` to `IconEnumPickerConfig` (default
+  falsy/unset). The per-dropdown-option badge code removed in Part E is
+  back, but now gated behind `this.config.showOptionLabels` — so it only
+  renders for pickers that explicitly opt in, instead of applying to every
+  `IconEnumPicker` (which is what broke Sayge's the first time in Part D).
+
+### `ui/core/components/icon_inputs.ts`
+
+Added `withOptionLabels()`, a small wrapper matching the existing
+`withLabel()` pattern: sets `showOptionLabels = true` on an `IconEnumPicker`
+config (no-ops for a plain `IconPicker` config, checked via `config.type ==
+'iconEnum'`).
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+- `BlessingOfKings` now wrapped in `withOptionLabels(...)` (inside
+  `withLabel(...)`) so its four rank options show the 10/11/12/13% badges
+  again — this is the only picker with that flag set; every other
+  `IconEnumPicker` (Sayge's) is unaffected.
+- The `BlessingOfKingsNone` entry changed from `{ actionId: ...20217,
+  text: 'None', tooltip: 'Disabled' }` to `{ color: 'grey', tooltip:
+  'Disabled' }` — no `text` either, matching `MultiIconPicker`'s blank
+  option (`buildBlankOption()`), which also has no label, just a bare
+  clickable square.
+
+Verified live (`localhost:8080/classic/shadow_priest`): Blessing of Kings'
+icon left-edge now measures the exact same `x` as Intellect's and Moonkin
+Aura's (1193.77px, confirmed via `getBoundingClientRect()`, not just eyeballed).
+Off state is a flat grey square, indistinguishable in style from Intellect/
+Spirit's off state. Dropdown shows a grey "None" square followed by four
+badged 10%/11%/12%/13% icons. Selecting 11% moved Stamina/Intellect/Spirit
+by exactly ×1.11 (285→316, 309→343, 197→219). Opened Sayge's Fortune
+afterward and confirmed its five distinct-icon options render exactly as
+before, no badges, no layout change. `Simulate` completed with no
+new console errors (the only errors present are pre-existing, unrelated
+wowhead-tooltip fetch failures for spells 33807/33859).
+
+**Immediate follow-up, same session:** changed the four rank `text` values
+in `buffs_debuffs.ts` from `'10%'`/`'11%'`/`'12%'`/`'13%'` to `'(10%)'`/
+`'(11%)'`/`'(12%)'`/`'(13%)'` so the label reads "Blessing of Kings (11%)"
+instead of "Blessing of Kings 11%" — matches the "(Improved)" suffix format
+tristate buffs use (see Part C). Applies to both the selected-value label
+and the dropdown option badges, since both pull from the same `text` field.

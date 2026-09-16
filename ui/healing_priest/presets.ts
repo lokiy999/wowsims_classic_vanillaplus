@@ -1,5 +1,6 @@
 import * as PresetUtils from '../core/preset_utils.js';
 import {
+	BlessingOfKingsType,
 	Consumes,
 	Debuffs,
 	Flask,
@@ -62,7 +63,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
+	blessingOfKingsType: BlessingOfKingsType.BlessingOfKingsNormal,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 });
 

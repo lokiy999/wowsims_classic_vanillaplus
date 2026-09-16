@@ -2,6 +2,7 @@ import { Player } from '../core/player.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Alcohol,
+	BlessingOfKingsType,
 	Conjured,
 	Consumes,
 	Debuffs,
@@ -115,7 +116,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
+	blessingOfKingsType: BlessingOfKingsType.BlessingOfKingsNormal,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	fengusFerocity: true,
 	moldarsMoxie: true,

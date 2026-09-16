@@ -2,6 +2,7 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	BlessingOfKingsType,
 	Alcohol,
 	ArmorElixir,
 	AttackPowerBuff,
@@ -112,7 +113,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
+	blessingOfKingsType: BlessingOfKingsType.BlessingOfKingsNormal,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	fengusFerocity: true,
 	moldarsMoxie: true,

@@ -87,7 +87,7 @@ var FullPartyBuffs = &proto.PartyBuffs{}
 ///////////////////////////////////////////////////////////////////////////
 
 var FullIndividualBuffs = &proto.IndividualBuffs{
-	BlessingOfKings:              true,
+	BlessingOfKingsType:          proto.BlessingOfKingsType_BlessingOfKingsNormal,
 	BlessingOfMight:              proto.TristateEffect_TristateEffectImproved,
 	BlessingOfSanctuary:          true,
 	BlessingOfWisdom:             proto.TristateEffect_TristateEffectImproved,

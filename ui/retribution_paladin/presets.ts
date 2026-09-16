@@ -2,6 +2,7 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	BlessingOfKingsType,
 	AttackPowerBuff,
 	Conjured,
 	Consumes,
@@ -134,7 +135,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	blessingOfMight: TristateEffect.TristateEffectImproved,
-	blessingOfKings: true,
+	blessingOfKingsType: BlessingOfKingsType.BlessingOfKingsNormal,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	fengusFerocity: true,
 	moldarsMoxie: true,

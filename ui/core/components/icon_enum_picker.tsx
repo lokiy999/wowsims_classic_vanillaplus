@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
@@ -28,6 +29,11 @@ export interface IconEnumPickerConfig<ModObject, T> extends InputConfig<ModObjec
 	values: Array<IconEnumValueConfig<ModObject, T>>;
 	// Value that will be considered inactive.
 	zeroValue: T;
+	// Shows each dropdown option's `text` as a small badge on its icon, so
+	// options that share one icon (e.g. stat-percent variants) can still be
+	// told apart without hovering. Off by default, since most enum pickers
+	// use a distinct icon per option and don't need it.
+	showOptionLabels?: boolean;
 	// Function for comparing two values.
 	// Tooltip that will be shown whne hovering over the icon-picker-button
 	tooltip?: string;
@@ -63,9 +69,18 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			this.addOnDisposeCallback(() => tooltip.destroy());
 		}
 
-		this.rootElem.appendChild(
+		const be = ref<HTMLAnchorElement>();
+		const bt = ref<HTMLLabelElement>();
+		const dm = ref<HTMLUListElement>();
+		// prepend (not appendChild): the base Input class may have already
+		// appended a static title <label> (from withLabel()) by this point, and
+		// this picker's own icon needs to come BEFORE that title in the DOM to
+		// line up with every other picker (icon first, title label after) —
+		// see IconPicker, which does the same via rootElem.prepend().
+		this.rootElem.prepend(
 			<>
 				<a
+					ref={be}
 					href="javascript:void(0)"
 					className="icon-picker-button"
 					attributes={{
@@ -77,14 +92,21 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 						whtticon: 'false',
 						disableWowheadTouchTooltip: 'true',
 					}}></a>
-				<ul className="dropdown-menu"></ul>
-				<label className="form-label"></label>
+				<ul ref={dm} className="dropdown-menu"></ul>
 			</>,
 		);
+		// Appended (not prepended) so it lands after the title label, if one
+		// exists: "<icon> Title <selected-value text>".
+		this.rootElem.appendChild(<label ref={bt} className="form-label"></label>);
 
-		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
-		this.buttonText = this.rootElem.querySelector('label') as HTMLElement;
-		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		// Captured via refs (rather than querySelector) so this always finds its
+		// own elements, even when the base Input class has also appended a
+		// static <label class="form-label"> for this picker's title (see
+		// withLabel() usage in buffs_debuffs.ts) — querySelector would otherwise
+		// match that title label instead of this one.
+		this.buttonElem = be.value!;
+		this.buttonText = bt.value!;
+		this.dropdownMenu = dm.value!;
 
 		if (this.config.numColumns) {
 			this.dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
@@ -104,6 +126,13 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			option.dataset.whtticon = 'false';
 			option.dataset.disableWowheadTouchTooltip = 'true';
 			optionContainer.appendChild(option);
+
+			if (this.config.showOptionLabels && valueConfig.text != undefined) {
+				const optionLabel = document.createElement('span');
+				optionLabel.classList.add('icon-picker-label');
+				optionLabel.textContent = valueConfig.text;
+				option.appendChild(optionLabel);
+			}
 
 			const updateOption = () => {
 				this.setImage(option, valueConfig);
