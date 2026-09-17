@@ -49,18 +49,18 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 	switch consumes.Flask {
 	case proto.Flask_FlaskOfDistilledWisdom:
 		character.AddStats(stats.Stats{
-			stats.Mana: 2000,
+			stats.Intellect: 100,
 		})
 	case proto.Flask_FlaskOfSupremePower:
 		character.AddStats(stats.Stats{
-			stats.SpellPower: 150,
+			stats.SpellDamage: 100,
 		})
 	case proto.Flask_FlaskOfTheTitans:
 		character.AddStats(stats.Stats{
-			stats.Health: 1200,
+			stats.Stamina: 100,
 		})
 	case proto.Flask_FlaskOfChromaticResistance:
-		character.AddResistances(25)
+		character.AddResistances(50)
 	}
 }
 
@@ -101,7 +101,7 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			})
 		case proto.WeaponImbue_BrilliantWizardOil:
 			character.AddStats(stats.Stats{
-				stats.SpellPower: 36,
+				stats.SpellPower: 25,
 				stats.SpellCrit:  1 * SpellCritRatingPerCritChance,
 			})
 		case proto.WeaponImbue_BlessedWizardOil:
@@ -300,11 +300,11 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.Food_FoodSmokedSagefish:
 			character.AddStats(stats.Stats{
-				stats.MP5: 3,
+				stats.MP5: 5,
 			})
 		case proto.Food_FoodSagefishDelight:
 			character.AddStats(stats.Stats{
-				stats.MP5: 6,
+				stats.MP5: 10,
 			})
 		case proto.Food_FoodTenderWolfSteak:
 			character.AddStats(stats.Stats{
@@ -313,7 +313,7 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.Food_FoodGrilledSquid:
 			character.AddStats(stats.Stats{
-				stats.Agility: 10,
+				stats.Agility: 20,
 			})
 		case proto.Food_FoodSmokedDesertDumpling:
 			character.AddStats(stats.Stats{
@@ -321,11 +321,11 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.Food_FoodNightfinSoup:
 			character.AddStats(stats.Stats{
-				stats.MP5: 8,
+				stats.MP5: 15,
 			})
 		case proto.Food_FoodRunnTumTuberSurprise:
 			character.AddStats(stats.Stats{
-				stats.Intellect: 10,
+				stats.Intellect: 20,
 			})
 		case proto.Food_FoodDirgesKickChimaerokChops:
 			character.AddStats(stats.Stats{
@@ -333,11 +333,11 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.Food_FoodBlessedSunfruitJuice:
 			character.AddStats(stats.Stats{
-				stats.Spirit: 10,
+				stats.Spirit: 15,
 			})
 		case proto.Food_FoodBlessSunfruit:
 			character.AddStats(stats.Stats{
-				stats.Strength: 10,
+				stats.Strength: 15,
 			})
 		}
 	}
@@ -350,7 +350,7 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.Alcohol_AlcoholGordokGreenGrog:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 10,
+				stats.Stamina: 20,
 			})
 		case proto.Alcohol_AlcoholRumseyRumDark:
 			character.AddStats(stats.Stats{
@@ -362,7 +362,7 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
 			character.AddStats(stats.Stats{
-				stats.Spirit:    25,
+				stats.Spirit:    35,
 				stats.Intellect: -5,
 			})
 		}
@@ -448,11 +448,11 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 		switch consumes.HealthElixir {
 		case proto.HealthElixir_ElixirOfFortitude:
 			character.AddStats(stats.Stats{
-				stats.Health: 120,
+				stats.Health: 220,
 			})
 		case proto.HealthElixir_ElixirOfMinorFortitude:
 			character.AddStats(stats.Stats{
-				stats.Health: 27,
+				stats.Health: 50,
 			})
 		}
 	}
@@ -467,8 +467,8 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.AttackPowerBuff {
 		case proto.AttackPowerBuff_JujuMight:
 			character.AddStats(stats.Stats{
-				stats.AttackPower:       40,
-				stats.RangedAttackPower: 40,
+				stats.AttackPower:       100,
+				stats.RangedAttackPower: 100,
 			})
 		case proto.AttackPowerBuff_WinterfallFirewater:
 			character.AddStats(stats.Stats{
@@ -574,7 +574,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.ManaRegenElixir {
 		case proto.ManaRegenElixir_MagebloodPotion:
 			character.AddStats(stats.Stats{
-				stats.MP5: 12,
+				stats.MP5: 20,
 			})
 		}
 	}
@@ -597,23 +597,23 @@ func applyZanzaBuffConsumes(character *Character, consumes *proto.Consumes) {
 		})
 	case proto.ZanzaBuff_ROIDS:
 		character.AddStats(stats.Stats{
-			stats.Strength: 25,
+			stats.Strength: 30,
 		})
 	case proto.ZanzaBuff_GroundScorpokAssay:
 		character.AddStats(stats.Stats{
-			stats.Agility: 25,
+			stats.Agility: 30,
 		})
 	case proto.ZanzaBuff_CerebralCortexCompound:
 		character.AddStats(stats.Stats{
-			stats.Intellect: 25,
+			stats.Intellect: 30,
 		})
 	case proto.ZanzaBuff_GizzardGum:
 		character.AddStats(stats.Stats{
-			stats.Spirit: 25,
+			stats.Spirit: 30,
 		})
 	case proto.ZanzaBuff_LungJuiceCocktail:
 		character.AddStats(stats.Stats{
-			stats.Stamina: 25,
+			stats.Stamina: 30,
 		})
 	}
 }
@@ -954,6 +954,7 @@ func makeHealthConsumableMCD(itemId int32, character *Character, cdTimer *Timer)
 
 func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	minRoll := map[int32]float64{
+		3385:  280.0,
 		3827:  455.0,
 		6149:  700.0,
 		4381:  150.0,
@@ -963,6 +964,7 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 	}[itemId]
 
 	maxRoll := map[int32]float64{
+		3385:  360.0,
 		3827:  585.0,
 		6149:  900.0,
 		4381:  250.0,
@@ -1006,7 +1008,7 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	actionID := ActionID{ItemID: itemId}
 	cdDuration := time.Minute * 2
-	lesserStoneshieldAura := character.NewTemporaryStatsAura("Lesser Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 1000}, time.Second*90)
+	lesserStoneshieldAura := character.NewTemporaryStatsAura("Lesser Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 1000}, time.Minute*2)
 	greaterStoneshieldAura := character.NewTemporaryStatsAura("Greater Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 2000}, time.Second*120)
 
 	return MajorCooldown{
@@ -1037,7 +1039,7 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 }
 
 func makeMagicResistancePotionMCD(character *Character, cdTimer *Timer) MajorCooldown {
-	actionID := ActionID{ItemID: 4623}
+	actionID := ActionID{ItemID: 9036}
 	cdDuration := time.Minute * 2
 
 	stats := stats.Stats{
@@ -1049,7 +1051,7 @@ func makeMagicResistancePotionMCD(character *Character, cdTimer *Timer) MajorCoo
 	}
 
 	// Since many people will keep this rolling as a substitute for capping Fire Resistance, show the stats as a baseline
-	aura := character.NewTemporaryStatsAura("Magic Resistance Potion", actionID, stats, time.Minute*3)
+	aura := character.NewTemporaryStatsAura("Magic Resistance Potion", actionID, stats, time.Minute*6)
 	aura.BuildPhase = CharacterBuildPhaseConsumes
 
 	return MajorCooldown{
@@ -1075,22 +1077,22 @@ func makeMagicResistancePotionMCD(character *Character, cdTimer *Timer) MajorCoo
 
 func makeRageConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	minRoll := map[int32]float64{
-		5631:  20.0,
-		5633:  30.0,
-		13442: 45.0,
+		5631:  30.0,
+		5633:  50.0,
+		13442: 50.0,
 	}[itemId]
 
 	maxRoll := map[int32]float64{
-		5631:  40.0,
-		5633:  60.0,
-		13442: 75.0,
+		5631:  60.0,
+		5633:  80.0,
+		13442: 80.0,
 	}[itemId]
 
 	cdDuration := time.Minute * 2
 
 	actionID := ActionID{ItemID: itemId}
 	rageMetrics := character.NewRageMetrics(actionID)
-	aura := character.NewTemporaryStatsAura("Mighty Rage Potion", actionID, stats.Stats{stats.Strength: 60}, time.Second*20)
+	aura := character.NewTemporaryStatsAura("Mighty Rage Potion", actionID, stats.Stats{stats.Strength: 50}, time.Second*20)
 	return MajorCooldown{
 		Type: CooldownTypeDPS,
 		ShouldActivate: func(sim *Simulation, character *Character) bool {

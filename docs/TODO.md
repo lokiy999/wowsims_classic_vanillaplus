@@ -6,6 +6,7 @@ came up, most concrete first.
 
 _As of 2026-09-12._
 
+
 ## Explicitly deferred to "adjust manually later"
 
 - **Crafted-item phasing is flat.** Every craftable item is Phase 1 right now.

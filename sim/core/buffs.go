@@ -130,19 +130,19 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 		stats.Strength: TernaryFloat64(IncludeAQ, 77, 61),
 	},
 	ScrollOfAgility: {
-		stats.Agility: 17,
+		stats.Agility: 15,
 	},
 	ScrollOfIntellect: {
-		stats.Intellect: 16,
+		stats.Intellect: 15,
 	},
 	ScrollOfSpirit: {
 		stats.Spirit: 15,
 	},
 	ScrollOfStamina: {
-		stats.Stamina: 16,
+		stats.Stamina: 15,
 	},
 	ScrollOfStrength: {
-		stats.Strength: 17,
+		stats.Strength: 15,
 	},
 	ScrollOfProtection: {
 		stats.BonusArmor: 240,

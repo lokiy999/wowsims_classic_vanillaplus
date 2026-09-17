@@ -1351,3 +1351,199 @@ where the cast landed: exactly 5/5 ticks, `562.42 × 5 = 2.81K` matching the
 displayed total precisely. So `4.19` is just `hit_rate(~0.84) × 5`, averaging
 in the ~16% of iterations where the initial cast fully resisted (0 ticks that
 run) — not a per-tick miss mechanic, and not a bug. No code changed for this.
+
+## Part K — Food/consumable stats corrected against `VPlusItemDB.lua` (2026-09-17)
+
+### `sim/core/consumes.go`
+
+User asked to check whether the hardcoded food/consumable stat values in
+`applyFoodConsumes` matched the server's actual tooltips in
+`CSV's/VPlusItemDB.lua`. Wrote a one-off parser (not kept — line-scanned the
+Lua table into `{id: [tooltip lines]}`) and diffed each `Food_*`/`Alcohol_*`
+case against the dump entry with the matching name. The server's item
+tooltips are the buffed-up VPlus values, not vanilla 1.12 numbers, and most
+of the sim's hardcoded stats were still the old vanilla amounts. Fixed:
+
+| Item | Stat | Sim had | VPlus tooltip |
+|---|---|---|---|
+| Smoked Sagefish | MP5 | 3 | 5 |
+| Sagefish Delight | MP5 | 6 | 10 |
+| Grilled Squid | Agility | 10 | 20 |
+| Nightfin Soup | MP5 | 8 | 15 |
+| Runn Tum Tuber Surprise | Intellect | 10 | 20 |
+| Blessed Sunfruit Juice | Spirit | 10 | 15 |
+| Bless Sunfruit | Strength | 10 | 15 |
+| Gordok Green Grog | Stamina | 10 | 20 |
+| Kreeg's Stout Beatdown | Spirit | 25 | 35 |
+
+Left unchanged (already matched the dump): Hot Wolf Ribs (8 Sta/Spi), Tender
+Wolf Steak (12 Sta/Spi), Smoked Desert Dumplings (20 Str), Dirge's Kickin'
+Chimaerok Chops (25 Sta), Rumsey Rum Black Label (15 Sta), Rumsey Rum Dark
+(10 Sta), Rumsey Rum Light (5 Sta). `Food_FoodSmokedDesertDumpling`'s dump
+entry is spelled "Smoked Desert Dumpling**s**" (plural) — same item, name
+mismatch only, not touched.
+
+Not covered by this pass: flasks, elixirs, wizard/mana oils, sharpening
+stones, potions, bandages, and scrolls elsewhere in `consumes.go`/`buffs.go`
+— only the `Food` and `Alcohol` enums were in scope for this check. If those
+other consumable categories should also be re-verified against the dump,
+that's a separate follow-up (added to `docs/TODO.md`).
+
+`go build ./sim/...` passes after the edit.
+
+## Part L — Elixirs, oils, and potions corrected against `VPlusItemDB.lua` (2026-09-17)
+
+### `sim/core/consumes.go`
+
+Follow-up to Part K: user asked to also check elixirs, weapon oils, and
+potions against `VPlusItemDB.lua`. Looked up each by item id where the code
+already keys off one (potions/healthstones/runes), and by name otherwise
+(armor/health/agility/strength/spell-power elixirs, wizard/mana oils). Found
+and fixed:
+
+| Item | Field | Sim had | VPlus tooltip |
+|---|---|---|---|
+| Lesser Mana Potion (id 3385) | mana restored | **missing from the roll map entirely — rolled 0** | 280–360 |
+| Rage Potion (5631) | rage | 20–40 | 30–60 |
+| Great Rage Potion (5633) | rage | 30–60 | 50–80 |
+| Mighty Rage Potion (13442) | rage / bonus Str | 45–75 / 60 Str | 50–80 / 50 Str |
+| Lesser Stoneshield Potion (4623) | duration | 90 sec | 2 min (120 sec) |
+| Magic Resistance Potion | **item id** | `4623` (the Lesser Stoneshield Potion's id — collision, wrong item) | `9036` |
+| Magic Resistance Potion | duration | 3 min | 6 min |
+| Elixir of Fortitude | Health | 120 | 220 |
+| Elixir of Minor Fortitude | Health | 27 | 50 |
+| Juju Might | Attack Power | 40 | 100 |
+| Mageblood Potion | MP5 | 12 | 20 |
+| Brilliant Wizard Oil | Spell Power | 36 | 25 |
+
+The Magic Resistance Potion bug was worth flagging on its own: it reused
+item id 4623, which is the *Lesser Stoneshield Potion*'s real id, instead of
+its own (9036) — `ui/core/components/inputs/consumables.ts:669` already had
+the correct `9036` for its icon/tooltip, so only the Go-side cooldown was
+wrong. Left as a single item id, now `9036`, with duration matched to the
+dump's "6 min".
+
+Verified as already matching the dump (no change): all four armor elixirs
+(Superior/Greater/Defense/Minor Defense: 450/250/150/50 armor), Winterfall
+Firewater (35 AP), all four agility elixirs (Mongoose/Greater/base/Lesser:
+25+2%crit/25/15/8), Juju Power (30 Str), Elixir of Giants (25 Str), Elixir
+of Ogre's Strength (8 Str), Arcane/Greater Arcane Elixir (20/35 spell
+damage), Elixir of Firepower/Greater Firepower (10/40), Elixir of Shadow
+Power (40), Elixir of Frost Power (15), Greater Stoneshield Potion (2000
+armor / 2 min — already correct), all healing potions/healthstones (858/929/
+1710/3928/5509/5510/9421/13446), Mana Potion/Greater/Superior/Major (3827/
+6149/13443/13444), Minor Recombobulator (4381), Demonic Rune (12662, mana
+side only — its 600–1000 self-damage cost isn't modeled, unchanged from
+before), and the remaining wizard/mana oils (Minor/Lesser/base Wizard Oil,
+Blessed Wizard Oil, Minor/Lesser/Brilliant Mana Oil).
+
+Still not covered: flasks, sharpening/weightstones, scrolls (`buffs.go`), and
+Zanza-esque buffs — see `docs/TODO.md`.
+
+`go build ./sim/...` passes after the edit.
+
+## Part M — Flasks and scrolls corrected against `VPlusItemDB.lua` (2026-09-17)
+
+### `sim/core/consumes.go` — Flasks
+
+All 4 flasks were wrong, and 3 of the 4 were modeling the wrong *stat*, not
+just a stale number — the dump's tooltip wording doesn't match what the code
+was granting:
+
+| Flask | Sim had | VPlus tooltip | Fixed to |
+|---|---|---|---|
+| Flask of Distilled Wisdom | `Mana: 2000` (flat mana pool) | "Increases the player's **Intellect** by 100" | `Intellect: 100` |
+| Flask of Supreme Power | `SpellPower: 150` | "Increases **damage done by magical spells and effects** by up to 100" — same phrasing as Arcane Elixir, which already uses the damage-only `SpellDamage` stat (Part L) | `SpellDamage: 100` |
+| Flask of the Titans | `Health: 1200` (flat health) | "Increases the player's **Stamina** by 100" | `Stamina: 100` |
+| Flask of Chromatic Resistance | `AddResistances(25)` | "resistance to all schools of magic by **50**" | `AddResistances(50)` |
+
+Distilled Wisdom and Titans were granting a flat pool stat instead of the
+primary stat the tooltip actually names (Intellect / Stamina respectively) —
+worth calling out since it changes how the flask scales (e.g. with talents/
+buffs that multiply Stamina), not just its raw magnitude.
+
+### `sim/core/buffs.go` — Scrolls
+
+`BuffSpellValues`'s 5 stat scrolls (Agility/Intellect/Spirit/Stamina/
+Strength) were a mix of two different rank tiers that happened to look like
+real vanilla numbers, not the dump's values. The dump has 4 ranks per stat
+scroll (I–IV) plus a 55+ rep-gated reprint of rank IV at a different id
+(e.g. `Scroll of Agility IV` exists at both 10309 and 26087) with identical
+text — and rank IV is a flat **+15** across all five stats (Protection scales
+differently: 60/120/180/**240**). Set all 5 flat stats to match rank IV:
+
+| Scroll | Sim had | VPlus rank IV |
+|---|---|---|
+| Agility | 17 | 15 |
+| Intellect | 16 | 15 |
+| Stamina | 16 | 15 |
+| Strength | 17 | 15 |
+| Spirit | 15 (already correct) | 15 |
+
+`ScrollOfProtection` (240 armor) was already correct — matches rank IV.
+Picked rank IV specifically because it's the only rank where all 5 stat
+scrolls agree on a single round number (15) and Protection's independently-
+tracked value already matched it; the mismatched three were each sitting on
+a different, lower rank's number instead.
+
+Not yet checked: sharpening/weightstones and the 6 Zanza-esque buffs — see
+`docs/TODO.md`.
+
+`go build ./sim/...` passes after the edit.
+
+## Part N — Sharpening stones and weightstones checked against `VPlusItemDB.lua`, no changes needed (2026-09-17)
+
+Checked `sim/core/consumes.go`'s `addImbueStats` sharpening-stone/weightstone
+cases against the dump — all 6 already matched:
+
+| Item | Sim | VPlus tooltip |
+|---|---|---|
+| Solid Sharpening Stone | +6/+6 weapon damage | "Increase sharp weapon damage by 6" |
+| Dense Sharpening Stone | +8/+8 weapon damage | "Increase sharp weapon damage by 8" |
+| Elemental Sharpening Stone | 2% melee crit | "Increase critical chance on a melee weapon by 2%" |
+| Consecrated Sharpening Stone | +100 AP vs Undead | "increases attack power against undead by 100" |
+| Solid Weightstone | +6/+6 weapon damage | "Increase the damage of a blunt weapon by 6" |
+| Dense Weightstone | +8/+8 weapon damage | "Increase the damage of a blunt weapon by 8" |
+
+One thing intentionally left alone: Elemental Sharpening Stone's code also
+does `character.AddBonusRangedCritRating(-2.0)` alongside the +2% melee
+crit — the dump's tooltip only mentions melee, so this isn't something the
+dump confirms or denies; it reads like a deliberate offset for a separate
+ranged-crit interaction elsewhere in the sim, not a stat pulled from this
+item's tooltip, so it wasn't touched.
+
+Only the 6 Zanza-esque buffs remain unchecked — see `docs/TODO.md`.
+
+No code changes this part.
+
+## Part O — Zanza-esque buffs corrected against `VPlusItemDB.lua` (2026-09-17)
+
+### `sim/core/consumes.go`
+
+Last category in `applyConsumeEffects` — closes out the full consumable
+audit started in Part K. 5 of the 6 Zandalar-tribe buffs were all sitting
+on the same wrong flat value (25) instead of the dump's 30:
+
+| Buff | Sim had | VPlus tooltip |
+|---|---|---|
+| R.O.I.D.S. | Strength 25 | "Increases Strength by 30" |
+| Ground Scorpok Assay | Agility 25 | "Increases Agility by 30" |
+| Cerebral Cortex Compound | Intellect 25 | "Increases Intellect by 30" |
+| Gizzard Gum | Spirit 25 | "Increases Spirit by 30" |
+| Lung Juice Cocktail | Stamina 25 | "Increases Stamina by 30" |
+| Spirit of Zanza | Stamina 50 / Spirit 50 | matched already — "Spirit by 50 and Stamina by 50" |
+
+`go build ./sim/...` passes after the edit.
+
+### Consumable audit now complete
+
+Every category under `applyConsumeEffects` (`sim/core/consumes.go`) plus the
+5 stat scrolls (`sim/core/buffs.go`) has now been checked against
+`VPlusItemDB.lua` across Parts K–O: Food, Alcohol, elixirs (armor/health/
+agility/strength/spell-power/fire/shadow/frost), wizard/mana weapon oils,
+potions (healing/mana/rage/armor/magic-resist), healthstones/runes, flasks,
+scrolls, sharpening stones/weightstones, and Zanza-esque buffs. Fixed 25
+stat mismatches, 1 missing map entry (Lesser Mana Potion rolling 0), 1 wrong
+item id (Magic Resistance Potion), and 3 flasks that were modeling the wrong
+stat entirely rather than just a stale number. Nothing left unaudited in
+this file.
