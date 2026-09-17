@@ -1638,14 +1638,14 @@ func ApplyRallyingCryOfTheDragonslayer(unit *Unit, category string) {
 		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
+	// Spell 22888: "Increases chance for a melee, ranged, or spell critical by 5%. Increases Spirit by 50."
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: category,
 		Stats: []StatConfig{
-			{stats.SpellCrit, 10 * SpellCritRatingPerCritChance, false},
+			{stats.SpellCrit, 5 * SpellCritRatingPerCritChance, false},
 			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
 			// TODO: {stats.RangedCrit, 5*CritRatingPerCritChance, false},
-			{stats.AttackPower, 140, false},
-			{stats.RangedAttackPower, 140, false},
+			{stats.Spirit, 50, false},
 		},
 	})
 }

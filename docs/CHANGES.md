@@ -1795,3 +1795,20 @@ Before finding the real cause, spent a while suspecting a stale/cached build (sa
 ### Verification
 
 Live on Shadow Priest: selecting Tears of Teremus moved Spell Damage 649 → 769 (+120) and Holy Damage 649 → 769 (+120), exactly matching. `go build ./...`, `npx tsc --noEmit -p .` pass; WASM and frontend (`npx vite build -m development`) rebuilt and verified.
+
+## Part U — Rallying Cry of the Dragonslayer: also the wrong effect (2026-09-17)
+
+Closes out the Dire Maul tribute buff sweep from Parts R/S. `CSV's/Spell.csv` spell id 22888 reads *"Increases chance for a melee, ranged, or spell critical by $s1%. Increases Spirit by $s2."* — couldn't decode the exact `$s1`/`$s2` values from the raw DBC-style CSV (no column schema, just `long`/`flags` type markers), so asked the user directly. They confirmed: **+5% crit** (melee/ranged/spell) and **+50 Spirit**.
+
+The old code (`sim/core/buffs.go` `ApplyRallyingCryOfTheDragonslayer`) had all three problems at once:
+- Spell crit and melee crit were mismatched (+10% / +5%) instead of one uniform 5%.
+- No Spirit at all.
+- A flat `+140 AP`/`+140 RAP` that isn't in this spell's description anywhere — looks like it was carried over from the well-known *real, unmodified-vanilla* version of this buff (which does grant AP) without checking whether this server's rework kept that part. It didn't.
+
+Fixed: `{SpellCrit, 5%}`, `{MeleeCrit, 5%}` (still no separate `RangedCrit` stat in this engine — same pre-existing `// TODO: RangedCrit` gap the old code already had, not new), `{Spirit, 50}`. Attack Power removed entirely.
+
+Verified live on Shadow Priest: toggling the buff moved Spirit 197 → 247 (+50) and Spell Crit 6.00% → 11.00% (+5%), both exact. `go build ./...` passes; WASM rebuilt and verified.
+
+### Housekeeping note
+
+All three Dire Maul buffs (Slip'kik's Savvy, Fengus' Ferocity, Rallying Cry of the Dragonslayer) turned out to have the wrong effect modeled, not just stale numbers — worth remembering as a pattern if any other "world buff" ever looks suspicious: check `CSV's/Spell.csv` by `ActionID.SpellID` first, don't trust that the *type* of effect is right just because *a* number is there.
