@@ -1732,8 +1732,8 @@ func ApplyFengusFerocity(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "FengusFerocity",
 		Stats: []StatConfig{
-			{stats.AttackPower, 200, false},
-			{stats.RangedAttackPower, 200, false},
+			{stats.AttackPower, 1.10, true},
+			{stats.RangedAttackPower, 1.10, true},
 		},
 	})
 }
@@ -1760,10 +1760,16 @@ func ApplySlipkiksSavvy(unit *Unit) {
 		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
+	// Spell 22820: "Spell damage and healing done increased by 5%."
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "SlipkiksSavvy",
-		Stats: []StatConfig{
-			{stats.SpellCrit, 3 * SpellCritRatingPerCritChance, false},
+		ExtraOnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.05)
+			aura.Unit.PseudoStats.HealingDealtMultiplier *= 1.05
+		},
+		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.05)
+			aura.Unit.PseudoStats.HealingDealtMultiplier /= 1.05
 		},
 	})
 }

@@ -6,6 +6,36 @@ came up, most concrete first.
 
 _As of 2026-09-12._
 
+## Raised 2026-09-17 — consumables that exist on the server but aren't in the sim at all
+
+Full survey in `docs/CHANGES.md` Part P; most of it implemented in Part Q.
+These are in `VPlusItemDB.lua` with real stat-buff tooltips.
+
+**Implemented (Part Q):** Flask of Indomitable Might, Elixir of Brute
+Force, Elixir of Demonslaying, Elixir of Greater Intellect, Elixir of the
+Sages, Juju Guile, and all 4 Troll's Blood Potions — new `proto/common.proto`
+enum values (`IntellectElixir` is a brand-new category), regenerated
+Go/TS bindings, `sim/core/consumes.go` implementation, and
+`ui/core/components/inputs/consumables.ts` / `consumes_picker.ts` pickers.
+
+**Explicitly skipped (user's call, not a technical blocker):** Bloodkelp
+Elixir of Dodging (22192) / Resistance (22193), Elixir of Wisdom (3383),
+Potion of Fervor (1450), Minor Magic Resistance Potion (3384), Combat
+Healing/Mana Potion (18839/18841). Still absent from the sim if wanted
+later.
+
+**Still genuinely blocked — needs a new engine feature, not just a
+consumable add:**
+
+- The 6 `Greater X Protection Potion` + 6 base tiers (Arcane/Fire/Frost/
+  Holy/Nature/Shadow) — `Potions` proto enum already has the 6 Greater
+  values, and the UI file already has them written out (commented, with an
+  existing `TODO: ... Missing school shields and shields don't actually
+  absorb damage right now` note — a previously-known gap). They're
+  damage-absorb shields; there is no absorb-shield primitive anywhere in
+  the sim (confirmed via grep across `sim/core`/`sim/priest` — not even
+  Power Word: Shield exists). Needs an actual new mechanic before these can
+  be added.
 
 ## Explicitly deferred to "adjust manually later"
 

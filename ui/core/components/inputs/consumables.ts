@@ -15,6 +15,7 @@ import {
 	Food,
 	FrostPowerBuff,
 	HealthElixir,
+	IntellectElixir,
 	ItemSlot,
 	ManaRegenElixir,
 	Potions,
@@ -233,12 +234,17 @@ export const FlaskOfChromaticResistance: ConsumableInputConfig<Flask> = {
 	actionId: () => ActionId.fromItemId(13513),
 	value: Flask.FlaskOfChromaticResistance,
 };
+export const FlaskOfIndomitableMight: ConsumableInputConfig<Flask> = {
+	actionId: () => ActionId.fromItemId(34323),
+	value: Flask.FlaskOfIndomitableMight,
+};
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [] },
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfChromaticResistance, stats: [] },
+	{ config: FlaskOfIndomitableMight, stats: [Stat.StatAttackPower] },
 ];
 
 export const makeFlasksInput = makeConsumeInputFactory({ consumesFieldName: 'flask' });
@@ -411,10 +417,15 @@ export const WinterfallFirewater: ConsumableInputConfig<AttackPowerBuff> = {
 	actionId: () => ActionId.fromItemId(12820),
 	value: AttackPowerBuff.WinterfallFirewater,
 };
+export const ElixirOfDemonslaying: ConsumableInputConfig<AttackPowerBuff> = {
+	actionId: () => ActionId.fromItemId(9224),
+	value: AttackPowerBuff.ElixirOfDemonslaying,
+};
 
 export const ATTACK_POWER_CONSUMES_CONFIG: ConsumableStatOption<AttackPowerBuff>[] = [
 	{ config: JujuMight, stats: [Stat.StatAttackPower] },
 	{ config: WinterfallFirewater, stats: [Stat.StatAttackPower] },
+	{ config: ElixirOfDemonslaying, stats: [Stat.StatAttackPower] },
 ];
 
 export const makeAttackPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'attackPowerBuff' });
@@ -468,15 +479,42 @@ export const ScrollOfStrength: ConsumableInputConfig<StrengthBuff> = {
 	actionId: () => ActionId.fromItemId(10310),
 	value: StrengthBuff.ScrollOfStrength,
 };
+export const ElixirOfBruteForce: ConsumableInputConfig<StrengthBuff> = {
+	actionId: () => ActionId.fromItemId(13453),
+	value: StrengthBuff.ElixirOfBruteForce,
+};
 
 export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
 	{ config: JujuPower, stats: [Stat.StatStrength] },
 	{ config: ElixirOfGiants, stats: [Stat.StatStrength] },
 	{ config: ElixirOfOgresStrength, stats: [Stat.StatStrength] },
 	{ config: ScrollOfStrength, stats: [Stat.StatStrength] },
+	{ config: ElixirOfBruteForce, stats: [Stat.StatStrength, Stat.StatStamina] },
 ];
 
 export const makeStrengthConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'strengthBuff' });
+
+// Intellect
+export const ElixirOfGreaterIntellect: ConsumableInputConfig<IntellectElixir> = {
+	actionId: () => ActionId.fromItemId(9179),
+	value: IntellectElixir.ElixirOfGreaterIntellect,
+};
+export const ElixirOfTheSages: ConsumableInputConfig<IntellectElixir> = {
+	actionId: () => ActionId.fromItemId(13447),
+	value: IntellectElixir.ElixirOfTheSages,
+};
+export const JujuGuile: ConsumableInputConfig<IntellectElixir> = {
+	actionId: () => ActionId.fromItemId(12458),
+	value: IntellectElixir.JujuGuile,
+};
+
+export const INTELLECT_CONSUMES_CONFIG: ConsumableStatOption<IntellectElixir>[] = [
+	{ config: ElixirOfGreaterIntellect, stats: [Stat.StatIntellect] },
+	{ config: ElixirOfTheSages, stats: [Stat.StatIntellect, Stat.StatSpirit] },
+	{ config: JujuGuile, stats: [Stat.StatIntellect] },
+];
+
+export const makeIntellectConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'intellectElixir' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Misc Throughput Consumes
@@ -704,6 +742,23 @@ export const LesserStoneshieldPotion: ConsumableInputConfig<Potions> = {
 	value: Potions.LesserStoneshieldPotion,
 };
 
+export const MajorTrollsBloodPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(20004),
+	value: Potions.MajorTrollsBloodPotion,
+};
+export const MightyTrollsBloodPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(3826),
+	value: Potions.MightyTrollsBloodPotion,
+};
+export const StrongTrollsBloodPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(3388),
+	value: Potions.StrongTrollsBloodPotion,
+};
+export const WeakTrollsBloodPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(3382),
+	value: Potions.WeakTrollsBloodPotion,
+};
+
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: MajorHealingPotion, stats: [Stat.StatArmor] },
 	{ config: SuperiorHealingPotion, stats: [Stat.StatArmor] },
@@ -721,6 +776,11 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	// { config: MagicResistancePotion, stats: [] },
 	{ config: GreaterStoneshieldPotion, stats: [Stat.StatArmor] },
 	{ config: LesserStoneshieldPotion, stats: [Stat.StatArmor] },
+
+	{ config: MajorTrollsBloodPotion, stats: [Stat.StatArmor] },
+	{ config: MightyTrollsBloodPotion, stats: [Stat.StatArmor] },
+	{ config: StrongTrollsBloodPotion, stats: [Stat.StatArmor] },
+	{ config: WeakTrollsBloodPotion, stats: [Stat.StatArmor] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });
@@ -738,10 +798,15 @@ export const ArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 	actionId: () => ActionId.fromItemId(9155),
 	value: SpellPowerBuff.ArcaneElixir,
 };
+export const TearsOfTeremus: ConsumableInputConfig<SpellPowerBuff> = {
+	actionId: () => ActionId.fromItemId(26430),
+	value: SpellPowerBuff.TearsOfTeremus,
+};
 
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
-	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellPower] },
-	{ config: ArcaneElixir, stats: [Stat.StatSpellPower] },
+	{ config: TearsOfTeremus, stats: [Stat.StatSpellDamage, Stat.StatHealingPower] },
+	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellDamage] },
+	{ config: ArcaneElixir, stats: [Stat.StatSpellDamage] },
 ];
 
 export const makeSpellPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'spellPowerBuff' });
@@ -803,7 +868,7 @@ export const Windfury: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromSpellId(10614),
 	value: WeaponImbue.Windfury,
 	showWhen: player => {
-		return (player.getFaction() === Faction.Horde) && !player.isSpec(Spec.SpecFeralDruid)
+		return player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid);
 	},
 };
 

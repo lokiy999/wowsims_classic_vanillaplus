@@ -1547,3 +1547,251 @@ stat mismatches, 1 missing map entry (Lesser Mana Potion rolling 0), 1 wrong
 item id (Magic Resistance Potion), and 3 flasks that were modeling the wrong
 stat entirely rather than just a stale number. Nothing left unaudited in
 this file.
+
+## Part P — Juju misc-consumes fixed; survey for consumables missing from the sim entirely (2026-09-17)
+
+User asked to check for flasks/elixirs/potions that exist in `VPlusItemDB.lua`
+but have **no representation at all** in the sim (as opposed to Parts K–O,
+which fixed values for things already modeled). Two outcomes: a few more
+stat mismatches turned up in `MiscConsumes` items that Parts K-O's category
+sweep had skipped (fixed directly), and a longer list of genuinely-absent
+consumables (surveyed, not implemented — see below for why).
+
+### `sim/core/consumes.go` — `applyMiscConsumes` (fixed)
+
+The 4 Juju misc-consumes (`MiscConsumes.Juju*`, a separate bool-flag struct
+from the enum-based consumables checked in Parts K–O, so it was missed) had
+stale values:
+
+| Item | Field | Was | VPlus tooltip |
+|---|---|---|---|
+| Juju Ember | Fire Resistance | 15 | 20 |
+| Juju Chill | Frost Resistance | 15 | 20 |
+| Juju Flurry | attack speed | 3% (+ compensating damage-multiplier divide, modeling vanilla's "acts like Seal of the Crusader" bug) | 5% (same compensation pattern, magnitude only) |
+| Juju Escape | dodge | 5% | 8% |
+
+`go build ./sim/...` passes after the edit.
+
+### Survey: consumables in the dump with no sim representation (not implemented)
+
+Searched `VPlusItemDB.lua` for elixir/flask/oil/potion/juju-named items with
+a stat-bearing `Use:` tooltip that don't match any consumable already
+modeled anywhere in `sim/core/consumes.go` or `sim/core/buffs.go`. Excluded
+pure-flavor items (invisibility, water walking, Noggenfogger, "Drink Me",
+etc. — no combat-sim effect) and gear (trinkets/rings with "stone" in the
+name, caught by the same keyword search). Grouped by how much it would
+matter for a DPS/HPS sim:
+
+**Likely worth adding** (real stat buffs with no equivalent already modeled):
+- `Flask of Indomitable Might` (34323) — +150 Attack Power, 2 hrs, persists
+  through death. A 5th flask (Str/Int/Sta/Resist already exist; this is the
+  missing AP one) — same tier as the other 4 flasks in `Flask` enum.
+- `Elixir of Greater Intellect` (9179) — +25 Int, 1 hr. There is currently
+  no Intellect-elixir category in the proto at all (only Scroll of
+  Intellect covers Int).
+- `Elixir of the Sages` (13447) — +20 Int and +20 Spirit, 1 hr.
+- `Elixir of Brute Force` (13453) — +15 Str and +15 Stamina, 1 hr. No
+  combined Str+Sta elixir category exists either.
+- `Juju Guile` (12458) — +30 Int, 30 min. Sibling to the already-modeled
+  Juju Power (Str) / Juju Might (AP) — Intellect is the missing one.
+- Troll's Blood Potions — `Weak`/`Strong`/`Mighty`/`Major` (3382/3388/3826/
+  20004): flat HP-regen-per-5-sec buffs (5/10/20/40, each 1 hr). Classic
+  pre-raid tank/melee sustain consumables, not modeled at all.
+- `Bloodkelp Elixir of Dodging` (22192) — +3% dodge, 30 min.
+- `Bloodkelp Elixir of Resistance` (22193) — +15 all-magic resistance,
+  30 min.
+- `Combat Healing Potion` / `Combat Mana Potion` (18839/18841) — same
+  amounts as Major Healing/Mana Potion (1050–1750) but worth checking
+  in-game whether they share the normal potion cooldown or not; if they
+  don't, that changes optimal potion-usage APL logic, not just a value.
+- The 6 `Greater X Protection Potion` + 6 base `X Protection Potion`
+  entries (Arcane/Fire/Frost/Holy/Nature/Shadow) — these already have
+  `Potions` proto enum values (`GreaterArcaneProtectionPotion` etc.) but
+  the switch cases are commented out in `makePotionActivationInternal`
+  (`sim/core/consumes.go`). They're damage-absorb shields, not flat stats,
+  so wiring them up is a small mechanic (an absorb aura), not a one-line
+  stat fix like the rest of this audit — flagging as a scoped follow-up
+  rather than doing it inline here.
+
+**Lower priority** (minor magnitude or narrow use case):
+- `Elixir of Wisdom` (3383) — +6 Int, 1 hr (small; Greater Intellect above
+  covers the same niche better).
+- `Minor Magic Resistance Potion` (3384) — 25 all-resist, 6 min (weaker,
+  shorter version of the already-modeled Magic Resistance Potion at 50).
+- `Elixir of Demonslaying` (9224) — +265 AP vs demons only, 5 min
+  (situational — only matters on demon-heavy fights).
+- `Potion of Fervor` (1450) — +14 Str but deals 15 self-damage every 15
+  sec for 1 min (net negative for most casters; niche).
+
+**Not implemented on purpose** (no sim effect regardless of stats):
+invisibility/lesser invisibility, water walking/breathing, swim speed,
+swiftness potion (run speed), free-action/living-action (CC immunity,
+no DPS effect), limited invulnerability, detect-demon/undead/invisibility,
+Noggenfogger Elixir, dreamless-sleep potions (regen while asleep, i.e.
+out of combat only), and various quest/flavor items (Bethor's Potion,
+Restorative/Purification Potion, Elixir of Tongues, etc.).
+
+None of the "likely worth adding" items were implemented this pass — adding
+a new `Flask`/elixir *category* means extending the `.proto` schema (new
+enum values), regenerating the Go/TS protobuf bindings, and wiring UI
+consumable pickers (`ui/core/components/inputs/consumables.ts`), which is a
+materially bigger change than the stat-only fixes in Parts K–P. Left for
+the user to decide which (if any) are worth that investment — added to
+`docs/TODO.md`.
+
+## Part Q — Implemented the "worth adding" consumables from Part P (2026-09-17)
+
+User asked to add everything from Part P's "likely worth adding" list except
+Bloodkelp Elixirs, Elixir of Wisdom, Potion of Fervor, Minor Magic
+Resistance Potion, and the Combat Healing/Mana Potions. This is the first
+change in the K–Q consumable audit that needed proto/schema changes, not
+just a stat tweak, since these consumables genuinely didn't exist in the
+sim's data model before.
+
+### Toolchain note
+
+Regenerating the protobuf bindings needed `protoc` + `protoc-gen-go`.
+Neither was globally installed, but both were already available without
+downloading anything new: `protoc.exe` ships inside this repo's own
+`@protobuf-ts/protoc` npm dependency (`node_modules/@protobuf-ts/protoc/
+installed/protoc-36.1-win64/bin/protoc.exe`), and `protoc-gen-go` was
+already on `$GOPATH/bin` (an older v1.33.0 — upgraded to v1.36.12 via
+`go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.12` to match
+the version stamp the existing generated files carry).
+
+### `proto/common.proto` (schema changes)
+
+- `Flask` enum: added `FlaskOfIndomitableMight = 5`.
+- `StrengthBuff` enum: added `ElixirOfBruteForce = 5`.
+- `AttackPowerBuff` enum: added `ElixirOfDemonslaying = 3`.
+- `Potions` enum: added `WeakTrollsBloodPotion = 23`,
+  `StrongTrollsBloodPotion = 24`, `MightyTrollsBloodPotion = 25`,
+  `MajorTrollsBloodPotion = 26`.
+- New enum `IntellectElixir` (`ElixirOfGreaterIntellect = 1`,
+  `ElixirOfTheSages = 2`, `JujuGuile = 3`) — there was no Intellect-elixir
+  category at all before this.
+- `Consumes` message: added `IntellectElixir intellect_elixir = 29;`.
+
+Regenerated `sim/core/proto/common.pb.go` (`protoc --go_out=...`) and
+`ui/core/proto/common.ts` (`npx protoc --ts_out ui/core/proto --proto_path
+proto proto/common.proto`, the same invocation documented in
+`docs/private-server-item-rules.md`).
+
+### `sim/core/consumes.go` (implementation)
+
+| Consumable | Item id | Effect |
+|---|---|---|
+| Flask of Indomitable Might | 34323 | +150 AP / +150 RAP (added to `applyFlaskConsumes`) |
+| Elixir of Brute Force | 13453 | +15 Str / +15 Sta (added to the `StrengthBuff` switch) |
+| Elixir of Demonslaying | 9224 | +265 AP, conditional on `CurrentTarget.MobType == MobTypeDemon` — same `PseudoStats.MobTypeAttackPower` pattern Consecrated Sharpening Stone already uses for Undead (added to the `AttackPowerBuff` switch) |
+| Elixir of Greater Intellect | 9179 | +25 Int |
+| Elixir of the Sages | 13447 | +20 Int / +20 Spirit |
+| Juju Guile | 12458 | +30 Int |
+| Weak/Strong/Mighty/Major Troll's Blood Potion | 3382/3388/3826/20004 | 5/10/20/40 health every 5 sec, modeled as a new `makeHealthRegenMCD` helper: a `MajorCooldown` on the shared potion timer that, on cast, activates a 1-hour aura driving a `StartPeriodicAction` heal tick every 5 sec (same periodic-tick pattern `ManaTideTotemAura` in `buffs.go` already uses) |
+
+The three Intellect elixirs are handled by a new `applyIntellectBuffConsumes`
+function (mirrors the existing per-category functions like
+`applySpellBuffConsumes`), wired into `applyConsumeEffects`.
+
+### UI (`ui/core/components/inputs/consumables.ts`,
+`ui/core/components/individual_sim_ui/consumes_picker.ts`)
+
+Added a `ConsumableInputConfig` + config-array entry for each new item
+(icons resolve from their item id automatically via `ActionId.fromItemId`).
+`FlaskOfIndomitableMight` → `FLASKS_CONFIG`; `ElixirOfBruteForce` →
+`STRENGTH_CONSUMES_CONFIG`; `ElixirOfDemonslaying` →
+`ATTACK_POWER_CONSUMES_CONFIG`; the 4 Troll's Blood Potions →
+`POTIONS_CONFIG`. These reuse existing UI rows/pickers, so no picker-wiring
+changes were needed for them — including in each class's per-spec
+`excludeBuffDebuffInputs` lists (e.g. Balance Druid already excludes the
+*whole* `STRENGTH_CONSUMES_CONFIG` array by reference, so its newly-added
+Brute Force entry is automatically excluded too, no class file edits
+needed).
+
+Intellect elixirs needed a new picker since no "Intellect" consumable row
+existed before: added a new `INTELLECT_CONSUMES_CONFIG` array +
+`makeIntellectConsumeInput` factory, and added it to the existing "Spells"
+row in `consumes_picker.ts` (`buildSpellPowerBuffPickers`) rather than
+making a whole new row, since that's already the caster-stat section and
+`relevantStatOptions` auto-filters it to classes whose EP stats include
+Intellect.
+
+### Verification
+
+`go build ./...`, `go vet ./sim/core/...` (one pre-existing unrelated proto
+mutex-copy warning in `test_generators.go`, not touched by this change),
+`go test ./sim/core/...` (proto enum registration didn't panic at init —
+the real risk with hand-editing generated files, avoided here since these
+were properly regenerated via `protoc`), and `npx tsc --noEmit -p .` all
+pass. `gofmt -w` / `npx prettier --write` applied to the touched files.
+
+### Explicitly not implemented (per user's exclusion list)
+
+Bloodkelp Elixir of Dodging/Resistance, Elixir of Wisdom, Potion of Fervor,
+Minor Magic Resistance Potion, Combat Healing/Mana Potion — still absent
+from the sim, per the user's instruction to skip these specifically.
+
+### Still deferred (unchanged from Part P)
+
+The 6 base + 6 Greater Protection Potions remain unimplemented — the
+`Potions` proto enum already had slots for the 6 Greater ones (and the UI
+file already had them written out, commented, with a `TODO: Not yet
+implemented in the back-end. Missing school shields and shields don't
+actually absorb damage right now` note above them, confirming this was a
+previously-known gap, not something this session introduced). They need an
+actual damage-absorption-shield primitive, which doesn't exist anywhere in
+this sim (grepped for `absorb`/`Absorb` across `sim/core` and `sim/priest`
+— no matches, not even for a spell like Power Word: Shield). That's an
+engine feature, not a consumable addition — still out of scope here.
+
+## Part R — Slip'kik's Savvy was the wrong effect entirely, not just a wrong number (2026-09-17)
+
+User reported Slip'kik's Savvy "isn't applying." Verified live in-browser (see below) that it actually was applying — toggling it moved Spell Crit 6.00% → 9.00%, exactly the old code's +3% crit. But the user then pointed out the *real* effect is "Spell damage and healing done increased by 5%", not crit at all. Checked `CSV's/Spell.csv` for spell id 22820 (the buff's `ActionID`) to confirm: its description field is literally `"Spell damage and healing done increased by $s1%."` — the old implementation had modeled the wrong stat category from the start, not just a stale magnitude.
+
+### `sim/core/buffs.go` — `ApplySlipkiksSavvy`
+
+Was a flat `+3% Spell Crit` via `makeExclusiveBuff`'s `Stats` list. `BuffConfig.Stats` only supports plain `stats.Stats` array entries, not the `PseudoStats.SchoolDamageDealtMultiplier` / `HealingDealtMultiplier` fields this effect actually needs — so switched to `BuffConfig.ExtraOnGain`/`ExtraOnExpire` (the "hacky way to allow Pseudostat mods" hook already used elsewhere), mirroring the exact pattern Power Infusion uses for its own "+15% spell damage and healing" (`PowerInfusionAura`, same file): `SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.05)` + `HealingDealtMultiplier *= 1.05` on gain, both divided back out on expire.
+
+Verified on the rebuilt WASM (Shadow Priest, same gear/settings as the earlier session): toggling the buff took DPS from 565.68 → 595.53 (+5.3%, matches exactly) and HPS from 167.09 → 185.16 (+10.8%, expected to run higher than +5% since Vampiric Embrace heals off damage dealt, so the damage and healing multipliers compound: 1.05 × 1.05 ≈ 1.1025).
+
+### Same WASM-staleness caveat as Part Q
+
+This was diagnosed and fixed using the same locally-running server from the browser-testing conversation; the WASM was rebuilt again (`GOOS=js GOARCH=wasm go build -o ./dist/classic/lib.wasm ./sim/wasm/`) after this edit and reloaded before verifying. If Slip'kik's Savvy is checked again on a different server instance, that instance's `lib.wasm` needs rebuilding first or this fix won't be visible even though the source is correct.
+
+`go build ./...` passes.
+
+## Part S — Fengus' Ferocity was also flat-instead-of-percentage (2026-09-17)
+
+User asked to confirm Fengus' Ferocity's real effect. Same check as Part R: `CSV's/Spell.csv` spell id 22817 (`ApplyFengusFerocity`'s `ActionID`) reads `"Attack power increased by $s1%."`, and the user supplied the value: 10%. The old code granted a flat `+200 AP/RAP` instead.
+
+### `sim/core/buffs.go` — `ApplyFengusFerocity`
+
+Changed `{stats.AttackPower, 200, false}` / `{stats.RangedAttackPower, 200, false}` to `{stats.AttackPower, 1.10, true}` / `{stats.RangedAttackPower, 1.10, true}` (the `IsMultiplicative` flag in `StatConfig`) — same mechanism `makeExclusiveBuff` already uses for Mol'dar's Moxie's 5% Health multiply.
+
+Verified on a DPS Warrior with Battle Shout, Blessing of Might, and Leader of the Pack disabled (to remove other AP sources that add via a separate runtime-dynamic path, not this build-phase multiply): toggling only Fengus' Ferocity moved AP 1301 → 1431, exactly +10.0%. With those three buffs also active, the observed increase was smaller (1487 → 1609, ~+8.2%) because Battle Shout/Blessing of Might add their AP via `AddStatsDynamic` (runtime) rather than the build-phase stat-dependency graph this multiply hooks into — a pre-existing characteristic of how the engine layers buffs, not a flaw in this specific fix (Mol'dar's Moxie has the same characteristic for Health).
+
+`go build ./...` passes; WASM rebuilt and verified live.
+
+## Part T — Added Tears of Teremus; found and fixed a pre-existing UI filter bug along the way (2026-09-17)
+
+User asked to look up and implement "Tears of Teremus." Found it in `VPlusItemDB.lua` (id 26430): `"Imbibe the Tears of Teremus, increasing spell damage and healing by up to 120 for 30 min."` Not represented anywhere in the sim. Same pattern as the existing Arcane Elixir / Greater Arcane Elixir (flat `SpellPowerBuff` enum entries), except it also boosts healing.
+
+### Schema (`proto/common.proto`, regenerated bindings)
+
+Added `TearsOfTeremus = 4;` to the existing `SpellPowerBuff` enum (no new category needed — same shape as Arcane/Greater Arcane Elixir). Regenerated `sim/core/proto/common.pb.go` and `ui/core/proto/common.ts` the same way as Part Q.
+
+### `sim/core/consumes.go`
+
+Added a case to the existing `SpellPowerBuff` switch in `applySpellBuffConsumes`: `+120 SpellDamage` and `+120 HealingPower` (the two-stat effect is why it couldn't just reuse `ArcaneElixir`'s single-stat case).
+
+### `ui/core/components/inputs/consumables.ts` — and a pre-existing bug found while wiring it up
+
+Added the `TearsOfTeremus` config/icon (item 26430) to `SPELL_POWER_CONFIG`. First attempt used `Stat.StatSpellPower` as the filter tag, copying `ArcaneElixir`/`GreaterArcaneElixir`'s existing tags — and the whole picker (all 3 items, including the two pre-existing ones) came up invisible for Shadow Priest. Root cause: `ui/shadow_priest/sim.ts`'s `displayStats` lists `Stat.StatSpellDamage`, not `Stat.StatSpellPower` — and the actual Go code for all three of these buffs has always added `stats.SpellDamage`, never `stats.SpellPower` (two distinct stat indices in this engine). The UI's cosmetic filter tag never matched the real stat being granted, so `relevantStatOptions` dropped the whole picker for any spec whose `displayStats` doesn't happen to separately include `StatSpellPower`. This was a **pre-existing bug**, not something this change introduced — it just made it hard to see the new item. Fixed by retagging all three configs (`TearsOfTeremus`, `GreaterArcaneElixir`, `ArcaneElixir`) to `Stat.StatSpellDamage`.
+
+### Debugging note: a red herring
+
+Before finding the real cause, spent a while suspecting a stale/cached build (same category of bug as Parts Q/R) — checked file hashes, did a clean `rm -rf dist/classic/bundle` + rebuild, opened a fresh tab, fetched the served chunk with `cache: 'no-store'`. All of that confirmed the build was correct and current the whole time; the picker was empty because of the stat-tag mismatch above, not staleness. Wasted effort, but the debugging trail (verified via `fetch` headers showing `no-cache, no-store, must-revalidate` on the dev server's static assets) confirms this dev server does *not* have an asset-caching problem — the WASM-staleness issue from Parts Q/R was real and specific to that binary needing an explicit rebuild step, not a general symptom to keep suspecting first.
+
+### Verification
+
+Live on Shadow Priest: selecting Tears of Teremus moved Spell Damage 649 → 769 (+120) and Holy Damage 649 → 769 (+120), exactly matching. `go build ./...`, `npx tsc --noEmit -p .` pass; WASM and frontend (`npx vite build -m development`) rebuilt and verified.

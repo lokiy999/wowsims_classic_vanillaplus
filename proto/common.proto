@@ -322,7 +322,7 @@ enum Explosive {
 	ExplosiveGoblinLandMine = 4;
 }
 
-// NextIndex: 28
+// NextIndex: 27
 enum Potions {
 	UnknownPotion = 0;
 
@@ -357,6 +357,12 @@ enum Potions {
 	GreaterNatureProtectionPotion = 21;
 	GreaterShadowProtectionPotion = 22;
 
+	// Troll's Blood Pots
+	WeakTrollsBloodPotion = 23;
+	StrongTrollsBloodPotion = 24;
+	MightyTrollsBloodPotion = 25;
+	MajorTrollsBloodPotion = 26;
+
 	LesserManaPotion = 1 [deprecated = true];
 }
 
@@ -377,6 +383,7 @@ enum Flask {
 	FlaskOfDistilledWisdom = 2;
 	FlaskOfSupremePower = 3;
 	FlaskOfChromaticResistance = 4;
+	FlaskOfIndomitableMight = 5;
 }
 
 enum Alcohol {
@@ -423,12 +430,21 @@ enum StrengthBuff {
 	ElixirOfGiants = 2;
 	ElixirOfOgresStrength = 3;
 	ScrollOfStrength = 4;
+	ElixirOfBruteForce = 5;
 }
 
 enum AttackPowerBuff {
 	AttackPowerBuffUnknown = 0;
 	JujuMight = 1;
 	WinterfallFirewater = 2;
+	ElixirOfDemonslaying = 3;
+}
+
+enum IntellectElixir {
+	IntellectElixirUnknown = 0;
+	ElixirOfGreaterIntellect = 1;
+	ElixirOfTheSages = 2;
+	JujuGuile = 3;
 }
 
 enum SpellPowerBuff {
@@ -436,6 +452,7 @@ enum SpellPowerBuff {
 	ArcaneElixir = 1;
 	GreaterArcaneElixir = 2;
 	LesserArcaneElixir = 3 [deprecated=true];
+	TearsOfTeremus = 4;
 }
 
 enum ShadowPowerBuff {
@@ -658,7 +675,7 @@ message IndividualBuffs {
 	bool slipkiks_savvy = 14;
 }
 
-// NextIndex: 34
+// NextIndex: 30
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -687,6 +704,7 @@ message Consumes {
 	int32 pet_attack_power_consumable = 25;
 	PetMiscConsumes pet_misc_consumes = 27;
 	SapperExplosive sapper_explosive = 28;
+	IntellectElixir intellect_elixir = 29;
 }
 
 // NextIndex: 26

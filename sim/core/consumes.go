@@ -22,6 +22,7 @@ func applyConsumeEffects(agent Agent) {
 	applyFoodConsumes(character, consumes)
 	applyDefensiveBuffConsumes(character, consumes)
 	applyPhysicalBuffConsumes(character, consumes)
+	applyIntellectBuffConsumes(character, consumes)
 	applySpellBuffConsumes(character, consumes)
 	applyZanzaBuffConsumes(character, consumes)
 	applyMiscConsumes(character, consumes.MiscConsumes)
@@ -61,6 +62,11 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 		})
 	case proto.Flask_FlaskOfChromaticResistance:
 		character.AddResistances(50)
+	case proto.Flask_FlaskOfIndomitableMight:
+		character.AddStats(stats.Stats{
+			stats.AttackPower:       150,
+			stats.RangedAttackPower: 150,
+		})
 	}
 }
 
@@ -474,6 +480,10 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.AttackPower: 35,
 			})
+		case proto.AttackPowerBuff_ElixirOfDemonslaying:
+			if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+				character.PseudoStats.MobTypeAttackPower += 265
+			}
 		}
 	}
 
@@ -517,7 +527,38 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.StrengthBuff_ScrollOfStrength:
 			character.AddStats(BuffSpellValues[ScrollOfStrength])
+		case proto.StrengthBuff_ElixirOfBruteForce:
+			character.AddStats(stats.Stats{
+				stats.Strength: 15,
+				stats.Stamina:  15,
+			})
 		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Intellect Buff Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applyIntellectBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.IntellectElixir == proto.IntellectElixir_IntellectElixirUnknown {
+		return
+	}
+
+	switch consumes.IntellectElixir {
+	case proto.IntellectElixir_ElixirOfGreaterIntellect:
+		character.AddStats(stats.Stats{
+			stats.Intellect: 25,
+		})
+	case proto.IntellectElixir_ElixirOfTheSages:
+		character.AddStats(stats.Stats{
+			stats.Intellect: 20,
+			stats.Spirit:    20,
+		})
+	case proto.IntellectElixir_JujuGuile:
+		character.AddStats(stats.Stats{
+			stats.Intellect: 30,
+		})
 	}
 }
 
@@ -535,6 +576,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		case proto.SpellPowerBuff_GreaterArcaneElixir:
 			character.AddStats(stats.Stats{
 				stats.SpellDamage: 35,
+			})
+		case proto.SpellPowerBuff_TearsOfTeremus:
+			character.AddStats(stats.Stats{
+				stats.SpellDamage:  120,
+				stats.HealingPower: 120,
 			})
 		}
 	}
@@ -639,11 +685,11 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 	}
 
 	if miscConsumes.JujuEmber {
-		character.AddStat(stats.FireResistance, 15)
+		character.AddStat(stats.FireResistance, 20)
 	}
 
 	if miscConsumes.JujuChill {
-		character.AddStat(stats.FrostResistance, 15)
+		character.AddStat(stats.FrostResistance, 20)
 	}
 
 	if miscConsumes.JujuFlurry && character.AutoAttacks.enabled {
@@ -654,14 +700,14 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			ActionID: actionID,
 			Duration: time.Second * 20,
 			OnGain: func(aura *Aura, sim *Simulation) {
-				aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
-				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier /= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+				aura.Unit.MultiplyMeleeSpeed(sim, 1.05)
+				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier /= 1.05
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.05
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
-				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.03
+				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.05)
+				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.05
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.05
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{
@@ -695,10 +741,10 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			ActionID: actionID,
 			Duration: time.Second * 10,
 			OnGain: func(aura *Aura, sim *Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Dodge, 5*DodgeRatingPerDodgeChance)
+				aura.Unit.AddStatDynamic(sim, stats.Dodge, 8*DodgeRatingPerDodgeChance)
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Dodge, -5*DodgeRatingPerDodgeChance)
+				aura.Unit.AddStatDynamic(sim, stats.Dodge, -8*DodgeRatingPerDodgeChance)
 			},
 		})
 		jujuEscapeSpell := character.RegisterSpell(SpellConfig{
@@ -952,6 +998,49 @@ func makeHealthConsumableMCD(itemId int32, character *Character, cdTimer *Timer)
 	}
 }
 
+// Troll's Blood Potions: regenerate a flat amount of health every 5 sec for 1 hour.
+func makeHealthRegenMCD(itemId int32, healthPerTick float64, character *Character, cdTimer *Timer) MajorCooldown {
+	cdDuration := time.Minute * 2
+
+	actionID := ActionID{ItemID: itemId}
+	healthMetrics := character.NewHealthMetrics(actionID)
+
+	regenAura := character.GetOrRegisterAura(Aura{
+		Label:    "Troll's Blood-" + actionID.String(),
+		ActionID: actionID,
+		Duration: time.Hour,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			StartPeriodicAction(sim, PeriodicActionOptions{
+				Period:   time.Second * 5,
+				NumTicks: int(time.Hour / (time.Second * 5)),
+				OnAction: func(sim *Simulation) {
+					character.GainHealth(sim, healthPerTick, healthMetrics)
+				},
+			})
+		},
+	})
+
+	return MajorCooldown{
+		Type: CooldownTypeSurvival,
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: cdDuration,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				regenAura.Activate(sim)
+			},
+		}),
+	}
+}
+
 func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	minRoll := map[int32]float64{
 		3385:  280.0,
@@ -1163,6 +1252,15 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 
 	case proto.Potions_MagicResistancePotion:
 		return makeMagicResistancePotionMCD(character, potionCD)
+
+	case proto.Potions_WeakTrollsBloodPotion:
+		return makeHealthRegenMCD(3382, 5, character, potionCD)
+	case proto.Potions_StrongTrollsBloodPotion:
+		return makeHealthRegenMCD(3388, 10, character, potionCD)
+	case proto.Potions_MightyTrollsBloodPotion:
+		return makeHealthRegenMCD(3826, 20, character, potionCD)
+	case proto.Potions_MajorTrollsBloodPotion:
+		return makeHealthRegenMCD(20004, 40, character, potionCD)
 	// case proto.Potions_GreaterArcaneProtectionPotion:
 	// 	return makeSchoolProtectionConsumableMCD(13461, character, potionCD)
 	// case proto.Potions_GreaterFireProtectionPotion:
