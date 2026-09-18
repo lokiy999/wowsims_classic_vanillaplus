@@ -263,6 +263,13 @@ func (priest *Priest) applyDarkness() {
 
 	multiplier := 0.02 * float64(priest.Talents.Darkness)
 
+	// Priests always cast their own Shadow Protection on themselves (see
+	// AddRaidBuffs), so Darkness's "effect of your Shadow Protection" bonus can be
+	// applied directly as extra Shadow Resistance rather than needing to know who
+	// cast the raid-wide buff.
+	shadowProtectionBonus := 0.10 * float64(priest.Talents.Darkness)
+	priest.AddStat(stats.ShadowResistance, core.BuffSpellValues[core.ShadowProtection][stats.ShadowResistance]*shadowProtectionBonus)
+
 	priest.RegisterAura(core.Aura{
 		Label: "Darkness",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {

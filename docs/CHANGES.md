@@ -1933,3 +1933,19 @@ Non-Priest specs are unaffected — these pickers still show normally for everyo
 ### Known gap noticed in passing, not fixed here
 
 User pointed out Shadow Protection also has a talent that increases its resistance amount by 50% in real Classic. This fork's `proto/priest.proto` has no talent field for it at all (confirmed: no "protection" or "resistance" match anywhere in the Priest talent list) — `raidBuffs.ShadowProtection` is purely a flat on/off with no scaling mechanism to hook a talent into even if one existed. Genuinely unimplemented, not a display bug; added to `docs/TODO.md`.
+
+**Correction: this talent does exist on this server — it's "Darkness".** (2026-09-18, immediately after.) Turns out the Shadow Protection scaling isn't a separate talent at all; it's the second effect of the existing "Darkness" talent (`proto/priest.proto`'s `darkness` field, id 53), which was already partially implemented — `sim/priest/talents.go`'s `applyDarkness()` already handled its shadow-damage-bonus effect (+2%/rank, confirmed correct against `CSV's/Spell.csv` spell id 15259's 5 ranks using the DBC N-1 basePoints convention already established this session) but not its second effect.
+
+## Part AB — Implemented Darkness's Shadow Protection scaling (2026-09-18)
+
+`CSV's/Spell.csv` spell id 15259 (Darkness, 5 ranks): *"Increases your Shadow damage by $s1% and the effect of your Shadow Protection by $s2%."* Decoded per-rank effect values (using the same "stored value = N-1" convention already confirmed against Power Word: Fortitude's known-good 54 Stamina): ranks 1–5 give shadow damage +2/4/6/8/10% (already implemented, matches existing code) and Shadow Protection effect +10/20/30/40/50% (not implemented). User independently confirmed both sets of numbers before I'd finished decoding them.
+
+### `sim/priest/talents.go`
+
+Added to `applyDarkness()`: since a Priest always casts their own Shadow Protection on themselves (forced via `AddRaidBuffs`, see Part AA), "increases the effect of your Shadow Protection by X%" was implemented as a direct flat Shadow Resistance stat bonus — `core.BuffSpellValues[core.ShadowProtection][stats.ShadowResistance] * 0.10 * rank` — added via `priest.AddStat` during the `ApplyTalents` build phase (before `applyBuffEffects` consumes `raidBuffs.ShadowProtection`, so it accumulates cleanly into the normal stat snapshots). A flat `base * 0.10 * rank` addition is mathematically identical to "increase the effect by 10%/rank" (multiplying by `1 + 0.10*rank`), so no separate multiplier mechanism was needed.
+
+### Verification
+
+`go build ./...` passes. Ran the existing `TestP1Shadow` suite — it already had pre-existing DPS-mismatch failures (confirmed via `git stash`/re-run: identical failure numbers with and without this change, e.g. 246.061 vs 281.822 both times), so this change didn't add any new failures; Shadow Resistance isn't part of that test's assertions anyway.
+
+For a real number, temporarily added `Stat.StatShadowResistance` to Shadow Priest's `displayStats` (reverted after), rebuilt, and read the sidebar: **100** Shadow Resistance with the default Undead/P1-BiS preset (which has Darkness 5/5). Breaks down exactly: 10 (Undead racial) + 60 (Shadow Protection base) + 30 (Darkness's 50% bonus on the 60 base) = 100.
