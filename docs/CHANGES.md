@@ -1949,3 +1949,15 @@ Added to `applyDarkness()`: since a Priest always casts their own Shadow Protect
 `go build ./...` passes. Ran the existing `TestP1Shadow` suite — it already had pre-existing DPS-mismatch failures (confirmed via `git stash`/re-run: identical failure numbers with and without this change, e.g. 246.061 vs 281.822 both times), so this change didn't add any new failures; Shadow Resistance isn't part of that test's assertions anyway.
 
 For a real number, temporarily added `Stat.StatShadowResistance` to Shadow Priest's `displayStats` (reverted after), rebuilt, and read the sidebar: **100** Shadow Resistance with the default Undead/P1-BiS preset (which has Darkness 5/5). Breaks down exactly: 10 (Undead racial) + 60 (Shadow Protection base) + 30 (Darkness's 50% bonus on the 60 base) = 100.
+
+## Part AC — Always show all 5 resistances in the sidebar (2026-09-18)
+
+User asked, right after the Darkness/Shadow Resistance work above, to always show all resistances rather than needing per-spec `displayStats` edits (like the temporary one just used to verify Part AB) to see them.
+
+### `ui/core/constants/other.ts`
+
+`GLOBAL_DISPLAY_STATS` — unioned into every spec's sidebar automatically (`ui/core/individual_sim_ui.ts` appends it to each spec's own `displayStats`) — previously had Fire/Frost/Nature Resistance but not Arcane or Shadow. Added both, so all 5 resistance stats (`proto/common.proto`'s `Stat` enum only defines Arcane/Fire/Frost/Nature/Shadow) now show for every spec regardless of that spec's own `displayStats` list.
+
+### Verification
+
+`npx tsc --noEmit -p .` passes; frontend rebuilt. Live-checked two very different specs: Shadow Priest now shows Shadow Resistance = 100 (matching Part AB's hand-verified number) and Arcane Resistance without any per-spec edit; Warrior shows Arcane Resistance = 27 and Shadow Resistance = 27 (base racial/gear values, no Priest-specific bonuses). No console errors beyond the pre-existing, unrelated wowhead-tooltip-fetch error.
