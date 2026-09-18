@@ -1906,4 +1906,25 @@ Added `buildScrollsPicker()`, following the same `consumes-row` pattern as the e
 - **Stacking confirmed**: enabled Arcane Brilliance (Intellect raid buff) and Scroll of Intellect together — Intellect moved 359 → 376, both active simultaneously (confirmed via the saved-settings JSON: `{"arcaneBrilliance":true,"scrollOfIntellect":true,...}`), where previously only one or the other would have applied.
 - Scroll of Stamina alone also verified working in isolation (Stamina 285 → 300, Health 4067 → 4217, exactly matching its 15 Stamina / 150 Health stat entry).
 
-While testing Power Word Fortitude specifically for a Stamina-stacking check, found it (and Divine Spirit, and Shadow Protection) apply **zero** stats to a Priest simulating themselves, regardless of the UI toggle — a separate, pre-existing bug unrelated to this change (see `docs/TODO.md`). Not fixed here; flagged instead since chasing it risked scope-creeping this change.
+While testing Power Word Fortitude specifically for a Stamina-stacking check, the UI toggle appeared to do nothing — logged as a suspected bug in `docs/TODO.md`. **Correction in Part AA below: it isn't a bug.**
+
+## Part AA — Power Word Fortitude/Divine Spirit/Shadow Protection "not applying" was a false alarm; hid the redundant toggles instead (2026-09-18)
+
+Part Z's closing note ("Power Word Fortitude applies zero stats") was wrong. User pointed out the in-game numbers: 215 Stamina / 157 Spirit before buffs, 285 / 197 after — i.e. +70 Stamina and +40 Spirit are already present in what the sim treats as the *starting* stats, before any Raid Buffs checkbox is touched.
+
+Root cause of the confusion: `sim/priest/priest.go`'s `AddRaidBuffs` runs for any simulated Priest and *unconditionally* forces `raidBuffs.PowerWordFortitude` to at least Improved-if-talented (`max(existing, MakeTristateValue(true, hasImprovedTalent))` — the hardcoded `true` means "always has at least Regular"), and forces `raidBuffs.DivineSpirit` / `raidBuffs.ShadowProtection` to `true` outright. This runs *before* `applyBuffEffects` reads those fields (`raid.go`'s `GetRaidBuffs` → `applyAllEffects` → `applyBuffEffects`, confirmed by reading the call chain), so the stats are already folded into the baseline by the time anything renders. Toggling the checkbox afterward can't add anything on top of what's already forced to the max — which is exactly what looked like "not applying" when comparing before/after clicks on an already-maxed value.
+
+Not a bug, but genuinely confusing UI: since a Priest always has their own Power Word: Fortitude, Divine Spirit, and Shadow Protection regardless of the checkbox, showing an interactive (and, on a fresh page load before any click, visually "off") toggle for something that can never actually be turned off is misleading. Per user's request, hid these three specific toggles for Priest specifically, rather than leave a no-op control visible.
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+Added `showWhen: player => player.getClass() !== Class.ClassPriest` to:
+- `StaminaBuff` (the Power Word Fortitude tristate picker)
+- `SpiritBuff` (the Divine Spirit boolean picker)
+- The `shadowProtection` entry inside `ResistanceBuff`'s multi-icon list (shares a cell with Shadow Resistance Aura and other resist buffs, which Priests don't auto-get, so only that one sub-icon is hidden, not the whole row)
+
+Non-Priest specs are unaffected — these pickers still show normally for everyone else, since only a Priest auto-forces these three.
+
+### Verification
+
+`npx tsc --noEmit -p .` passes.

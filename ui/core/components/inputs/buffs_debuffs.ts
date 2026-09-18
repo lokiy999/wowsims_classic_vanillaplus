@@ -1,4 +1,4 @@
-import { BlessingOfKingsType, Faction, SaygesFortune, Stat } from '../../proto/common';
+import { BlessingOfKingsType, Class, Faction, SaygesFortune, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { IconEnumPicker } from '../icon_enum_picker';
 import {
@@ -117,9 +117,12 @@ export const PhysDamReductionBuff = withLabel(
 export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 	values: [
 		// Shadow
+		// Priests always have their own Shadow Protection (sim/priest/priest.go's
+		// AddRaidBuffs forces raidBuffs.shadowProtection = true unconditionally).
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(10958),
 			fieldName: 'shadowProtection',
+			showWhen: player => player.getClass() !== Class.ClassPriest,
 		}),
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(19896),
@@ -161,11 +164,16 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 	label: 'Resistances',
 });
 
+// Priests always have their own Power Word: Fortitude (sim/priest/priest.go's
+// AddRaidBuffs forces raidBuffs.powerWordFortitude to at least Regular, Improved if
+// talented), so the toggle can't do anything useful for them — hidden rather than
+// shown as a no-op checkbox.
 export const StaminaBuff = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(10938),
 		impId: ActionId.fromSpellId(14767),
 		fieldName: 'powerWordFortitude',
+		showWhen: player => player.getClass() !== Class.ClassPriest,
 	}),
 	'Stamina',
 );
@@ -217,10 +225,14 @@ export const IntellectBuff = withLabel(
 	'Intellect',
 );
 
+// Priests always have their own Divine Spirit (sim/priest/priest.go's AddRaidBuffs
+// forces raidBuffs.divineSpirit = true unconditionally) — same reasoning as
+// StaminaBuff above.
 export const SpiritBuff = withLabel(
 	makeBooleanRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(27841),
 		fieldName: 'divineSpirit',
+		showWhen: player => player.getClass() !== Class.ClassPriest,
 	}),
 	'Spirit',
 );

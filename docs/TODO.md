@@ -80,28 +80,6 @@ consumable add:**
   Fine as long as the server doesn't actually raid that content — worth
   revisiting only if it turns out to.
 
-## Found while testing something else — genuine bug, not yet fixed
-
-- **A Priest's own self-buffs (Power Word: Fortitude, Divine Spirit, Shadow
-  Protection) apply zero stats when simulating that Priest solo.** Found
-  2026-09-18 while verifying the scroll-stacking fix (Part Z, CHANGES.md).
-  `sim/priest/priest.go`'s `AddRaidBuffs` forces `raidBuffs.PowerWordFortitude`
-  (via `max(...)`), `raidBuffs.DivineSpirit`, and `raidBuffs.ShadowProtection`
-  to at least true/Regular for any simulated Priest — but toggling Power Word
-  Fortitude to Improved by hand in the Raid Buffs UI *also* produced no stat
-  change at all (Stamina stayed flat through Missing → Regular → Improved,
-  confirmed both in the sidebar and in the sim log). By contrast, Blood Pact
-  (identical tristate code pattern, same function, a few lines away) worked
-  correctly, as did Mark of the Wild, Scroll of Stamina, and Arcane
-  Brilliance + Scroll of Intellect stacking together. So this isn't the
-  scroll-stacking change — `sim/core/buffs.go`'s `applyBuffEffects` reads
-  `raidBuffs.PowerWordFortitude`/`raidBuffs.DivineSpirit` with the exact same
-  `if x > 0 { character.AddStats(...) }` shape as the buffs that *do* work,
-  so the actual root cause is still unknown (something else must be
-  clobbering these two specific stats, or the value Priest's own
-  `AddRaidBuffs` writes isn't reaching `applyBuffEffects` in time — not yet
-  diagnosed). Pre-existing, not something today's session introduced.
-
 ## Raised, never actually answered
 
 - **Scarlet Monastery set completeness.** Early on you asked me to check
