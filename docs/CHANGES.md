@@ -1961,3 +1961,15 @@ User asked, right after the Darkness/Shadow Resistance work above, to always sho
 ### Verification
 
 `npx tsc --noEmit -p .` passes; frontend rebuilt. Live-checked two very different specs: Shadow Priest now shows Shadow Resistance = 100 (matching Part AB's hand-verified number) and Arcane Resistance without any per-spec edit; Warrior shows Arcane Resistance = 27 and Shadow Resistance = 27 (base racial/gear values, no Priest-specific bonuses). No console errors beyond the pre-existing, unrelated wowhead-tooltip-fetch error.
+
+## Part AD — Fixed Undead's Shadow Resistance racial: +10 was wrong, should be +20 (2026-09-18)
+
+Newly-visible-by-default (Part AC) Shadow Resistance let the user immediately spot this one: `sim/core/racials.go` had Undead's racial Shadow Resistance as a flat `+10`, but it should be `+20`.
+
+### `sim/core/racials.go`
+
+Changed `character.AddStat(stats.ShadowResistance, 10)` to `20` for `proto.Race_RaceUndead`.
+
+### Verification
+
+`go build ./...` passes; WASM rebuilt. Live on Shadow Priest (Undead, Darkness 5/5): Shadow Resistance moved 100 → 110, exactly the expected +10 delta from this fix (10 → 20 racial, everything else unchanged).

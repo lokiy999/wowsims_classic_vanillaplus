@@ -143,7 +143,7 @@ func applyRaceEffects(agent Agent) {
 		makeBerserkingCooldown(character, .25, berserkingTimer)
 		makeBerserkingCooldown(character, .3, berserkingTimer)
 	case proto.Race_RaceUndead:
-		character.AddStat(stats.ShadowResistance, 10)
+		character.AddStat(stats.ShadowResistance, 20)
 	}
 }
 
