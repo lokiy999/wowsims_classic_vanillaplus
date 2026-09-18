@@ -322,7 +322,7 @@ enum Explosive {
 	ExplosiveGoblinLandMine = 4;
 }
 
-// NextIndex: 27
+// NextIndex: 28
 enum Potions {
 	UnknownPotion = 0;
 
@@ -363,9 +363,13 @@ enum Potions {
 	MightyTrollsBloodPotion = 25;
 	MajorTrollsBloodPotion = 26;
 
+	// Health + Mana Pots
+	MajorRejuvenationPotion = 27;
+
 	LesserManaPotion = 1 [deprecated = true];
 }
 
+// NextIndex: 10
 enum Conjured {
 	ConjuredUnknown = 0;
 	ConjuredMinorRecombobulator = 1;
@@ -375,6 +379,10 @@ enum Conjured {
 	ConjuredHealthstone = 4;
 	ConjuredGreaterHealthstone = 5;
 	ConjuredMajorHealthstone = 6;
+
+	ConjuredWhipperRootTuber = 7;
+	ConjuredNightDragonsBreath = 8;
+	ConjuredLilyRoot = 9;
 }
 
 enum Flask {

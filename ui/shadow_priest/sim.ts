@@ -1,14 +1,30 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
+import * as ConsumablesInputs from '../core/components/inputs/consumables';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import * as Mechanics from '../core/constants/mechanics.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat, WeaponImbue } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 import * as ShadowPriestInputs from './inputs.js';
 import * as Presets from './presets.js';
+
+// Wizard Oils are tagged Stat.StatSpellPower in consumables.ts, which isn't in this
+// spec's displayStats (it lists StatSpellDamage instead), so relevantStatOptions
+// hides them by default. Pull the exact config objects out of the shared weapon-imbue
+// arrays (by WeaponImbue enum value, not object identity) so they render here too.
+const WIZARD_OIL_VALUES = new Set([
+	WeaponImbue.MinorWizardOil,
+	WeaponImbue.LesserWizardOil,
+	WeaponImbue.WizardOil,
+	WeaponImbue.BrilliantWizardOil,
+	WeaponImbue.BlessedWizardOil,
+]);
+const WIZARD_OIL_INPUTS = [...ConsumablesInputs.WEAPON_IMBUES_MH_CONFIG, ...ConsumablesInputs.WEAPON_IMBUES_OH_CONFIG]
+	.filter(option => WIZARD_OIL_VALUES.has(option.config.value))
+	.map(option => option.config);
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
@@ -101,6 +117,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		BuffDebuffInputs.ManaSpringTotem,
 		BuffDebuffInputs.StaminaBuff,
 		BuffDebuffInputs.SpellWintersChillDebuff,
+		ConsumablesInputs.MajorRejuvenationPotion,
+		ConsumablesInputs.ConjuredWhipperRootTuber,
+		ConsumablesInputs.ConjuredNightDragonsBreath,
+		ConsumablesInputs.ConjuredLilyRoot,
+		...WIZARD_OIL_INPUTS,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.

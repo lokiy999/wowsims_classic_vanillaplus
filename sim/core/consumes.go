@@ -1041,6 +1041,75 @@ func makeHealthRegenMCD(itemId int32, healthPerTick float64, character *Characte
 	}
 }
 
+func makeHealthAndManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
+	minRoll := map[int32]float64{
+		18253: 1740, // Major Rejuvenation Potion
+		11951: 900,  // Whipper Root Tuber (health only)
+		11952: 700,  // Night Dragon's Breath
+		14894: 525,  // Lily Root
+	}[itemId]
+
+	maxRoll := map[int32]float64{
+		18253: 2060,
+		11951: 1399,
+		11952: 1099,
+		14894: 675,
+	}[itemId]
+
+	isHealthOnly := itemId == 11951
+
+	cdDuration := time.Minute * 2
+
+	actionID := ActionID{ItemID: itemId}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	manaMetrics := character.NewManaMetrics(actionID)
+
+	cdType := CooldownTypeSurvival
+	if !isHealthOnly {
+		// Not OR'd with CooldownTypeSurvival: that bit gates activation behind
+		// HpPercentForDefensives (see MajorCooldown.shouldActivateHelper), which would
+		// block casters from ever using this as a mana refill since their health rarely drops.
+		cdType = CooldownTypeMana
+	}
+
+	return MajorCooldown{
+		Type: cdType,
+		ShouldActivate: func(sim *Simulation, character *Character) bool {
+			if character.IsShapeshifted() {
+				return false
+			}
+			healthNeeded := character.MaxHealth()-character.CurrentHealth() >= maxRoll
+			if isHealthOnly {
+				return healthNeeded
+			}
+			totalRegen := character.ManaRegenPerSecondWhileCasting() * 2
+			manaNeeded := character.MaxMana()-(character.CurrentMana()+totalRegen) >= maxRoll
+			return healthNeeded || manaNeeded
+		},
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: cdDuration,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				healthGain := sim.RollWithLabel(minRoll, maxRoll, "Health Consumable")
+				character.GainHealth(sim, healthGain, healthMetrics)
+				if !isHealthOnly {
+					manaGain := sim.RollWithLabel(minRoll, maxRoll, "Mana Consumable")
+					character.AddMana(sim, manaGain, manaMetrics)
+				}
+			},
+		}),
+	}
+}
+
 func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	minRoll := map[int32]float64{
 		3385:  280.0,
@@ -1261,6 +1330,9 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		return makeHealthRegenMCD(3826, 20, character, potionCD)
 	case proto.Potions_MajorTrollsBloodPotion:
 		return makeHealthRegenMCD(20004, 40, character, potionCD)
+
+	case proto.Potions_MajorRejuvenationPotion:
+		return makeHealthAndManaConsumableMCD(18253, character, potionCD)
 	// case proto.Potions_GreaterArcaneProtectionPotion:
 	// 	return makeSchoolProtectionConsumableMCD(13461, character, potionCD)
 	// case proto.Potions_GreaterFireProtectionPotion:
@@ -1300,6 +1372,12 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 		mcd = makeManaConsumableMCD(12662, character, timer)
 	case proto.Conjured_ConjuredMinorRecombobulator:
 		mcd = makeManaConsumableMCD(4381, character, timer)
+	case proto.Conjured_ConjuredWhipperRootTuber:
+		mcd = makeHealthAndManaConsumableMCD(11951, character, timer)
+	case proto.Conjured_ConjuredNightDragonsBreath:
+		mcd = makeHealthAndManaConsumableMCD(11952, character, timer)
+	case proto.Conjured_ConjuredLilyRoot:
+		mcd = makeHealthAndManaConsumableMCD(14894, character, timer)
 	// Handled in the rogue package
 	// case proto.Conjured_ConjuredRogueThistleTea:
 	default:

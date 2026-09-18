@@ -145,6 +145,19 @@ export const ConjuredRogueThistleTea: ConsumableInputConfig<Conjured> = {
 	showWhen: player => player.getClass() == Class.ClassRogue,
 };
 
+export const ConjuredWhipperRootTuber: ConsumableInputConfig<Conjured> = {
+	actionId: () => ActionId.fromItemId(11951),
+	value: Conjured.ConjuredWhipperRootTuber,
+};
+export const ConjuredNightDragonsBreath: ConsumableInputConfig<Conjured> = {
+	actionId: () => ActionId.fromItemId(11952),
+	value: Conjured.ConjuredNightDragonsBreath,
+};
+export const ConjuredLilyRoot: ConsumableInputConfig<Conjured> = {
+	actionId: () => ActionId.fromItemId(14894),
+	value: Conjured.ConjuredLilyRoot,
+};
+
 export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 	{ config: ConjuredMajorHealthstone, stats: [Stat.StatArmor] },
 	{ config: ConjuredGreaterHealthstone, stats: [Stat.StatArmor] },
@@ -154,6 +167,10 @@ export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
 
 	{ config: ConjuredRogueThistleTea, stats: [] },
+
+	{ config: ConjuredWhipperRootTuber, stats: [Stat.StatArmor] },
+	{ config: ConjuredNightDragonsBreath, stats: [Stat.StatArmor] },
+	{ config: ConjuredLilyRoot, stats: [Stat.StatArmor] },
 ];
 
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });
@@ -759,6 +776,11 @@ export const WeakTrollsBloodPotion: ConsumableInputConfig<Potions> = {
 	value: Potions.WeakTrollsBloodPotion,
 };
 
+export const MajorRejuvenationPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(18253),
+	value: Potions.MajorRejuvenationPotion,
+};
+
 export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: MajorHealingPotion, stats: [Stat.StatArmor] },
 	{ config: SuperiorHealingPotion, stats: [Stat.StatArmor] },
@@ -781,6 +803,8 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: MightyTrollsBloodPotion, stats: [Stat.StatArmor] },
 	{ config: StrongTrollsBloodPotion, stats: [Stat.StatArmor] },
 	{ config: WeakTrollsBloodPotion, stats: [Stat.StatArmor] },
+
+	{ config: MajorRejuvenationPotion, stats: [Stat.StatArmor] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });

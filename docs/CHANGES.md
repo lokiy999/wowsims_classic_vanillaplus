@@ -1812,3 +1812,70 @@ Verified live on Shadow Priest: toggling the buff moved Spirit 197 → 247 (+50)
 ### Housekeeping note
 
 All three Dire Maul buffs (Slip'kik's Savvy, Fengus' Ferocity, Rallying Cry of the Dragonslayer) turned out to have the wrong effect modeled, not just stale numbers — worth remembering as a pattern if any other "world buff" ever looks suspicious: check `CSV's/Spell.csv` by `ActionID.SpellID` first, don't trust that the *type* of effect is right just because *a* number is there.
+
+## Part V — Added Major Rejuvenation Potion + 3 "Root/Breath" health-mana items (2026-09-18)
+
+User asked for Major Rejuvenation Potion as a primary potion, plus Whipper Root Tuber, Night Dragon's Breath, and Lily Root as secondary ("conjured-slot") potions. Looked up all four in `VPlusItemDB.lua`:
+
+- `18253` Major Rejuvenation Potion — "Restores 1740 to 2060 mana and health."
+- `11951` Whipper Root Tuber — "Restores 900 to 1399 health." (health only)
+- `11952` Night Dragon's Breath — "Restores 700 to 1099 mana and 700 to 1099 health."
+- `14894` Lily Root — "Restores 525 to 675 mana and health." (Conjured Item)
+
+### `proto/common.proto`
+
+Added `MajorRejuvenationPotion = 27;` to `enum Potions` (NextIndex 27→28). Per the user's clarification mid-task, the other three do **not** go in `Potions` — they go in `enum Conjured` instead, the same category as Demonic Rune, since the user wants them in the "secondary potion"/conjured slot rather than the main potion slot: added `ConjuredWhipperRootTuber = 7;`, `ConjuredNightDragonsBreath = 8;`, `ConjuredLilyRoot = 9;` (added a `NextIndex: 10` comment — `Conjured` didn't have one before).
+
+### `sim/core/consumes.go`
+
+New `makeHealthAndManaConsumableMCD(itemId, character, cdTimer)` helper (alongside the existing single-stat `makeHealthConsumableMCD`/`makeManaConsumableMCD`) — rolls once between the item's min/max and applies it to both Health and Mana, except for Whipper Root Tuber (`isHealthOnly` special case) which only restores Health per its tooltip. Wired `Potions_MajorRejuvenationPotion` into `makePotionActivationInternal`, and the three Conjured entries into `registerConjuredCD`.
+
+### `ui/core/components/inputs/consumables.ts`
+
+Added `MajorRejuvenationPotion` to `POTIONS_CONFIG`. Added `ConjuredWhipperRootTuber`, `ConjuredNightDragonsBreath`, `ConjuredLilyRoot` to `CONJURED_CONFIG`. All four tagged `stats: [Stat.StatArmor]`, matching the existing (if slightly odd) convention already used for Healthstones/Troll's Blood/healing potions in this file — `StatArmor` isn't actually granted by any of these, it's just the tag this file already uses as a de-facto "show for tanks/melee" filter.
+
+### Verification
+
+Live-verified on the Tank Warrior sim (chosen because its `displayStats` includes `Stat.StatArmor`, unlike Shadow Priest, so the `StatArmor`-tagged items are actually visible there): opened the Potions dropdown and confirmed the filtered list count (13) matches exactly what `relevantStatOptions` should allow through for that spec (7 StatArmor-tagged potions including the new Major Rejuvenation Potion + 3 rage potions + 3 healing potions). Opened the second (Conjured) dropdown in the same row and confirmed 3 Healthstone icons (`inv_stone_04`) plus exactly 3 new food/herb icons (`inv_misc_food_55`, `inv_misc_food_45`, `inv_misc_herb_02`) matching Whipper Root Tuber/Night Dragon's Breath/Lily Root — same picker/category as Demonic Rune, per the user's request. `go build ./...` passes; WASM and frontend bundle rebuilt.
+
+Along the way, re-confirmed a detail from Part T: the "Potions" row in `consumes_picker.ts` visually merges two separate underlying fields (`defaultPotion` and `defaultConjured`) into one labeled row with two icon slots — not a bug, existing intentional layout.
+
+## Part W — Made Part V's consumes visible on Priest (2026-09-18)
+
+Part V's four new items (`StatArmor`-tagged, per the file's existing convention) don't show up on any spec whose `displayStats` lacks `Stat.StatArmor` — which includes both priest specs. User asked to add them to priest specifically, so used the same `includeBuffDebuffInputs` override mechanism the file already has for exactly this purpose (see e.g. `BlessingOfWisdom`/`ManaSpringTotem` on Shadow Priest).
+
+### `ui/shadow_priest/sim.ts` / `ui/healing_priest/sim.ts`
+
+Imported `ConsumablesInputs` from `../core/components/inputs/consumables` and added `MajorRejuvenationPotion`, `ConjuredWhipperRootTuber`, `ConjuredNightDragonsBreath`, `ConjuredLilyRoot` to `includeBuffDebuffInputs` on both specs (Shadow Priest already had an `includeBuffDebuffInputs` array to append to; Healing Priest's was empty, so this created its first entries).
+
+### Verification
+
+`npx tsc --noEmit -p .` passes. Live on Shadow Priest: Major Rejuvenation Potion now appears in the Potions dropdown (previously invisible), and Whipper Root Tuber/Night Dragon's Breath/Lily Root now appear in the Conjured dropdown next to Demonic Rune. Selected Major Rejuvenation Potion and ran a full sim (3000 iterations) — completed cleanly with no errors (566.26 DPS / 167.74 HPS), confirming the potion's activation code path works for this spec. WASM was unaffected (Go side already covered by Part V); only the frontend bundle needed rebuilding.
+
+## Part X — Part V's items were selectable but never actually used (2026-09-18)
+
+User reported the four new items from Part V didn't show up in the combat log even after Part W made them visible/selectable. Root cause was in `makeHealthAndManaConsumableMCD` (`sim/core/consumes.go`, added in Part V): its `MajorCooldown.Type` was `CooldownTypeSurvival`, and `ShouldActivate` only checked the *health* deficit.
+
+Two compounding problems for a caster like Shadow Priest, who rarely takes damage in this sim:
+1. `CooldownTypeSurvival` cooldowns are gated behind `HpPercentForDefensives` in `MajorCooldown.shouldActivateHelper` (`sim/core/major_cooldown.go:134`) — skipped entirely unless that setting is > 0, which it isn't by default. So `ShouldActivate` was never even being called.
+2. Even if it had been called, checking only health deficit means a caster whose health never drops would never trigger it — the whole point of these items for a caster is the *mana* restore.
+
+Fixed by giving the health-only case (Whipper Root Tuber) `CooldownTypeSurvival` as before, but the three health+mana items `CooldownTypeMana` instead (not OR'd with Survival, specifically to avoid the `HpPercentForDefensives` gate), and updating `ShouldActivate` to fire on low health *or* low mana (mirroring the deficit calculation `makeManaConsumableMCD` already uses, including the 2-tick regen buffer).
+
+### Verification
+
+`go build ./...` passes; WASM rebuilt. Live on Shadow Priest with Lily Root selected: ran a 1-iteration sim with the log open and confirmed `Casting Lily Root`, `Recovered ... Health ... from Lily Root`, `Gained 581.3 Mana from Lily Root`, and `Major cooldown used: Lily Root` all appear in the log at 00:04.5, right when mana dipped below the threshold. Frontend bundle unchanged (Go-only fix).
+
+## Part Y — Made Wizard Oils visible on Shadow Priest (2026-09-18)
+
+User asked to add Wizard Oils to priest. These were already fully implemented on the Go side (`addImbueStats` in `sim/core/consumes.go`, all 5 tiers) and correctly configured in `ui/core/components/inputs/consumables.ts` (`CONSUMABLES_IMBUES`) — unlike Parts V/X, there was no backend bug here. The problem was the same UI-visibility issue as Part W: the configs are tagged `Stat.StatSpellPower`, and Shadow Priest's `displayStats` lists `Stat.StatSpellDamage` instead (these are two genuinely different stats in this engine — `SpellPower` is the generic caster stat that `SpellDamage` layers on top of, not a naming duplicate — so this tag is correct, just not something Shadow Priest happens to display). `relevantStatOptions` filtered the whole Weapon Imbues row down to nothing for this spec.
+
+Healing Priest didn't need this fix — its `displayStats` already includes `Stat.StatSpellPower`.
+
+### `ui/shadow_priest/sim.ts`
+
+Weapon-imbue configs are slot-specific (`WEAPON_IMBUES_MH_CONFIG`/`WEAPON_IMBUES_OH_CONFIG`, built once at module load from factory functions like `BrilliantWizardOil(slot)`), so `includeBuffDebuffInputs` has to reference the *exact same* config objects already in those arrays — calling the factory again would produce new, non-`===` objects that `Array.includes` wouldn't match. Pulled the five Wizard Oil configs out of both arrays by their stable `WeaponImbue` enum value (`option.config.value`) rather than by object identity, and spread them into `includeBuffDebuffInputs`.
+
+### Verification
+
+`npx tsc --noEmit -p .` passes; frontend bundle rebuilt (Go/WASM unchanged — this was UI-only). Live on Shadow Priest: the Weapon Imbues → Main-Hand dropdown, previously completely empty, now shows all 5 Wizard Oil tiers. Selected Brilliant Wizard Oil and confirmed the sidebar stat panel moved Spell Damage 649 → 674 (+25) and Spell Crit 6.00% → 7.00% (+1%), matching its Go-side stats exactly.
