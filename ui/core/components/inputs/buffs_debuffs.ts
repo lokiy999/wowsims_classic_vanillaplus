@@ -164,16 +164,17 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 	label: 'Resistances',
 });
 
-// Priests always have their own Power Word: Fortitude (sim/priest/priest.go's
-// AddRaidBuffs forces raidBuffs.powerWordFortitude to at least Regular, Improved if
-// talented), so the toggle can't do anything useful for them — hidden rather than
-// shown as a no-op checkbox.
+// A Priest's own Power Word: Fortitude is only forced to at least Regular
+// (sim/priest/priest.go's AddRaidBuffs: max(uiValue, ownTalentValue)) — Improved
+// requires the talent. So unlike Divine Spirit/Shadow Protection below, this toggle
+// stays visible and selectable even for a Priest: setting it to Improved still means
+// something (another priest in the raid providing the improved version) if their own
+// talent doesn't reach it.
 export const StaminaBuff = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(10938),
 		impId: ActionId.fromSpellId(14767),
 		fieldName: 'powerWordFortitude',
-		showWhen: player => player.getClass() !== Class.ClassPriest,
 	}),
 	'Stamina',
 );

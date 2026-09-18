@@ -1919,12 +1919,17 @@ Not a bug, but genuinely confusing UI: since a Priest always has their own Power
 ### `ui/core/components/inputs/buffs_debuffs.ts`
 
 Added `showWhen: player => player.getClass() !== Class.ClassPriest` to:
-- `StaminaBuff` (the Power Word Fortitude tristate picker)
 - `SpiritBuff` (the Divine Spirit boolean picker)
 - The `shadowProtection` entry inside `ResistanceBuff`'s multi-icon list (shares a cell with Shadow Resistance Aura and other resist buffs, which Priests don't auto-get, so only that one sub-icon is hidden, not the whole row)
 
-Non-Priest specs are unaffected — these pickers still show normally for everyone else, since only a Priest auto-forces these three.
+Non-Priest specs are unaffected — these pickers still show normally for everyone else, since only a Priest auto-forces these two.
+
+**`StaminaBuff` (Power Word Fortitude) was initially hidden too, then un-hidden** — user pointed out this one's different: `priest.go`'s forced value is `max(uiValue, ownTalentValue)`, not an unconditional `true` like the other two. A Priest without the Improved talent only forces Regular on themselves, so the checkbox still means something: pushing it to Improved represents *another* priest in the raid supplying the improved version. Divine Spirit and Shadow Protection have no such talent-scaled variant — `priest.go` sets them to a flat `true` with nothing else able to change that — so hiding those two remains correct.
 
 ### Verification
 
-`npx tsc --noEmit -p .` passes.
+`npx tsc --noEmit -p .` passes. Live on Shadow Priest: Raid Buffs list now shows "Stamina" (Power Word Fortitude, still adjustable) but not "Spirit" (Divine Spirit, hidden) or the Shadow Protection sub-icon.
+
+### Known gap noticed in passing, not fixed here
+
+User pointed out Shadow Protection also has a talent that increases its resistance amount by 50% in real Classic. This fork's `proto/priest.proto` has no talent field for it at all (confirmed: no "protection" or "resistance" match anywhere in the Priest talent list) — `raidBuffs.ShadowProtection` is purely a flat on/off with no scaling mechanism to hook a talent into even if one existed. Genuinely unimplemented, not a display bug; added to `docs/TODO.md`.

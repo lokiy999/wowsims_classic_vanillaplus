@@ -80,6 +80,17 @@ consumable add:**
   Fine as long as the server doesn't actually raid that content — worth
   revisiting only if it turns out to.
 
+## Known gap, not yet built
+
+- **Shadow Protection's talent-based resistance boost isn't modeled at all.**
+  Raised 2026-09-18. In real Classic, a Priest talent increases Shadow
+  Protection's shadow resistance amount by 50%. This fork's
+  `proto/priest.proto` has no talent field for it whatsoever, and
+  `raidBuffs.ShadowProtection` (`sim/core/buffs.go`) is a flat boolean with
+  no percentage-scaling mechanism to hook a talent into even if one
+  existed. Would need a new talent proto field plus wiring it into the flat
+  `BuffSpellValues[ShadowProtection]` application in `applyBuffEffects`.
+
 ## Raised, never actually answered
 
 - **Scarlet Monastery set completeness.** Early on you asked me to check
