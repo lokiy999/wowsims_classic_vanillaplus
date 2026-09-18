@@ -161,20 +161,14 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 	label: 'Resistances',
 });
 
-export const StaminaBuff = InputHelpers.makeMultiIconInput({
-	values: [
-		makeTristateRaidBuffInput({
-			actionId: () => ActionId.fromSpellId(10938),
-			impId: ActionId.fromSpellId(14767),
-			fieldName: 'powerWordFortitude',
-		}),
-		makeBooleanRaidBuffInput({
-			actionId: () => ActionId.fromItemId(10307),
-			fieldName: 'scrollOfStamina',
-		}),
-	],
-	label: 'Stamina',
-});
+export const StaminaBuff = withLabel(
+	makeTristateRaidBuffInput({
+		actionId: () => ActionId.fromSpellId(10938),
+		impId: ActionId.fromSpellId(14767),
+		fieldName: 'powerWordFortitude',
+	}),
+	'Stamina',
+);
 
 export const BloodPactBuff = withLabel(
 	makeTristateRaidBuffInput({
@@ -215,32 +209,37 @@ export const GraceOfAir = withLabel(
 	'Agility',
 );
 
-export const IntellectBuff = InputHelpers.makeMultiIconInput({
-	values: [
-		makeBooleanRaidBuffInput({
-			actionId: () => ActionId.fromSpellId(10157),
-			fieldName: 'arcaneBrilliance',
-		}),
-		makeBooleanRaidBuffInput({
-			actionId: () => ActionId.fromItemId(10308),
-			fieldName: 'scrollOfIntellect',
-		}),
-	],
-	label: 'Intellect',
-});
+export const IntellectBuff = withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: () => ActionId.fromSpellId(10157),
+		fieldName: 'arcaneBrilliance',
+	}),
+	'Intellect',
+);
 
-export const SpiritBuff = InputHelpers.makeMultiIconInput({
-	values: [
-		makeBooleanRaidBuffInput({
-			actionId: () => ActionId.fromSpellId(27841),
-			fieldName: 'divineSpirit',
-		}),
-		makeBooleanRaidBuffInput({
-			actionId: () => ActionId.fromItemId(10306),
-			fieldName: 'scrollOfSpirit',
-		}),
-	],
-	label: 'Spirit',
+export const SpiritBuff = withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: () => ActionId.fromSpellId(27841),
+		fieldName: 'divineSpirit',
+	}),
+	'Spirit',
+);
+
+// Scrolls no longer share a cell with their matching raid buff (Stamina/Intellect/Spirit
+// above) — on this server they stack with them instead of being a fallback for when the
+// raid buff is missing (see sim/core/buffs.go), so they're rendered in the Consumables
+// tab's Scrolls row (consumes_picker.ts) instead of here.
+export const ScrollOfStamina = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromItemId(10307),
+	fieldName: 'scrollOfStamina',
+});
+export const ScrollOfIntellect = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromItemId(10308),
+	fieldName: 'scrollOfIntellect',
+});
+export const ScrollOfSpirit = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromItemId(10306),
+	fieldName: 'scrollOfSpirit',
 });
 
 export const BattleShoutBuff = withLabel(
@@ -592,7 +591,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: StaminaBuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [],
 	},
 	{
@@ -602,12 +601,12 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: IntellectBuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatIntellect],
 	},
 	{
 		config: SpiritBuff,
-		picker: MultiIconPicker,
+		picker: IconPicker,
 		stats: [Stat.StatSpirit],
 	},
 

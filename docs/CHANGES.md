@@ -1879,3 +1879,31 @@ Weapon-imbue configs are slot-specific (`WEAPON_IMBUES_MH_CONFIG`/`WEAPON_IMBUES
 ### Verification
 
 `npx tsc --noEmit -p .` passes; frontend bundle rebuilt (Go/WASM unchanged — this was UI-only). Live on Shadow Priest: the Weapon Imbues → Main-Hand dropdown, previously completely empty, now shows all 5 Wizard Oil tiers. Selected Brilliant Wizard Oil and confirmed the sidebar stat panel moved Spell Damage 649 → 674 (+25) and Spell Crit 6.00% → 7.00% (+1%), matching its Go-side stats exactly.
+
+## Part Z — Scrolls of Stamina/Intellect/Spirit moved from Raid Buffs to Consumables; made them stack (2026-09-18)
+
+User asked: on Classic these three scrolls (Stamina, Intellect, Spirit) never stacked with the matching caster buff (Power Word Fortitude, Arcane Brilliance, Divine Spirit), which is why they were previously packed into the same Raid Buffs grid cell as a same-slot alternative — `else if raidBuffs.ScrollOfX`. On this server they do stack, so asked to move them to the Consumables tab to reflect that.
+
+### `sim/core/buffs.go` — stacking fix
+
+Changed all three `} else if raidBuffs.ScrollOfX { ... }` in `applyBuffEffects` to independent `if raidBuffs.ScrollOfX { ... }` blocks, so the scroll's stats now always add on top of the caster buff instead of only applying when the caster buff is absent.
+
+### `ui/core/components/inputs/buffs_debuffs.ts` — un-pack scrolls from the raid buff cells
+
+`StaminaBuff`/`IntellectBuff`/`SpiritBuff` used to be `InputHelpers.makeMultiIconInput({ values: [mainBuff, scroll] })` — two icons sharing one Raid Buffs grid cell. Reduced each back to just the single main-buff picker (`withLabel(makeTristateRaidBuffInput(...))` / `withLabel(makeBooleanRaidBuffInput(...))`), and added three new standalone exports (`ScrollOfStamina`, `ScrollOfIntellect`, `ScrollOfSpirit`) for use elsewhere. Existing `includeBuffDebuffInputs` references to `BuffDebuffInputs.StaminaBuff`/`IntellectBuff`/`SpiritBuff` in `ui/hunter/sim.ts`, `ui/feral_druid/sim.ts`, `ui/enhancement_shaman/sim.ts`, `ui/shadow_priest/sim.ts`, `ui/warden_shaman/sim.ts` needed no changes since those export names and their meaning (just the main buff now) were kept stable.
+
+**Caught by a console error, not by eye:** `RAID_BUFFS_CONFIG`'s entries for these three still said `picker: MultiIconPicker`, which crashed (`Cannot read properties of undefined (reading 'map')` inside `new MultiIconPicker`, since the config no longer has a `.values` array) as soon as the Raid Buffs section tried to render — silently breaking the *entire* Raid Buffs grid, not just these three cells. Fixed by changing those three entries to `picker: IconPicker` to match the now-single-icon config shape.
+
+### `ui/core/components/individual_sim_ui/consumes_picker.ts` — new Scrolls row
+
+Added `buildScrollsPicker()`, following the same `consumes-row` pattern as the existing rows, rendering the three scroll boolean inputs (still backed by the same `RaidBuffs` proto fields — only the UI location moved, not the data model) via `buildIconInput`. Wired into the same `waitForInit` sequence, placed right after Weapon Imbues.
+
+### Verification
+
+`npx tsc --noEmit -p .` and `go build ./...` both pass; WASM and frontend bundle rebuilt. Live on Shadow Priest:
+- Confirmed the Raid Buffs grid renders without the `MultiIconPicker` crash (no console errors on load).
+- New "Scrolls" row appears in Consumables with all three scrolls.
+- **Stacking confirmed**: enabled Arcane Brilliance (Intellect raid buff) and Scroll of Intellect together — Intellect moved 359 → 376, both active simultaneously (confirmed via the saved-settings JSON: `{"arcaneBrilliance":true,"scrollOfIntellect":true,...}`), where previously only one or the other would have applied.
+- Scroll of Stamina alone also verified working in isolation (Stamina 285 → 300, Health 4067 → 4217, exactly matching its 15 Stamina / 150 Health stat entry).
+
+While testing Power Word Fortitude specifically for a Stamina-stacking check, found it (and Divine Spirit, and Shadow Protection) apply **zero** stats to a Priest simulating themselves, regardless of the UI toggle — a separate, pre-existing bug unrelated to this change (see `docs/TODO.md`). Not fixed here; flagged instead since chasing it risked scope-creeping this change.

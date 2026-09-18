@@ -6,6 +6,7 @@ import { Component } from '../component';
 import { IconEnumPicker } from '../icon_enum_picker';
 import { buildIconInput } from '../icon_inputs.js';
 import { IconPicker } from '../icon_picker';
+import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../inputs/consumables';
 import { relevantStatOptions } from '../inputs/stat_options';
 import { MultiIconPicker } from '../multi_icon_picker';
@@ -21,6 +22,7 @@ export class ConsumesPicker extends Component {
 			this.buildPotionsPicker();
 			this.buildFlaskPicker();
 			this.buildWeaponImbuePicker();
+			this.buildScrollsPicker();
 			this.buildFoodPicker();
 			this.buildPhysicalBuffPickers();
 			this.buildDefensiveBuffPickers();
@@ -93,6 +95,31 @@ export class ConsumesPicker extends Component {
 		const pickers = [buildIconInput(imbuesElem, this.simUI.player, mhImbueOptions), buildIconInput(imbuesElem, this.simUI.player, ohImbueOptions)];
 
 		TypedEvent.onAny([this.simUI.player.gearChangeEmitter, this.simUI.player.raceChangeEmitter]).on(() => this.updateRow(row, pickers));
+		this.updateRow(row, pickers);
+	}
+
+	// On this server, scrolls stack with their matching raid buff (Power Word Fortitude,
+	// Arcane Brilliance, Divine Spirit) instead of being a fallback for when it's missing
+	// (see sim/core/buffs.go), so they're listed as consumables rather than in the Raid
+	// Buffs grid.
+	private buildScrollsPicker() {
+		const fragment = document.createElement('fragment');
+		fragment.innerHTML = `
+			<div class="consumes-row input-root input-inline">
+				<label class="form-label">Scrolls</label>
+				<div class="picker-group icon-group consumes-row-inputs consumes-scrolls"></div>
+			</div>
+    	`;
+
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const scrollsElem = this.rootElem.querySelector('.consumes-scrolls') as HTMLElement;
+
+		const pickers = [
+			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfStamina),
+			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfIntellect),
+			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfSpirit),
+		];
+
 		this.updateRow(row, pickers);
 	}
 

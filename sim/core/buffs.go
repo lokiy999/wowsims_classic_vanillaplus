@@ -224,7 +224,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	if raidBuffs.ArcaneBrilliance {
 		character.AddStats(BuffSpellValues[ArcaneIntellect])
-	} else if raidBuffs.ScrollOfIntellect {
+	}
+	if raidBuffs.ScrollOfIntellect {
 		character.AddStats(BuffSpellValues[ScrollOfIntellect])
 	}
 
@@ -291,7 +292,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 			updateStats = updateStats.Multiply(1.3).Floor()
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ScrollOfStamina {
+	}
+	if raidBuffs.ScrollOfStamina {
 		character.AddStats(BuffSpellValues[ScrollOfStamina])
 	}
 
@@ -315,7 +317,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	if raidBuffs.DivineSpirit {
 		character.AddStats(BuffSpellValues[DivineSpirit])
-	} else if raidBuffs.ScrollOfSpirit {
+	}
+	if raidBuffs.ScrollOfSpirit {
 		character.AddStats(BuffSpellValues[ScrollOfSpirit])
 	}
 
