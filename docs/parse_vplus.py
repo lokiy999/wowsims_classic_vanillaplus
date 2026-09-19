@@ -77,6 +77,23 @@ SET_ALIASES = {
     "Cenarion Armor": "Cenarion Raiment",
 }
 
+# Non-equippable custom "Use:" items (rank V stat scrolls, a Shendralar-rep reward
+# on this server per CSV's/AtlasLoot/Factions/factions.lua) that the brand-new-item
+# loop below would otherwise skip since they carry no equip "type" line in the dump.
+# AtlasLoot's own icon strings for 3 of these (inv_scroll_02strength/
+# inv_scroll_01intellect/inv_scroll_07stamina) are private-server-only composite
+# names that don't exist on the public wow.zamimg.com icon CDN this UI loads icons
+# from (confirmed via direct fetch: 503) - swapped those 3 for other real,
+# CDN-valid inv_scroll_* icons distinct from the other entries below. {id: icon}.
+MANUAL_CONSUMABLE_ITEMS = {
+    81010: "inv_scroll_02",  # Scroll of the Moon
+    81011: "inv_scroll_03",  # Nightborne Fury Saga (AtlasLoot's inv_scroll_02strength 503s)
+    81012: "inv_scroll_06",  # Highborne Scrolls (AtlasLoot's inv_scroll_01intellect 503s)
+    81013: "inv_scroll_05",  # Legacy of Suramar (AtlasLoot's inv_scroll_07stamina 503s)
+    81014: "inv_scroll_01",  # A Wisp's Tale
+    81015: "inv_scroll_07",  # Memory of Hyjal
+}
+
 # Every class tier set on the server is Tier 1 (MC/BWL) - there is no Tier 2.
 # Force phase 1 on all pieces so they show together in the Phase 1 picker.
 TIER1_SETS = {
@@ -515,7 +532,7 @@ def main():
         if iid in have or iid in used_db_ids or iid in renumber_targets:
             continue
         entry, it = _entry_for(iid, lines)
-        if "type" not in it:
+        if "type" not in it and iid not in MANUAL_CONSUMABLE_ITEMS:
             continue
         cfg = NEW_SETS.get(it.get("setName"))
         if cfg is not None:
@@ -525,10 +542,14 @@ def main():
         elif iid in add_items:
             entry["phase"] = add_items[iid]
             entry["ilvl"] = {1: 66, 2: 66, 3: 76, 4: 80}.get(add_items[iid], 66)
+        elif iid in MANUAL_CONSUMABLE_ITEMS:
+            entry["phase"], entry["ilvl"] = 1, 60
         else:
             continue
         entry["name"] = it["name"]
-        if iid in icons:
+        if iid in MANUAL_CONSUMABLE_ITEMS:
+            entry["icon"] = MANUAL_CONSUMABLE_ITEMS[iid]
+        elif iid in icons:
             entry["icon"] = icons[iid]
         for k in ("quality", "unique", "type", "armorType", "weaponType",
                   "handType", "rangedWeaponType", "classAllowlist"):

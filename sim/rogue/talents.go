@@ -10,7 +10,8 @@ import (
 
 func (rogue *Rogue) ApplyTalents() {
 	rogue.applyRuthlessness()
-	rogue.applyMurder()
+	rogue.applyCombatRush()
+rogue.applyMurder()
 	rogue.applyRelentlessStrikes()
 	rogue.applySealFate()
 	rogue.applyWeaponSpecializations()
@@ -18,11 +19,15 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.applyInitiative()
 
 	rogue.AddStat(stats.Dodge, 1*float64(int32(0) /*removed*/))
-	rogue.AddStat(stats.Parry, 1*float64(rogue.Talents.Deflection))
+	rogue.AddStat(stats.Parry, []float64{0, 3, 5}[rogue.Talents.Deflection])  // DBC: 3/5%
+	rogue.AddStat(stats.Dodge, []float64{0, 3, 5}[rogue.Talents.Elusiveness]) // DBC: Elusiveness 3/5% dodge
+	if rogue.Talents.Vigor {
+		rogue.ApplyEnergyTickMultiplier(0.25) // DBC: +5 energy per tick on top of 20
+	}
 	rogue.AddStat(stats.MeleeCrit, 1*float64(rogue.Talents.Malice))
 	rogue.AddStat(stats.MeleeHit, 1*float64(rogue.Talents.Precision))
 	// TODO: Test the Armor reduction amount
-	rogue.AddStat(stats.ArmorPenetration, float64(5/3*int32(0) /*removed*/*rogue.Level))
+	rogue.AddStat(stats.ArmorPenetration, float64(5/3*int32(0) /*removed*/ *rogue.Level))
 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()
 
 	if rogue.Talents.Deadliness > 0 {
@@ -218,7 +223,7 @@ func (rogue *Rogue) applyInitiative() {
 		return
 	}
 
-	procChance := 0.25 * float64(rogue.Talents.Initiative)
+	procChance := 0.30 * float64(rogue.Talents.Initiative) // DBC: 30%/rank
 	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 13980})
 
 	rogue.RegisterAura(core.Aura{
@@ -242,14 +247,14 @@ func (rogue *Rogue) applyInitiative() {
 // Rogue weapon specialization talents. Bonus is shown if the main hand is specialized, but not if off hand only
 func (rogue *Rogue) applyWeaponSpecializations() {
 	// Sword specialization. Implemented in 'sword_specialization.go'
-	if swordSpec := int32(0) /*weapon spec reworked -> Weapon Expertise (TODO)*/; swordSpec > 0 {
+	if swordSpec := int32(0); /*weapon spec reworked -> Weapon Expertise (TODO)*/ swordSpec > 0 {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeSword); mask != core.ProcMaskUnknown {
 			rogue.registerSwordSpecialization(mask)
 		}
 	}
 
 	// Dagger Specialization
-	if daggerSpec := int32(0) /*removed*/; daggerSpec > 0 {
+	if daggerSpec := int32(0); /*removed*/ daggerSpec > 0 {
 		switch rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeDagger) {
 		case core.ProcMaskMelee:
 			rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(daggerSpec))
@@ -271,7 +276,7 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 	}
 
 	// Fist Weapon Specialization. Same as above but for fists
-	if fistSpec := int32(0) /*removed*/; fistSpec > 0 {
+	if fistSpec := int32(0); /*removed*/ fistSpec > 0 {
 		switch rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeFist) {
 		case core.ProcMaskMelee:
 			rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(fistSpec))
@@ -293,7 +298,7 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 	}
 
 	// Mace Specialization. Offers weapon skill for Maces and RNG stun (not implemented for being useless on boss)
-	if maceSpec := int32(0) /*removed*/; maceSpec > 0 {
+	if maceSpec := int32(0); /*removed*/ maceSpec > 0 {
 		if mask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeMace); mask != core.ProcMaskUnknown {
 			rogue.PseudoStats.MacesSkill += float64(maceSpec)
 		}
@@ -302,10 +307,13 @@ func (rogue *Rogue) applyWeaponSpecializations() {
 
 func (rogue *Rogue) applyWeaponExpertise() {
 	if wepExpertise := rogue.Talents.WeaponExpertise; wepExpertise > 0 {
-		wepBonus := []float64{0, 3, 5}
-		rogue.PseudoStats.SwordsSkill += wepBonus[wepExpertise]
-		rogue.PseudoStats.DaggersSkill += wepBonus[wepExpertise]
-		rogue.PseudoStats.UnarmedSkill += wepBonus[wepExpertise]
+// Vanilla+ calculator: +1%/rank crit with Axe, Fist and Dagger; Maces ignore 2 armor per level per rank.
+		for _, wt := range []proto.WeaponType{proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist, proto.WeaponType_WeaponTypeDagger} {
+			rogue.applyWeaponTypeCrit(wt, float64(wepExpertise))
+		}
+		if rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeMace) != core.ProcMaskUnknown {
+			rogue.AddStat(stats.ArmorPenetration, 2*float64(rogue.Level)*float64(wepExpertise))
+		}
 	}
 }
 
@@ -421,9 +429,9 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueAdrenalineRush,
-		ActionID: 	 AdrenalineRushActionID,
-		Cast: 		 core.CastConfig{
+		SpellCode: SpellCode_RogueAdrenalineRush,
+		ActionID:  AdrenalineRushActionID,
+		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},
@@ -451,5 +459,43 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 }
 
 func (rogue *Rogue) lethality() float64 {
-	return 0.06 * float64(rogue.Talents.Lethality)
+	return 0.10 * float64(rogue.Talents.Lethality) // DBC: 10%/rank
+}
+
+func (rogue *Rogue) applyWeaponTypeCrit(weaponType proto.WeaponType, points float64) {
+	crit := core.CritRatingPerCritChance * points
+	switch rogue.GetProcMaskForTypes(weaponType) {
+	case core.ProcMaskMelee:
+		rogue.AddStat(stats.MeleeCrit, crit)
+	case core.ProcMaskMeleeMH:
+		rogue.AddStat(stats.MeleeCrit, crit)
+		rogue.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+				spell.BonusCritRating -= crit
+			}
+		})
+	case core.ProcMaskMeleeOH:
+		rogue.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+				spell.BonusCritRating += crit
+			}
+		})
+	}
+}
+
+// Combat Rush (Vanilla+ calculator): auto attacks have a 4%/rank chance to regain 20 energy.
+func (rogue *Rogue) applyCombatRush() {
+	if rogue.Talents.CombatRush == 0 {
+		return
+	}
+	procChance := 0.04 * float64(rogue.Talents.CombatRush)
+	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 33720})
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
+		Label: "Combat Rush",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.Proc(procChance, "Combat Rush") {
+				rogue.AddEnergy(sim, 20, energyMetrics)
+			}
+		},
+	}))
 }

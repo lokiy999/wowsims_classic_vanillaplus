@@ -92,6 +92,7 @@ func (priest *Priest) Initialize() {
 		priest.registerStarshardsSpell()
 	}
 	priest.registerSmiteSpell()
+	priest.registerRequitalSpell()
 	priest.registerHolyFire()
 
 	priest.registerPowerInfusionCD()

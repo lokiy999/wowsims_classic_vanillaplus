@@ -32,7 +32,7 @@ func (rogue *Rogue) registerEviscerate() {
 		25: 6762,
 		40: 8624,
 		50: 11299,
-		60: core.TernaryInt32(core.IncludeAQ, 31016, 11300), 
+		60: core.TernaryInt32(core.IncludeAQ, 31016, 11300),
 	}[rogue.Level]
 
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
@@ -61,9 +61,9 @@ func (rogue *Rogue) registerEviscerate() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplier: 1 +
-			[]float64{0, 0.05, 0.10, 0.15}[rogue.Talents.ImprovedEviscerate] +
-			[]float64{0, 0.05, 0.10, 0.15, 0.20, 0.25}[rogue.Talents.Aggression], // DBC: 5%/rank
+		// DBC: Improved Eviscerate is +5%/rank crit chance, not damage.
+		BonusCritRating:  5 * float64(rogue.Talents.ImprovedEviscerate) * core.CritRatingPerCritChance,
+		DamageMultiplier: 1 + []float64{0, 0.05, 0.10, 0.15, 0.20, 0.25}[rogue.Talents.Aggression], // DBC: 5%/rank
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

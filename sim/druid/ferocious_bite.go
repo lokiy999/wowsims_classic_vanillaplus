@@ -88,7 +88,7 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 			return druid.ComboPoints() > 0
 		},
 
-		DamageMultiplierAdditive: 1 + 0.03*float64(druid.Talents.FeralAggression),
+		DamageMultiplierAdditive: 1 + 0.05*float64(druid.Talents.FeralAggression),
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
 		BonusCoefficient:         1,

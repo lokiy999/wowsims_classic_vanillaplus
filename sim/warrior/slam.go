@@ -28,7 +28,7 @@ func (warrior *Warrior) registerSlamSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*1500 - time.Millisecond*167*time.Duration(warrior.Talents.Slamcraft) /* TODO verify Slamcraft: -0.5s at 3/3 */,
+				CastTime: time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.Slamcraft), // DBC: -0.5s/rank
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if spell.CastTime() > 0 {
@@ -43,7 +43,6 @@ func (warrior *Warrior) registerSlamSpell() {
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140, // Should this be 54 or the old 140 value from before SoD?
 		BonusCoefficient: 1,
-
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())

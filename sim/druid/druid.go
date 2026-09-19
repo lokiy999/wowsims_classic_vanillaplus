@@ -108,7 +108,7 @@ func (druid *Druid) GetCharacter() *core.Character {
 
 func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if (raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectRegular) && (druid.Talents.ImprovedMarkOfTheWild > 0) {
-		druid.AddStats(core.BuffSpellValues[core.MarkOfTheWild].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
+		druid.AddStats(core.BuffSpellValues[core.MarkOfTheWild].Multiply(0.20 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
 
 	// TODO: These should really be aura attached to the actual forms

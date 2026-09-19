@@ -40,7 +40,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance && hunter.DefensiveState.IsActive()
 		},
 
-		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
+		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 3 * core.CritRatingPerCritChance, // DBC: 3%/rank
 		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

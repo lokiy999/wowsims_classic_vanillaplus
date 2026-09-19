@@ -36,7 +36,7 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 		BerserkerStance: SpellCode_WarriorStanceBerserker,
 	}[stance]
 	actionID := aura.ActionID
-	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
+	maxRetainedRage := 10 * float64(warrior.Talents.TacticalMastery) // confirmed: 10/20/30
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
 	stanceSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{

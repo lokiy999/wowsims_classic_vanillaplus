@@ -17,7 +17,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 	manaCost := [CorruptionRanks + 1]float64{0, 35, 55, 100, 160, 225, 290, 340}[rank]
 	level := [CorruptionRanks + 1]int{0, 4, 14, 24, 34, 44, 54, 60}[rank]
 
-	castTime := time.Millisecond * (2000 - (400 * time.Duration(warlock.Talents.ImprovedCorruption)))
+	castTime := time.Millisecond * 2000
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -30,7 +30,8 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
+			Multiplier: 100 - 6*int32(warlock.Talents.ImprovedCorruption), // DBC: -6% mana per rank
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

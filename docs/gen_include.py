@@ -38,6 +38,11 @@ AV_EXTRA_IDS = {19105, 19106, 19107, 19108, 19109}
 # Rule 3 hard exclusions that would otherwise pass Rule 1 (not craftable yet).
 FROST_RESIST_SETS = {"Icebane", "Glacial", "Polar", "Icy Scale"}
 
+# Non-equippable custom "Use:" items (rank V stat scrolls) that Rule 1b would
+# otherwise drop since they have no equip "type" -- see parse_vplus.py's
+# MANUAL_CONSUMABLE_ITEMS for the matching hand-added db entries.
+MANUAL_INCLUDE_IDS = {81010, 81011, 81012, 81013, 81014, 81015}
+
 # Recipe items (crafting plans/patterns/schematics/etc.) are not equippable gear --
 # AtlasLoot Crafting tables list the recipe drop itself, which would otherwise pass
 # Rule 1a alongside the actual crafted item. Exclude by name prefix.
@@ -171,6 +176,8 @@ def main():
                 continue
             included.add(sid)
             n_preset += 1
+
+    included |= MANUAL_INCLUDE_IDS
 
     json.dump(sorted(included), open(INCLUDED, "w"), indent=0)
     json.dump({str(k): v for k, v in sorted(add.items())}, open(ADD, "w"), indent=0)

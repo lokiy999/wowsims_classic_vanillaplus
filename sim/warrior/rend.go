@@ -21,7 +21,7 @@ func (warrior *Warrior) registerRendSpell() {
 
 	baseDamage := rend.damage
 
-	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
+	damageMultiplier := 1.0 // DBC: Improved Rend allows 2 stacks; the retail damage bonus was removed
 
 	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorRend,

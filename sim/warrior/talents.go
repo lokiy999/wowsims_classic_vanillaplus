@@ -10,14 +10,19 @@ import (
 )
 
 func (warrior *Warrior) ToughnessArmorMultiplier() float64 {
-	return 1.0 + 0.02*float64(warrior.Talents.Toughness)
+	return 1.0 + 0.03*float64(warrior.Talents.Toughness) // DBC: 3%/rank
 }
 
 func (warrior *Warrior) ApplyTalents() {
 	warrior.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(warrior.Talents.Cruelty))
 	warrior.ApplyEquipScaling(stats.Armor, warrior.ToughnessArmorMultiplier())
-	warrior.AddStat(stats.Defense, 2*float64(warrior.Talents.Anticipation))
-	warrior.AddStat(stats.Parry, 1*float64(warrior.Talents.Deflection))
+	// DBC: Anticipation reduces the chance to be critically hit by 1%/rank.
+	warrior.PseudoStats.ReducedCritTakenChance += 0.01 * float64(warrior.Talents.Anticipation)
+	warrior.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*float64(warrior.Talents.Precision)) // DBC: Precision 1%/rank
+	warrior.MultiplyStat(stats.Health, 1+0.02*float64(warrior.Talents.Vitality))                        // DBC: Vitality 2%/rank
+	warrior.applyArmsExtras()
+	warrior.applyWeaponExpertiseTypes()
+	warrior.AddStat(stats.Parry, []float64{0, 3, 5}[warrior.Talents.Deflection]) // DBC: 3/5%
 
 	warrior.applyAngerManagement()
 	warrior.applyDeepWounds()
@@ -42,7 +47,7 @@ func (warrior *Warrior) applyAngerManagement() {
 
 	warrior.RegisterResetEffect(func(sim *core.Simulation) {
 		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-			Period: time.Second * 3,
+			Period: time.Second, // DBC: 1 rage per second in combat
 			OnAction: func(sim *core.Simulation) {
 				warrior.AddRage(sim, 1, rageMetrics)
 				warrior.LastAMTick = sim.CurrentTime
@@ -56,7 +61,7 @@ func (warrior *Warrior) applyTwoHandedWeaponSpecialization() {
 		return
 	}
 
-	multiplier := 1 + 0.01*float64(warrior.Talents.TwoHandedWeaponSpecialization)
+	multiplier := 1 + 0.02*float64(warrior.Talents.TwoHandedWeaponSpecialization) // DBC: 2%/rank
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.BonusCoefficient > 0 {
 			spell.DamageMultiplier *= multiplier
@@ -117,7 +122,7 @@ func (warrior *Warrior) applyUnbridledWrath() {
 		return
 	}
 
-	procChance := 0.08 * float64(warrior.Talents.UnbridledWrath)
+	procChance := 0.05 * float64(warrior.Talents.UnbridledWrath) // DBC: 5%/rank, 5 rage (spell 12964)
 
 	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12964})
 
@@ -133,7 +138,7 @@ func (warrior *Warrior) applyUnbridledWrath() {
 			}
 
 			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.RandomFloat("Unbrided Wrath") < procChance {
-				warrior.AddRage(sim, 1, rageMetrics)
+				warrior.AddRage(sim, 5, rageMetrics)
 			}
 		},
 	})
@@ -144,20 +149,19 @@ func (warrior *Warrior) applyEnrage() {
 		return
 	}
 
+	// Confirmed by user: each critical hit taken adds a stack of +1%/rank melee damage,
+	// up to 10 stacks, lasting 15s. Stacks are not consumed by swings.
+	perStack := 0.01 * float64(warrior.Talents.Enrage)
 	warrior.EnrageAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:     "Enrage",
 		ActionID:  core.ActionID{SpellID: 13048},
-		Duration:  time.Second * 12,
-		MaxStacks: 12,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.05*float64(warrior.Talents.Enrage)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1 + 0.05*float64(warrior.Talents.Enrage)
+		Duration:  time.Second * 15,
+		MaxStacks: 10,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1 + perStack*float64(oldStacks)
+			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + perStack*float64(newStacks)
 		},
 	})
-
-	warrior.EnrageAura.NewExclusiveEffect("Enrage", true, core.ExclusiveEffect{Priority: 5 * float64(warrior.Talents.Enrage)})
 
 	warrior.RegisterAura(core.Aura{
 		Label:    "Enrage Trigger",
@@ -165,28 +169,12 @@ func (warrior *Warrior) applyEnrage() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !warrior.EnrageAura.IsActive() {
-				return
-			}
-
-			if spell.ProcMask.Matches(core.ProcMaskMelee) {
-				warrior.EnrageAura.RemoveStack(sim)
-			}
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
-
-			if !result.Outcome.Matches(core.OutcomeCrit) {
-				return
-			}
-
 			warrior.EnrageAura.Activate(sim)
-			if warrior.EnrageAura.IsActive() {
-				warrior.EnrageAura.SetStacks(sim, 12)
-			}
+			warrior.EnrageAura.AddStack(sim)
 		},
 	})
 }
@@ -271,7 +259,7 @@ func (warrior *Warrior) makeFlurryAura(points int32) *core.Aura {
 	}
 
 	spellID := []int32{12319, 12971, 12972, 12973, 12974}[points-1]
-	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	attackSpeed := []float64{1.05, 1.10, 1.15, 1.20, 1.25}[points-1] // DBC: 5%/rank
 
 	aura := warrior.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
@@ -351,11 +339,11 @@ func (warrior *Warrior) registerDeathWishCD() {
 		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
-			warrior.PseudoStats.ArmorMultiplier *= 0.8
+			warrior.PseudoStats.ArmorMultiplier *= 0.5 // DBC: -50% armor
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.2
-			warrior.PseudoStats.ArmorMultiplier /= 0.8
+			warrior.PseudoStats.ArmorMultiplier /= 0.5
 		},
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
@@ -434,4 +422,74 @@ func (warrior *Warrior) registerLastStandCD() {
 
 func (warrior *Warrior) impale() float64 {
 	return 0.1 * float64(warrior.Talents.Impale)
+}
+
+// Arms/Prot talents with DBC values that were missing: Dog of War (-4%/rank ability cost),
+// Para Bellum (-4%/rank ability cooldowns), Training and Discipline (-1 rage/rank).
+func (warrior *Warrior) applyArmsExtras() {
+	if warrior.Talents.DogOfWar > 0 || warrior.Talents.TrainingAndDiscipline > 0 {
+		pct := 4 * warrior.Talents.DogOfWar
+		flat := int32(warrior.Talents.TrainingAndDiscipline)
+		warrior.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Cost != nil && spell.Cost.CostType() == core.CostTypeRage && spell.Cost.BaseCost > 0 {
+				spell.Cost.Multiplier -= pct
+				spell.Cost.FlatModifier -= flat
+			}
+		})
+	}
+	if warrior.Talents.ParaBellum > 0 {
+		factor := 1 - 0.04*float64(warrior.Talents.ParaBellum)
+		warrior.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.CD.Timer != nil && spell.CD.Duration > 0 && spell.SpellCode != SpellCode_WarriorNone {
+				spell.CD.Duration = time.Duration(float64(spell.CD.Duration) * factor)
+			}
+		})
+	}
+// Slamcraft: +10%/rank Shield Slam crit (Slam cast time reduction is in slam.go).
+	if warrior.Talents.Slamcraft > 0 {
+		crit := 10 * float64(warrior.Talents.Slamcraft) * core.CritRatingPerCritChance
+		warrior.OnSpellRegistered(func(spell *core.Spell) {
+if spell.SpellCode == SpellCode_WarriorShieldSlam {
+				spell.BonusCritRating += crit
+			}
+		})
+	}
+}
+
+// Weapon Expertise (Vanilla+ calculator): +1%/rank crit with Axes and Polearms; Maces ignore
+// 2 armor per level per rank. (The Sword extra attack is in applyWeaponExpertise.)
+// Improved Mortal Strike: -0.5s cooldown and +5% damage per rank.
+func (warrior *Warrior) applyWeaponExpertiseTypes() {
+	if rank := float64(warrior.Talents.WeaponExpertise); rank > 0 {
+		crit := core.CritRatingPerCritChance * rank
+		switch warrior.GetProcMaskForTypes(proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypePolearm) {
+		case core.ProcMaskMelee:
+			warrior.AddStat(stats.MeleeCrit, crit)
+		case core.ProcMaskMeleeMH:
+			warrior.AddStat(stats.MeleeCrit, crit)
+			warrior.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating -= crit
+				}
+			})
+		case core.ProcMaskMeleeOH:
+			warrior.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating += crit
+				}
+			})
+		}
+		if warrior.GetProcMaskForTypes(proto.WeaponType_WeaponTypeMace) != core.ProcMaskUnknown {
+			warrior.AddStat(stats.ArmorPenetration, 2*float64(warrior.Level)*rank)
+		}
+	}
+	if warrior.Talents.ImprovedMortalStrike > 0 {
+		points := float64(warrior.Talents.ImprovedMortalStrike)
+		warrior.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_WarriorMortalStrike {
+				spell.CD.Duration -= time.Millisecond * 500 * time.Duration(warrior.Talents.ImprovedMortalStrike)
+				spell.DamageMultiplier *= 1 + 0.05*points
+			}
+		})
+	}
 }

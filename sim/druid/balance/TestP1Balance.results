@@ -1,49 +1,49 @@
 character_stats_results: {
  key: "TestP1Balance-Phase1-CharacterStats-Default"
  value: {
-  final_stats: 300.15
-  final_stats: 266.8
-  final_stats: 478.745
-  final_stats: 196.65
-  final_stats: 210.45
-  final_stats: 215.55
+  final_stats: 333.96
+  final_stats: 297.275
+  final_stats: 461.725
+  final_stats: 220.11
+  final_stats: 298.54
+  final_stats: 73.37
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 49.25
+  final_stats: 92.25
   final_stats: 0
-  final_stats: 26.08406
+  final_stats: 18.47584
   final_stats: 0
   final_stats: 0
-  final_stats: 1287.3
+  final_stats: 1089.902
   final_stats: 1
-  final_stats: 28.24
+  final_stats: 29.76375
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 3913.75
+  final_stats: 4265.65
   final_stats: 0
   final_stats: 0
-  final_stats: 2138.6
-  final_stats: 466
+  final_stats: 2271.55
+  final_stats: 138.6
   final_stats: 16
   final_stats: 5.64
   final_stats: 0
-  final_stats: 15.88
+  final_stats: 17.40375
   final_stats: 5.64
   final_stats: 0
-  final_stats: 6709.9725
-  final_stats: 35
+  final_stats: 6857.82563
+  final_stats: 40
   final_stats: 68
   final_stats: 68
   final_stats: 78
   final_stats: 68
-  final_stats: 384
+  final_stats: 456
   final_stats: 15
-  final_stats: 50
+  final_stats: 150
   final_stats: 0
  }
 }
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.1179
+  weights: 0.1334
   weights: 0
-  weights: 0.28684
-  weights: 0
-  weights: 0
+  weights: 0.2909
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.39323
-  weights: 0.48769
+  weights: 0
+  weights: 0
+  weights: 1.25725
+  weights: 0.4822
   weights: 0
   weights: 0
   weights: 0
@@ -99,161 +99,161 @@ stat_weights_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-CenarionArmor"
  value: {
-  dps: 112.7165
-  tps: 122.57566
+  dps: 102.08472
+  tps: 108.16172
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-Champion'sRefuge"
  value: {
-  dps: 137.24862
-  tps: 147.10779
+  dps: 127.77228
+  tps: 133.84928
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-FeralheartRaiment"
  value: {
-  dps: 111.55028
-  tps: 121.37988
+  dps: 100.5693
+  tps: 107.85835
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-FieldMarshal'sSanctuary"
  value: {
-  dps: 139.30589
-  tps: 149.16506
+  dps: 129.67168
+  tps: 135.74868
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-LieutenantCommander'sRefuge"
  value: {
-  dps: 137.24862
-  tps: 147.10779
+  dps: 127.77228
+  tps: 133.84928
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-StormrageRaiment"
  value: {
-  dps: 126.06622
-  tps: 133.41415
+  dps: 117.11845
+  tps: 123.19545
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-TalonclawRegalia"
  value: {
-  dps: 178.55171
-  tps: 187.98952
+  dps: 170.26081
+  tps: 176.50989
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-UrsocArmor"
  value: {
-  dps: 110.05678
-  tps: 119.91595
+  dps: 99.37138
+  tps: 105.44838
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-Warlord'sSanctuary"
  value: {
-  dps: 139.30589
-  tps: 149.16506
+  dps: 129.67168
+  tps: 135.74868
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Average-Default"
  value: {
-  dps: 114.88558
-  tps: 124.91681
+  dps: 104.11928
+  tps: 110.2373
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 115.54043
-  tps: 309.53109
+  dps: 102.80167
+  tps: 223.85
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 115.54043
-  tps: 125.23997
+  dps: 102.80167
+  tps: 108.85409
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 111.93685
-  tps: 118.00893
+  dps: 99.96191
+  tps: 106.03399
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 70.22396
-  tps: 191.07794
+  dps: 62.44943
+  tps: 183.30341
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 70.22396
-  tps: 76.26666
+  dps: 62.44943
+  tps: 68.49213
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 81.11986
-  tps: 81.11986
+  dps: 70.09242
+  tps: 70.09242
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 112.83158
-  tps: 309.50853
+  dps: 102.15273
+  tps: 223.20107
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 112.83158
-  tps: 122.66543
+  dps: 102.15273
+  tps: 108.20515
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 109.53638
-  tps: 115.60846
+  dps: 99.36867
+  tps: 105.44076
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 69.54609
-  tps: 190.40007
+  dps: 61.69011
+  tps: 182.54408
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 69.54609
-  tps: 75.58879
+  dps: 61.69011
+  tps: 67.73281
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 80.66535
-  tps: 80.66535
+  dps: 69.64981
+  tps: 69.64981
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 113.03089
-  tps: 122.89006
+  dps: 102.33576
+  tps: 108.41276
  }
 }

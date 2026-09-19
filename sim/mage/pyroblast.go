@@ -51,6 +51,7 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 
 	spellConfig := core.SpellConfig{
 		ActionID:     actionID,
+		SpellCode:    SpellCode_MagePyroblast,
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,

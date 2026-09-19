@@ -27,6 +27,8 @@ func (warlock *Warlock) applyDemonArmor() {
 		60: 15.0,
 	}[warlock.Level]
 
+	// DBC: Demonic Embrace +10%/rank effectiveness.
+	armor *= 1 + 0.10*float64(warlock.Talents.DemonicEmbrace)
 	warlock.AddStat(stats.Armor, armor)
 	warlock.AddStat(stats.ShadowResistance, shadowRes)
 

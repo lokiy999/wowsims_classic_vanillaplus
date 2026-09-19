@@ -37,9 +37,7 @@ func (paladin *Paladin) ApplyTalents() {
 	if paladin.Talents.Vengeance > 0 {
 		paladin.applyVengeance()
 	}
-	if paladin.Talents.Vindication > 0 {
-		paladin.applyVindication()
-	}
+	// Vindication (DBC) only debuffs the target's stats; the retail +Attack Power buff was removed.
 	// Holy Power: +2% Holy spell crit per rank.
 	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 2 * core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 
@@ -55,6 +53,7 @@ func (paladin *Paladin) ApplyTalents() {
 
 	// Blessed Strikes: attacks ignore up to 180 armor per rank.
 	if paladin.Talents.BlessedStrikes > 0 {
+		// Confirmed by user: 180 armor ignored per rank.
 		paladin.AddStat(stats.ArmorPenetration, 180*float64(paladin.Talents.BlessedStrikes))
 	}
 
@@ -68,6 +67,10 @@ func (paladin *Paladin) ApplyTalents() {
 		})
 	}
 
+	// Healing Light: -4%/rank Holy damage. Codex of the Silver Hand: 20%/rank mana regen while casting.
+	paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1 - 0.04*float64(paladin.Talents.HealingLight)
+	paladin.PseudoStats.SpiritRegenRateCasting += 0.20 * float64(paladin.Talents.CodexOfTheSilverHand)
+	paladin.applyVerifiedExtras()
 	paladin.applyRedoubt()
 	paladin.applyReckoning()
 	paladin.applyImprovedLayOnHands()
@@ -244,7 +247,7 @@ func (paladin *Paladin) applyImprovedLayOnHands() {
 
 	if paladin.Talents.ImprovedLayOnHands > 0 {
 
-		armorMultiplier := []float64{1, 1.15, 1.3}[paladin.Talents.ImprovedLayOnHands]
+		armorMultiplier := []float64{1, 1.3, 1.3}[paladin.Talents.ImprovedLayOnHands] // DBC: 30% at both ranks
 		auraID := []int32{0, 20233, 20236}[paladin.Talents.ImprovedLayOnHands]
 
 		paladin.RegisterAura(core.Aura{
@@ -262,6 +265,28 @@ func (paladin *Paladin) applyImprovedLayOnHands() {
 					aura.Activate(sim)
 				}
 			},
+		})
+	}
+}
+
+// Talents verified against the Vanilla+ talent calculator tooltips (2026-09-19).
+func (paladin *Paladin) applyVerifiedExtras() {
+	// Unbreakability: -5% damage taken per rank.
+	if paladin.Talents.Unbreakability > 0 {
+		paladin.PseudoStats.DamageTakenMultiplier *= 1 - 0.05*float64(paladin.Talents.Unbreakability)
+	}
+
+	// Divine Concentration: regenerates 1% of total mana every 15/10/5 seconds.
+	if paladin.Talents.DivineConcentration > 0 {
+		period := []time.Duration{0, 15 * time.Second, 10 * time.Second, 5 * time.Second}[paladin.Talents.DivineConcentration]
+		manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 33000})
+		paladin.RegisterResetEffect(func(sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: period,
+				OnAction: func(sim *core.Simulation) {
+					paladin.AddMana(sim, 0.01*paladin.MaxMana(), manaMetrics)
+				},
+			})
 		})
 	}
 }

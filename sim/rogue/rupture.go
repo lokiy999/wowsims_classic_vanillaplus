@@ -40,7 +40,7 @@ func (rogue *Rogue) registerRupture() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[int32(0) /*removed*/],
+DamageMultiplier: 1 + 0.10*float64(rogue.Talents.Bloodthirsty), // Vanilla+ calculator: +10%/rank
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

@@ -17,7 +17,10 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyMoonglow()
 	druid.applyMoonfury()
 
-	druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
+	// DBC: Natural Weapons +1%/rank to all damage.
+	druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(druid.Talents.NaturalWeapons)
+	druid.applyBalanceExtras()
+	druid.applyRestoExtras()
 
 	// Feral
 	druid.applyBloodFrenzy()
@@ -25,21 +28,22 @@ func (druid *Druid) ApplyTalents() {
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 
 	if druid.Talents.HeartOfTheWild > 0 {
-		bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
+		bonus := 0.06 * float64(druid.Talents.HeartOfTheWild) // DBC: 6%/rank Int and Spirit
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
+		druid.MultiplyStat(stats.Spirit, 1.0+bonus)
 	}
 
 	// Restoration
 	druid.applyFuror()
 
-	druid.PseudoStats.SpiritRegenRateCasting += .05 * float64(druid.Talents.Reflection)
+	druid.PseudoStats.SpiritRegenRateCasting += .10 * float64(druid.Talents.Reflection) // DBC: 10%/rank
 }
 
 func (druid *Druid) ThickHideMultiplier() float64 {
 	thickHideMulti := 1.0
 
 	if druid.Talents.ThickHide > 0 {
-		thickHideMulti += 0.04 + 0.03*float64(druid.Talents.ThickHide-1)
+		thickHideMulti += 0.05 * float64(druid.Talents.ThickHide) // DBC: 5%/rank
 	}
 
 	return thickHideMulti
@@ -68,8 +72,11 @@ func (druid *Druid) applyNaturesGrace() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DefaultCast.CastTime -= time.Millisecond * 500
-
+				// DBC (16886): next spell has -50% cast time and -50% mana cost.
+				spell.CastTimeMultiplier -= 0.5
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= 50
+				}
 				if spell.SpellCode == SpellCode_DruidWrath {
 					spell.DefaultCast.GCD -= time.Millisecond * 500
 				}
@@ -77,8 +84,10 @@ func (druid *Druid) applyNaturesGrace() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DefaultCast.CastTime += time.Millisecond * 500
-
+				spell.CastTimeMultiplier += 0.5
+				if spell.Cost != nil {
+					spell.Cost.Multiplier += 50
+				}
 				if spell.SpellCode == SpellCode_DruidWrath {
 					spell.DefaultCast.GCD += time.Millisecond * 500
 				}
@@ -265,12 +274,12 @@ func (druid *Druid) applyOmenOfClarity() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.Cost.Multiplier -= 100
+				spell.Cost.Multiplier -= 75
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.Cost.Multiplier += 100
+				spell.Cost.Multiplier += 75
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -323,14 +332,12 @@ func (druid *Druid) applyMoonfury() {
 			affectedSpells := core.FilterSlice(
 				core.Flatten(
 					[][]*DruidSpell{
-						druid.Wrath,
 						druid.Starfire,
 						druid.Moonfire,
 					},
 				),
 				func(spell *DruidSpell) bool { return spell != nil },
 			)
-
 			for _, spell := range affectedSpells {
 				spell.BaseDamageMultiplierAdditive += multiplier
 			}
@@ -343,25 +350,15 @@ func (druid *Druid) applyImprovedMoonfire() {
 		return
 	}
 
-	damageMultiplier := 0.02 * float64(druid.Talents.ImprovedMoonfire)
 	bonusCrit := 10 * float64(druid.Talents.ImprovedMoonfire) * core.SpellCritRatingPerCritChance // DBC: 10%/rank
 
 	druid.RegisterAura(core.Aura{
 		Label: "Improved moonfire",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			damageAffectedSpells := core.FilterSlice(
-				druid.Moonfire,
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-
 			critAffectedSpells := core.FilterSlice(
 				druid.Moonfire,
 				func(spell *DruidSpell) bool { return spell != nil },
 			)
-
-			for _, spell := range damageAffectedSpells {
-				spell.BaseDamageMultiplierAdditive += damageMultiplier
-			}
 
 			for _, spell := range critAffectedSpells {
 				spell.BonusCritRating += bonusCrit
@@ -403,7 +400,7 @@ func (druid *Druid) applyMoonglow() {
 		return
 	}
 
-	multiplier := 3 * druid.Talents.Moonglow
+	multiplier := 5 * druid.Talents.Moonglow // DBC: 5%/rank
 
 	druid.RegisterAura(core.Aura{
 		Label: "Moonglow",
@@ -424,4 +421,125 @@ func (druid *Druid) applyMoonglow() {
 			}
 		},
 	})
+}
+
+// Balance talents not otherwise modeled (DBC values).
+func (druid *Druid) applyBalanceExtras() {
+	// Omnipresence: -2/-4% resist chance for Balance spells.
+	if druid.Talents.Omnipresence > 0 {
+		hit := 2 * float64(druid.Talents.Omnipresence) * core.SpellHitRatingPerHitChance
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			switch spell.SpellCode {
+			case SpellCode_DruidWrath, SpellCode_DruidStarfire, SpellCode_DruidMoonfire, SpellCode_DruidInsectSwarm:
+				spell.BonusHitRating += hit
+			}
+		})
+	}
+
+	// Nature Balancer: Wrath has a 5%/rank chance to give the next Moonfire/Starfire +50% crit,
+	// and Moonfire/Starfire have a 5%/rank chance to give the next Wrath +50% crit.
+	if druid.Talents.NatureBalancer > 0 {
+		procChance := 0.05 * float64(druid.Talents.NatureBalancer)
+		critBonus := 50.0 * core.SpellCritRatingPerCritChance
+		var wrath, arcane []*core.Spell
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			switch spell.SpellCode {
+			case SpellCode_DruidWrath:
+				wrath = append(wrath, spell)
+			case SpellCode_DruidStarfire, SpellCode_DruidMoonfire:
+				arcane = append(arcane, spell)
+			}
+		})
+		makeAura := func(label string, id int32, targets func() []*core.Spell) *core.Aura {
+			return druid.RegisterAura(core.Aura{
+				Label:    label,
+				ActionID: core.ActionID{SpellID: id},
+				Duration: time.Second * 15,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, s := range targets() {
+						s.BonusCritRating += critBonus
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, s := range targets() {
+						s.BonusCritRating -= critBonus
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if aura.RemainingDuration(sim) == aura.Duration {
+						return
+					}
+					for _, s := range targets() {
+						if s == spell {
+							aura.Deactivate(sim)
+							return
+						}
+					}
+				},
+			})
+		}
+		arcaneAura := makeAura("Nature Balancer: Arcane", 33756, func() []*core.Spell { return arcane })
+		wrathAura := makeAura("Nature Balancer: Nature", 33757, func() []*core.Spell { return wrath })
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Nature Balancer",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+				switch spell.SpellCode {
+				case SpellCode_DruidWrath:
+					if sim.Proc(procChance, "Nature Balancer") {
+						arcaneAura.Activate(sim)
+					}
+				case SpellCode_DruidStarfire, SpellCode_DruidMoonfire:
+					if sim.Proc(procChance, "Nature Balancer") {
+						wrathAura.Activate(sim)
+					}
+				}
+			},
+		}))
+	}
+}
+
+// Restoration/Feral talents that are pure stats or damage modifiers (DBC values).
+func (druid *Druid) applyRestoExtras() {
+	// Accuracy: +1/2/3% hit with all attacks and spells.
+	if druid.Talents.Accuracy > 0 {
+		druid.AddStat(stats.MeleeHit, float64(druid.Talents.Accuracy)*core.MeleeHitRatingPerHitChance)
+		druid.AddStat(stats.SpellHit, float64(druid.Talents.Accuracy)*core.SpellHitRatingPerHitChance)
+	}
+	// Animism: spell damage and healing up to 10%/rank of Spirit.
+	if druid.Talents.Animism > 0 {
+		druid.AddStatDependency(stats.Spirit, stats.SpellPower, 0.10*float64(druid.Talents.Animism))
+	}
+	// Gift of Nature: +2%/rank Nature damage.
+	if druid.Talents.GiftOfNature > 0 {
+		druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.02*float64(druid.Talents.GiftOfNature)
+	}
+	// Dreamstate: regenerates 1%/rank of total mana every 10 seconds.
+	if druid.Talents.Dreamstate > 0 {
+		pct := 0.01 * float64(druid.Talents.Dreamstate)
+		manaMetrics := druid.NewManaMetrics(core.ActionID{SpellID: 33835})
+		druid.RegisterResetEffect(func(sim *core.Simulation) {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 10,
+				OnAction: func(sim *core.Simulation) {
+					druid.AddMana(sim, pct*druid.MaxMana(), manaMetrics)
+				},
+			})
+		})
+	}
+	// Stalking: +20%/rank crit for Shred (and Ravage).
+	if druid.Talents.Stalking > 0 {
+		crit := 20 * float64(druid.Talents.Stalking) * core.CritRatingPerCritChance
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_DruidShred {
+				spell.BonusCritRating += crit
+			}
+		})
+	}
+	// Killer Instincts: +1%/rank all damage.
+	if druid.Talents.KillerInstincts > 0 {
+		druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(druid.Talents.KillerInstincts)
+	}
 }

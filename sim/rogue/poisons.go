@@ -48,11 +48,11 @@ func (rogue *Rogue) GetWoundPoisonProcChance() float64 {
 }
 
 func (rogue *Rogue) improvedPoisons() float64 {
-	return []float64{0, 0.02, 0.04, 0.06, 0.08, 0.1}[rogue.Talents.ImprovedPoisons]
+	return []float64{0, 0.06, 0.12, 0.18, 0.24, 0.30}[rogue.Talents.ImprovedPoisons] // DBC: +6%/rank proc chance
 }
 
 func (rogue *Rogue) getPoisonDamageMultiplier() float64 {
-	return []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.ImprovedPoisons]
+	return []float64{1, 1.05, 1.10, 1.15, 1.20, 1.25}[rogue.Talents.ImprovedPoisons] // DBC: +5%/rank effectiveness
 }
 
 ///////////////////////////////////////////////////////////////////////////

@@ -410,6 +410,7 @@ enum AgilityElixir {
 	ElixirOfLesserAgility = 3;
 	ScrollOfAgility = 4;
 	ElixirOfAgility = 5;
+	ScrollOfAgilityV = 6;
 }
 
 enum ArmorElixir {
@@ -419,6 +420,7 @@ enum ArmorElixir {
 	ElixirOfDefense = 3;
 	ElixirOfMinorDefense = 4;
 	ScrollOfProtection = 5;
+	ScrollOfProtectionV = 6;
 }
 
 enum HealthElixir {
@@ -439,6 +441,7 @@ enum StrengthBuff {
 	ElixirOfOgresStrength = 3;
 	ScrollOfStrength = 4;
 	ElixirOfBruteForce = 5;
+	ScrollOfStrengthV = 6;
 }
 
 enum AttackPowerBuff {
@@ -631,11 +634,11 @@ message RaidBuffs {
 
 	// Scroll
 	bool scroll_of_protection = 26;
-	bool scroll_of_stamina = 27;
+	TristateEffect scroll_of_stamina = 27; // none, rank IV, rank V
 	bool scroll_of_strength = 28;
 	bool scroll_of_agility = 29;
-	bool scroll_of_intellect = 30;
-	bool scroll_of_spirit = 31;
+	TristateEffect scroll_of_intellect = 30; // none, rank IV, rank V
+	TristateEffect scroll_of_spirit = 31; // none, rank IV, rank V
 
 	// Miscellaneous
 	TristateEffect thorns = 22;

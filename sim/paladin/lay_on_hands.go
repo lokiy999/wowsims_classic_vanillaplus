@@ -37,7 +37,7 @@ func (paladin *Paladin) registerLayOnHands() {
 			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute * time.Duration(60-10*paladin.Talents.ImprovedLayOnHands),
+				Duration: time.Minute * time.Duration(60-15*paladin.Talents.ImprovedLayOnHands),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

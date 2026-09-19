@@ -1973,3 +1973,388 @@ Changed `character.AddStat(stats.ShadowResistance, 10)` to `20` for `proto.Race_
 ### Verification
 
 `go build ./...` passes; WASM rebuilt. Live on Shadow Priest (Undead, Darkness 5/5): Shadow Resistance moved 100 → 110, exactly the expected +10 delta from this fix (10 → 20 racial, everything else unchanged).
+
+## Part AE — Added rank V stat scrolls (81010-81015): a 5th rank above the existing rank IV scrolls, selectable per stat (2026-09-18)
+
+User asked to add 6 new custom items from `VPlusItemDB.lua`/`AtlasLoot/Factions/factions.lua` (a Shendralar-rep reward on this server) as "rank V" alternatives to the rank IV scrolls already in the sim, mutually exclusive with rank IV (and each other) per stat:
+
+| Item | Id | Effect |
+|---|---|---|
+| Scroll of the Moon | 81010 | Agility +19, Attack Speed +3%, 30 min |
+| Nightborne Fury Saga | 81011 | Strength +19, Weapon Damage +4, 30 min |
+| Highborne Scrolls | 81012 | Intellect +19, Spell Crit +1%, 30 min |
+| Legacy of Suramar | 81013 | Stamina +19, restores 25 health per 5 sec, 30 min |
+| A Wisp's Tale | 81014 | Spirit +19, reduces spell cost by 2%, 30 min |
+| Memory of Hyjal | 81015 | Armor +420, reduces damage received by up to 14, 30 min |
+
+All flat +19s are the expected step up from rank IV's flat +15 (Part M).
+
+### Two different existing mechanisms, so two different wiring approaches
+
+The sim already had two unrelated ways rank IV scrolls are modeled, discovered by inspecting the running app before touching code:
+- **Agility/Strength/Protection** scrolls are options inside the `AgilityElixir`/`StrengthBuff`/`ArmorElixir` proto enums — per-player `Consumes` picks, competing with the other elixirs in that same dropdown (`sim/core/consumes.go`'s `applyPhysicalBuffConsumes`/`applyDefensiveBuffConsumes`).
+- **Stamina/Intellect/Spirit** scrolls (Part Z) are raid-wide `bool` fields on `RaidBuffs`, rendered as their own "Scrolls" row in Consumables, that *stack* with the matching caster buff (Power Word Fortitude/Arcane Brilliance/Divine Spirit) instead of competing with it.
+
+Rank V had to fit into whichever mechanism its stat already used:
+- Added `ScrollOfAgilityV`/`ScrollOfStrengthV`/`ScrollOfProtectionV` as new values (`= 6`) on the existing `AgilityElixir`/`StrengthBuff`/`ArmorElixir` enums — same dropdown, automatically mutually exclusive with rank IV and every other elixir in that list (no new mechanism needed).
+- Changed `RaidBuffs.scroll_of_stamina`/`scroll_of_intellect`/`scroll_of_spirit` from `bool` to `TristateEffect` (none/rank IV/rank V) — reusing the exact `TristateEffect` + `makeTristateRaidBuffInput` + `impId` pattern already used for Power Word Fortitude/Blood Pact/Grace of Air, so rank IV and V compete with each other via the same field while both still stack with the caster buff, unchanged from Part Z.
+
+### `proto/common.proto`
+
+- `AgilityElixir`/`StrengthBuff`/`ArmorElixir`: added `ScrollOf*V = 6`.
+- `RaidBuffs`: `scroll_of_stamina`/`scroll_of_intellect`/`scroll_of_spirit` retyped `bool` → `TristateEffect` (same field numbers 27/30/31 — wire-compatible, bool and enum both use the varint wire type).
+- Regenerated `sim/core/proto/common.pb.go` and `ui/core/proto/common.ts` via `protoc` (commands per `docs/private-server-item-rules.md`). Toolchain note: this machine's Go (1.27) moved `wasm_exec.js` from `misc/wasm/` to `lib/wasm/`, which broke `vite.build-workers.ts`'s hardcoded `GOROOT/misc/wasm/wasm_exec.js` path — worked around locally by pointing `GOROOT` at a scratch dir containing just `misc/wasm/wasm_exec.js` for that one command; not a repo change, but worth knowing if a future session hits the same `ENOENT`.
+
+### `sim/core/buffs.go`
+
+Added 6 `BuffName` consts (`ScrollOf*V`) + `BuffSpellValues` entries (flat stats only: Agility/Strength/Stamina/Spirit +19, Intellect +19 and SpellCrit +1 folded into the same entry since crit is just another flat stat, Armor +420). Changed the three `if raidBuffs.ScrollOfX { ... }` blocks in `applyBuffEffects` to check `== TristateEffect_TristateEffectRegular` (rank IV) vs `== TristateEffect_TristateEffectImproved` (rank V):
+- Intellect: flat stats only (its rank V "spell crit" *is* a flat stat, already folded in).
+- Stamina rank V: flat stats + a new permanent `MakePermanent(character.GetOrRegisterAura(...))` driving a `StartPeriodicAction` (5 sec period, `NumTicks` omitted = runs for the whole fight, same pattern `ApplyFixedUptimeAura` in `aura_helpers.go` already uses) that calls `character.GainHealth(sim, 25, ...)` — same shape as the Troll's Blood Potion HP5 helper (Part Q) but permanent instead of MCD-gated.
+- Spirit rank V: flat stats + a permanent aura toggling `character.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-2)` on gain / `(+2)` on expire — same API shaman's Natural Alignment Crystal (`sim/shaman/items.go`) already uses for a temporary version of the same pseudostat.
+
+### `sim/core/consumes.go`
+
+- `ArmorElixir_ScrollOfProtectionV`: flat Armor +420 only. **Not modeled:** the tooltip's "reduces all damage received by up to 14" — there's no flat per-hit incoming-damage-reduction primitive anywhere in this engine (only multiplicative `PseudoStats.DamageTakenMultiplier`), so this clause is skipped, same treatment Part P gave the (also-unmodeled) Protection Potion absorb shields. Noted in `docs/TODO.md`.
+- `AgilityElixir_ScrollOfAgilityV`: flat Agility +19 + a permanent aura calling `aura.Unit.MultiplyMeleeSpeed(sim, 1.03)` on gain / `1/1.03` on expire — same balanced-multiply pattern Juju Flurry already uses for a temporary attack-speed buff.
+- `StrengthBuff_ScrollOfStrengthV`: flat Strength +19 + directly adding `+4`/`+4` to both `character.AutoAttacks.MH()`/`OH()` `BaseDamageMin`/`Max`, gated by `!character.PseudoStats.FeralCombatEnabled` — same direct-mutation pattern (no Aura wrapper needed, applied once at setup) the Sharpening/Weightstone cases in `addImbueStats` already use, just applied to both hands unconditionally instead of per-imbue-selection.
+
+### UI (`ui/core/components/inputs/consumables.ts`, `ui/core/components/inputs/buffs_debuffs.ts`)
+
+- `consumables.ts`: added `ScrollOfAgilityV`/`ScrollOfStrengthV`/`ScrollOfProtectionV` configs (icons resolve automatically via `ActionId.fromItemId`) appended to the existing `AGILITY_CONSUMES_CONFIG`/`STRENGTH_CONSUMES_CONFIG`/`ARMOR_CONSUMES_CONFIG` arrays — reused by reference everywhere those arrays already are, no per-class file edits needed (same as Part Q's `ElixirOfBruteForce`).
+- `buffs_debuffs.ts`: `ScrollOfStamina`/`ScrollOfIntellect`/`ScrollOfSpirit` changed from `makeBooleanRaidBuffInput` to `makeTristateRaidBuffInput`, each with `impId: () => ActionId.fromItemId(<rank V id>)` — no changes needed in `consumes_picker.ts`'s `buildScrollsPicker`, since `buildIconInput` already dispatches on the config's `type` field (`IconPicker` handles both boolean and tristate configs identically).
+
+### New item database entries: 81010-81015 didn't exist in the sim's item DB at all
+
+These are fully custom private-server items (not on Wowhead), so `ActionId.fromItemId` had nothing to resolve without local DB entries — unlike the rank IV scrolls (real retail items, resolved via the client's Wowhead-fallback fetch when no local tooltip exists).
+
+**Found and avoided a much bigger accidental change first:** running the normal python pipeline (`parse_vplus.py` → `gen_include.py` → `gen_db`) to add these 6 items picked up a large unrelated diff (`custom_items.json` ~223k lines, `included_items.json` ~3900 ids) — the local `CSV's/` dump (gitignored, untracked since commit `a96980e6d`) has drifted from what's committed since the pipeline was last run, so a full rerun would silently resync hundreds of unrelated items alongside the 6 scrolls. Reverted that (`git checkout -- assets/database/ assets/db_inputs/`) and hand-patched instead, keeping the DB diff to exactly the 6 new items:
+- `docs/parse_vplus.py`: the brand-new-item loop (used for `NEW_SETS` custom armor sets) requires an equip `type` line in the dump, which these non-equippable "Use:" items don't have. Added `MANUAL_CONSUMABLE_ITEMS = {id: icon}` (icons pulled from `AtlasLoot/Factions/factions.lua`, not scanned by the existing `atlasloot_icons()`) and a bypass so these 6 ids still get a full entry (name/tooltip auto-built from the dump text via the existing `_entry_for`/`build_tooltip`, phase/ilvl hand-set to 1/60).
+- `docs/gen_include.py`: added `MANUAL_INCLUDE_IDS` force-included into the allowlist (same "pin it in the script" pattern `AV_EXTRA_IDS` already uses), since these fail Rule 1b's equippable-only test.
+- Used these two updated scripts to generate just the 6 new entries in isolation, then hand-appended them directly to the *committed* `custom_items.json`/`included_items.json` (not regenerated from scratch), and ran `go run ./tools/database/gen_db` on top — confirmed via `git diff --stat` that `db.json` changed by exactly 6 lines (one new item each), nothing else.
+- Item level 60 assigned by hand (the dump carries no explicit level for these); phase 1 confirmed correct both by hand-setting it and by `item_phases.json` (which is generated from the *live* CSV data regardless of the custom_items.json patch and already had these same phase-1 entries) — turns out someone/something had already regenerated `item_phases.json` from the newer dump before this session without anyone noticing, since it's a superset that doesn't get filtered until the allowlist step.
+
+### Pre-existing test staleness found, explicitly not touched
+
+`go test ./sim/...` fails the same ~15 packages (`warrior/tank_warrior`, `druid/balance`, `druid/feral`, `hunter`, `mage`, `paladin/protection`, `paladin/retribution`, `priest/shadow`, `rogue/dps_rogue`, `shaman/elemental`, `shaman/enhancement`, `shaman/warden`, `warlock/dps`, `warrior/dps_warrior`) both with and without this change (verified by stashing everything and re-testing a clean `HEAD` checkout — identical failure list, byte-for-byte, both times). Pre-existing, unrelated to this work — left untouched rather than mass-regenerating `.results` files as a side effect of an unrelated task. Flagged in `docs/TODO.md`.
+
+### Verification
+
+`go build ./...`, `go vet ./sim/core/...` (only the same pre-existing `test_generators.go` mutex-copy warning), `npx tsc --noEmit -p .` all pass. Rebuilt WASM + `npx vite build -m development`. Live-tested all 6 in the browser across Shadow Priest/Warrior/Tank Warrior (Armor's picker only renders on a spec where Armor is a relevant EP stat):
+- Stamina/Intellect/Spirit tristate: cycled None → IV → V on each, confirmed exact +15 then +19 stat deltas, then ran a full 3000-iteration sim with all three on rank V simultaneously — no crash, DPS moved as expected.
+- Agility rank V: Agility +19 confirmed, tooltip text matches the dump exactly ("Scroll of the Moon... Attack Speed by 3%..."), full sim run completed clean.
+- Strength rank V: Strength +19 and Attack Power +38 (2:1 warrior ratio) confirmed, full sim run completed clean (weapon damage mutation not directly visible as a stat but doesn't crash and DPS moved up as expected).
+- Protection rank V (Tank Warrior, where Armor is relevant): Bonus Armor +420 / total Armor +420 confirmed exactly, tooltip text matches exactly, full sim run completed clean.
+
+### Not done (per user's explicit choice when this came up)
+
+Considered also adding rank IV+V pairing depth beyond what was asked, and considered doing the full CSV resync while already touching the pipeline — user was asked and picked the minimal-diff options both times (hand-patch only these 6 items; keep the CSV drift as a separate, undone concern).
+
+## Part AF — Scrolls row: click-to-cycle icon → dropdown showing both ranks at once (2026-09-18)
+
+User feedback on Part AE: didn't want the Stamina/Intellect/Spirit scrolls to stay a single icon you click to cycle through (none → IV → V) — wanted a dropdown where both ranks are visible together and directly selectable, same as how the Agility/Strength/Armor scroll pickers already work.
+
+### `ui/core/components/icon_inputs.ts`
+
+Added `makeEnumRaidBuffInput`, a `RaidBuffs`-field counterpart to `makeTristateRaidBuffInput` that builds an `iconEnum` (dropdown) config via `InputHelpers.makeEnumIconInput` instead of an `icon` (click-to-cycle) config via `makeTristateIconInput` — same `RaidBuffs` get/set/change wiring, different picker type. (Named the local config interface `RaidBuffEnumInputConfig` — a plain `EnumInputConfig` already exists twice in this file for `IndividualBuffs`/`Consumes`, and reusing that name silently broke both via TypeScript's structural interface merging.)
+
+### `ui/core/components/inputs/buffs_debuffs.ts`
+
+`ScrollOfStamina`/`ScrollOfIntellect`/`ScrollOfSpirit` switched from `makeTristateRaidBuffInput` to `makeEnumRaidBuffInput`, each given a 3-entry `values` array (`TristateEffectMissing` with no icon = "none", `TristateEffectRegular` → the rank IV item id, `TristateEffectImproved` → the rank V item id). No changes needed in `consumes_picker.ts`: `buildIconInput` already dispatches on the config's `type` field to `IconPicker` vs `IconEnumPicker`.
+
+Side effect, not the point of the ask but worth noting: this also fixes a cosmetic bug from Part AE — the old click-to-cycle `IconPicker` always shows the *base* (rank IV) icon and tooltip for the whole control regardless of which state is selected (a small corner badge was the only rank-V indicator, per `icon_picker.tsx`'s `setInputValue`). `IconEnumPicker` instead renders whichever option's `actionId` matches the current value, so hovering the control now shows the actual selected item's real name/tooltip.
+
+### Found and fixed while verifying: 3 of the 6 new items had bad icon names
+
+Live-checking the new dropdown, the Stamina/Intellect/Strength rank-V icons rendered as blank grey squares (values/tooltips still correct). Root cause: `AtlasLoot/Factions/factions.lua`'s icon strings for these three — `inv_scroll_07stamina`, `inv_scroll_01intellect`, `inv_scroll_02strength` — are private-server-only composite icon names that don't exist on the public `wow.zamimg.com` CDN this UI loads icons from (confirmed via direct `fetch()` in the live page: HTTP 503 for all three, while the other 3 items' AtlasLoot icon names resolved fine with 200s). Swapped those 3 to other real, CDN-valid `inv_scroll_*` icons (verified 200 first) distinct from the other 3 already in use: `81011` → `inv_scroll_03`, `81012` → `inv_scroll_06`, `81013` → `inv_scroll_05`.
+
+- `docs/parse_vplus.py`: updated the 3 icon values in `MANUAL_CONSUMABLE_ITEMS`.
+- Hand-patched the same 3 icon fields directly in `assets/db_inputs/custom_items.json` (matching Part AE's minimal-diff approach — no full pipeline rerun), then reran `go run ./tools/database/gen_db -outDir=./assets -gen=db` and confirmed via `git diff --stat` that `assets/database/db.json` changed by exactly 6 lines again (same 6 items, corrected icons only).
+
+### Verification
+
+`npx tsc --noEmit -p .` and `go build ./...` pass. Rebuilt WASM was not needed for the icon fix (icons load from `dist/classic/assets/database/db.json` at runtime, not baked into the WASM), but `npx vite build -m development` was rerun for the picker-type UI change. Live on Shadow Priest:
+- Scrolls row dropdown now shows both a rank IV and a rank V icon (previously blank for these 3) per stat, side by side, each independently clickable.
+- Selected rank V for all three: Stamina 285→304, Intellect 309→331 (with the Spell Crit contribution), Spirit 197→216, each +19 as expected; hovering the control shows the correct selected item's tooltip ("Legacy of Suramar" etc.), not the rank IV one.
+- Full sim run (3000 iterations) with all three on rank V completed clean — 606.76 DPS / 179.66 HPS, no crash.
+
+## Part AG — Priest talent pass (2026-09-19)
+
+First class of a one-class-at-a-time talent audit (priest, then the rest).
+Source of truth: `CSV's/Spell.csv` + `Talent.csv` (DBC). Effect value = base
+points + 1.
+
+**Verified correct, no change needed:**
+- Tree layout, max ranks and prerequisites in `ui/core/talents/trees/priest.json`
+  match `Talent.csv` for all 3 tabs (60 talents).
+- Every implemented talent value matches the DBC (Silent Resolve, Mental
+  Strength, Improved Memory, Mental Agility, Meditation, Force of Will, Holy
+  Specialization, Searing Light, Spiritual Guidance, Faith, Spell Warding,
+  Purifying Light, Shadow Focus, Darkness, Shadow Weaving 2%/stack, Improved
+  Mind Blast -1s/rank, Improved SWP +3s/-5% mana per rank, Divine Fury 0.1s/rank,
+  Vampiric Embrace 10% + 10%/rank, Power Infusion +15%).
+- Browser check at `localhost:8080/classic/shadow_priest/` with all gear, buffs
+  and consumables removed (Human, JSON import with empty equipment): baseline
+  Int 120 / Spirit 173 / SP 40 (Int/3). Mental Strength 5 -> Int 138, SP 46;
+  Faith 5 + Spiritual Guidance 2 -> Spirit 225, SP 85; Darkness 5 -> Shadow
+  Resistance 60 -> 90. All exactly as expected.
+
+**Fixed (`sim/priest/talents.go`):**
+- Spell Focus now also applies its second DBC effect: +10/+20 spell
+  penetration (target resistance reduction).
+- Shadowform now also applies its -20% Shadow damage taken (was a TODO).
+- Rebuilt `dist/classic/lib.wasm`; sim run with Shadowform + Spell Focus 2 is
+  clean (85.4 DPS on a 7-piece test set).
+
+**Not done (see TODO.md):** healing spells are commented out in
+`sim/priest/*.go`, so Holy healing talents (Spiritual Healing, Improved Renew,
+Improved Healing, etc.) can't be tested; utility talents have no sim effect.
+
+## Part AH — Warlock talent pass (2026-09-19)
+
+Same method as Part AG (DBC `Spell.csv` value = base points + 1). The warlock
+code still had many retail (vanilla) numbers that don't match this server.
+Tree layout in `ui/core/talents/trees/warlock.json` matches `Talent.csv`.
+
+**Fixed (`sim/warlock/*.go`, `sim/core/debuffs.go`):**
+- Fel Intellect: +5%/rank demon mana **and +5%/rank total Intellect** (was 3%, pets only).
+- Fel Stamina: +5%/rank demon health **and +5%/rank total Stamina** (was 3%, pets only).
+- Demonic Embrace: DBC gives +10%/rank Demon Armor effect (regen/reflect parts not
+  modeled); the retail +3% Stamina/-1% Spirit was removed.
+- Master Summoner: -3s cast and -30% mana per rank (was 2s / 20%).
+- Master Demonologist: Imp +3%/rank spell crit (was a threat reduction), Voidwalker
+  -3%/rank damage taken, Succubus +3%/rank damage (were 2%).
+- Soul Link damage bonus 3% -> 5%.
+- Demonic Sacrifice: Imp is -30% threat only (was +15% Fire), Succubus +5% all damage
+  (was +15% Shadow), Felhunter 3% mana per tick (was 2%).
+- Unholy Power 3%/rank (was 4%). Improved Imp is 2 ranks, +15/30% (was 10/20/30%);
+  Blood Pact "improved" now at 2 points.
+- Bane: Shadow Bolt -0.1s/rank, Soul Fire -0.5s/rank, Immolate unaffected (was 0.4s and Immolate).
+- Bring the Pain: +5%/rank crit on Searing Pain/Conflagrate/Shadowburn/Soul Fire
+  (was 3%/rank on Shadow Bolt, not Soul Fire).
+- Improved Shadow Bolt: 20%/rank chance on Shadow Bolt crit (was 100%); debuff is a
+  flat +10% Shadow damage taken (core aura, also used by the external ISB debuff).
+- Nightfall: 1%/rank on any periodic Shadow tick with a 10s internal cooldown
+  (was 2%/rank on Corruption/Drain Life only, no ICD).
+- Improved Corruption: -6%/rank mana cost (was retail -0.4s cast time; Corruption now 2s base).
+- Improved Curse of Agony 2/3/6% (was 3%/rank), Improved Drain 10%/rank (was 2%).
+- New: Intensity (-2/-4% resist chance on Destruction spells).
+
+**Verified in browser** (`localhost:8080/classic/warlock/`, empty gear, Human):
+baseline Int 110 / Stam 107; Fel Intellect 5 + Fel Stamina 5 -> Int 138 / Stam 134.
+Sims with talented builds run clean. Rebuilt `dist/classic/lib.wasm`.
+
+`go test ./sim/warlock/...` fails on stale `.results` (expected, values changed and
+were already stale, see TODO). Not regenerated.
+
+## Part AI — Mage talent pass (2026-09-19)
+
+Same method as Parts AG/AH (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/mage.json` (tab order Fire, Arcane, Frost) matches `Talent.csv`.
+Most implemented values already matched (Arcane Instability, Mind Mastery, Arcane
+Mind, Time Pressure, Overheat, Arcane Wrath, Critical Mass, Fire Power, Ignite,
+Frost Shards, Arctic Gale, Winter's Chill, Master of Elements, Arcane Concentration).
+
+**Fixed (`sim/mage/*.go`):**
+- Improved Fire Blast: cooldown -2.5s per rank (was -0.5s).
+- Incinerate was double counted: `fire_blast.go` and `scorch.go` each added a leftover
+  retail +2%/rank crit on top of the +3%/rank in `talents.go`. Removed the leftovers.
+- Magic Absorption: +5 all resistances per rank (was +2).
+- Arcane Subtlety: -25% Arcane threat per rank (was 20%) and now also -5 target
+  resistance per rank (spell penetration).
+- Burning Soul threat 5%/rank, Frost Channeling threat 6%/rank (were 15% / 10%).
+- New: Improved Arcane Power (-60s cooldown, +5s duration per rank), Pyromania
+  (-3/-5% Fireball/Pyroblast cast time, -50/-100% Flamestrike cast time, -15/-30s Blast
+  Wave cooldown), Hot Streak (5%/rank on Fire crit: next Scorch/Pyroblast instant and
+  free), Arcane Resilience (armor = 50%/rank of Intellect). Added `SpellCode_MagePyroblast`.
+
+**Verified in browser** (`localhost:8080/classic/mage/`, empty gear, Human): baseline
+Int 156, Spell Power 52. With Arcane Mind 5 + Mind Mastery 5 + Magic Absorption 5:
+Int 179 (+15%), Spell Power 105 (179/3 + 25% of Int), all resistances +25. Sims run clean
+(fire-heavy build didn't change DPS because the default mage rotation doesn't cast fire).
+Rebuilt `dist/classic/lib.wasm`. `go test ./sim/mage` fails on stale `.results` (see TODO).
+
+## Part AJ — Druid talent pass (2026-09-19)
+
+Same method as Parts AG-AI (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/druid.json` (tabs Balance, Feral Combat, Restoration) matches `Talent.csv`.
+
+**Fixed (`sim/druid/*.go`):**
+- Natural Weapons: +1%/rank to *all* damage (was +2%/rank physical only).
+- Heart of the Wild: +6%/rank Intellect **and Spirit** (was 4% Int only).
+- Thick Hide 5/10/15% (was 4/7/10). Moonglow 5%/rank (was 3). Reflection 10%/rank (was 5).
+- Improved Moonfire: crit only (10%/rank); removed the retail +2%/rank damage.
+- Moonfury: Arcane spells only (Starfire, Moonfire); Wrath was wrongly included.
+- Nature's Grace: next spell -50% cast time **and** -50% mana cost (DBC spell 16886; was a flat -0.5s).
+- Savage Fury +20%/rank (Claw, Rake, Swipe; was 10%). Feral Aggression +5%/rank Ferocious
+  Bite **and Rip** (was 3%, bite only). Feline Swiftness dodge 3%/rank (was 2%).
+- New: Accuracy (+1/2/3% melee and spell hit), Animism (10%/rank of Spirit as spell
+  power), Gift of Nature (+2%/rank Nature damage), Killer Instincts (+1%/rank all damage),
+  Omnipresence (-2/-4% resist on Balance spells), Nature Balancer (5%/rank Wrath <->
+  Moonfire/Starfire +50% crit proc, both directions; the +50% for the Wrath direction is assumed).
+
+**Verified in browser** (`localhost:8080/classic/balance_druid/`, empty gear, Night Elf):
+baseline Int 100 / Spirit 110 / SP 33. Heart of the Wild 5 + Animism 5: Int 130, Spirit 143,
+SP 115 (Int/3 + 50% of Spirit). Accuracy 3: Spell Hit 3.00%. Balance builds sim clean.
+Rebuilt `dist/classic/lib.wasm`. `go test ./sim/druid/...` fails on stale `.results` (see TODO).
+
+## Part AK — Shaman talent pass (2026-09-19)
+
+Same method as Parts AG-AJ (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/shaman.json` (Elemental, Enhancement, Restoration) matches `Talent.csv`.
+
+**Fixed (`sim/shaman/*.go`):**
+- Two double counts in `electric_spell.go`: Lightning Mastery (-0.2s/rank) and Call of
+  Thunder (crit) were applied both there and in `talents.go`. Removed the `electric_spell.go` copies.
+- Convection 5%/rank (was 2%, shocks and lightning). Reverberation -1s/rank shock cooldown (was 0.2s).
+- Elemental Fury: +20%/rank crit damage (was a flat +100% at any rank).
+- Call of Flame: fire totems +10%/rank (was 5%) and Flame Shock +10%/rank crit (new).
+- Totemic Focus 25%/rank (was 5%). Restorative Totems 30/50% (was 5%/rank).
+- Elemental Weapons 10/20/30% for Windfury, Flametongue, Frostbrand, Rockbiter (was 5-15%, 13-40%, 7-20%).
+- Enhancing Totems 25/50% (was 8/15%). Improved Elemental Shields 10/20% (was 5/10/15%).
+- Ancestral Knowledge 2/3/4/5% mana (was 1%/rank). Toughness 5%/rank (was 2%).
+- Flurry attack speed 5/10/15/20/25% (was 10-30%).
+- Anticipation: -3%/rank shock resist chance (was +1 dodge/rank).
+- Thundering Strikes now also gives Shock spells 1%/rank crit.
+- New: Lightning Overlord (crit mana refund 10%/rank), Nature's Spirit (8%/rank of Spirit
+  as spell power), Stormforged (spell power = 20% of Attack Power), Elemental Warding
+  (-5%/rank Fire/Frost/Nature damage taken), Tidal Focus on lightning spells and Frost Shock.
+
+**Verified in browser** (`localhost:8080/classic/elemental_shaman/`, empty gear, Orc):
+baseline Mana 2545, Spell Power 29. Ancestral Knowledge 4 -> Mana 2672 (+5%). Nature's
+Spirit 5 -> +41 SP (40% of 103 Spirit). Stormforged -> +80 SP (20% of AP). Rebuilt
+`dist/classic/lib.wasm`. `go test ./sim/shaman/...` fails on stale `.results` (see TODO).
+
+## Part AL — Paladin talent pass (2026-09-19)
+
+Same method as Parts AG-AK (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/paladin.json` matches `Talent.csv`. Most implemented values already
+matched the DBC (Precision, Conviction, Toughness, Divine Strength/Intellect, Shield
+Specialization, Deflection, weapon specializations, Holy Power, Searing Light, Crusade,
+Vengeance 20%/rank proc and 2% per stack, Reckoning, Benediction, Improved Judgement,
+Improved Seal of Righteousness/the Crusader, Inevitable Justice).
+
+**Fixed (`sim/paladin/talents.go`):**
+- Blessed Strikes: 36 armor ignored per rank (180 at 5/5, matching the tooltip); was 180 per
+  rank (900 at 5/5).
+- Vindication: the DBC talent only debuffs the target's stats; removed the retail +Attack
+  Power buff it was giving the paladin.
+- Improved Lay on Hands: 30% armor/resist at both ranks (was 15/30%).
+- New: Healing Light (-4%/rank Holy damage), Codex of the Silver Hand (20%/rank mana regen
+  while casting; the Holy Light cost/cast time part is not modeled).
+
+**Verified in browser** (`localhost:8080/classic/retribution_paladin/`, empty gear, Human):
+baseline Str 105, Int 70, Holy damage 23. Divine Strength 5 + Divine Intellect 5 + Crusade 5:
+Str 121, Int 81, Holy damage 63 (81/3 + 30% of 121). Crusade alone: 55. Rebuilt
+`dist/classic/lib.wasm`. `go test ./sim/paladin/...` fails on stale `.results` (see TODO).
+
+## Part AM — Hunter talent pass (2026-09-19)
+
+Same method as Parts AG-AL (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/hunter.json` (Beast Mastery, Marksmanship, Survival) matches
+`Talent.csv`. Most values already matched (Ferocity, Unleashed Fury, Endurance Training,
+Bestial Discipline, Frenzy, Savage Flurry, Killer Instinct, Brutality, Lightning Reflexes,
+Lethal Shots, Ranged Weapon Specialization, Mortal Shots, Barrage, Improved Arcane Shot,
+Improved Stings, Efficiency, Clever Traps, Improved Aspect of the Hawk).
+
+**Fixed (`sim/hunter/*.go`):**
+- Savage Strikes: +3%/rank crit on Raptor Strike and Mongoose Bite (was 10%/rank).
+- Survivalist: -2%/rank damage taken (was +2%/rank max health).
+- Bestial Wrath: +20% pet damage per DBC spell 19574 (was +50%).
+- New: Snapshot (-0.2s/rank Aimed Shot and Multi-Shot cast time), Deflection (+2..5% parry),
+  Two-Handed Weapon Specialization (+4/6/8/10% with a two-hand melee weapon).
+
+**Verified in browser** (`localhost:8080/classic/hunter/`, empty gear, Orc): baseline Agility
+122, Melee Hit 0%, Melee Crit 2.31%, Ranged Speed 100%. Killer Instinct 5 + Lightning
+Reflexes 5: Agility 140 (+15%), Melee Hit 5.00%, Melee Crit 7.65%, Ranged Speed 115%.
+Rebuilt `dist/classic/lib.wasm`. `go test ./sim/hunter` fails on stale `.results` (see TODO).
+
+## Part AN — Rogue talent pass (2026-09-19)
+
+Same method as Parts AG-AM (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/rogue.json` matches `Talent.csv`. This class was already partly
+corrected in an earlier session (many `// DBC:` comments in `sim/rogue/talents.go`), so
+only a handful of values were left wrong.
+
+**Fixed (`sim/rogue/*.go`):**
+- Improved Eviscerate is +5%/rank crit chance, not damage (was +5%/rank damage).
+- Improved Ambush +20%/rank crit (was 15%). Lethality +10%/rank crit damage (was 6%).
+- Initiative 30%/rank (was 25%). Deflection 3/5% parry (was 1%/rank).
+- Improved Poisons +5%/rank effectiveness and +6%/rank proc chance (were 4% / 2%).
+- Improved Sinister Strike is an extra-hit proc in the DBC; removed the retail energy
+  cost reduction (Sinister Strike costs 45 at every rank now).
+- New: Elusiveness dodge (3/5%), Vigor energy regeneration (+5 per 20-energy tick).
+
+**Verified in browser** (`localhost:8080/classic/rogue/`, empty gear, Human): baseline AP 310,
+Melee Hit 0%, Crit 4.49%. Malice 5 + Precision 5 + Deadliness 5: AP 372 (+20%), Hit 5.00%,
+Crit 9.48% (+5%). Rebuilt `dist/classic/lib.wasm`. `go test ./sim/rogue/...` fails on stale
+`.results` (see TODO).
+
+## Part AO — Warrior talent pass (2026-09-19)
+
+Same method as Parts AG-AN (DBC value = base points + 1). Tree layout in
+`ui/core/talents/trees/warrior.json` (Arms, Fury, Protection) matches `Talent.csv`. This was
+the class with the most retail leftovers after warlock. Last class of the pass.
+
+**Fixed (`sim/warrior/*.go`):**
+- Two-Handed Weapon Specialization 2%/rank (was 1%). Toughness 3%/rank (was 2%).
+- Deflection 3/5% parry (was 1%/rank). Anticipation is -1%/rank crit taken (was +2 Defense/rank).
+- Improved Heroic Strike is +2%/rank crit (was a retail 1 rage/rank cost reduction).
+- Flurry 5/10/15/20/25% attack speed (was 10-30%).
+- Unbridled Wrath 5%/rank chance for 5 rage per DBC spell 12964 (was 8%/rank for 1 rage).
+- Death Wish -50% armor (was -20%). Anger Management ticks every 1s (was 3s).
+- Slamcraft -0.5s/rank cast time (was 167ms) and +10%/rank Slam crit.
+- Improved Rend: removed the retail damage bonus (DBC: allows 2 stacks, not modeled).
+- New: Precision (+1%/rank melee hit), Vitality (+2%/rank health), Dog of War (-4%/rank
+  rage cost), Para Bellum (-4%/rank ability cooldowns), Training and Discipline (-1 rage/rank).
+
+**Verified in browser** (`localhost:8080/classic/warrior/`, empty gear, Human): baseline
+Health 2609, Melee Hit 0%. Precision 5 -> Hit 5.00%. Vitality 5 -> Health 2870 (+10%).
+(Fury-tab talents also show +3% crit: that is Berserker Stance, not a talent.)
+Rebuilt `dist/classic/lib.wasm`. `go test ./sim/warrior/...` fails on stale `.results`.
+
+## Part AP — Talent calculator cross-check (2026-09-19)
+
+Used the Vanilla+ talent calculator (https://andser99.github.io/vanillaplus-talent-calculator/, version V6
+2026-09-01, never refreshed) to read the tooltips for the talents Parts AG-AO could not resolve from
+the DBC alone. Hover shows rank 1 text; after 1 point it also shows the next rank. Tooltip text is
+in the page DOM, so it can be read with `innerText` after a real hover. Calculator tree order for
+mage is Arcane, Fire, Frost (the JSON is Fire, Arcane, Frost); other classes match the JSON order.
+
+**Changes made from what the calculator showed:**
+- Paladin: Improved Lay on Hands cooldown -15 min/rank (was -10); new Unbreakability (-5% damage
+  taken/rank) and Divine Concentration (1% max mana every 15/10/5s by rank; rank 3 = 5s is assumed).
+- Warlock: Demonic Sacrifice Voidwalker/Felhunter tick every 3s (was 4s); new Sadism (8%/rank on spell crit for 666 mana).
+- Mage: Arcane Power lasts 20s (was 15s); new Spell Twisting (+15% crit on the next spell of the other school).
+- Druid: Omen of Clarity is -75% cost (was free); Predatory Strikes gives level x rank AP (was 0.5x);
+  new Dreamstate (1%/rank mana per 10s), Stalking (+20%/rank Shred crit). Nature Balancer's +50% both
+  directions and Nature's Grace -50% cast/-50% cost were confirmed.
+- Shaman: Elemental Devastation is +10% melee AND spell crit for 5/10/15s by rank (was 3%/rank melee for 10s);
+  new Static Field (20%/rank, +1% damage and -1% mana per stack on LB/CL, max 10 stacks, 20s), and Stormforged
+  now also restores 5% mana on Stormstrike.
+- Rogue: Weapon Expertise is +1%/rank crit with Axe/Fist/Dagger and maces ignore 2 armor per level per rank
+  (was retail weapon skill); new Combat Rush (4%/rank on auto attack for 20 energy) and Bloodthirsty
+  (+10%/rank Garrote/Rupture damage; the shorter tick/duration part is not modeled).
+- Warrior: Slamcraft's crit bonus is for Shield Slam (not Slam); Weapon Expertise (+1%/rank crit with Axes and
+  Polearms, maces ignore armor); new Improved Mortal Strike (-0.5s cooldown, +5% damage per rank).
+- Priest, Hunter: nothing needed changing. Values already matched.
+
+`go build ./sim/...` and `go test ./sim/... -run XXX` (compile check) are clean; wasm rebuilt; smoke
+sims ran for shaman, warlock, mage, druid, rogue.
+
+**Follow-up, user answers (2026-09-19):** the calculator version is V6 (correct); Improved Mark of the Wild
+is 20%/rank (3 ranks), so the raid-buff "Improved" Gift of the Wild multiplier in `sim/core/buffs.go` is now
+x1.6 (was x1.35; armor 285 -> 456) and the druid's own talent adds 20%/rank (was 7%/rank) in
+`sim/druid/druid.go`. Blessed Strikes is 180 armor ignored **per rank** (reverted my 36/rank change).
+**Follow-up 2 (user answers):** Warrior Enrage rewritten: each critical hit taken adds a stack worth +1%/rank
+melee damage (up to 10 stacks, 15s, stacks are not consumed by swings) instead of a flat 5%/rank with 12
+swing-counted stacks. Tactical Mastery retains 10/20/30 rage (was 5/rank). Divine Concentration rank 3 = 5s
+confirmed. Power Word: Requital still awaiting an answer.
+**Follow-up 3 — Power Word: Requital implemented (`sim/priest/requital.go`, registered in `priest.go`).** Only
+exists when the Discipline talent is taken. Instant, 20s cooldown, Holy, 4 ranks by player level (30/40/50/60,
+spell ids 33808-33811, mana 150/200/260/340, damage 347-371 / 491-525 / 613-657 / 739-793 from the server
+tooltip; the "feared/stunned" clause is the same number on every rank so it is not modeled separately). It is
+`SpellFlagAPL`, so it can be used from an APL "Cast Spell" action. **Spell power coefficient is unknown**;
+`RequitalSpellCoef = 1.5/3.5` is a placeholder. Verified in a shadow priest sim: an APL casting spell id 33811
+fires it, base damage ~830 with 86 spell power. Cosmetic gap: ranks 2-4 have no name/icon entry in the spell DB
+(only 33808 does), so results show them by id until the tooltip CSV/pipeline gets rows for them.
+

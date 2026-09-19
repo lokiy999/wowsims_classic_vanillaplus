@@ -29,12 +29,12 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   baseCost,
-			Multiplier: 100 - 2*shaman.Talents.Convection,
+			Multiplier: 100 - 5*shaman.Talents.Convection, // DBC: 5%/rank
 		},
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: baseCastTime - time.Millisecond*200*time.Duration(shaman.Talents.LightningMastery),
+				CastTime: baseCastTime, // Lightning Mastery is applied in talents.go
 				GCD:      core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -42,8 +42,6 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
-
-		BonusCritRating: []float64{0, 1, 2, 3, 4, 6}[shaman.Talents.CallOfThunder] * core.CritRatingPerCritChance,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

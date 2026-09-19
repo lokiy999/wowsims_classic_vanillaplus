@@ -48,6 +48,14 @@ const (
 	ScrollOfStrength
 	ScrollOfStamina
 	ScrollOfProtection
+
+	// Scrolls - Rank V
+	ScrollOfAgilityV
+	ScrollOfIntellectV
+	ScrollOfSpiritV
+	ScrollOfStrengthV
+	ScrollOfStaminaV
+	ScrollOfProtectionV
 )
 
 // Stats from buffs pre-tristate buffs
@@ -147,6 +155,31 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 	ScrollOfProtection: {
 		stats.BonusArmor: 240,
 	},
+	// Rank V versions (81010-81015): +19 flat instead of rank IV's +15. Each also
+	// has a secondary effect applied separately in code where it needs more than a
+	// flat stat (attack speed/weapon damage/health regen/spell cost); Highborne
+	// Scrolls' spell crit is flat enough to just fold in here. Memory of Hyjal's
+	// "reduces damage received by up to 14" has no engine primitive (flat per-hit
+	// damage reduction) and isn't modeled - see docs/TODO.md.
+	ScrollOfAgilityV: {
+		stats.Agility: 19,
+	},
+	ScrollOfIntellectV: {
+		stats.Intellect: 19,
+		stats.SpellCrit: 1 * SpellCritRatingPerCritChance,
+	},
+	ScrollOfSpiritV: {
+		stats.Spirit: 19,
+	},
+	ScrollOfStaminaV: {
+		stats.Stamina: 19,
+	},
+	ScrollOfStrengthV: {
+		stats.Strength: 19,
+	},
+	ScrollOfProtectionV: {
+		stats.BonusArmor: 420,
+	},
 }
 
 type ExtraOnGain func(aura *Aura, sim *Simulation)
@@ -225,14 +258,16 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	if raidBuffs.ArcaneBrilliance {
 		character.AddStats(BuffSpellValues[ArcaneIntellect])
 	}
-	if raidBuffs.ScrollOfIntellect {
+	if raidBuffs.ScrollOfIntellect == proto.TristateEffect_TristateEffectRegular {
 		character.AddStats(BuffSpellValues[ScrollOfIntellect])
+	} else if raidBuffs.ScrollOfIntellect == proto.TristateEffect_TristateEffectImproved {
+		character.AddStats(BuffSpellValues[ScrollOfIntellectV])
 	}
 
 	if raidBuffs.GiftOfTheWild > 0 {
 		updateStats := BuffSpellValues[MarkOfTheWild]
 		if raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.35).Floor()
+			updateStats = updateStats.Multiply(1.6).Floor() // Improved MotW: 20%/rank, 3 ranks (confirmed)
 		}
 		character.AddStats(updateStats)
 		bonusResist = updateStats[stats.NatureResistance]
@@ -293,8 +328,23 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		}
 		character.AddStats(updateStats)
 	}
-	if raidBuffs.ScrollOfStamina {
+	if raidBuffs.ScrollOfStamina == proto.TristateEffect_TristateEffectRegular {
 		character.AddStats(BuffSpellValues[ScrollOfStamina])
+	} else if raidBuffs.ScrollOfStamina == proto.TristateEffect_TristateEffectImproved {
+		character.AddStats(BuffSpellValues[ScrollOfStaminaV])
+		MakePermanent(character.GetOrRegisterAura(Aura{
+			Label:    "Legacy of Suramar",
+			ActionID: ActionID{ItemID: 81013},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				healthMetrics := character.NewHealthMetrics(aura.ActionID)
+				StartPeriodicAction(sim, PeriodicActionOptions{
+					Period: time.Second * 5,
+					OnAction: func(sim *Simulation) {
+						character.GainHealth(sim, 25, healthMetrics)
+					},
+				})
+			},
+		}))
 	}
 
 	if raidBuffs.BloodPact > 0 {
@@ -318,8 +368,20 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	if raidBuffs.DivineSpirit {
 		character.AddStats(BuffSpellValues[DivineSpirit])
 	}
-	if raidBuffs.ScrollOfSpirit {
+	if raidBuffs.ScrollOfSpirit == proto.TristateEffect_TristateEffectRegular {
 		character.AddStats(BuffSpellValues[ScrollOfSpirit])
+	} else if raidBuffs.ScrollOfSpirit == proto.TristateEffect_TristateEffectImproved {
+		character.AddStats(BuffSpellValues[ScrollOfSpiritV])
+		MakePermanent(character.GetOrRegisterAura(Aura{
+			Label:    "A Wisp's Tale",
+			ActionID: ActionID{ItemID: 81014},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-2)
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.SchoolCostMultiplier.AddToAllSchools(2)
+			},
+		}))
 	}
 
 	if individualBuffs.BlessingOfKingsType != proto.BlessingOfKingsType_BlessingOfKingsNone {

@@ -31,7 +31,7 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 }
 
 func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
-	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedElementalShields]
+	impLightningShieldBonus := 1 + []float64{0, .10, .20}[shaman.Talents.ImprovedElementalShields]
 
 	spellId := LightningShieldSpellId[rank]
 	procSpellId := LightningShieldProcSpellId[rank]

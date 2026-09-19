@@ -51,7 +51,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 
-		BonusCritRating:  15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
+		BonusCritRating:  20 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush), // DBC: 20%/rank
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
@@ -68,6 +68,5 @@ func (rogue *Rogue) registerAmbushSpell() {
 				spell.IssueRefund(sim)
 			}
 		},
-
 	})
 }

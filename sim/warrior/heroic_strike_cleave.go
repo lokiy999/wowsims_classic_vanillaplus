@@ -18,11 +18,12 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike),
+			Cost:   15,
 			Refund: 0.8,
 		},
 
 		CritDamageBonus: warrior.impale(),
+		BonusCritRating: 2 * float64(warrior.Talents.ImprovedHeroicStrike) * core.CritRatingPerCritChance, // DBC: +2%/rank crit
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

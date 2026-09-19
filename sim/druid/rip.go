@@ -90,7 +90,7 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 			return druid.ComboPoints() > 0
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression), // DBC: +5%/rank
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

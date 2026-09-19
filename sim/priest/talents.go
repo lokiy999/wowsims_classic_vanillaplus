@@ -58,6 +58,8 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.SpellFocus > 0 {
 		// DBC: +2%/rank spell hit (2 ranks).
 		bonusHit := 2 * float64(priest.Talents.SpellFocus) * core.SpellHitRatingPerHitChance
+		// DBC ($s2): also reduces the target's resistance to all your spells by 10/20.
+		priest.AddStat(stats.SpellPenetration, 10*float64(priest.Talents.SpellFocus))
 		priest.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagPriest) {
 				spell.BonusHitRating += bonusHit
@@ -377,8 +379,6 @@ func (priest *Priest) registerShadowform() {
 
 	actionID := core.ActionID{SpellID: 15473}
 
-	// TODO: DBC also grants -20% Shadow damage taken (effect 2) - add when a tank/healer priest sim needs it.
-
 	priest.ShadowformAura = priest.RegisterAura(core.Aura{
 		Label:    "Shadowform",
 		ActionID: actionID,
@@ -386,9 +386,12 @@ func (priest *Priest) registerShadowform() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// DBC: +20% Shadow damage done.
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.20
+			// DBC effect 3: -20% Shadow damage taken.
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 0.80
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.20
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 0.80
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolHoly) {

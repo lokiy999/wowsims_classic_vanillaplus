@@ -59,11 +59,9 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 			},
 			CD: core.Cooldown{
 				Timer:    cdTimer,
-				Duration: cooldown - time.Millisecond*500*time.Duration(mage.Talents.ImprovedFireBlast),
+				Duration: cooldown - time.Millisecond*2500*time.Duration(mage.Talents.ImprovedFireBlast),
 			},
 		},
-
-		BonusCritRating: 2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

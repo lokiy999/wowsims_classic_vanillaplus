@@ -51,7 +51,7 @@ func (druid *Druid) GetCatWeapon() core.Weapon {
 // TODO: Class bonus stats for both cat and bear.
 func (druid *Druid) GetFormShiftStats() stats.Stats {
 	s := stats.Stats{
-		stats.AttackPower: float64(druid.Talents.PredatoryStrikes) * 0.5 * float64(druid.Level),
+		stats.AttackPower: float64(druid.Talents.PredatoryStrikes) * 1.0 * float64(druid.Level),
 		stats.MeleeCrit:   float64(druid.Talents.SharpenedClaws) * 2 * core.CritRatingPerCritChance,
 	}
 	/*
@@ -118,7 +118,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
-			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
+			druid.AddStatDynamic(sim, stats.Dodge, 3*float64(druid.Talents.FelineSwiftness))
 			druid.SetShapeshift(aura)
 
 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -146,7 +146,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
-			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
+			druid.AddStatDynamic(sim, stats.Dodge, -3*float64(druid.Talents.FelineSwiftness))
 			druid.SetShapeshift(nil)
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())

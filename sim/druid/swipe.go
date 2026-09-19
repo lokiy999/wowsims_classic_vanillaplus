@@ -56,7 +56,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
+		DamageMultiplier: 1 + 0.2*float64(druid.Talents.SavageFury),
 		ThreatMultiplier: SwipeThreatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

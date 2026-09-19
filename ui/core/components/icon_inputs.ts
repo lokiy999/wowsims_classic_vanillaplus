@@ -187,6 +187,37 @@ export function makeTristateRaidBuffInput<SpecType extends Spec>(
 	);
 }
 
+interface RaidBuffEnumInputConfig<T, ModObject> {
+	values: Array<IconEnumValueConfig<ModObject, number>>;
+	fieldName: keyof T;
+	numColumns?: number;
+	showWhen?: (modObj: ModObject) => boolean;
+}
+
+// Like makeTristateRaidBuffInput, but renders as a dropdown listing every
+// option (each with its own icon) instead of a single icon that cycles
+// through states on click - for tristate RaidBuffs fields where the two
+// non-zero options (e.g. a rank IV and a rank V scroll) have different icons
+// and should both be visible/selectable at a glance, not just told apart by
+// a small corner badge.
+export function makeEnumRaidBuffInput<SpecType extends Spec>(
+	config: RaidBuffEnumInputConfig<RaidBuffs, Player<SpecType>>,
+): InputHelpers.TypedIconEnumPickerConfig<Player<SpecType>, number> {
+	return InputHelpers.makeEnumIconInput<any, RaidBuffs, Player<SpecType>, number>(
+		{
+			getModObject: (player: Player<SpecType>) => player,
+			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
+			getValue: (player: Player<SpecType>) => player.getRaid()!.getBuffs(),
+			setValue: (eventID: EventID, player: Player<SpecType>, newVal: RaidBuffs) => player.getRaid()!.setBuffs(eventID, newVal),
+			changeEmitter: (player: Player<SpecType>) =>
+				TypedEvent.onAny([player.getRaid()!.buffsChangeEmitter, player.raceChangeEmitter]),
+		},
+		config.fieldName,
+		config.values,
+		config.numColumns ?? 1,
+	);
+}
+
 export function makeTristateIndividualBuffInput<SpecType extends Spec>(
 	config: TristateInputConfig<IndividualBuffs, Player<SpecType>>,
 ): InputHelpers.TypedIconPickerConfig<Player<SpecType>, number> {

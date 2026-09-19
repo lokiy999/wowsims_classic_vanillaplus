@@ -36,6 +36,8 @@ func (warlock *Warlock) ApplyTalents() {
 	warlock.applyEmberstorm()
 	warlock.applyShadowstorm()
 	warlock.applyDestructionCrit()
+	warlock.applyIntensity()
+	warlock.applySadism()
 }
 
 func (warlock *Warlock) applyWeaponImbue() {
@@ -175,12 +177,18 @@ func (warlock *Warlock) applyNightfall() {
 		},
 	})
 
-	procChance := 0.02 * float64(warlock.Talents.Nightfall)
+	// DBC: 1/2/3% chance per periodic Shadow damage tick, at most once per 10s.
+	procChance := 0.01 * float64(warlock.Talents.Nightfall)
+	var nextNightfall time.Duration
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife) && sim.Proc(procChance, "Nightfall") {
+			if !spell.SpellSchool.Matches(core.SpellSchoolShadow) || sim.CurrentTime < nextNightfall {
+				return
+			}
+			if sim.Proc(procChance, "Nightfall") {
+				nextNightfall = sim.CurrentTime + time.Second*10
 				shadowTranceAura.Activate(sim)
 			}
 		},
@@ -217,9 +225,8 @@ func (warlock *Warlock) applyDemonicEmbrace() {
 		return
 	}
 
-	points := float64(warlock.Talents.DemonicEmbrace)
-	warlock.MultiplyStat(stats.Stamina, 1+.03*(points))
-	warlock.MultiplyStat(stats.Spirit, 1-.01*(points))
+	// DBC: +10%/rank Demon Armor/Skin effectiveness (applied in applyDemonArmor);
+	// the health regen and Shadow Ward reflect parts are not modeled.
 }
 
 func (warlock *Warlock) applyFelIntellect() {
@@ -227,7 +234,9 @@ func (warlock *Warlock) applyFelIntellect() {
 		return
 	}
 
-	multiplier := 1 + 0.03*float64(warlock.Talents.FelIntellect)
+	// DBC: +5%/rank demon mana and +5%/rank total Intellect.
+	multiplier := 1 + 0.05*float64(warlock.Talents.FelIntellect)
+	warlock.MultiplyStat(stats.Intellect, multiplier)
 	for _, pet := range warlock.BasePets {
 		pet.MultiplyStat(stats.Mana, multiplier)
 	}
@@ -238,7 +247,9 @@ func (warlock *Warlock) applyFelStamina() {
 		return
 	}
 
-	multiplier := 1 + 0.03*float64(warlock.Talents.FelStamina)
+	// DBC: +5%/rank demon health and +5%/rank total Stamina.
+	multiplier := 1 + 0.05*float64(warlock.Talents.FelStamina)
+	warlock.MultiplyStat(stats.Stamina, multiplier)
 	for _, pet := range warlock.BasePets {
 		pet.MultiplyStat(stats.Health, multiplier)
 	}
@@ -249,8 +260,9 @@ func (warlock *Warlock) applyMasterSummoner() {
 		return
 	}
 
-	castTimeReduction := time.Second * 2 * time.Duration(warlock.Talents.MasterSummoner)
-	costReduction := 20 * warlock.Talents.MasterSummoner
+	// DBC: -3s cast time and -30% mana cost per rank.
+	castTimeReduction := time.Second * 3 * time.Duration(warlock.Talents.MasterSummoner)
+	costReduction := 30 * warlock.Talents.MasterSummoner
 
 	// Use an aura because the summon spells aren't registered by this point
 	warlock.RegisterAura(core.Aura{
@@ -280,9 +292,11 @@ func (warlock *Warlock) applyMasterDemonologist() {
 	}
 
 	points := float64(warlock.Talents.MasterDemonologist)
-	damageDealtMultiplier := 1 + 0.02*points
-	damageTakenMultiplier := 1 - 0.02*points
-	threatMultiplier := 1 + -0.04*points
+	// DBC: Imp +3%/rank spell crit, Voidwalker -3%/rank physical damage taken,
+	// Succubus +3%/rank all damage, Felhunter +0.2 resistance per level (per rank).
+	damageDealtMultiplier := 1 + 0.03*points
+	damageTakenMultiplier := 1 - 0.03*points
+	critBonus := 3 * points * core.SpellCritRatingPerCritChance
 	bonusResistance := 2 * points
 
 	impConfig := core.Aura{
@@ -290,10 +304,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		ActionID: core.ActionID{SpellID: 23825, Tag: 1},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
+			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, critBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
+			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -critBonus)
 		},
 	}
 
@@ -394,10 +408,10 @@ func (warlock *Warlock) applySoulLink() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.3
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.03
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.05
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.03
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.05
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.3
 		},
 	}
@@ -449,10 +463,11 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		Duration: 30 * time.Minute,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.15
+			// DBC (18789): -30% threat only; the +15% Fire damage was retail.
+			warlock.PseudoStats.ThreatMultiplier *= 0.70
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.15
+			warlock.PseudoStats.ThreatMultiplier /= 0.70
 		},
 	})
 
@@ -465,7 +480,7 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			vwPa = core.NewPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 4,
+				Period: time.Second * 3,
 				OnAction: func(s *core.Simulation) {
 					warlock.GainHealth(sim, warlock.MaxHealth()*0.03, healthMetric)
 				},
@@ -482,10 +497,11 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		ActionID: core.ActionID{SpellID: 18791},
 		Duration: 30 * time.Minute,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.15
+			// DBC (18791): +5% damage.
+			warlock.PseudoStats.DamageDealtMultiplier *= 1.05
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.15
+			warlock.PseudoStats.DamageDealtMultiplier /= 1.05
 		},
 	})
 
@@ -498,9 +514,9 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			fhPa = core.NewPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 4,
+				Period: time.Second * 3,
 				OnAction: func(s *core.Simulation) {
-					warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
+					warlock.AddMana(sim, warlock.MaxMana()*0.03, manaMetric)
 				},
 			})
 			sim.AddPendingAction(fhPa)
@@ -562,6 +578,8 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 	})
 
 	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt}
+	// DBC: 20%/rank chance on Shadow Bolt crit.
+	procChance := 0.20 * float64(warlock.Talents.ImprovedShadowBolt)
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "ISB Trigger",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -571,7 +589,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 			warlock.DebuffSpells = append(warlock.DebuffSpells, warlock.ShadowBolt...)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && result.DidCrit() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if result.Landed() && result.DidCrit() && slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(procChance, "ISB") {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				isbAura.Activate(sim)
 				isbAura.SetStacks(sim, isbAura.MaxStacks)
@@ -598,11 +616,12 @@ func (warlock *Warlock) applyBane() {
 	}
 
 	points := time.Duration(warlock.Talents.Bane)
+	// DBC: Shadow Bolt -0.1s/rank, Soul Fire -0.5s/rank (Immolate is not affected).
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockImmolate {
+		if spell.SpellCode == SpellCode_WarlockShadowBolt {
 			spell.DefaultCast.CastTime -= time.Millisecond * 100 * points
 		} else if spell.SpellCode == SpellCode_WarlockSoulFire {
-			spell.DefaultCast.CastTime -= time.Millisecond * 400 * points
+			spell.DefaultCast.CastTime -= time.Millisecond * 500 * points
 		}
 	})
 }
@@ -662,17 +681,49 @@ func (warlock *Warlock) applyShadowstorm() {
 	})
 }
 
-// Bring the Pain (DBC): +crit for Searing Pain, Conflagrate, Shadowburn and Shadow Bolt.
+// Bring the Pain (DBC): +5%/rank crit for Searing Pain, Conflagrate, Shadowburn and Soul Fire.
 func (warlock *Warlock) applyDestructionCrit() {
 	if warlock.Talents.BringThePain == 0 {
 		return
 	}
-	// r1 3% per rank (m3)
-	bonusCrit := 3 * float64(warlock.Talents.BringThePain) * core.SpellCritRatingPerCritChance
+	bonusCrit := 5 * float64(warlock.Talents.BringThePain) * core.SpellCritRatingPerCritChance
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_WarlockSearingPain || spell.SpellCode == SpellCode_WarlockConflagrate ||
-			spell.SpellCode == SpellCode_WarlockShadowburn || spell.SpellCode == SpellCode_WarlockShadowBolt {
+			spell.SpellCode == SpellCode_WarlockShadowburn || spell.SpellCode == SpellCode_WarlockSoulFire {
 			spell.BonusCritRating += bonusCrit
 		}
 	})
+}
+
+// Intensity (DBC): -2/-4% target resist chance for Destruction spells.
+func (warlock *Warlock) applyIntensity() {
+	if warlock.Talents.Intensity == 0 {
+		return
+	}
+	bonusHit := 2 * float64(warlock.Talents.Intensity) * core.SpellHitRatingPerHitChance
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(WarlockFlagDestruction) {
+			spell.BonusHitRating += bonusHit
+		}
+	})
+}
+
+// Sadism (Vanilla+ calculator): spell crits have an 8%/rank chance to restore 666 mana.
+func (warlock *Warlock) applySadism() {
+	if warlock.Talents.Sadism == 0 {
+		return
+	}
+	procChance := 0.08 * float64(warlock.Talents.Sadism)
+	manaMetrics := warlock.NewManaMetrics(core.ActionID{SpellID: 33977})
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Sadism",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() || !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+				return
+			}
+			if sim.Proc(procChance, "Sadism") {
+				warlock.AddMana(sim, 666, manaMetrics)
+			}
+		},
+	}))
 }

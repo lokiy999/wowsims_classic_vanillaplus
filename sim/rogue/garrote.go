@@ -47,7 +47,7 @@ func (rogue *Rogue) registerGarrote() {
 		},
 
 		DamageMultiplier: 1 +
-			0.04*float64(rogue.Talents.Opportunity),
+			0.04*float64(rogue.Talents.Opportunity) + 0.10*float64(rogue.Talents.Bloodthirsty),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

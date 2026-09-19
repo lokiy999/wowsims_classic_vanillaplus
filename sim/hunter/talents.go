@@ -23,7 +23,7 @@ func (hunter *Hunter) ApplyTalents() {
 		}
 	}
 
-	if int32(0) /*MonsterSlaying removed*/+int32(0) /*HumanoidSlaying removed*/ > 0 {
+	if int32(0) /*MonsterSlaying removed*/ +int32(0) /*HumanoidSlaying removed*/ > 0 {
 		hunter.Env.RegisterPostFinalizeEffect(func() {
 			for _, t := range hunter.Env.Encounter.Targets {
 				switch t.MobType {
@@ -62,10 +62,10 @@ func (hunter *Hunter) ApplyTalents() {
 		// Killer Instinct: you and your pet gain 1% hit and crit chance per rank.
 		ki := float64(hunter.Talents.KillerInstinct)
 		hunter.AddStats(stats.Stats{
-			stats.MeleeCrit:  ki * core.CritRatingPerCritChance,
-			stats.SpellCrit:  ki * core.SpellCritRatingPerCritChance,
-			stats.MeleeHit:   ki * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:   ki * core.SpellHitRatingPerHitChance,
+			stats.MeleeCrit: ki * core.CritRatingPerCritChance,
+			stats.SpellCrit: ki * core.SpellCritRatingPerCritChance,
+			stats.MeleeHit:  ki * core.MeleeHitRatingPerHitChance,
+			stats.SpellHit:  ki * core.SpellHitRatingPerHitChance,
 		})
 		if hunter.pet != nil {
 			hunter.pet.AddStats(stats.Stats{
@@ -95,7 +95,8 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	if hunter.Talents.Survivalist > 0 {
-		hunter.MultiplyStat(stats.Health, 1.0+0.02*float64(hunter.Talents.Survivalist))
+		// DBC: Survivalist -2%/rank damage taken (not extra health).
+		hunter.PseudoStats.DamageTakenMultiplier *= 1 - 0.02*float64(hunter.Talents.Survivalist)
 	}
 
 	if hunter.Talents.LightningReflexes > 0 {
@@ -105,6 +106,7 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.PseudoStats.MeleeSpeedMultiplier *= 1.0 + bonus
 	}
 
+	hunter.applyExtras()
 	hunter.applyEfficiency()
 	hunter.applyTrapMastery()
 	hunter.applyCleverTraps()
@@ -191,7 +193,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
 		Duration: time.Second * 18,
-	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.5)
+	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.2) // DBC 19574: +20% damage
 
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -254,4 +256,27 @@ func (hunter *Hunter) applyEfficiency() {
 			spell.Cost.Multiplier -= 3 * hunter.Talents.Efficiency
 		}
 	})
+}
+
+// Talents with DBC values that were missing (Snapshot, Deflection, weapon specializations).
+func (hunter *Hunter) applyExtras() {
+	// Snapshot: -0.2s/rank Aimed Shot and Multi-Shot shot time.
+	if hunter.Talents.Snapshot > 0 {
+		reduction := time.Millisecond * 200 * time.Duration(hunter.Talents.Snapshot)
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_HunterAimedShot || spell.SpellCode == SpellCode_HunterMultiShot {
+				spell.DefaultCast.CastTime = max(0, spell.DefaultCast.CastTime-reduction)
+			}
+		})
+	}
+
+	// Deflection: +2/3/4/5% parry.
+	if hunter.Talents.Deflection > 0 {
+		hunter.AddStat(stats.Parry, float64(hunter.Talents.Deflection+1)*core.ParryRatingPerParryChance)
+	}
+
+	// Two-Handed Weapon Specialization: +4/6/8/10% damage with two-handed melee weapons.
+	if hunter.Talents.TwoHandedWeaponSpecialization > 0 && hunter.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		hunter.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(hunter.Talents.TwoHandedWeaponSpecialization+1)
+	}
 }

@@ -24,16 +24,17 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.applyFlurry()
 
 	if shaman.Talents.AncestralKnowledge > 0 {
-		shaman.MultiplyStat(stats.Mana, 1.0+0.01*float64(shaman.Talents.AncestralKnowledge))
+		// DBC: 2/3/4/5% total mana.
+		shaman.MultiplyStat(stats.Mana, 1.0+[]float64{0, .02, .03, .04, .05}[shaman.Talents.AncestralKnowledge])
 	}
 
 	shaman.AddStat(stats.Block, 1*float64(int32(0) /*removed*/))
 
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
 
-	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
+	shaman.applyShamanExtras()
 
-	shaman.ApplyEquipScaling(stats.Armor, 1+.02*float64(shaman.Talents.Toughness))
+	shaman.ApplyEquipScaling(stats.Armor, 1+.05*float64(shaman.Talents.Toughness)) // DBC: 5%/rank
 
 	// Parry talent removed from custom shaman tree
 
@@ -136,7 +137,7 @@ func (shaman *Shaman) applyElementalPrecision() {
 }
 
 func (shaman *Shaman) callOfFlameMultiplier() float64 {
-	return 1 + .05*float64(shaman.Talents.CallOfFlame)
+	return 1 + .10*float64(shaman.Talents.CallOfFlame) // DBC: 10%/rank
 }
 
 func (shaman *Shaman) applyElementalFocus() {
@@ -215,8 +216,8 @@ func (shaman *Shaman) applyElementalDevastation() {
 	}
 
 	spellID := []int32{0, 30165, 29177, 29178}[shaman.Talents.ElementalDevastation]
-	critBonus := 3.0 * float64(shaman.Talents.ElementalDevastation) * core.CritRatingPerCritChance
-	procAura := shaman.NewTemporaryStatsAura("Elemental Devastation Proc", core.ActionID{SpellID: spellID}, stats.Stats{stats.MeleeCrit: critBonus}, time.Second*10)
+	critBonus := 10.0 * core.CritRatingPerCritChance // Vanilla+ calculator: 10% crit for 5/10/15s by rank
+	procAura := shaman.NewTemporaryStatsAura("Elemental Devastation Proc", core.ActionID{SpellID: spellID}, stats.Stats{stats.MeleeCrit: critBonus, stats.SpellCrit: critBonus}, time.Second*5*time.Duration(shaman.Talents.ElementalDevastation))
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Devastation",
@@ -239,7 +240,7 @@ func (shaman *Shaman) applyElementalFury() {
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
 		if (spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem)) && spell.DefenseType == core.DefenseTypeMagic {
-			spell.CritDamageBonus += 1
+			spell.CritDamageBonus += 0.2 * float64(shaman.Talents.ElementalFury) // DBC: +20%/rank
 		}
 	})
 }
@@ -423,7 +424,7 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 	}
 
 	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
-	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	attackSpeed := []float64{1.05, 1.10, 1.15, 1.20, 1.25}[points-1] // DBC: 5%/rank
 
 	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
@@ -465,12 +466,12 @@ func (shaman *Shaman) makeFlurryConsumptionTrigger(flurryAura *core.Aura) *core.
 }
 
 func (shaman *Shaman) totemManaMultiplier() int32 {
-	return 100 - 5*shaman.Talents.TotemicFocus
+	return 100 - 25*shaman.Talents.TotemicFocus // DBC: 25%/rank
 }
 
 // Restorative Totems uses Mod Spell Effectiveness (Base Value)
 func (shaman *Shaman) restorativeTotemsModifier() float64 {
-	return 0.05 * float64(shaman.Talents.RestorativeTotems)
+	return []float64{0, .30, .50}[shaman.Talents.RestorativeTotems] // DBC: 30/50%
 }
 
 // Purification uses Mod Spell Effectiveness (Base Healing)
@@ -522,3 +523,142 @@ func (shaman *Shaman) purificationHealingModifier() float64 {
 // 		},
 // 	})
 // }
+
+// Talents with DBC values not otherwise handled above.
+func (shaman *Shaman) applyShamanExtras() {
+	shaman.applyStaticField()
+	if shaman.Talents.Stormforged {
+		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 34100})
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Stormforged Mana",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellCode == SpellCode_ShamanStormstrike && result.Landed() {
+					shaman.AddMana(sim, 0.05*shaman.MaxMana(), manaMetrics)
+				}
+			},
+		}))
+	}
+	// Anticipation: -3%/rank shock resist chance.
+	if shaman.Talents.Anticipation > 0 {
+		hit := 3 * float64(shaman.Talents.Anticipation) * core.SpellHitRatingPerHitChance
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			switch spell.SpellCode {
+			case SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock:
+				spell.BonusHitRating += hit
+			}
+		})
+	}
+
+	// Thundering Strikes also adds 1%/rank crit to Shock spells.
+	if shaman.Talents.ThunderingStrikes > 0 {
+		crit := float64(shaman.Talents.ThunderingStrikes) * core.SpellCritRatingPerCritChance
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			switch spell.SpellCode {
+			case SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock:
+				spell.BonusCritRating += crit
+			}
+		})
+	}
+
+	// Call of Flame: +10%/rank Flame Shock crit.
+	if shaman.Talents.CallOfFlame > 0 {
+		crit := 10 * float64(shaman.Talents.CallOfFlame) * core.SpellCritRatingPerCritChance
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanFlameShock {
+				spell.BonusCritRating += crit
+			}
+		})
+	}
+
+	// Tidal Focus: -1%/rank mana on lightning spells, -10%/rank on Frost Shock.
+	if shaman.Talents.TidalFocus > 0 {
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Cost == nil {
+				return
+			}
+			switch spell.SpellCode {
+			case SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning:
+				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
+			case SpellCode_ShamanFrostShock:
+				spell.Cost.Multiplier -= 10 * shaman.Talents.TidalFocus
+			}
+		})
+	}
+
+	// Lightning Overlord: Lightning Bolt/Chain Lightning crits refund 10%/rank of base mana cost.
+	if shaman.Talents.LightningOverlord > 0 {
+		refund := 0.10 * float64(shaman.Talents.LightningOverlord)
+		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 33012})
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Lightning Overlord",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.DidCrit() || spell.Cost == nil {
+					return
+				}
+				if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning {
+					shaman.AddMana(sim, spell.Cost.BaseCost*refund, manaMetrics)
+				}
+			},
+		}))
+	}
+
+	// Nature's Spirit: spell damage and healing up to 8%/rank of Spirit.
+	if shaman.Talents.NatureSpirit > 0 {
+		shaman.AddStatDependency(stats.Spirit, stats.SpellPower, 0.08*float64(shaman.Talents.NatureSpirit))
+	}
+
+	// Stormforged: spell damage and healing equal to 20% of Attack Power.
+	if shaman.Talents.Stormforged {
+		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.20)
+	}
+
+	// Elemental Warding: -5%/rank Fire, Frost and Nature damage taken.
+	if shaman.Talents.ElementalWarding > 0 {
+		mult := 1 - 0.05*float64(shaman.Talents.ElementalWarding)
+		shaman.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= mult
+		shaman.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= mult
+		shaman.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= mult
+	}
+}
+
+// Static Field (Vanilla+ calculator): damage spells have a 20%/rank chance to add a stack
+// (max 10, 20s) that gives +1% damage and -1% mana cost to Lightning Bolt and Chain Lightning.
+func (shaman *Shaman) applyStaticField() {
+	if shaman.Talents.StaticField == 0 {
+		return
+	}
+	procChance := 0.20 * float64(shaman.Talents.StaticField)
+	var affected []*core.Spell
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning {
+			affected = append(affected, spell)
+		}
+	})
+	aura := shaman.RegisterAura(core.Aura{
+		Label:     "Static Field",
+		ActionID:  core.ActionID{SpellID: 33610},
+		Duration:  time.Second * 20,
+		MaxStacks: 10,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			delta := newStacks - oldStacks
+			for _, spell := range affected {
+				spell.DamageMultiplierAdditive += 0.01 * float64(delta)
+				if spell.Cost != nil {
+					spell.Cost.Multiplier -= delta
+				}
+			}
+		},
+	})
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Static Field Trigger",
+		OnSpellHitDealt: func(aura2 *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Flags.Matches(SpellFlagShaman) || !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+				return
+			}
+			if sim.Proc(procChance, "Static Field") {
+				aura.Activate(sim)
+				aura.AddStack(sim)
+			}
+		},
+	}))
+}

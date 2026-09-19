@@ -447,6 +447,11 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 			})
 		case proto.ArmorElixir_ScrollOfProtection:
 			character.AddStats(BuffSpellValues[ScrollOfProtection])
+		case proto.ArmorElixir_ScrollOfProtectionV:
+			// Memory of Hyjal also "reduces all damage received by up to 14" - no flat
+			// per-hit damage reduction primitive exists in the sim, so only the Armor
+			// stat is modeled here. See docs/TODO.md.
+			character.AddStats(BuffSpellValues[ScrollOfProtectionV])
 		}
 	}
 
@@ -508,6 +513,18 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.AgilityElixir_ScrollOfAgility:
 			character.AddStats(BuffSpellValues[ScrollOfAgility])
+		case proto.AgilityElixir_ScrollOfAgilityV:
+			character.AddStats(BuffSpellValues[ScrollOfAgilityV])
+			MakePermanent(character.GetOrRegisterAura(Aura{
+				Label:    "Scroll of the Moon",
+				ActionID: ActionID{ItemID: 81010},
+				OnGain: func(aura *Aura, sim *Simulation) {
+					aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
+				},
+				OnExpire: func(aura *Aura, sim *Simulation) {
+					aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
+				},
+			}))
 		}
 	}
 
@@ -527,6 +544,14 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.StrengthBuff_ScrollOfStrength:
 			character.AddStats(BuffSpellValues[ScrollOfStrength])
+		case proto.StrengthBuff_ScrollOfStrengthV:
+			character.AddStats(BuffSpellValues[ScrollOfStrengthV])
+			if !character.PseudoStats.FeralCombatEnabled {
+				for _, weapon := range []*Weapon{character.AutoAttacks.MH(), character.AutoAttacks.OH()} {
+					weapon.BaseDamageMin += 4
+					weapon.BaseDamageMax += 4
+				}
+			}
 		case proto.StrengthBuff_ElixirOfBruteForce:
 			character.AddStats(stats.Stats{
 				stats.Strength: 15,

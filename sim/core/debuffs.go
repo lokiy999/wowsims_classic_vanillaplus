@@ -334,7 +334,8 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	externalShadowPriests := isbConfig.isbShadowPriests
 	var priestPa *PendingAction
 
-	damageMulti := 1. + 0.04*float64(rank)
+	// DBC spell 17800: +10% Shadow damage taken regardless of talent rank.
+	damageMulti := 1.10
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},

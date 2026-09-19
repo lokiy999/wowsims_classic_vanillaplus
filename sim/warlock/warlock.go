@@ -149,7 +149,7 @@ func (warlock *Warlock) Initialize() {
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.BloodPact = max(raidBuffs.BloodPact, core.MakeTristateValue(
 		warlock.Options.Summon == proto.WarlockOptions_Imp,
-		warlock.Talents.ImprovedImp == 3,
+		warlock.Talents.ImprovedImp == 2,
 	))
 }
 

@@ -395,12 +395,17 @@ export const ScrollOfProtection: ConsumableInputConfig<ArmorElixir> = {
 	actionId: () => ActionId.fromItemId(10305),
 	value: ArmorElixir.ScrollOfProtection,
 };
+export const ScrollOfProtectionV: ConsumableInputConfig<ArmorElixir> = {
+	actionId: () => ActionId.fromItemId(81015),
+	value: ArmorElixir.ScrollOfProtectionV,
+};
 export const ARMOR_CONSUMES_CONFIG: ConsumableStatOption<ArmorElixir>[] = [
 	{ config: ElixirOfSuperiorDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfGreaterDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfMinorDefense, stats: [Stat.StatArmor] },
 	{ config: ScrollOfProtection, stats: [Stat.StatArmor] },
+	{ config: ScrollOfProtectionV, stats: [Stat.StatArmor] },
 ];
 
 export const makeArmorConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'armorElixir' });
@@ -468,6 +473,10 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: () => ActionId.fromItemId(10309),
 	value: AgilityElixir.ScrollOfAgility,
 };
+export const ScrollOfAgilityV: ConsumableInputConfig<AgilityElixir> = {
+	actionId: () => ActionId.fromItemId(81010),
+	value: AgilityElixir.ScrollOfAgilityV,
+};
 
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
 	{ config: ElixirOfTheMongoose, stats: [Stat.StatAgility, Stat.StatMeleeCrit] },
@@ -475,6 +484,7 @@ export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
 	{ config: ElixirOfAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, stats: [Stat.StatAgility] },
 	{ config: ScrollOfAgility, stats: [Stat.StatAgility] },
+	{ config: ScrollOfAgilityV, stats: [Stat.StatAgility] },
 ];
 
 export const makeAgilityConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'agilityElixir' });
@@ -500,6 +510,10 @@ export const ElixirOfBruteForce: ConsumableInputConfig<StrengthBuff> = {
 	actionId: () => ActionId.fromItemId(13453),
 	value: StrengthBuff.ElixirOfBruteForce,
 };
+export const ScrollOfStrengthV: ConsumableInputConfig<StrengthBuff> = {
+	actionId: () => ActionId.fromItemId(81011),
+	value: StrengthBuff.ScrollOfStrengthV,
+};
 
 export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
 	{ config: JujuPower, stats: [Stat.StatStrength] },
@@ -507,6 +521,7 @@ export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
 	{ config: ElixirOfOgresStrength, stats: [Stat.StatStrength] },
 	{ config: ScrollOfStrength, stats: [Stat.StatStrength] },
 	{ config: ElixirOfBruteForce, stats: [Stat.StatStrength, Stat.StatStamina] },
+	{ config: ScrollOfStrengthV, stats: [Stat.StatStrength] },
 ];
 
 export const makeStrengthConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'strengthBuff' });

@@ -77,7 +77,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int) *core.Spell {
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
+		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 3 * core.CritRatingPerCritChance, // DBC: 3%/rank
 		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,

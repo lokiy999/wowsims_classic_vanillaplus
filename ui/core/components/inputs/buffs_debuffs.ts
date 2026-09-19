@@ -1,4 +1,4 @@
-import { BlessingOfKingsType, Class, Faction, SaygesFortune, Stat } from '../../proto/common';
+import { BlessingOfKingsType, Class, Faction, SaygesFortune, Stat, TristateEffect } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { IconEnumPicker } from '../icon_enum_picker';
 import {
@@ -6,6 +6,7 @@ import {
 	makeBooleanIndividualBuffInput,
 	makeBooleanRaidBuffInput,
 	makeEnumIndividualBuffInput,
+	makeEnumRaidBuffInput,
 	makeMultistateIndividualBuffInput,
 	makeMultistateRaidBuffInput,
 	makeTristateDebuffInput,
@@ -241,18 +242,35 @@ export const SpiritBuff = withLabel(
 // Scrolls no longer share a cell with their matching raid buff (Stamina/Intellect/Spirit
 // above) — on this server they stack with them instead of being a fallback for when the
 // raid buff is missing (see sim/core/buffs.go), so they're rendered in the Consumables
-// tab's Scrolls row (consumes_picker.ts) instead of here.
-export const ScrollOfStamina = makeBooleanRaidBuffInput({
-	actionId: () => ActionId.fromItemId(10307),
+// tab's Scrolls row (consumes_picker.ts) instead of here. Each is now a tristate
+// (none/rank IV/rank V) since the rank V scrolls (81013/81012/81014) don't stack with
+// their own rank IV, same reasoning as the Agility/Strength/Protection scrolls' V option.
+// Rendered as a dropdown (not a click-to-cycle icon) so rank IV and rank V -
+// which have different icons - are both visible and directly selectable
+// instead of only distinguishable by a small corner badge.
+export const ScrollOfStamina = makeEnumRaidBuffInput({
 	fieldName: 'scrollOfStamina',
+	values: [
+		{ value: TristateEffect.TristateEffectMissing },
+		{ value: TristateEffect.TristateEffectRegular, actionId: () => ActionId.fromItemId(10307) },
+		{ value: TristateEffect.TristateEffectImproved, actionId: () => ActionId.fromItemId(81013) },
+	],
 });
-export const ScrollOfIntellect = makeBooleanRaidBuffInput({
-	actionId: () => ActionId.fromItemId(10308),
+export const ScrollOfIntellect = makeEnumRaidBuffInput({
 	fieldName: 'scrollOfIntellect',
+	values: [
+		{ value: TristateEffect.TristateEffectMissing },
+		{ value: TristateEffect.TristateEffectRegular, actionId: () => ActionId.fromItemId(10308) },
+		{ value: TristateEffect.TristateEffectImproved, actionId: () => ActionId.fromItemId(81012) },
+	],
 });
-export const ScrollOfSpirit = makeBooleanRaidBuffInput({
-	actionId: () => ActionId.fromItemId(10306),
+export const ScrollOfSpirit = makeEnumRaidBuffInput({
 	fieldName: 'scrollOfSpirit',
+	values: [
+		{ value: TristateEffect.TristateEffectMissing },
+		{ value: TristateEffect.TristateEffectRegular, actionId: () => ActionId.fromItemId(10306) },
+		{ value: TristateEffect.TristateEffectImproved, actionId: () => ActionId.fromItemId(81014) },
+	],
 });
 
 export const BattleShoutBuff = withLabel(

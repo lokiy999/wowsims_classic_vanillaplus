@@ -11,6 +11,10 @@ read these two files first, before doing anything else:
   haven't been resolved yet. Check this before starting new work in case it's
   already related to something outstanding.
 
+When the user asks about items, check VPlusItemDB (the item database used by
+the VPlus pipeline) for new/updated items. When the user asks about icons or
+drop sources for items, check Atlas/AtlasLoot.
+
 When you make a nontrivial change, append to `docs/CHANGES.md` (new dated
 `## Part <letter>` section, following the existing format) instead of starting
 a separate file. If something comes up that's worth doing later but isn't part

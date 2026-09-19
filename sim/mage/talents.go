@@ -12,6 +12,10 @@ func (mage *Mage) ApplyTalents() {
 	mage.applyArcaneTalents()
 	mage.applyFireTalents()
 	mage.applyFrostTalents()
+	mage.applyPyromania()
+	mage.applyHotStreak()
+	mage.applyArcaneResilience()
+	mage.applySpellTwisting()
 }
 
 func (mage *Mage) applyArcaneTalents() {
@@ -21,7 +25,9 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Arcane Subtlety
 	if mage.Talents.ArcaneSubtlety > 0 {
-		threatMultiplier := 1 - .20*float64(mage.Talents.ArcaneSubtlety)
+		// DBC: -25%/rank Arcane threat and -5/rank target resistance to all your spells.
+		mage.AddStat(stats.SpellPenetration, 5*float64(mage.Talents.ArcaneSubtlety))
+		threatMultiplier := 1 - .25*float64(mage.Talents.ArcaneSubtlety)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Flags.Matches(SpellFlagMage) {
 				spell.ThreatMultiplier *= threatMultiplier
@@ -41,7 +47,7 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Magic Absorption
 	if mage.Talents.MagicAbsorption > 0 {
-		magicAbsorptionBonus := 2 * float64(mage.Talents.MagicAbsorption)
+		magicAbsorptionBonus := 5 * float64(mage.Talents.MagicAbsorption) // DBC: +5 all resistances per rank
 		mage.AddResistances(magicAbsorptionBonus)
 	}
 
@@ -117,7 +123,7 @@ func (mage *Mage) applyFireTalents() {
 
 	// Burning Soul
 	if mage.Talents.BurningSoul > 0 {
-		threatMultiplier := 1 - .15*float64(mage.Talents.BurningSoul)
+		threatMultiplier := 1 - .05*float64(mage.Talents.BurningSoul) // DBC: 5%/rank
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
 				spell.ThreatMultiplier *= threatMultiplier
@@ -195,8 +201,8 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
-		manaCostMultiplier := 3 * mage.Talents.FrostChanneling // DBC: 3%/rank
-		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
+		manaCostMultiplier := 3 * mage.Talents.FrostChanneling            // DBC: 3%/rank
+		threatMultiplier := 1 - .06*float64(mage.Talents.FrostChanneling) // DBC: 6%/rank
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
 				spell.Cost.Multiplier -= manaCostMultiplier
@@ -343,7 +349,8 @@ func (mage *Mage) registerArcanePowerCD() {
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power",
 		ActionID: actionID,
-		Duration: time.Second * 15,
+		// DBC: Arcane Power lasts 20s (calculator), +5s per rank.
+		Duration: time.Second * time.Duration(20+5*mage.Talents.ImprovedArcanePower),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.3
@@ -368,8 +375,9 @@ func (mage *Mage) registerArcanePowerCD() {
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Timer:    mage.NewTimer(),
-				Duration: time.Second * 180,
+				Timer: mage.NewTimer(),
+				// DBC: Improved Arcane Power -60s cooldown per rank.
+				Duration: time.Second * time.Duration(180-60*mage.Talents.ImprovedArcanePower),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -576,4 +584,153 @@ func (mage *Mage) applyWintersChill() {
 			}
 		},
 	})
+}
+
+// Pyromania (DBC): -3/-5% cast time on Fireball and Pyroblast, -50/-100% on Flamestrike,
+// and -15/-30s Blast Wave cooldown.
+func (mage *Mage) applyPyromania() {
+	if mage.Talents.Pyromania == 0 {
+		return
+	}
+	rank := float64(mage.Talents.Pyromania)
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		switch spell.SpellCode {
+		case SpellCode_MageFireball, SpellCode_MagePyroblast:
+			spell.CastTimeMultiplier -= []float64{0, .03, .05}[mage.Talents.Pyromania]
+		case SpellCode_MageFlamestrike:
+			spell.CastTimeMultiplier -= 0.50 * rank
+		case SpellCode_MageBlastWave:
+			spell.CD.Duration -= time.Second * 15 * time.Duration(mage.Talents.Pyromania)
+		}
+	})
+}
+
+// Hot Streak (DBC): 5%/rank chance on Fire spell crit to make the next Scorch or
+// Pyroblast instant and free.
+func (mage *Mage) applyHotStreak() {
+	if mage.Talents.HotStreak == 0 {
+		return
+	}
+	procChance := 0.05 * float64(mage.Talents.HotStreak)
+	var affected []*core.Spell
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_MageScorch || spell.SpellCode == SpellCode_MagePyroblast {
+			affected = append(affected, spell)
+		}
+	})
+	hotStreak := mage.RegisterAura(core.Aura{
+		Label:    "Hot Streak",
+		ActionID: core.ActionID{SpellID: 33905},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affected {
+				spell.CastTimeMultiplier -= 1
+				spell.Cost.Multiplier -= 100
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affected {
+				spell.CastTimeMultiplier += 1
+				spell.Cost.Multiplier += 100
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+			if spell.SpellCode == SpellCode_MageScorch || spell.SpellCode == SpellCode_MagePyroblast {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+	mage.RegisterAura(core.Aura{
+		Label:    "Hot Streak Talent",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) || spell.SpellCode == SpellCode_MageIgnite {
+				return
+			}
+			if !hotStreak.IsActive() && sim.Proc(procChance, "Hot Streak") {
+				hotStreak.Activate(sim)
+			}
+		},
+	})
+}
+
+// Arcane Resilience (DBC): armor equal to 50%/rank of Intellect.
+func (mage *Mage) applyArcaneResilience() {
+	if mage.Talents.ArcaneResilience == 0 {
+		return
+	}
+	mage.AddStatDependency(stats.Intellect, stats.Armor, 0.5*float64(mage.Talents.ArcaneResilience))
+}
+
+// Spell Twisting (Vanilla+ calculator): Fire spells give +15% crit on the next Frost spell,
+// Frost spells give +15% crit on the next Fire spell, Arcane spells give it to both.
+func (mage *Mage) applySpellTwisting() {
+	if !mage.Talents.SpellTwisting {
+		return
+	}
+	crit := 15.0 * core.SpellCritRatingPerCritChance
+	var fireSpells, frostSpells []*core.Spell
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if !spell.Flags.Matches(SpellFlagMage) {
+			return
+		}
+		if spell.SpellSchool.Matches(core.SpellSchoolFire) {
+			fireSpells = append(fireSpells, spell)
+		} else if spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+			frostSpells = append(frostSpells, spell)
+		}
+	})
+	makeAura := func(label string, id int32, targets func() []*core.Spell) *core.Aura {
+		return mage.RegisterAura(core.Aura{
+			Label:    label,
+			ActionID: core.ActionID{SpellID: id},
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				for _, s := range targets() {
+					s.BonusCritRating += crit
+				}
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				for _, s := range targets() {
+					s.BonusCritRating -= crit
+				}
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if aura.RemainingDuration(sim) == aura.Duration {
+					return
+				}
+				for _, s := range targets() {
+					if s == spell {
+						aura.Deactivate(sim)
+						return
+					}
+				}
+			},
+		})
+	}
+	frostBuff := makeAura("Spell Twisting: Ice", 33876, func() []*core.Spell { return frostSpells })
+	fireBuff := makeAura("Spell Twisting: Fire", 33877, func() []*core.Spell { return fireSpells })
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Spell Twisting",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Flags.Matches(SpellFlagMage) || !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || spell.SpellCode == SpellCode_MageIgnite {
+				return
+			}
+			switch {
+			case spell.SpellSchool.Matches(core.SpellSchoolFire):
+				frostBuff.Activate(sim)
+			case spell.SpellSchool.Matches(core.SpellSchoolFrost):
+				fireBuff.Activate(sim)
+			case spell.SpellSchool.Matches(core.SpellSchoolArcane):
+				frostBuff.Activate(sim)
+				fireBuff.Activate(sim)
+			}
+		},
+	}))
 }
