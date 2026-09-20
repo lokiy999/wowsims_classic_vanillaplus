@@ -165,8 +165,15 @@ export class CharacterStats extends Component {
 		const debuffStats = this.getDebuffStats();
 		const bonusStats = player.getBonusStats();
 
-		const baseDelta = baseStats;
-		const gearDelta = gearStats.subtract(baseStats).subtract(bonusStats);
+		let baseDelta = baseStats;
+		let gearDelta = gearStats.subtract(baseStats).subtract(bonusStats);
+
+		// Armor gained from gear Agility is not item armor, so show it under Base
+		// instead of Gear. Mirrors the 2 armor per Agility rule in sim/core/character.go.
+		// Display only. See docs/TODO.md for the proper "derived stats" column.
+		const gearAgilityArmor = 2 * gearDelta.getStat(Stat.StatAgility);
+		gearDelta = gearDelta.addStat(Stat.StatArmor, -gearAgilityArmor);
+		baseDelta = baseDelta.addStat(Stat.StatArmor, gearAgilityArmor);
 		const talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents);
 		const buffsDelta = buffsStats.subtract(talentsStats).add(statMods.buffs);
 		const consumesDelta = consumesStats.subtract(buffsStats);

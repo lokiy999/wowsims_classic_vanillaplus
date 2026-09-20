@@ -334,3 +334,24 @@ consumable add:**
   `_missing_vplus_items.txt`, `_olddb.json`, `_pvp_obsolete.json`,
   `_removelist.json`, `_removelist_aqnaxx.json`, `"Start Server.bat"`. Flagged
   before, still there — delete or keep, your call.
+
+## Sidebar stat breakdown: derived stats are counted as "Gear"
+
+- The Base/Gear/Talents/Buffs/Consumes columns in the left sidebar
+  (`ui/core/components/character_stats.tsx`) are built from cumulative
+  snapshots in `applyAllEffects` (`sim/core/character.go`), and every snapshot
+  runs the stat dependencies. So Agility on a helm shows up as armor (2 per
+  Agility), attack power, crit and dodge in the *Gear* column. Example: Helm of
+  Endless Rage shows 691 gear armor (643 item + 24 Agility x 2) against the
+  tooltip's 643. The total is correct and Toughness only scales the item's own
+  armor, so this is a display issue only.
+- Proper fix: a separate "from attributes" column for derived stats. That needs
+  a new field per phase in `PlayerStats` (proto + regenerated pb.go), a second
+  measurement without dependencies in `measureStats`, and the UI column. Moving
+  the armor to Base as a stopgap was rejected: Base would then hold armor from
+  gear and buffed Agility.
+- **Stopgap in place:** `character_stats.tsx` moves the armor from gear Agility
+  (2 per Agility, hard-coded to match `character.go`) from the Gear column to
+  the Base column. Only armor, only the gear phase. Base therefore includes
+  gear-Agility armor until the derived column exists; remove the stopgap when
+  that lands.

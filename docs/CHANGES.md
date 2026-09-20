@@ -2358,3 +2358,15 @@ tooltip; the "feared/stunned" clause is the same number on every rank so it is n
 fires it, base damage ~830 with 86 spell power. Cosmetic gap: ranks 2-4 have no name/icon entry in the spell DB
 (only 33808 does), so results show them by id until the tooltip CSV/pipeline gets rows for them.
 
+
+## Part AQ — Sidebar armor breakdown (2026-09-20)
+
+Display-only fix in `ui/core/components/character_stats.tsx`. The sidebar armor tooltip counted armor gained from
+gear Agility (2 per Agility) under "Gear", so Helm of Endless Rage showed 691 gear armor against the item's 643.
+That armor now moves to the "Base" column (Base 212, Gear 643, Talents 96 with Toughness 5/5, Total 951). Only
+armor and only the gear phase are covered; the "2 armor per Agility" constant is duplicated from
+`sim/core/character.go`. No sim behaviour or `.results` change. The proper fix (a separate derived-stats column,
+which needs new `PlayerStats` proto fields) and the reason for this stopgap are in `docs/TODO.md`.
+
+Also verified with the helm alone: the served database has 643 armor on item 19372 (Wowhead lists 679); the
+difference is in the item data, not stale caching, and is not changed here.
