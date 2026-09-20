@@ -10,15 +10,23 @@ func (paladin *Paladin) registerRighteousFury() {
 	}
 	actionID := core.ActionID{SpellID: 25780}
 
-	// Improved Righteous Fury is multiplicative.
-	rfThreatMultiplier := 1.6 * (1 + []float64{0.0, 0.16, 0.33, 0.5}[paladin.Talents.ImprovedRighteousFury])
+	// +30% threat, and Improved Righteous Fury adds +10% threat and +10% attack speed per rank (60% at 3/3), confirmed in game.
+	rfThreatMultiplier := 1.3 + 0.1*float64(paladin.Talents.ImprovedRighteousFury)
+	rfAttackSpeed := 1 + 0.1*float64(paladin.Talents.ImprovedRighteousFury)
 
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellSchool.Matches(core.SpellSchoolHoly) {
-			spell.ThreatMultiplier *= rfThreatMultiplier
-		}
+	rfAura := paladin.RegisterAura(core.Aura{
+		Label:    "Righteous Fury",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier *= rfThreatMultiplier
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier /= rfThreatMultiplier
+		},
 	})
-
-	rfAura := core.MakePermanent(&core.Aura{Label: "Righteous Fury", ActionID: actionID})
-	paladin.RegisterAura(*rfAura)
+	if paladin.Talents.ImprovedRighteousFury > 0 {
+		rfAura.AttachMultiplyAttackSpeed(&paladin.Unit, rfAttackSpeed)
+	}
+	core.MakePermanent(rfAura)
 }

@@ -16,14 +16,14 @@ func (paladin *Paladin) registerHammerOfWrath() {
 		maxDamage float64
 		manaCost  float64
 	}{
-		{level: 44, spellID: 24275, manaCost: 295, minDamage: 316, maxDamage: 348},
-		{level: 52, spellID: 24274, manaCost: 360, minDamage: 412, maxDamage: 455},
-		{level: 60, spellID: 24239, manaCost: 425, minDamage: 504, maxDamage: 566},
+		{level: 44, spellID: 24275, manaCost: 180, minDamage: 397, maxDamage: 439},
+		{level: 52, spellID: 24274, manaCost: 220, minDamage: 520, maxDamage: 572},
+		{level: 60, spellID: 24239, manaCost: 255, minDamage: 657, maxDamage: 719},
 	}
 
 	cd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
-		Duration: time.Second * 6,
+		Duration: time.Second * 15,
 	}
 
 	for i, rank := range ranks {
@@ -50,7 +50,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
 					GCD:      time.Second,
-					CastTime: time.Second,
+					CastTime: time.Millisecond * 1500,
 				},
 				IgnoreHaste: true,
 				CD:          cd,

@@ -2567,3 +2567,39 @@ Same checks as the warlock pass:
   `make proto` is needed for the generated files.
 - The dev server's `tsc` check also caught two type errors in the Windfury/Flametongue Totem imbue options
   (`getClass` after the `isSpec` guard); fixed by checking the class first.
+
+## Part AY — Paladin audit: cooldowns, Holy Shield, Redoubt, sidebar (2026-09-20)
+
+Second audit round for the paladin, checked against `CSV's/Spell.csv`.
+
+- **Talent decoding:** a new test (`sim/paladin/talents_string_test.go`) checks every talent in `paladin.json` decodes to
+  the proto field with the same name. All 60 pass, the tree order was already right.
+- **Holy Shock cooldown** 30s -> 10s (DBC 20473/20929/20930).
+- **Hammer of Wrath cooldown** 6s -> 15s (DBC 24239/24275).
+- **Holy Shield** damage per block 65/95/130 -> 45/75/110 and mana 150/195/240 -> 120/150/220 (DBC 20925/20927/20928).
+- **Redoubt** block bonus 6% -> 10% per rank (DBC 20128/20131/20132 give 10/20/30%).
+- **Checked, no change:** Consecration/Exorcism 8s/15s, Holy Shield 10s, Improved Lay on Hands -15 min/rank (the old
+  TODO doubt is settled), Improved Judgement -1s/rank, Unbreakability 5%/rank, Divine Strength/Intellect 3%, Toughness 2%,
+  Precision/Conviction 1%, Holy Power 2%, Searing/Healing Light 4%, Benediction 10%/rank, Crusade 6%, weapon
+  specializations 2%.
+- **Sidebar:** Holy Power (+2%/rank Holy spell crit) now shows in the Spell Crit tooltip on the holy, protection and
+  retribution pages (`modifyDisplayStats` in each `ui/*_paladin/sim.ts`). Precision and Conviction were already in the
+  stat totals.
+- Retribution golden results regenerated (Hammer of Wrath cooldown).
+- **Homepage links:** Protection and Retribution Paladin now link to `/classic/protection_paladin/` and
+  `/classic/retribution_paladin/` (they were `#` and said "Unreleased"). Both are set to Alpha in
+  `ui/core/launched_sims.ts`, so the dropdown at the top of every page lists them too. Holy Paladin stays Unlaunched.
+- **Holy Shield** now has 10 charges and lasts 15s (confirmed in game). Its damage coefficient (0.05) is still a placeholder.
+- **Divine Protection** added (`sim/paladin/divine_protection.go`): talent-gated survival cooldown, 10s, 10 min cooldown,
+  -50% damage taken and -30% damage dealt (DBC 498, duration confirmed in game). Shows up as a cooldown for the APL and
+  raid cooldown lists; no Forbearance.
+- **Holy Shock** ranks set to the in-game values: level 30/44/58, 134-150 / 242-264 / 405-435 damage, mana 225/275/325
+  (the healing half and "heals double at 20% health" are still not modeled).
+- **Hammer of Wrath** set to the in-game values: 1.5s cast (was 1s), 397-439 / 520-572 / 657-719 damage, mana 180/220/255.
+- **Righteous Fury** threat is now +30% (was +60%); Improved Righteous Fury adds +10% threat and +10% attack speed per rank
+  (60% threat at 3/3), replacing the 16/33/50% multiplier. The attack speed part is new.
+- **Redoubt** now lasts 15s (was 10s) and triggers with 20% chance when hit and 100% on a crit (was crits only), 5 blocks,
+  10% block per rank (30% at 3/3).
+- Paladin golden results regenerated.
+- **Righteous Fury** threat now applies to all of the paladin's threat (a threat multiplier on the paladin), not only Holy
+  spells (confirmed in game). Protection golden results regenerated.

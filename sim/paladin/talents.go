@@ -89,13 +89,13 @@ func (paladin *Paladin) applyRedoubt() {
 		return
 	}
 
-	// Redoubt grants 6% block chance per point.
-	blockBonus := 6.0 * float64(paladin.Talents.Redoubt) * core.BlockRatingPerBlockChance
+	// Redoubt grants 10% block chance per point (DBC 20128/20131/20132: 10/20/30%).
+	blockBonus := 10.0 * float64(paladin.Talents.Redoubt) * core.BlockRatingPerBlockChance
 
 	paladin.redoubtAura = paladin.RegisterAura(core.Aura{
 		Label:     "Redoubt",
 		ActionID:  core.ActionID{SpellID: 20134},
-		Duration:  time.Second * 10,
+		Duration:  time.Second * 15,
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.AddStatDynamic(sim, stats.Block, blockBonus)
@@ -117,7 +117,11 @@ func (paladin *Paladin) applyRedoubt() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+				return
+			}
+			// Confirmed in game: 20% chance when hit, 100% on a crit; 15 sec or 5 blocks.
+			if result.DidCrit() || sim.RandomFloat("Redoubt") < 0.2 {
 				paladin.redoubtAura.Activate(sim)
 				paladin.redoubtAura.SetStacks(sim, 5)
 			}

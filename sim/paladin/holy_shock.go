@@ -18,9 +18,9 @@ func (paladin *Paladin) registerHolyShock() {
 		minDamage float64
 		maxDamage float64
 	}{
-		{level: 40, spellID: 20473, manaCost: 225, minDamage: 204, maxDamage: 220},
-		{level: 48, spellID: 20929, manaCost: 275, minDamage: 279, maxDamage: 301},
-		{level: 56, spellID: 20930, manaCost: 325, minDamage: 365, maxDamage: 395},
+		{level: 30, spellID: 20473, manaCost: 225, minDamage: 134, maxDamage: 150},
+		{level: 44, spellID: 20929, manaCost: 275, minDamage: 242, maxDamage: 264},
+		{level: 58, spellID: 20930, manaCost: 325, minDamage: 405, maxDamage: 435},
 	}
 
 	for i, rank := range ranks {
@@ -51,7 +51,7 @@ func (paladin *Paladin) registerHolyShock() {
 				},
 				CD: core.Cooldown{
 					Timer:    paladin.NewTimer(),
-					Duration: time.Second * 30,
+					Duration: time.Second * 10,
 				},
 			},
 

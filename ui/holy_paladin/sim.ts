@@ -22,6 +22,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
 	displayPseudoStats: [],
 
+	modifyDisplayStats: (player: Player<Spec.SpecHolyPaladin>) => {
+		// Holy Power: +2%/rank crit on Holy spells only (applied per school in the sim), shown in the Spell Crit tooltip.
+		return {
+			schoolCrit: { holy: player.getTalents().holyPower * 2 },
+		};
+	},
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

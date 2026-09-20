@@ -15,9 +15,9 @@ var HolyShieldValues = []struct {
 	manaCost float64
 	damage   float64
 }{
-	{level: 30, spellID: 20925, procID: 20955, manaCost: 150, damage: 65},
-	{level: 50, spellID: 20927, procID: 20956, manaCost: 195, damage: 95},
-	{level: 60, spellID: 20928, procID: 20957, manaCost: 240, damage: 130},
+	{level: 30, spellID: 20925, procID: 20955, manaCost: 120, damage: 45},
+	{level: 50, spellID: 20927, procID: 20956, manaCost: 150, damage: 75},
+	{level: 60, spellID: 20928, procID: 20957, manaCost: 220, damage: 110},
 }
 
 func (paladin *Paladin) registerHolyShield() {
@@ -25,7 +25,7 @@ func (paladin *Paladin) registerHolyShield() {
 		return
 	}
 
-	numCharges := int32(4)
+	numCharges := int32(10)
 	blockBonus := 30.0 * core.BlockRatingPerBlockChance
 
 	for i, values := range HolyShieldValues {
@@ -63,7 +63,7 @@ func (paladin *Paladin) registerHolyShield() {
 		paladin.holyShieldAura[i] = paladin.RegisterAura(core.Aura{
 			Label:     "Holy Shield" + paladin.Label + strconv.Itoa(rank),
 			ActionID:  core.ActionID{SpellID: spellID},
-			Duration:  time.Second * 10,
+			Duration:  time.Second * 15,
 			MaxStacks: numCharges,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, numCharges)

@@ -57,10 +57,12 @@ Still open, the calculator confirmed the text but not the mechanics:
 - Not modeled: Divine Concentration, Divine Grace, Holy Grasp, Illumination, Light's Mercy,
   Improved Purifying, Holy Purge, Divine Might/Improved Sanctity Aura/Sanctity Aura
   (buff pipeline, see the buff audit above), Seal of Command/Fury, Redoubt values,
-  Eye for an Eye, Repentance, Unbreakability, Improved Retribution Aura, Codex Holy Light
+  Eye for an Eye, Repentance, Improved Retribution Aura, Codex Holy Light
   cost/cast time, Blessed Strikes threat reduction, Vengeance max stacks (code 10, unchecked).
-- Improved Lay on Hands cooldown (code -10 min/rank) unchecked against DBC (-15/-30 min?).
-- Paladin `.results` files stale.
+- Improved Lay on Hands cooldown checked: DBC is -15 min/rank, matches the code.
+- Paladin audit round 2 (CHANGES.md Part AY): Holy Shock, Hammer of Wrath, Righteous Fury, Redoubt and Holy Shield are
+  now confirmed. Still open: Consecration and Exorcism rank/damage not compared, Holy Wrath / Avenging Wrath / Divine Favor
+  cooldowns not in the DBC, Holy Shield coefficient, Holy Shock healing.
 
 ## Raised 2026-09-19 — shaman talents (CHANGES.md Part AK)
 
