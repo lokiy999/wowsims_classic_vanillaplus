@@ -58,10 +58,19 @@ const (
 	ScrollOfProtectionV
 )
 
+// Percent increase to the Arcane Intellect effect for each variant in the buff settings.
+var arcaneIntellectTypeBonus = map[proto.ArcaneIntellectType]int32{
+	proto.ArcaneIntellectType_ArcaneIntellectNone:          0,
+	proto.ArcaneIntellectType_ArcaneIntellectNormal:        0,
+	proto.ArcaneIntellectType_ArcaneIntellectZgSet:         25,
+	proto.ArcaneIntellectType_ArcaneIntellectTalented:      100,
+	proto.ArcaneIntellectType_ArcaneIntellectZgSetTalented: 125,
+}
+
 // Stats from buffs pre-tristate buffs
 var BuffSpellValues = map[BuffName]stats.Stats{
 	ArcaneIntellect: {
-		stats.Intellect: 31,
+		stats.Intellect: 30, // DBC: rank 5 is 29 base points, +1
 	},
 	DivineSpirit: {
 		stats.Spirit: 40,
@@ -255,8 +264,14 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	isHorde := playerFaction == proto.Faction_Horde
 	bonusResist := float64(0)
 
-	if raidBuffs.ArcaneBrilliance {
-		character.AddStats(BuffSpellValues[ArcaneIntellect])
+	if raidBuffs.ArcaneBrilliance || raidBuffs.ArcaneIntellectType != proto.ArcaneIntellectType_ArcaneIntellectNone {
+		updateStats := BuffSpellValues[ArcaneIntellect]
+		// The buffing mage's Mind Mastery (+20%/rank) and Illusionist's Attire 2pc (+25%) add together,
+		// e.g. 30 * (1 + 1.00 + 0.25) = 67.5 -> 67. Rounded down.
+		// The picked variant and the mage in the raid (AddRaidBuffs) can both contribute; the larger one applies.
+		bonus := max(arcaneIntellectTypeBonus[raidBuffs.ArcaneIntellectType], raidBuffs.ArcaneIntellectBonus)
+		updateStats = updateStats.Multiply(1 + float64(bonus)/100).Floor()
+		character.AddStats(updateStats)
 	}
 	if raidBuffs.ScrollOfIntellect == proto.TristateEffect_TristateEffectRegular {
 		character.AddStats(BuffSpellValues[ScrollOfIntellect])

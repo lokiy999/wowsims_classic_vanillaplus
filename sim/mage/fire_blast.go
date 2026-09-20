@@ -36,7 +36,7 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 	manaCost := FireBlastManaCost[rank]
 	level := FireBlastLevel[rank]
 
-	cooldown := time.Second * 8
+	cooldown := time.Second * 20 // Vanilla+: 20s base cooldown (Improved Fire Blast still takes 2.5s/rank off)
 	flags := SpellFlagMage | core.SpellFlagAPL
 
 	return core.SpellConfig{

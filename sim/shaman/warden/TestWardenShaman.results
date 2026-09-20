@@ -4,9 +4,9 @@ character_stats_results: {
   final_stats: 297.275
   final_stats: 244.145
   final_stats: 447.81
-  final_stats: 191.015
+  final_stats: 189.75
   final_stats: 284.625
-  final_stats: 63.67167
+  final_stats: 63.25
   final_stats: 0
   final_stats: 40
   final_stats: 0
@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 77.25
   final_stats: 0
-  final_stats: 18.52815
+  final_stats: 18.50678
   final_stats: 0
   final_stats: 0
   final_stats: 1222.595
@@ -24,7 +24,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 4105.225
+  final_stats: 4086.25
   final_stats: 0
   final_stats: 0
   final_stats: 944.29
@@ -55,7 +55,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.15563
+  weights: 0.15565
   weights: 0
   weights: 0
   weights: 0
@@ -99,78 +99,78 @@ stat_weights_results: {
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-CataclysmArmor"
  value: {
-  dps: 338.39128
-  tps: 452.19345
+  dps: 338.32359
+  tps: 452.11171
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
-  dps: 289.94846
-  tps: 402.87152
+  dps: 289.87871
+  tps: 402.78665
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-TheEarthfury"
  value: {
-  dps: 267.95815
-  tps: 375.89247
+  dps: 267.88897
+  tps: 375.80851
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-TheFiveThunders"
  value: {
-  dps: 319.51269
-  tps: 427.42805
+  dps: 319.44521
+  tps: 427.34659
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-TheStonefury"
  value: {
-  dps: 298.35787
-  tps: 409.0451
+  dps: 298.28822
+  tps: 408.95888
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-TheTenStorms"
  value: {
-  dps: 299.55441
-  tps: 421.02557
+  dps: 299.41132
+  tps: 420.81227
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 304.38626
-  tps: 418.54138
+  dps: 304.24457
+  tps: 418.31255
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-Average-Default"
  value: {
-  dps: 254.17645
-  tps: 360.06179
+  dps: 254.10026
+  tps: 359.9745
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 114.97277
-  tps: 495.32191
+  dps: 115.12067
+  tps: 495.68464
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 114.97277
-  tps: 188.01369
+  dps: 115.12067
+  tps: 188.37642
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 136.4411
-  tps: 246.89152
+  dps: 136.39389
+  tps: 246.82879
  }
 }
 dps_results: {
@@ -197,22 +197,22 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 115.66617
-  tps: 473.92702
+  dps: 115.72696
+  tps: 482.59109
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 115.66617
-  tps: 188.61171
+  dps: 115.72696
+  tps: 189.19182
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 139.03754
-  tps: 241.58462
+  dps: 138.98929
+  tps: 241.52077
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 239.25808
-  tps: 346.19927
+  dps: 239.09179
+  tps: 345.90048
  }
 }

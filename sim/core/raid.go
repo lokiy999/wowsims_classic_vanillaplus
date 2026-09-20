@@ -217,7 +217,8 @@ func (raid *Raid) GetRaidBuffs(baseRaidBuffs *proto.RaidBuffs) *proto.RaidBuffs 
 	// Compute the full raid buffs from the raid.
 	raidBuffs := &proto.RaidBuffs{}
 	if baseRaidBuffs != nil {
-		raidBuffs = baseRaidBuffs
+		// Copy so the players' AddRaidBuffs calls don't leak into the caller's (possibly shared) config.
+		raidBuffs = googleProto.Clone(baseRaidBuffs).(*proto.RaidBuffs)
 	}
 	for _, party := range raid.Parties {
 		for _, player := range party.Players {

@@ -585,6 +585,15 @@ enum BlessingOfKingsType {
 	BlessingOfKingsZgSetTalented = 4; // 13%, both of the above.
 }
 
+// Arcane Intellect / Arcane Brilliance variants, chosen in the buff settings.
+enum ArcaneIntellectType {
+	ArcaneIntellectNone = 0;
+	ArcaneIntellectNormal = 1; // +30 Intellect, base spell.
+	ArcaneIntellectZgSet = 2; // +37 Intellect, Illusionist's Attire 2pc (+25% effect).
+	ArcaneIntellectTalented = 3; // +60 Intellect, Mind Mastery 5/5 (+100% effect).
+	ArcaneIntellectZgSetTalented = 4; // +67 Intellect, both (+125% effect).
+}
+
 // Buffs that affect the entire raid.
 // NextIndex: 36
 message RaidBuffs {
@@ -604,7 +613,7 @@ message RaidBuffs {
 	TristateEffect grace_of_air_totem = 5; // none, normal, 15% improved
 
 	// +Intell and/or Spi
-	bool arcane_brilliance = 6;
+	bool arcane_brilliance = 6; // Legacy on/off, treated as ArcaneIntellectNormal when arcane_intellect_type is none.
 	bool divine_spirit = 7;
 
 	// +AP
@@ -647,6 +656,13 @@ message RaidBuffs {
 	TristateEffect retribution_aura = 25;
 	bool sanctity_aura = 33;
 	int32 battle_squawk = 34;
+
+	// Percentage increase to the Arcane Intellect bonus from the buffing mage: Mind Mastery (20% per rank) and the
+	// Illusionist's Attire 2-piece (25%), added together. Set by the mage's AddRaidBuffs, not chosen in the UI.
+	int32 arcane_intellect_bonus = 36;
+
+	// The Arcane Intellect variant picked in the UI (a buff from a mage outside the sim).
+	ArcaneIntellectType arcane_intellect_type = 37;
 }
 
 // Buffs that affect a single party.

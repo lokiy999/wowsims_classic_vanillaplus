@@ -10,7 +10,9 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
-export type StatMods = { talents?: Stats; buffs?: Stats };
+// schoolCrit: extra spell crit % that only applies to one school (e.g. Critical Mass for Fire), shown in the Spell Crit tooltip.
+export type SchoolCritMods = { arcane?: number; fire?: number; frost?: number; holy?: number; nature?: number; shadow?: number };
+export type StatMods = { talents?: Stats; buffs?: Stats; schoolCrit?: SchoolCritMods };
 
 const statGroups = new Map<string, Array<UnitStat>>([
 	['Primary', [UnitStat.fromStat(Stat.StatHealth), UnitStat.fromStat(Stat.StatMana)]],
@@ -326,6 +328,29 @@ export class CharacterStats extends Component {
 							<span>Shadow</span>
 							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
 						</div>
+					</div>,
+				);
+			} else if (stat.isStat() && stat.getStat() === Stat.StatSpellCrit && statMods.schoolCrit) {
+				const baseCrit = finalStats.getStat(Stat.StatSpellCrit) / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
+				const schoolCrit = statMods.schoolCrit;
+				const rows: Array<[string, number | undefined]> = [
+					['Arcane', schoolCrit.arcane],
+					['Fire', schoolCrit.fire],
+					['Frost', schoolCrit.frost],
+					['Holy', schoolCrit.holy],
+					['Nature', schoolCrit.nature],
+					['Shadow', schoolCrit.shadow],
+				];
+				tooltipContent.appendChild(
+					<div className="ps-2">
+						{rows
+							.filter(([, extra]) => extra !== undefined)
+							.map(([name, extra]) => (
+								<div className="character-stats-tooltip-row">
+									<span>{name}</span>
+									<span>{`${(baseCrit + extra!).toFixed(2)}%`}</span>
+								</div>
+							))}
 					</div>,
 				);
 			} else if (stat.isPseudoStat() && stat.getPseudoStat() === PseudoStat.PseudoStatMeleeSpeedMultiplier && (mainHandWeapon || offHandItem)) {

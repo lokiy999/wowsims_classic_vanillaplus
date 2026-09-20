@@ -2387,3 +2387,51 @@ difference is in the item data, not stale caching, and is not changed here.
 - Shadow Priest sidebar: Spell Focus (+2%/rank Spell Hit) and Force of Will (+1%/rank Spell Crit) are now added
   in `modifyDisplayStats` in `ui/shadow_priest/sim.ts`. They are per-spell bonuses in the sim, so they were not
   in the stat totals. `CLAUDE.md` now requires sim changes to be reflected in the sidebar too.
+
+## Part AS — Mage: Elemental Precision display and tree order (2026-09-20)
+
+- **Elemental Precision** sidebar value was doubled: `ui/mage/sim.ts` `modifyDisplayStats` used 2% per rank for
+  Fire/Frost hit. The sim (`sim/mage/talents.go`) and the DBC were already 1%/rank; the display now uses 1%.
+- **Mage talent tab order** is now Arcane / Fire / Frost (`ui/core/talents/trees/mage.json`; it was Fire / Arcane /
+  Frost). This also matches the tab icon list in `ui/core/proto_utils/utils.ts`, which was already Arcane first.
+  Talent strings are digits per talent in tab order, so any mage talent string saved or shared before this change
+  has its Arcane and Fire sections swapped. The presets in the repo have empty strings.
+- **Follow-up bug from the reorder (fixed):** the sim decodes the talent string by proto field order
+  (`FillTalentsProto`), and `MageTalents` is declared Fire / Arcane / Frost, so after the reorder the sim read Fire
+  points as Arcane ones (Improved Fireball 5/5 was ignored: Fireball showed 3.15s with Berserking instead of
+  2.70s). `sim/mage/mage.go` now swaps the first two trees (`reorderTalentsString`) before decoding, and
+  `sim/mage/talents_string_test.go` covers it. Verified in the browser: Fireball cast time 2.70s, DPS 364 -> 450.
+  Rule of thumb: if a talent tree is reordered in `ui/core/talents/trees/<class>.json`, the Go decoder has to be
+  changed to match, because the string is positional.
+- **Fire Blast base cooldown 8s -> 20s** (`sim/mage/fire_blast.go`); Improved Fire Blast still takes 2.5s/rank off.
+- **Pyroblast now has a 60s cooldown** (`sim/mage/pyroblast.go`, one timer shared by all ranks).
+- **Mage sidebar crit:** Overheat (+2%/rank, all schools) is now added to Spell Crit in `modifyDisplayStats`
+  (`ui/mage/sim.ts`). Critical Mass (+1%/rank, Fire only) is shown through a new optional `schoolCrit` field on
+  `StatMods` (`ui/core/components/character_stats.tsx`): the Spell Crit tooltip lists Arcane / Fire / Frost with the
+  school-specific crit added. No new proto stat was needed.
+- Side effect of the tree-order fix worth knowing: numbers read off the mage page before it (Int, Health, Mana,
+  Spell Crit) included a misread talent (Improved Fireball 5/5 was decoded as Arcane Mind 5/5).
+- **Arcane Focus** sidebar hit was doubled (`ui/mage/sim.ts` used 2%/rank; the sim and DBC are 1%/rank). Fixed to 1%.
+- **Arcane Instability** +1%/rank spell crit is now added to the sidebar's Spell Crit (the sim already applied it).
+- **Mind Mastery's Arcane Intellect part** (DBC: +20% of the Arcane Intellect effect per rank) is implemented the way
+  Improved Power Word: Fortitude is: `sim/mage/mage.go` `AddRaidBuffs` sets a new `RaidBuffs.mind_mastery` field
+  (`proto/common.proto`, field 36, max across mages in the raid) and `sim/core/buffs.go` scales the Arcane Intellect
+  bonus by `1 + 0.2 * mind_mastery`, rounded down (30 -> 36/42/48/54/60). The generated Go and TypeScript protos were
+  regenerated locally with `npx protoc` (they are gitignored, so anyone pulling this needs `make proto`).
+- **Arcane Intellect base value is now 30** (was 31; DBC rank 5 = 29 base points + 1). This lowers Intellect by 1
+  for every buffed caster, so all 18 `.results` goldens were regenerated (only Intellect-derived numbers moved).
+- **Illusionist's Attire 2pc** (+25% to the Arcane Intellect / Arcane Brilliance effect) is now modeled together with
+  Mind Mastery. The proto field is now `RaidBuffs.arcane_intellect_bonus` (percent, replaces `mind_mastery`), set in
+  `Mage.AddRaidBuffs` as `20 * MindMastery + 25 (set)`, and applied in `sim/core/buffs.go` as
+  `floor(30 * (1 + bonus/100))`. They add, not multiply: 5/5 Mind Mastery + set = 30 * 2.25 = 67.5 -> 67 (confirmed
+  in game), set alone = 37, 5/5 talent alone = 60.
+- `Raid.GetRaidBuffs` now works on a clone of the base raid buffs. It used to mutate the caller's config, so a test
+  that turned on the set bonus leaked it into every later test that shared `core.FullBuffs`.
+- **Arcane Intellect picker (Settings > Raid Buffs > Intellect)** now has the same kind of variants as Blessing of Kings:
+  Disabled / Normal (+30) / Illusionist's Attire 2pc (+37) / Mind Mastery 5/5 (+60) / both (+67). New proto enum
+  `ArcaneIntellectType` and field `RaidBuffs.arcane_intellect_type` (37); `sim/core/buffs.go` uses the larger of the
+  picked variant and the bonus a mage in the raid provides through `AddRaidBuffs`. The old on/off `arcane_brilliance`
+  field is kept: `makeEnumRaidBuffInput` (`ui/core/components/icon_inputs.ts`) migrates a saved `true` to Normal, and
+  the sim still treats it as Normal. Presets that set `arcaneBrilliance: true` keep working. Verified in the browser
+  on the mage page: Intellect 360 (Normal) -> 368 (37) -> 394 (60) -> 402 (67); a mage always gets its own Arcane
+  Intellect from `AddRaidBuffs`, so Disabled and Normal both show 360 there.

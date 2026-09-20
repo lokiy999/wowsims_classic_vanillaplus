@@ -192,6 +192,10 @@ interface RaidBuffEnumInputConfig<T, ModObject> {
 	fieldName: keyof T;
 	numColumns?: number;
 	showWhen?: (modObj: ModObject) => boolean;
+	// Optional old on/off field this enum replaced: when it is set and the enum is unset, the enum is set to
+	// legacyEnabledValue and the old field is cleared, so saved settings keep working.
+	legacyBoolField?: keyof T;
+	legacyEnabledValue?: number;
 }
 
 // Like makeTristateRaidBuffInput, but renders as a dropdown listing every
@@ -207,7 +211,14 @@ export function makeEnumRaidBuffInput<SpecType extends Spec>(
 		{
 			getModObject: (player: Player<SpecType>) => player,
 			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
-			getValue: (player: Player<SpecType>) => player.getRaid()!.getBuffs(),
+			getValue: (player: Player<SpecType>) => {
+				const buffs = player.getRaid()!.getBuffs();
+				if (config.legacyBoolField && buffs[config.legacyBoolField]) {
+					if (!buffs[config.fieldName]) (buffs[config.fieldName] as unknown as number) = config.legacyEnabledValue ?? 1;
+					(buffs[config.legacyBoolField] as unknown as boolean) = false;
+				}
+				return buffs;
+			},
 			setValue: (eventID: EventID, player: Player<SpecType>, newVal: RaidBuffs) => player.getRaid()!.setBuffs(eventID, newVal),
 			changeEmitter: (player: Player<SpecType>) =>
 				TypedEvent.onAny([player.getRaid()!.buffsChangeEmitter, player.raceChangeEmitter]),

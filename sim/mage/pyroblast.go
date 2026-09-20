@@ -21,9 +21,10 @@ func (mage *Mage) registerPyroblastSpell() {
 	}
 
 	mage.Pyroblast = make([]*core.Spell, PyroblastRanks+1)
+	cdTimer := mage.NewTimer()
 
 	for rank := 1; rank <= PyroblastRanks; rank++ {
-		config := mage.newPyroblastSpellConfig(rank)
+		config := mage.newPyroblastSpellConfig(rank, cdTimer)
 
 		if config.RequiredLevel <= int(mage.Level) {
 			mage.Pyroblast[rank] = mage.GetOrRegisterSpell(config)
@@ -31,7 +32,7 @@ func (mage *Mage) registerPyroblastSpell() {
 	}
 }
 
-func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
+func (mage *Mage) newPyroblastSpellConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 
 	numTicks := int32(4)
 	tickLength := time.Second * 3
@@ -68,6 +69,10 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
 				CastTime: castTime,
+			},
+			CD: core.Cooldown{
+				Timer:    cdTimer,
+				Duration: time.Minute, // Vanilla+: 1 minute cooldown
 			},
 		},
 

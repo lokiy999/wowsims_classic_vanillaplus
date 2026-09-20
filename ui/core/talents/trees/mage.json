@@ -1,389 +1,5 @@
 [
   {
-    "name": "Fire",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/41.jpg",
-    "talents": [
-      {
-        "fieldName": "fireWarding",
-        "location": {
-          "rowIdx": 0,
-          "colIdx": 0
-        },
-        "spellIds": [
-          11094,
-          13043
-        ],
-        "maxPoints": 2,
-        "descriptions": [
-          "Increases your Fire resistance by 10. In addition, causes your Fire Ward to have a 15% chance to reflect Fire spells while active.",
-          "Increases your Fire resistance by 20. In addition, causes your Fire Ward to have a 30% chance to reflect Fire spells while active."
-        ]
-      },
-      {
-        "fieldName": "improvedFireball",
-        "location": {
-          "rowIdx": 0,
-          "colIdx": 1
-        },
-        "spellIds": [
-          11069,
-          12338,
-          12339,
-          12340,
-          12341
-        ],
-        "maxPoints": 5,
-        "descriptions": [
-          "Reduces the casting time of your Fireball spell by 0.1 sec.",
-          "Reduces the casting time of your Fireball spell by 0.2 sec.",
-          "Reduces the casting time of your Fireball spell by 0.3 sec.",
-          "Reduces the casting time of your Fireball spell by 0.4 sec.",
-          "Reduces the casting time of your Fireball spell by 0.5 sec."
-        ]
-      },
-      {
-        "fieldName": "improvedFireBlast",
-        "location": {
-          "rowIdx": 0,
-          "colIdx": 2
-        },
-        "spellIds": [
-          11078,
-          11080,
-          12342,
-          12343
-        ],
-        "maxPoints": 4,
-        "descriptions": [
-          "Reduces the cooldown of your Fire Blast spell by 2.5 sec.",
-          "Reduces the cooldown of your Fire Blast spell by 5 sec.",
-          "Reduces the cooldown of your Fire Blast spell by 7.5 sec.",
-          "Reduces the cooldown of your Fire Blast spell by 10 sec."
-        ]
-      },
-      {
-        "fieldName": "pyroblast",
-        "location": {
-          "rowIdx": 0,
-          "colIdx": 3
-        },
-        "spellIds": [
-          11366
-        ],
-        "maxPoints": 1,
-        "prereqLocation": {
-          "rowIdx": 0,
-          "colIdx": 2
-        },
-        "descriptions": [
-          "Hurls an immense fiery boulder that causes 120 Fire damage and an additional 14 Fire damage over $d."
-        ]
-      },
-      {
-        "fieldName": "flameThrowing",
-        "location": {
-          "rowIdx": 1,
-          "colIdx": 0
-        },
-        "spellIds": [
-          11100,
-          12353
-        ],
-        "maxPoints": 2,
-        "descriptions": [
-          "Increases the range and the radius of your Fire spells by 10%.",
-          "Increases the range and the radius of your Fire spells by 20%."
-        ]
-      },
-      {
-        "fieldName": "burningSoul",
-        "location": {
-          "rowIdx": 1,
-          "colIdx": 1
-        },
-        "spellIds": [
-          11083,
-          12351,
-          12352
-        ],
-        "maxPoints": 3,
-        "descriptions": [
-          "Gives your Fire spells a 25% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 5%.",
-          "Gives your Fire spells a 50% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 10%.",
-          "Gives your Fire spells a 75% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 15%."
-        ]
-      },
-      {
-        "fieldName": "impact",
-        "location": {
-          "rowIdx": 1,
-          "colIdx": 2
-        },
-        "spellIds": [
-          11103,
-          12357,
-          12358,
-          12359,
-          12360
-        ],
-        "maxPoints": 5,
-        "prereqLocation": {
-          "rowIdx": 0,
-          "colIdx": 2
-        },
-        "descriptions": [
-          "Gives your Fire spells a 4% chance to stun the target for 2 sec.",
-          "Gives your Fire spells a 8% chance to stun the target for 2 sec.",
-          "Gives your Fire spells a 12% chance to stun the target for 2 sec.",
-          "Gives your Fire spells a 16% chance to stun the target for 2 sec.",
-          "Gives your Fire spells a 20% chance to stun the target for 2 sec."
-        ]
-      },
-      {
-        "fieldName": "criticalMass",
-        "location": {
-          "rowIdx": 2,
-          "colIdx": 0
-        },
-        "spellIds": [
-          11115,
-          11367,
-          11368,
-          11369,
-          11370
-        ],
-        "maxPoints": 5,
-        "descriptions": [
-          "Increases the critical strike chance of your Fire spells by 1%.",
-          "Increases the critical strike chance of your Fire spells by 2%.",
-          "Increases the critical strike chance of your Fire spells by 3%.",
-          "Increases the critical strike chance of your Fire spells by 4%.",
-          "Increases the critical strike chance of your Fire spells by 5%."
-        ]
-      },
-      {
-        "fieldName": "blastWave",
-        "location": {
-          "rowIdx": 2,
-          "colIdx": 1
-        },
-        "spellIds": [
-          11113
-        ],
-        "maxPoints": 1,
-        "descriptions": [
-          "A wave of flame radiates outward from the caster, damaging all enemies caught within the blast for 96 Fire damage and dazing them for 6 sec."
-        ]
-      },
-      {
-        "fieldName": "incinerate",
-        "location": {
-          "rowIdx": 2,
-          "colIdx": 3
-        },
-        "spellIds": [
-          18459,
-          18460,
-          34277
-        ],
-        "maxPoints": 3,
-        "descriptions": [
-          "Increases the critical strike chance of your Fire Blast, Scorch, Flamestrike and Blast Wave spells by 3%.",
-          "Increases the critical strike chance of your Fire Blast, Scorch, Flamestrike and Blast Wave spells by 6%.",
-          "Increases the critical strike chance of your Fire Blast, Scorch, Flamestrike and Blast Wave spells by 9%."
-        ]
-      },
-      {
-        "fieldName": "blazingSpeed",
-        "location": {
-          "rowIdx": 3,
-          "colIdx": 1
-        },
-        "spellIds": [
-          33897,
-          33898
-        ],
-        "maxPoints": 2,
-        "descriptions": [
-          "Increases movement and mounted movement speed by 5%. This does not stack with other movement speed increasing effects. In addition, gives you a 5% chance when hit by a melee or ranged attack to increase your movement and casting speed by 50% for 5 sec and dispel all movement impairing effects.",
-          "Increases movement and mounted movement speed by 10%. This does not stack with other movement speed increasing effects. In addition, gives you a 10% chance when hit by a melee or ranged attack to increase your movement and casting speed by 50% for 5 sec and dispel all movement impairing effects."
-        ]
-      },
-      {
-        "fieldName": "hotStreak",
-        "location": {
-          "rowIdx": 3,
-          "colIdx": 3
-        },
-        "spellIds": [
-          33905,
-          33906,
-          33907,
-          34271,
-          34272
-        ],
-        "maxPoints": 5,
-        "descriptions": [
-          "Your Fire damage spell crits have an 5% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
-          "Your Fire damage spell crits have an 10% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
-          "Your Fire damage spell crits have an 15% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
-          "Your Fire damage spell crits have an 20% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
-          "Your Fire damage spell crits have an 25% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana."
-        ]
-      },
-      {
-        "fieldName": "chainReaction",
-        "location": {
-          "rowIdx": 4,
-          "colIdx": 0
-        },
-        "spellIds": [
-          33900
-        ],
-        "maxPoints": 1,
-        "prereqLocation": {
-          "rowIdx": 2,
-          "colIdx": 0
-        },
-        "descriptions": [
-          "While active, your Fire spells strike an additional nearby target. Sustaining this effect may harm your body and soul."
-        ]
-      },
-      {
-        "fieldName": "overheat",
-        "location": {
-          "rowIdx": 4,
-          "colIdx": 1
-        },
-        "spellIds": [
-          33901,
-          33902,
-          33903
-        ],
-        "maxPoints": 3,
-        "descriptions": [
-          "Improves your chance to get a critical strike with spells by 2%, but increases the threat generated by your critical hits by 10%.",
-          "Improves your chance to get a critical strike with spells by 4%, but increases the threat generated by your critical hits by 20%.",
-          "Improves your chance to get a critical strike with spells by 6%, but increases the threat generated by your critical hits by 30%."
-        ]
-      },
-      {
-        "fieldName": "thermalExpansion",
-        "location": {
-          "rowIdx": 4,
-          "colIdx": 2
-        },
-        "spellIds": [
-          34125
-        ],
-        "maxPoints": 1,
-        "prereqLocation": {
-          "rowIdx": 2,
-          "colIdx": 1
-        },
-        "descriptions": [
-          "Generates mana equal to your level every 2 sec."
-        ]
-      },
-      {
-        "fieldName": "improvedScorch",
-        "location": {
-          "rowIdx": 4,
-          "colIdx": 3
-        },
-        "spellIds": [
-          11095,
-          12872,
-          12873
-        ],
-        "maxPoints": 3,
-        "descriptions": [
-          "Your Scorch spells have a 33% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 2% and lasts 15 sec. Stacks up to 10 times.",
-          "Your Scorch spells have a 66% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 2% and lasts 15 sec. Stacks up to 10 times.",
-          "Your Scorch spells have a 100% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 2% and lasts 15 sec. Stacks up to 10 times."
-        ]
-      },
-      {
-        "fieldName": "ignite",
-        "location": {
-          "rowIdx": 5,
-          "colIdx": 0
-        },
-        "spellIds": [
-          11119,
-          11120,
-          12846,
-          12847,
-          12848
-        ],
-        "maxPoints": 5,
-        "descriptions": [
-          "Your critical strikes from Fire damage spells cause the target to burn for an additional 8% of your spell's damage over 8 sec.",
-          "Your critical strikes from Fire damage spells cause the target to burn for an additional 16% of your spell's damage over 8 sec.",
-          "Your critical strikes from Fire damage spells cause the target to burn for an additional 24% of your spell's damage over 8 sec.",
-          "Your critical strikes from Fire damage spells cause the target to burn for an additional 32% of your spell's damage over 8 sec.",
-          "Your critical strikes from Fire damage spells cause the target to burn for an additional 40% of your spell's damage over 8 sec."
-        ]
-      },
-      {
-        "fieldName": "firePower",
-        "location": {
-          "rowIdx": 5,
-          "colIdx": 2
-        },
-        "spellIds": [
-          11124,
-          12378,
-          12398,
-          12399,
-          12400
-        ],
-        "maxPoints": 5,
-        "descriptions": [
-          "Increases the damage done by your Fire spells by 2%.",
-          "Increases the damage done by your Fire spells by 4%.",
-          "Increases the damage done by your Fire spells by 6%.",
-          "Increases the damage done by your Fire spells by 8%.",
-          "Increases the damage done by your Fire spells by 10%."
-        ]
-      },
-      {
-        "fieldName": "pyromania",
-        "location": {
-          "rowIdx": 5,
-          "colIdx": 3
-        },
-        "spellIds": [
-          33909,
-          33910
-        ],
-        "maxPoints": 2,
-        "descriptions": [
-          "Reduces the casting time of your Fireball and Pyroblast spells by 3%, and your Flamestrike spell by 50%. In addition, reduces the cooldown of your Blast Wave spell by 15 sec.",
-          "Reduces the casting time of your Fireball and Pyroblast spells by 5%, and your Flamestrike spell by 100%. In addition, reduces the cooldown of your Blast Wave spell by 30 sec."
-        ]
-      },
-      {
-        "fieldName": "combustion",
-        "location": {
-          "rowIdx": 6,
-          "colIdx": 1
-        },
-        "spellIds": [
-          11129
-        ],
-        "maxPoints": 1,
-        "prereqLocation": {
-          "rowIdx": 4,
-          "colIdx": 1
-        },
-        "descriptions": [
-          "When activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%. This effect lasts until you have caused X critical strikes with Fire spells."
-        ]
-      }
-    ]
-  },
-  {
     "name": "Arcane",
     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/81.jpg",
     "talents": [
@@ -773,6 +389,390 @@
         "maxPoints": 1,
         "descriptions": [
           "Generates 1% of total Mana every 5 sec to all party members within X yds."
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fire",
+    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/41.jpg",
+    "talents": [
+      {
+        "fieldName": "fireWarding",
+        "location": {
+          "rowIdx": 0,
+          "colIdx": 0
+        },
+        "spellIds": [
+          11094,
+          13043
+        ],
+        "maxPoints": 2,
+        "descriptions": [
+          "Increases your Fire resistance by 10. In addition, causes your Fire Ward to have a 15% chance to reflect Fire spells while active.",
+          "Increases your Fire resistance by 20. In addition, causes your Fire Ward to have a 30% chance to reflect Fire spells while active."
+        ]
+      },
+      {
+        "fieldName": "improvedFireball",
+        "location": {
+          "rowIdx": 0,
+          "colIdx": 1
+        },
+        "spellIds": [
+          11069,
+          12338,
+          12339,
+          12340,
+          12341
+        ],
+        "maxPoints": 5,
+        "descriptions": [
+          "Reduces the casting time of your Fireball spell by 0.1 sec.",
+          "Reduces the casting time of your Fireball spell by 0.2 sec.",
+          "Reduces the casting time of your Fireball spell by 0.3 sec.",
+          "Reduces the casting time of your Fireball spell by 0.4 sec.",
+          "Reduces the casting time of your Fireball spell by 0.5 sec."
+        ]
+      },
+      {
+        "fieldName": "improvedFireBlast",
+        "location": {
+          "rowIdx": 0,
+          "colIdx": 2
+        },
+        "spellIds": [
+          11078,
+          11080,
+          12342,
+          12343
+        ],
+        "maxPoints": 4,
+        "descriptions": [
+          "Reduces the cooldown of your Fire Blast spell by 2.5 sec.",
+          "Reduces the cooldown of your Fire Blast spell by 5 sec.",
+          "Reduces the cooldown of your Fire Blast spell by 7.5 sec.",
+          "Reduces the cooldown of your Fire Blast spell by 10 sec."
+        ]
+      },
+      {
+        "fieldName": "pyroblast",
+        "location": {
+          "rowIdx": 0,
+          "colIdx": 3
+        },
+        "spellIds": [
+          11366
+        ],
+        "maxPoints": 1,
+        "prereqLocation": {
+          "rowIdx": 0,
+          "colIdx": 2
+        },
+        "descriptions": [
+          "Hurls an immense fiery boulder that causes 120 Fire damage and an additional 14 Fire damage over $d."
+        ]
+      },
+      {
+        "fieldName": "flameThrowing",
+        "location": {
+          "rowIdx": 1,
+          "colIdx": 0
+        },
+        "spellIds": [
+          11100,
+          12353
+        ],
+        "maxPoints": 2,
+        "descriptions": [
+          "Increases the range and the radius of your Fire spells by 10%.",
+          "Increases the range and the radius of your Fire spells by 20%."
+        ]
+      },
+      {
+        "fieldName": "burningSoul",
+        "location": {
+          "rowIdx": 1,
+          "colIdx": 1
+        },
+        "spellIds": [
+          11083,
+          12351,
+          12352
+        ],
+        "maxPoints": 3,
+        "descriptions": [
+          "Gives your Fire spells a 25% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 5%.",
+          "Gives your Fire spells a 50% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 10%.",
+          "Gives your Fire spells a 75% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 15%."
+        ]
+      },
+      {
+        "fieldName": "impact",
+        "location": {
+          "rowIdx": 1,
+          "colIdx": 2
+        },
+        "spellIds": [
+          11103,
+          12357,
+          12358,
+          12359,
+          12360
+        ],
+        "maxPoints": 5,
+        "prereqLocation": {
+          "rowIdx": 0,
+          "colIdx": 2
+        },
+        "descriptions": [
+          "Gives your Fire spells a 4% chance to stun the target for 2 sec.",
+          "Gives your Fire spells a 8% chance to stun the target for 2 sec.",
+          "Gives your Fire spells a 12% chance to stun the target for 2 sec.",
+          "Gives your Fire spells a 16% chance to stun the target for 2 sec.",
+          "Gives your Fire spells a 20% chance to stun the target for 2 sec."
+        ]
+      },
+      {
+        "fieldName": "criticalMass",
+        "location": {
+          "rowIdx": 2,
+          "colIdx": 0
+        },
+        "spellIds": [
+          11115,
+          11367,
+          11368,
+          11369,
+          11370
+        ],
+        "maxPoints": 5,
+        "descriptions": [
+          "Increases the critical strike chance of your Fire spells by 1%.",
+          "Increases the critical strike chance of your Fire spells by 2%.",
+          "Increases the critical strike chance of your Fire spells by 3%.",
+          "Increases the critical strike chance of your Fire spells by 4%.",
+          "Increases the critical strike chance of your Fire spells by 5%."
+        ]
+      },
+      {
+        "fieldName": "blastWave",
+        "location": {
+          "rowIdx": 2,
+          "colIdx": 1
+        },
+        "spellIds": [
+          11113
+        ],
+        "maxPoints": 1,
+        "descriptions": [
+          "A wave of flame radiates outward from the caster, damaging all enemies caught within the blast for 96 Fire damage and dazing them for 6 sec."
+        ]
+      },
+      {
+        "fieldName": "incinerate",
+        "location": {
+          "rowIdx": 2,
+          "colIdx": 3
+        },
+        "spellIds": [
+          18459,
+          18460,
+          34277
+        ],
+        "maxPoints": 3,
+        "descriptions": [
+          "Increases the critical strike chance of your Fire Blast, Scorch, Flamestrike and Blast Wave spells by 3%.",
+          "Increases the critical strike chance of your Fire Blast, Scorch, Flamestrike and Blast Wave spells by 6%.",
+          "Increases the critical strike chance of your Fire Blast, Scorch, Flamestrike and Blast Wave spells by 9%."
+        ]
+      },
+      {
+        "fieldName": "blazingSpeed",
+        "location": {
+          "rowIdx": 3,
+          "colIdx": 1
+        },
+        "spellIds": [
+          33897,
+          33898
+        ],
+        "maxPoints": 2,
+        "descriptions": [
+          "Increases movement and mounted movement speed by 5%. This does not stack with other movement speed increasing effects. In addition, gives you a 5% chance when hit by a melee or ranged attack to increase your movement and casting speed by 50% for 5 sec and dispel all movement impairing effects.",
+          "Increases movement and mounted movement speed by 10%. This does not stack with other movement speed increasing effects. In addition, gives you a 10% chance when hit by a melee or ranged attack to increase your movement and casting speed by 50% for 5 sec and dispel all movement impairing effects."
+        ]
+      },
+      {
+        "fieldName": "hotStreak",
+        "location": {
+          "rowIdx": 3,
+          "colIdx": 3
+        },
+        "spellIds": [
+          33905,
+          33906,
+          33907,
+          34271,
+          34272
+        ],
+        "maxPoints": 5,
+        "descriptions": [
+          "Your Fire damage spell crits have an 5% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
+          "Your Fire damage spell crits have an 10% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
+          "Your Fire damage spell crits have an 15% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
+          "Your Fire damage spell crits have an 20% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana.",
+          "Your Fire damage spell crits have an 25% chance to make your next Scorch or Pyroblast spell cast instantly and cost no mana."
+        ]
+      },
+      {
+        "fieldName": "chainReaction",
+        "location": {
+          "rowIdx": 4,
+          "colIdx": 0
+        },
+        "spellIds": [
+          33900
+        ],
+        "maxPoints": 1,
+        "prereqLocation": {
+          "rowIdx": 2,
+          "colIdx": 0
+        },
+        "descriptions": [
+          "While active, your Fire spells strike an additional nearby target. Sustaining this effect may harm your body and soul."
+        ]
+      },
+      {
+        "fieldName": "overheat",
+        "location": {
+          "rowIdx": 4,
+          "colIdx": 1
+        },
+        "spellIds": [
+          33901,
+          33902,
+          33903
+        ],
+        "maxPoints": 3,
+        "descriptions": [
+          "Improves your chance to get a critical strike with spells by 2%, but increases the threat generated by your critical hits by 10%.",
+          "Improves your chance to get a critical strike with spells by 4%, but increases the threat generated by your critical hits by 20%.",
+          "Improves your chance to get a critical strike with spells by 6%, but increases the threat generated by your critical hits by 30%."
+        ]
+      },
+      {
+        "fieldName": "thermalExpansion",
+        "location": {
+          "rowIdx": 4,
+          "colIdx": 2
+        },
+        "spellIds": [
+          34125
+        ],
+        "maxPoints": 1,
+        "prereqLocation": {
+          "rowIdx": 2,
+          "colIdx": 1
+        },
+        "descriptions": [
+          "Generates mana equal to your level every 2 sec."
+        ]
+      },
+      {
+        "fieldName": "improvedScorch",
+        "location": {
+          "rowIdx": 4,
+          "colIdx": 3
+        },
+        "spellIds": [
+          11095,
+          12872,
+          12873
+        ],
+        "maxPoints": 3,
+        "descriptions": [
+          "Your Scorch spells have a 33% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 2% and lasts 15 sec. Stacks up to 10 times.",
+          "Your Scorch spells have a 66% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 2% and lasts 15 sec. Stacks up to 10 times.",
+          "Your Scorch spells have a 100% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 2% and lasts 15 sec. Stacks up to 10 times."
+        ]
+      },
+      {
+        "fieldName": "ignite",
+        "location": {
+          "rowIdx": 5,
+          "colIdx": 0
+        },
+        "spellIds": [
+          11119,
+          11120,
+          12846,
+          12847,
+          12848
+        ],
+        "maxPoints": 5,
+        "descriptions": [
+          "Your critical strikes from Fire damage spells cause the target to burn for an additional 8% of your spell's damage over 8 sec.",
+          "Your critical strikes from Fire damage spells cause the target to burn for an additional 16% of your spell's damage over 8 sec.",
+          "Your critical strikes from Fire damage spells cause the target to burn for an additional 24% of your spell's damage over 8 sec.",
+          "Your critical strikes from Fire damage spells cause the target to burn for an additional 32% of your spell's damage over 8 sec.",
+          "Your critical strikes from Fire damage spells cause the target to burn for an additional 40% of your spell's damage over 8 sec."
+        ]
+      },
+      {
+        "fieldName": "firePower",
+        "location": {
+          "rowIdx": 5,
+          "colIdx": 2
+        },
+        "spellIds": [
+          11124,
+          12378,
+          12398,
+          12399,
+          12400
+        ],
+        "maxPoints": 5,
+        "descriptions": [
+          "Increases the damage done by your Fire spells by 2%.",
+          "Increases the damage done by your Fire spells by 4%.",
+          "Increases the damage done by your Fire spells by 6%.",
+          "Increases the damage done by your Fire spells by 8%.",
+          "Increases the damage done by your Fire spells by 10%."
+        ]
+      },
+      {
+        "fieldName": "pyromania",
+        "location": {
+          "rowIdx": 5,
+          "colIdx": 3
+        },
+        "spellIds": [
+          33909,
+          33910
+        ],
+        "maxPoints": 2,
+        "descriptions": [
+          "Reduces the casting time of your Fireball and Pyroblast spells by 3%, and your Flamestrike spell by 50%. In addition, reduces the cooldown of your Blast Wave spell by 15 sec.",
+          "Reduces the casting time of your Fireball and Pyroblast spells by 5%, and your Flamestrike spell by 100%. In addition, reduces the cooldown of your Blast Wave spell by 30 sec."
+        ]
+      },
+      {
+        "fieldName": "combustion",
+        "location": {
+          "rowIdx": 6,
+          "colIdx": 1
+        },
+        "spellIds": [
+          11129
+        ],
+        "maxPoints": 1,
+        "prereqLocation": {
+          "rowIdx": 4,
+          "colIdx": 1
+        },
+        "descriptions": [
+          "When activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%. This effect lasts until you have caused X critical strikes with Fire spells."
         ]
       }
     ]

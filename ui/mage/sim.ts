@@ -1,5 +1,5 @@
 import * as OtherInputs from '../core/components/other_inputs.js';
-import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
+import { SPELL_CRIT_RATING_PER_CRIT_CHANCE, SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
@@ -86,12 +86,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	modifyDisplayStats: (player: Player<Spec.SpecMage>) => {
 		let stats = new Stats();
-		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitArcane, player.getTalents().arcaneFocus * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
-		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, player.getTalents().elementalPrecision * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
-		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFrost, player.getTalents().elementalPrecision * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitArcane, player.getTalents().arcaneFocus * 1 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, player.getTalents().elementalPrecision * 1 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFrost, player.getTalents().elementalPrecision * 1 * SPELL_HIT_RATING_PER_HIT_CHANCE);
+
+		const talents = player.getTalents();
+		// Overheat: +2%/rank spell crit on all schools (applied per spell in the sim, so not in the stat totals).
+		stats = stats.addStat(Stat.StatSpellCrit, talents.overheat * 2 * SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+		// Arcane Instability: +1%/rank spell crit (all schools) and +1%/rank spell damage.
+		stats = stats.addStat(Stat.StatSpellCrit, talents.arcaneInstability * 1 * SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 
 		return {
 			talents: stats,
+			// Critical Mass: +1%/rank crit on Fire spells only, shown in the Spell Crit tooltip.
+			schoolCrit: { arcane: 0, fire: talents.criticalMass * 1, frost: 0 },
 		};
 	},
 

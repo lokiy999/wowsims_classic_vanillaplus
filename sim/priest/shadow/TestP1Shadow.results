@@ -4,9 +4,9 @@ character_stats_results: {
   final_stats: 179.63
   final_stats: 193.545
   final_stats: 354.2
-  final_stats: 365.585
+  final_stats: 364.32
   final_stats: 347.875
-  final_stats: 256.86167
+  final_stats: 256.44
   final_stats: 0
   final_stats: 0
   final_stats: 40
@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 320
   final_stats: 84.25
   final_stats: 1
-  final_stats: 21.94183
+  final_stats: 21.92058
   final_stats: 0
   final_stats: 0
   final_stats: 535.183
@@ -24,7 +24,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 6579.775
+  final_stats: 6560.8
   final_stats: 0
   final_stats: 0
   final_stats: 2291.09
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.16481
+  weights: 0.0819
   weights: 0
-  weights: 0.1481
-  weights: 0
-  weights: 0
+  weights: 0.14808
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.1481
   weights: 0
-  weights: 1.98437
-  weights: 0.49421
+  weights: 0
+  weights: 0.14808
+  weights: 0
+  weights: 2.02072
+  weights: 0.49411
   weights: 0
   weights: 0
   weights: 0
@@ -99,85 +99,85 @@ stat_weights_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-Champion'sInvestiture"
  value: {
-  dps: 262.34928
-  tps: 272.87178
+  dps: 262.28666
+  tps: 272.80915
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-Confessor'sRaiment"
  value: {
-  dps: 257.05706
-  tps: 267.55497
+  dps: 256.99475
+  tps: 267.49266
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-FieldMarshal'sRaiment"
  value: {
-  dps: 274.06996
-  tps: 285.35913
+  dps: 273.89122
+  tps: 285.18039
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 235.48118
-  tps: 246.74086
+  dps: 235.34825
+  tps: 246.60793
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-LieutenantCommander'sInvestiture"
  value: {
-  dps: 262.34928
-  tps: 272.87178
+  dps: 262.28666
+  tps: 272.80915
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-VestmentsofProphecy"
  value: {
-  dps: 283.93357
-  tps: 294.45607
+  dps: 283.86718
+  tps: 294.38968
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-VestmentsofTranscendence"
  value: {
-  dps: 240.37276
-  tps: 250.7272
+  dps: 240.31
+  tps: 250.66444
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-Warlord'sRaiment"
  value: {
-  dps: 274.06996
-  tps: 285.35913
+  dps: 273.89122
+  tps: 285.18039
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Average-Default"
  value: {
-  dps: 267.35646
-  tps: 278.53048
+  dps: 267.27162
+  tps: 278.4459
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 260.08485
-  tps: 457.35555
+  dps: 259.90105
+  tps: 457.07342
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 260.08485
-  tps: 269.94838
+  dps: 259.90105
+  tps: 269.75967
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 259.42237
-  tps: 264.32058
+  dps: 259.36242
+  tps: 264.26063
  }
 }
 dps_results: {
@@ -204,22 +204,22 @@ dps_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 267.46973
-  tps: 492.95823
+  dps: 267.40074
+  tps: 492.88923
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 267.46973
-  tps: 278.74416
+  dps: 267.40074
+  tps: 278.67516
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 267.53462
-  tps: 284.73421
+  dps: 267.47284
+  tps: 284.67243
  }
 }
 dps_results: {
@@ -246,7 +246,7 @@ dps_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 267.46973
-  tps: 278.74416
+  dps: 267.40074
+  tps: 278.67516
  }
 }

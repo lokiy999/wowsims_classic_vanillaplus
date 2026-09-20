@@ -158,9 +158,7 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 	Name: "Illusionist's Attire",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Increases the effect of Arcane Intellect and Arcane Brilliance by 25%.
-		// Nothing to do: Arcane Intellect/Arcane Brilliance are only modeled as
-		// flat raid buff flags in this sim (see raidBuffs.ArcaneBrilliance in
-		// mage.go), not as a scalable magnitude this Mage casts/receives.
+		// Handled in AddRaidBuffs (mage.go), added to Mind Mastery's bonus.
 		2: func(agent core.Agent) {
 			// Nothing to do
 		},

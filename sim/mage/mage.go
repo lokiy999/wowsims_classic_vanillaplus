@@ -1,6 +1,8 @@
 package mage
 
 import (
+	"strings"
+
 	"github.com/wowsims/classic/sim/common/guardians"
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
@@ -97,6 +99,11 @@ func (mage *Mage) GetMage() *Mage {
 
 func (mage *Mage) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ArcaneBrilliance = true
+	bonus := 20 * mage.Talents.MindMastery // Mind Mastery: +20%/rank
+	if mage.HasSetBonus(ItemSetIllusionistsAttire, 2) {
+		bonus += 25 // Illusionist's Attire (2)
+	}
+	raidBuffs.ArcaneIntellectBonus = max(raidBuffs.ArcaneIntellectBonus, bonus)
 }
 func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
@@ -122,6 +129,18 @@ func (mage *Mage) Initialize() {
 func (mage *Mage) Reset(sim *core.Simulation) {
 }
 
+// The talent UI orders the trees Arcane / Fire / Frost, but MageTalents declares its fields
+// Fire / Arcane / Frost and FillTalentsProto reads a talent string in field order, so the first
+// two trees are swapped before decoding.
+func reorderTalentsString(talentsString string) string {
+	trees := strings.Split(talentsString, "-")
+	for len(trees) < 3 {
+		trees = append(trees, "")
+	}
+	trees[0], trees[1] = trees[1], trees[0]
+	return strings.Join(trees, "-")
+}
+
 func NewMage(character *core.Character, options *proto.Player) *Mage {
 	mageOptions := options.GetMage()
 
@@ -130,7 +149,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 		Talents:   &proto.MageTalents{},
 		Options:   mageOptions.Options,
 	}
-	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(mage.Talents.ProtoReflect(), reorderTalentsString(options.TalentsString), TalentTreeSizes)
 
 	mage.EnableManaBar()
 

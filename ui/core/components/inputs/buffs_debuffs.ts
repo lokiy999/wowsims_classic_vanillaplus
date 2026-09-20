@@ -1,4 +1,4 @@
-import { BlessingOfKingsType, Class, Faction, SaygesFortune, Stat, TristateEffect } from '../../proto/common';
+import { ArcaneIntellectType, BlessingOfKingsType, Class, Faction, SaygesFortune, Stat, TristateEffect } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { IconEnumPicker } from '../icon_enum_picker';
 import {
@@ -220,10 +220,45 @@ export const GraceOfAir = withLabel(
 );
 
 export const IntellectBuff = withLabel(
-	makeBooleanRaidBuffInput({
-		actionId: () => ActionId.fromSpellId(10157),
-		fieldName: 'arcaneBrilliance',
-	}),
+	withOptionLabels(
+		makeEnumRaidBuffInput({
+			fieldName: 'arcaneIntellectType',
+			// Replaces the old on/off 'arcaneBrilliance' field; saved settings that still have it on become 'Normal'.
+			legacyBoolField: 'arcaneBrilliance',
+			legacyEnabledValue: ArcaneIntellectType.ArcaneIntellectNormal,
+			values: [
+				{
+					color: 'grey',
+					value: ArcaneIntellectType.ArcaneIntellectNone,
+					tooltip: 'Disabled',
+				},
+				{
+					actionId: () => ActionId.fromSpellId(10157),
+					value: ArcaneIntellectType.ArcaneIntellectNormal,
+					text: '(30)',
+					tooltip: 'Arcane Intellect / Arcane Brilliance (+30 Intellect)',
+				},
+				{
+					actionId: () => ActionId.fromSpellId(10157),
+					value: ArcaneIntellectType.ArcaneIntellectZgSet,
+					text: '(37)',
+					tooltip: "Arcane Intellect + Illusionist's Attire 2pc (+25%, +37 Intellect)",
+				},
+				{
+					actionId: () => ActionId.fromSpellId(10157),
+					value: ArcaneIntellectType.ArcaneIntellectTalented,
+					text: '(60)',
+					tooltip: 'Arcane Intellect + Mind Mastery 5/5 (+100%, +60 Intellect)',
+				},
+				{
+					actionId: () => ActionId.fromSpellId(10157),
+					value: ArcaneIntellectType.ArcaneIntellectZgSetTalented,
+					text: '(67)',
+					tooltip: "Arcane Intellect + Mind Mastery 5/5 + Illusionist's Attire 2pc (+125%, +67 Intellect)",
+				},
+			],
+		}),
+	),
 	'Intellect',
 );
 
@@ -632,7 +667,7 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: IntellectBuff,
-		picker: IconPicker,
+		picker: IconEnumPicker,
 		stats: [Stat.StatIntellect],
 	},
 	{
