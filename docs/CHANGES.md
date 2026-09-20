@@ -2468,3 +2468,19 @@ Same checks as the mage pass (server data cooldowns, wrong talent uses, sidebar,
   Dark Pact have cooldowns: SM Ruin 332 -> 314).
 - Conflagrate stays at 10s: the server data has 15s on the player ranks and 10s on the talent spell, and the 10s
   value was confirmed in game.
+
+## Part AV — Druid audit round 2 (2026-09-20)
+
+Same checks as the warlock pass:
+- **Talent string decoding:** new `sim/druid/talents_string_test.go` checks all 59 talents in
+  `ui/core/talents/trees/druid.json` decode to their proto fields. Passes.
+- **Cooldowns from the server data:** Insect Swarm now has an 8s cooldown (every rank, one shared timer; it had none),
+  and Faerie Fire (Feral) is 8s (was 6s). Existing goldens did not change (neither test rotation is limited by them).
+- **Sidebar:** `ui/balance_druid/sim.ts` now adds Omnipresence (+2%/rank hit on Balance spells) to the Nature and
+  Arcane lines of the Spell Hit tooltip. Accuracy was already in the stat totals.
+- **Cooldowns confirmed in game** (the server data has no usable value for these): Hurricane 2 min (was 1 min),
+  Barkskin 5 min (was 1 min; Unity with Nature now takes 1 min off per rank and gives -5%/rank Arcane and Nature damage
+  taken, it was unused), Innervate 5 min (`core.InnervateCD`, was 6 min, also used for Innervates cast by other druids).
+  No golden files changed.
+- Confirmed but not implemented in the sim (see `docs/TODO.md`): Nature's Swiftness 5 min, Tranquility 2 min, Bash
+  1 min, Frenzied Regeneration 5 min, Rebirth 30 min.

@@ -32,7 +32,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 		formMask = Cat | Bear
 		cd = core.Cooldown{
 			Timer:    druid.NewTimer(),
-			Duration: time.Second * 6,
+			Duration: time.Second * 8, // DBC: 8s cooldown
 		}
 		druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 			return core.FaerieFireFeralAura(target)

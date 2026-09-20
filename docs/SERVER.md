@@ -17,9 +17,16 @@ To deploy a GitHub update:
 ```bash
 cd /opt/wowsims-classic
 git pull
-make dist/classic
+make dist/classic/.dirstamp
+make devserver
 sudo systemctl restart wowsims
 ```
+
+Note: `make dist/classic` does NOT work. `dist/classic` is the output
+directory (`OUT_DIR` in the Makefile), not a target, so make reports "Nothing to
+be done" and rebuilds nothing. `dist/classic/.dirstamp` builds the wasm, UI
+bundle (vite) and assets; `devserver` rebuilds the Go web binary. The service
+runs with `--usefs=true`, so it serves the rebuilt files from `dist/classic`.
 
 ## Discord bot
 

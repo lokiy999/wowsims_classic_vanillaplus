@@ -45,7 +45,7 @@ func (druid *Druid) registerHurricaneSpell() {
 				},
 				CD: core.Cooldown{
 					Timer:    druid.NewTimer(),
-					Duration: time.Second * 60,
+					Duration: time.Minute * 2, // 2 minute cooldown
 				},
 			},
 

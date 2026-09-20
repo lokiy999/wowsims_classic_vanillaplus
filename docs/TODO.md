@@ -369,3 +369,7 @@ kill trigger with the 50%/100% per-rank proc chance.
 - Improved Drain Soul: the Health/Mana regen on kill (stacks to 5) is not modeled.
 - Suppression is not in the sidebar (only Affliction spells, unlike the school-based Spell Hit tooltip).
 - Bring the Pain (+5%/rank crit on 4 spells) is not in the sidebar.
+
+## Druid spells not in the sim, cooldowns confirmed in game (2026-09-20)
+Nature's Swiftness 5 min (`registerNaturesSwiftnessCD` is commented out in `sim/druid/talents.go`), Tranquility 2 min,
+Bash 1 min, Frenzied Regeneration 5 min (`sim/druid/_frenzied_regeneration.go` is disabled), Rebirth 30 min.

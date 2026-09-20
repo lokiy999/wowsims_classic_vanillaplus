@@ -26,7 +26,8 @@ func (druid *Druid) registerBarkskinCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second * 60,
+				// 5 minute cooldown, Unity with Nature takes 1 minute off per rank.
+				Duration: time.Minute*5 - time.Minute*time.Duration(druid.Talents.UnityWithNature),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {

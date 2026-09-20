@@ -19,6 +19,12 @@ func (druid *Druid) ApplyTalents() {
 
 	// DBC: Natural Weapons +1%/rank to all damage.
 	druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(druid.Talents.NaturalWeapons)
+	// Unity with Nature: -5%/rank damage taken from Arcane and Nature (the Barkskin cooldown part is in barkskin.go).
+	if druid.Talents.UnityWithNature > 0 {
+		reduction := 1 - 0.05*float64(druid.Talents.UnityWithNature)
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= reduction
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= reduction
+	}
 	druid.applyBalanceExtras()
 	druid.applyRestoExtras()
 

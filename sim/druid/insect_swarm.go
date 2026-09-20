@@ -18,6 +18,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 	druid.InsectSwarm = make([]*DruidSpell, InsectSwarmRanks+1)
 
 	druid.InsectSwarmAuras = druid.NewEnemyAuraArray(core.InsectSwarmAura)
+	cdTimer := druid.NewTimer() // shared by all ranks
 
 	for rank := 1; rank <= InsectSwarmRanks; rank++ {
 		level := InsectSwarmLevel[rank]
@@ -44,6 +45,10 @@ func (druid *Druid) registerInsectSwarmSpell() {
 				Cast: core.CastConfig{
 					DefaultCast: core.Cast{
 						GCD: core.GCDDefault,
+					},
+					CD: core.Cooldown{
+						Timer:    cdTimer,
+						Duration: time.Second * 8, // DBC: 8s cooldown on every rank
 					},
 				},
 

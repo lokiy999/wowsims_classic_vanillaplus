@@ -1,10 +1,11 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
+import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 // import * as DruidInputs from './inputs.js';
@@ -50,6 +51,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
+
+	modifyDisplayStats: (player: Player<Spec.SpecBalanceDruid>) => {
+		// Omnipresence: -2%/rank resist chance for Balance spells (Wrath, Starfire, Moonfire, Insect Swarm), applied per spell
+		// in the sim so it is not in the stat totals.
+		const hit = player.getTalents().omnipresence * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE;
+		let stats = new Stats();
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitNature, hit);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitArcane, hit);
+		return { talents: stats };
+	},
 
 	defaults: {
 		// Default equipped gear.

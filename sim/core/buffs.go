@@ -1241,7 +1241,7 @@ const ShatteringThrowCD = time.Minute * 5
 var InnervateAuraTag = "Innervate"
 
 const InnervateDuration = time.Second * 20
-const InnervateCD = time.Minute * 6
+const InnervateCD = time.Minute * 5
 
 func InnervateManaThreshold(character *Character) float64 {
 	if character.Class == proto.Class_ClassMage {
