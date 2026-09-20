@@ -32,7 +32,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		},
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + 0.25*float64(warrior.Talents.Cleaving), // DBC: Cleaving +25%/rank
 		ThreatMultiplier: 1.25,
 		BonusCoefficient: 1,
 

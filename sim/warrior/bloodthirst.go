@@ -20,7 +20,7 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   30,
+			Cost:   40 - 5*float64(warrior.Talents.ImprovedBloodthirst), // DBC 23894: 40 rage, Improved Bloodthirst -5/-10
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -36,12 +36,12 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + 0.05*float64(warrior.Talents.ImprovedBloodthirst), // DBC: Improved Bloodthirst +5%/rank damage
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.45 * spell.MeleeAttackPower()
+			baseDamage := 0.5 * spell.MeleeAttackPower() // DBC 23894: 50% of attack power
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)

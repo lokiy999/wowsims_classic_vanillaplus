@@ -44,7 +44,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + 0.05*float64(warrior.Talents.ShieldAssault), // DBC: Shield Assault +5%/rank
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  threat * 2,
 		BonusCoefficient: 1,

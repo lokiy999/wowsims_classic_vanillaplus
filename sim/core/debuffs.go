@@ -862,9 +862,9 @@ func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "DemoralizingShout-" + strconv.Itoa(int(impDemoShoutPts)),
 		ActionID: ActionID{SpellID: spellId},
-		Duration: time.Duration(float64(time.Second*30) * (1 + 0.1*float64(boomingVoicePts))),
+		Duration: time.Duration(float64(time.Second*30) * BoomingVoiceDurationMultiplier(boomingVoicePts)),
 	})
-	apReductionEffect(aura, math.Floor(baseAPReduction*(1+0.08*float64(impDemoShoutPts))))
+	apReductionEffect(aura, math.Floor(baseAPReduction*(1+0.1*float64(impDemoShoutPts)))) // DBC: Improved Combat Shouts +10%/rank Demoralizing Shout
 	return aura
 }
 

@@ -81,6 +81,8 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 }
 
 func (warrior *Warrior) registerBattleStanceAura() {
+	// DBC: Improved Battle Stance +5%/rank attack power while in Battle Stance.
+	battleStanceAP := warrior.NewDynamicMultiplyStat(stats.AttackPower, 1+0.05*float64(warrior.Talents.ImprovedBattleStance))
 	warrior.BattleStanceAura = warrior.RegisterAura(core.Aura{
 		Label:    "Battle Stance",
 		ActionID: core.ActionID{SpellID: 2457},
@@ -89,9 +91,11 @@ func (warrior *Warrior) registerBattleStanceAura() {
 	warrior.BattleStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier *= 0.8
+			warrior.EnableDynamicStatDep(sim, battleStanceAP)
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= 0.8
+			warrior.DisableDynamicStatDep(sim, battleStanceAP)
 		},
 	})
 }
@@ -129,11 +133,14 @@ func (warrior *Warrior) registerBerserkerStanceAura() {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier *= 0.8
 			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.1
 			ee.Aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, core.CritRatingPerCritChance*3)
+			// DBC: Improved Berserker Stance +5%/rank attack speed (the GCD reduction is not modeled).
+			warrior.MultiplyMeleeSpeed(sim, 1+0.05*float64(warrior.Talents.ImprovedBerserkerStance))
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= 0.8
-			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.1
+			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.1
 			ee.Aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, -core.CritRatingPerCritChance*3)
+			warrior.MultiplyMeleeSpeed(sim, 1/(1+0.05*float64(warrior.Talents.ImprovedBerserkerStance)))
 		},
 	})
 }

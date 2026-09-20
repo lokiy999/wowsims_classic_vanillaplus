@@ -49,7 +49,7 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 30,
+				Duration: time.Duration(float64(time.Second*40) * warrior.innerRageFactor()), // DBC 18499
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

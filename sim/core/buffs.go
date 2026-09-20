@@ -1491,6 +1491,11 @@ var BattleShoutSpellId = [BattleShoutRanks + 1]int32{0, 6673, 5242, 6192, 11549,
 var BattleShoutBaseAP = [BattleShoutRanks + 1]float64{0, 20, 40, 57, 93, 138, 193, 232}
 var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
 
+// DBC: Booming Voice +30% / +50% duration of shouts.
+func BoomingVoiceDurationMultiplier(points int32) float64 {
+	return []float64{1, 1.3, 1.5}[points]
+}
+
 func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, has3pcWrath bool) *Aura {
 	rank := TernaryInt32(IncludeAQ, 7, 6)
 	spellId := BattleShoutSpellId[rank]
@@ -1499,7 +1504,7 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, ha
 	return unit.GetOrRegisterAura(Aura{
 		Label:      "Battle Shout",
 		ActionID:   ActionID{SpellID: spellId},
-		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
+		Duration:   time.Duration(float64(time.Minute*2) * BoomingVoiceDurationMultiplier(boomingVoicePts)),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{

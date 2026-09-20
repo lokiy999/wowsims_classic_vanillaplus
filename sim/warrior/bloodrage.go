@@ -10,8 +10,10 @@ func (warrior *Warrior) registerBloodrageCD() {
 	actionID := core.ActionID{SpellID: 2687}
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
-	instantRage := 10.0 + []float64{0, 2, 5}[warrior.Talents.ImprovedBloodrage]
-	ragePerSec := 1.0
+	// DBC: Improved Bloodrage +50%/rank rage generated and -25%/rank cooldown.
+	rageMult := 1 + 0.5*float64(warrior.Talents.ImprovedBloodrage)
+	instantRage := 10.0 * rageMult
+	ragePerSec := 1.0 * rageMult
 
 	warrior.BloodrageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Bloodrage",
@@ -24,7 +26,7 @@ func (warrior *Warrior) registerBloodrageCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute,
+				Duration: time.Duration(float64(time.Minute) * (1 - 0.25*float64(warrior.Talents.ImprovedBloodrage)) * warrior.innerRageFactor()),
 			},
 		},
 

@@ -2687,3 +2687,38 @@ need answers from the game.
   +1% Agility, up to 20 stacks, 15s. The stat reduction on the target is not modeled.
 - **Brigandage** implemented: auto attacks have a 20%/rank chance to deal 0.5 x level Shadow damage (30 at level 60). The
   mana/energy/rage drain only affects the target, so it is not modeled.
+
+## Part BB — Warrior audit (2026-09-20)
+
+Second audit round for the warrior, checked against `CSV's/Spell.csv`. Work in progress: the questions listed in
+`docs/TODO.md` still need answers from the game.
+
+- **Talent decoding:** new test `sim/warrior/talents_string_test.go` (all 60 talents decode to the right proto field).
+- **Improved Bloodrage:** +50%/rank rage (was +2/+5 rage) and -25%/rank cooldown (DBC).
+- **Inner Rage** implemented: -25%/rank cooldown on Bloodrage, Berserker Rage and Recklessness.
+- **Improved Shield Wall:** +5s/rank duration (was +3/+5s) and -25%/rank cooldown (DBC).
+- **Shield Mastery:** Shield Block blocks +1/+2 additional attacks and its cooldown is -15%/rank (it was a duration bonus).
+- **Cleaving:** Cleave hits +1/+2 targets, Thunder Clap and Whirlwind deal +25%/rank damage (it was a flat damage bonus on
+  Cleave).
+- **Improved Thunder Clap:** +50%/rank Thunder Clap damage (it was a rage cost reduction).
+- **Shield Assault:** +5%/rank Shield Slam damage. **Improved Bloodthirst:** +5%/rank Bloodthirst damage (the rage cost
+  part waits for the base cost, see TODO).
+- **Interceptor:** Pummel rage cost -50%/rank.
+- **Improved Battle Stance:** +5%/rank attack power while in Battle Stance. **Improved Berserker Stance:** +5%/rank
+  attack speed while in Berserker Stance (the 0.25s/rank GCD reduction is not modeled).
+- **Bug fix:** leaving Berserker Stance multiplied damage taken by 1.1 again instead of dividing, so every stance swap made
+  the warrior take 10% more damage.
+- **Butterfly Style:** +2%/rank dodge and crit (the rage-on-dodge part is not modeled).
+- **Booming Voice:** +30%/+50% shout duration (was +10%/rank). **Improved Combat Shouts:** Demoralizing Shout +10%/rank
+  (was 8%).
+- **Checked, no change:** Cruelty, Precision, Deflection 3/5%, Anticipation, Toughness 3%, Vitality 2%, One/Two-Handed
+  Weapon Specialization 2%/rank, Impale 10%/rank, Improved Heroic Strike 2%/rank, Duelist 25%/rank, Improved Mortal Strike,
+  Slamcraft, Para Bellum, Dog of War, Training and Discipline, Flurry 5%/rank, Enrage, Unbridled Wrath, Weapon Expertise.
+- **Cooldowns from the server data:** Death Wish 5 min (was 3), Thunder Clap 10s (was 4), Pummel 15s (was 10), Berserker Rage
+  40s (was 30). Execute now has the 25s cooldown of the DBC and Improved Execute reduces that cooldown by 40%/80% (it used
+  to reduce the rage cost); Execute flat damage 750 (was 600).
+- **Bloodthirst:** 50% of attack power (was 45%) and 40 rage (was 30), Improved Bloodthirst -5/-10 rage.
+- **Deep Wounds:** 10%/20%/30% of the weapon's average damage (was 20%/rank, i.e. 60% at 3/3) as in the DBC.
+- **Two-Handed Weapon Specialization** also raises Rend and Deep Wounds damage by 5%/rank with a two-hander (DBC second effect).
+- **Constitution:** +Strength, Agility and Spirit equal to 1% of maximum health, applied when the fight starts (not shown in
+  the sidebar, health is not a base stat).

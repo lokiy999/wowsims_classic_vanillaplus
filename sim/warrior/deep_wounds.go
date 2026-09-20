@@ -25,7 +25,7 @@ func (warrior *Warrior) applyDeepWounds() {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: warrior.bleedDamageMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
@@ -82,7 +82,7 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 		awd = warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * adm
 	}
 
-	newDamage := awd * 0.2 * float64(warrior.Talents.DeepWounds) // 60% of average attackers damage
+	newDamage := awd * 0.1 * float64(warrior.Talents.DeepWounds) // DBC: 10%/20%/30% of the weapon's average damage
 
 	dot.SnapshotBaseDamage = newDamage / 4.0 // spread over 4 ticks of the dot
 	dot.SnapshotAttackerMultiplier = 1

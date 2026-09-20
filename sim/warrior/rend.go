@@ -21,7 +21,7 @@ func (warrior *Warrior) registerRendSpell() {
 
 	baseDamage := rend.damage
 
-	damageMultiplier := 1.0 // DBC: Improved Rend allows 2 stacks; the retail damage bonus was removed
+	damageMultiplier := warrior.bleedDamageMultiplier() // Two-Handed Weapon Specialization bleed bonus (Improved Rend stacking is not modeled yet)
 
 	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorRend,

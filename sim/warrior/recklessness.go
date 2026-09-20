@@ -39,7 +39,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 30,
+				Duration: time.Duration(float64(time.Minute*30) * warrior.innerRageFactor()),
 			},
 		},
 

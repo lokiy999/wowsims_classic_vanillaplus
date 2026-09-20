@@ -27,7 +27,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		Flags:       core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - []float64{0, 1, 2, 4}[warrior.Talents.ImprovedThunderClap],
+			Cost: 20,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -36,13 +36,14 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 4,
+				Duration: time.Second * 10, // DBC 11581
 			},
 		},
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: core.TernaryFloat64(has5pcConq, 1.5, 1),
+		// DBC: Improved Thunder Clap +50%/rank damage (and slow), Cleaving +25%/rank damage.
+		DamageMultiplier: core.TernaryFloat64(has5pcConq, 1.5, 1) * (1 + 0.5*float64(warrior.Talents.ImprovedThunderClap)) * (1 + 0.25*float64(warrior.Talents.Cleaving)),
 		ThreatMultiplier: 2.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

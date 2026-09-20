@@ -1,12 +1,14 @@
 package warrior
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 )
 
 func (warrior *Warrior) registerExecuteSpell() {
 
-	flatDamage := 600.0
+	flatDamage := 750.0 // DBC 20662
 	convertedRageDamage := 15.0
 	spellID := int32(20662)
 
@@ -20,12 +22,17 @@ func (warrior *Warrior) registerExecuteSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPassiveSpell | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - []float64{0, 2, 5}[warrior.Talents.ImprovedExecute],
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			// DBC: 25 sec cooldown, Improved Execute -40%/-80% of it.
+			CD: core.Cooldown{
+				Timer:    warrior.NewTimer(),
+				Duration: time.Duration(float64(time.Second*25) * (1 - 0.4*float64(warrior.Talents.ImprovedExecute))),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

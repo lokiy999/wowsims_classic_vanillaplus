@@ -8,7 +8,8 @@ import (
 
 // TODO: Classic Update
 func (warrior *Warrior) RegisterShieldWallCD() {
-	duration := time.Duration(10+[]float64{0, 3, 5}[warrior.Talents.ImprovedShieldWall]) * time.Second
+	// DBC: Improved Shield Wall +5 sec per rank duration and -25% per rank cooldown.
+	duration := time.Duration(10+5*float64(warrior.Talents.ImprovedShieldWall)) * time.Second
 	//This is the inverse of the tooltip since it is a damage TAKEN coefficient
 	damageTaken := 0.25
 
@@ -25,7 +26,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 		},
 	})
 
-	cooldownDur := time.Minute * 30
+	cooldownDur := time.Duration(float64(time.Minute*30) * (1 - 0.25*float64(warrior.Talents.ImprovedShieldWall)))
 
 	swSpell := warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID: actionID,

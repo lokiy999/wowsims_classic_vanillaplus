@@ -17,7 +17,7 @@ func (warrior *Warrior) registerPummelSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10,
+			Cost:   10 * (1 - 0.5*float64(warrior.Talents.Interceptor)), // DBC: Interceptor -50%/rank rage cost
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -27,7 +27,7 @@ func (warrior *Warrior) registerPummelSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: time.Second * 15, // DBC 6554
 			},
 		},
 

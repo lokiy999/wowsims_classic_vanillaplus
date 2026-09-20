@@ -9,13 +9,13 @@ import (
 
 func (warrior *Warrior) RegisterShieldBlockCD() {
 	actionID := core.ActionID{SpellID: 2565}
-	cooldownDur := time.Second * 5
+	cooldownDur := time.Duration(float64(time.Second*5) * (1 - 0.15*float64(warrior.Talents.ShieldMastery))) // DBC: Shield Mastery -15%/rank
 
 	warrior.ShieldBlockAura = warrior.RegisterAura(core.Aura{
 		Label:     "Shield Block",
 		ActionID:  actionID,
-		Duration:  time.Second * time.Duration(5+[]float64{0, 0.5, 1, 2}[warrior.Talents.ShieldMastery]), // TODO: Shield Mastery effect differs
-		MaxStacks: 1 + []int32{0, 1, 1, 1}[warrior.Talents.ShieldMastery],
+		Duration:  time.Second * 5,
+		MaxStacks: 1 + warrior.Talents.ShieldMastery, // DBC: Shield Mastery blocks +1/+2 additional attacks
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.SetStacks(sim, aura.MaxStacks)

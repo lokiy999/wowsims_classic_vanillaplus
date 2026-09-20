@@ -21,6 +21,7 @@ func (warrior *Warrior) ApplyTalents() {
 	warrior.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*float64(warrior.Talents.Precision)) // DBC: Precision 1%/rank
 	warrior.MultiplyStat(stats.Health, 1+0.02*float64(warrior.Talents.Vitality))                        // DBC: Vitality 2%/rank
 	warrior.applyArmsExtras()
+	warrior.applyAuditTalents()
 	warrior.applyWeaponExpertiseTypes()
 	warrior.AddStat(stats.Parry, []float64{0, 3, 5}[warrior.Talents.Deflection]) // DBC: 3/5%
 
@@ -361,7 +362,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 3,
+				Duration: time.Minute * 5, // DBC 12328
 			},
 		},
 

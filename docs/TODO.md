@@ -22,11 +22,11 @@ Still open, the calculator confirmed the text but not the mechanics:
 
 ## Raised 2026-09-19 — warrior talents (CHANGES.md Part AO)
 
-- Not modeled: Improved Rend stacking, Improved Mortal Strike, Improved Bloodthirst, Improved
-  Berserker/Battle Stance, Enrage (DBC 1%/stack; current code is 5%/rank, unverified),
-  Cleaving, Improved Execute, Improved Bloodrage, Tactical Mastery values, Weapon Expertise
-  values, Deep Wounds values, Booming Voice/Improved Combat Shouts (core buff code),
-  Duelist rage part, Butterfly Style, Constitution, Shield Mastery, Improved Shield Wall.
+- Warrior audit round 2 (CHANGES.md Part BB), still open and needs the game: Maim (10% on auto attacks per the DBC, +5%
+  damage taken, duration unknown, all three ranks look identical); Improved Rend (stack behaviour: damage per stack,
+  duration); Deep Wounds duration and stacks (sim: 4 ticks of 3s, no stacks); Shield Block cooldown (DBC 20s on rank 1,
+  5s on rank 2, sim 5s); Berserker's Blood (needs current health, 1-40% speed); Improved Berserker Stance GCD reduction
+  (0.25s/rank); Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute rage-to-damage ratio (sim 15).
 - Para Bellum applies to every warrior spell with a cooldown and a spell code; verify it
   does not wrongly shorten stance-change or shared-cooldown timers.
 - Warrior `.results` files stale.
