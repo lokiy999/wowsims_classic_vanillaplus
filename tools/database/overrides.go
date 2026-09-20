@@ -295,6 +295,9 @@ var ItemIconoverrides = []*proto.IconData{
 
 // Raid buffs / debuffs
 var SharedSpellsIcons = []int32{
+	// Set bonus procs that only exist with the set equipped
+	23590, // Judgement Armor 8-piece
+	27164, // Judgement Armor 6-piece (mana)
 	// World Buffs
 	22888, // Ony / Nef
 	24425, // Spirit

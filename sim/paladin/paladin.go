@@ -26,6 +26,9 @@ const (
 	SpellCode_PaladinHolyShieldProc
 	SpellCode_PaladinLayOnHands
 	SpellCode_PaladinHammerOfWrath
+	SpellCode_PaladinCrusaderStrike
+	SpellCode_PaladinJudgementOfTheCrusader
+	SpellCode_PaladinJudgementOfFury
 )
 
 type SealJudgeCode uint8
@@ -61,6 +64,9 @@ type Paladin struct {
 	spellsJotC       []*core.Spell
 	spellsJoF        []*core.Spell
 
+	// Called after every Judgement cast (set bonuses).
+	judgementCastCallbacks []func(sim *core.Simulation)
+
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcism       []*core.Spell
 	judgement      *core.Spell
@@ -73,6 +79,7 @@ type Paladin struct {
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
 	sealOfFury          *core.Spell
+	crusaderStrike      *core.Spell
 }
 
 // Implemented by each Paladin spec.
@@ -94,6 +101,11 @@ func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ResistanceAuraBonus = max(raidBuffs.ResistanceAuraBonus, []int32{0, 25, 50}[paladin.Talents.ImprovedDefensiveAuras])
 
 	paladin.applyImprovedRetributionAura(raidBuffs)
+
+	// Righteous Armor 4-piece: +6 damage on the Retribution Aura.
+	if paladin.HasSetBonus(ItemSetRighteousArmor, 4) {
+		raidBuffs.RetributionAuraBonusDamage = max(raidBuffs.RetributionAuraBonusDamage, 6)
+	}
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
@@ -129,6 +141,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyWrath()
 	paladin.registerAvengingWrath()
 	paladin.registerHolyShield()
+	paladin.registerCrusaderStrike()
 	paladin.registerDivineProtection()
 	paladin.registerBlessingOfSanctuary()
 	paladin.registerLayOnHands()

@@ -23,7 +23,6 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".
-// Only shows SoC if it's talented, only shows SoM if the relevant rune is equipped.
 export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinSeal>({
 	fieldName: 'primarySeal',
 	values: [
@@ -34,7 +33,6 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 		{
 			actionId: () => ActionId.fromSpellId(20920),
 			value: PaladinSeal.Command,
-			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sealOfCommand,
 		},
 		{
 			actionId: () => ActionId.fromSpellId(407798),

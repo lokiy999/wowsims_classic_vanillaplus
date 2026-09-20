@@ -34,6 +34,10 @@ func (paladin *Paladin) registerJudgement() {
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
 			paladin.castSpecificJudgement(sim, target, paladin.currentJudgement, paladin.currentSeal)
+			// The Judgement spell skips OnCastComplete, so set bonuses that trigger on casting it use this hook.
+			for _, callback := range paladin.judgementCastCallbacks {
+				callback(sim)
+			}
 		},
 	})
 }

@@ -74,12 +74,7 @@ var ItemSetRighteousArmor = core.NewItemSet(core.ItemSet{
 		},
 		// Increases the damage done by your Retribution Aura by 6.
 		4: func(agent core.Agent) {
-			// Nothing to do: Retribution Aura is only modeled in this sim as an
-			// externally-applied raid buff (core.RetributionAura in sim/core/buffs.go)
-			// granted to party/raid members. The Paladin's own personal aura selection
-			// (proto.PaladinAura_RetributionAura) is never wired up to a self-inflicted
-			// "damage attackers" mechanic anywhere in sim/paladin, so there is no
-			// simulated instance of this Paladin's own Retribution Aura to buff.
+			// Applied in the paladin's AddRaidBuffs: +6 damage on the Retribution Aura raid buff (core.RetributionAura).
 		},
 		// Gives Paladin a chance on every melee hit to heal your party for 189 to 211.
 		6: func(agent core.Agent) {
@@ -123,28 +118,41 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 			actionID := core.ActionID{SpellID: 27164}
 			manaMetrics := paladin.NewManaMetrics(actionID)
 
-			paladin.RegisterAura(core.Aura{
-				Label: "Judgement - T3 - Paladin - 6P Bonus",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell == paladin.judgement && sim.Proc(0.5, "Judgement Armor 6pc") {
-						paladin.AddMana(sim, 220, manaMetrics)
-					}
-				},
+			// Judgement skips OnCastComplete, so this uses the hook called from the Judgement spell itself.
+			paladin.judgementCastCallbacks = append(paladin.judgementCastCallbacks, func(sim *core.Simulation) {
+				if sim.Proc(0.5, "Judgement Armor 6pc") {
+					paladin.AddMana(sim, 220, manaMetrics)
+				}
 			})
 		},
-		// Inflicts 80 to 137 additional Holy damage on the target of a Paladin's Judgement.
+		// Inflicts 80 to 137 additional Holy damage on the target of a Paladin's Judgement (spell 23590: a separate flat hit).
 		8: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			spellCodes := []int32{SpellCode_PaladinJudgementOfCommand, SpellCode_PaladinJudgementOfRighteousness}
-			paladin.RegisterAura(core.Aura{
+			bonusSpell := paladin.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 23590},
+				SpellSchool: core.SpellSchoolHoly,
+				DefenseType: core.DefenseTypeMagic,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(80, 137), spell.OutcomeMagicCrit)
+				},
+			})
+
+			spellCodes := []int32{SpellCode_PaladinJudgementOfCommand, SpellCode_PaladinJudgementOfRighteousness, SpellCode_PaladinJudgementOfTheCrusader, SpellCode_PaladinJudgementOfFury}
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
 				Label: "Judgement - T3 - Paladin - 8P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if slices.Contains(spellCodes, spell.SpellCode) && result.Landed() {
-						spell.CalcAndDealDamage(sim, result.Target, sim.Roll(80, 137), spell.OutcomeMagicCrit)
+						bonusSpell.Cast(sim, result.Target)
 					}
 				},
-			})
+			}))
 		},
 	},
 })

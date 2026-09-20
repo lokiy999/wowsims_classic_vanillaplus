@@ -17,12 +17,15 @@ func (paladin *Paladin) registerSealOfFury() {
 	actionID := core.ActionID{SpellID: 20423}
 
 	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_PaladinJudgementOfFury,
 		ActionID:    actionID.WithTag(1),
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+		},
 	})
 
 	procSpell := paladin.RegisterSpell(core.SpellConfig{

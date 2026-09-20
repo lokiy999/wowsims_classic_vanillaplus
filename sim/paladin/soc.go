@@ -78,7 +78,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			BonusCoefficient: 0.429,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(minDamage, maxDamage) // 441-475 whether or not the target is stunned (confirmed in game)
+				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // 220-238 normally, 441-475 if the target is stunned, incapacitated or disoriented (confirmed in game); the sim has no stunned targets
 
 				// Seal of Command requires this spell to act as its intermediary dummy,
 				// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the

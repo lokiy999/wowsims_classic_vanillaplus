@@ -686,6 +686,10 @@ message RaidBuffs {
 	// Set by the paladin's AddRaidBuffs, not chosen in the UI.
 	int32 sanctity_aura_bonus = 42;
 	int32 resistance_aura_bonus = 43;
+
+	// Extra damage of the Retribution Aura from a paladin in the raid: Righteous Armor 4-piece (+6). Set by the paladin's
+	// AddRaidBuffs, not chosen in the UI.
+	int32 retribution_aura_bonus_damage = 44;
 }
 
 // Buffs that affect a single party.

@@ -2772,3 +2772,26 @@ New file `sim/paladin/talents_extra.go`:
 - **Seal of Command** proc rate is 12 procs per minute (was 7), confirmed in game; the 1s internal cooldown is unchanged.
 - **Seal of Command** lasts 120s (was 30s). **Judgement of Command** (top rank) is 441-475 Holy damage whether or not the target is
   stunned (the old code halved the damage unless stunned); lower ranks keep their old values. Confirmed in game.
+
+## Part BF — Crusader Strike (2026-09-20)
+
+- **Crusader Strike** added (`sim/paladin/crusader_strike.go`, spell 33487, level 40): 151 mana, 8s cooldown, on the global
+  cooldown, weapon damage only, can crit. Each hit adds a stack of **Consecrated Arms** (33488): +5% attack speed per stack,
+  up to 5 stacks, 15s, refreshed on every hit. All confirmed in game. The existing "Crusader Strike StopAttack macro" option now
+  applies to it. No default rotation casts it: add "Cast Crusader Strike" (spell id 33487) to a retribution rotation.
+- **Seal of Command in the seal picker:** the primary seal picker on the retribution and protection pages now always shows Seal of Command next to Seal of
+  Righteousness (it was hidden unless the Seal of Command talent was taken; the sim registers the seal regardless of the talent).
+- **Paladin sets checked** against the server tooltips (`VPlusItemDB.lua`) for Righteous Armor, Judgement Armor and Lawbringer Armor:
+  every bonus that affects damage is in. Changes: Righteous Armor 4-piece (+6 Retribution Aura damage) now works through a new
+  `RaidBuffs.retribution_aura_bonus_damage` proto field set by the paladin's `AddRaidBuffs` (run `make proto`); the Retribution
+  Aura base damage is 50 (DBC 10301, it was 20); Judgement Armor 8-piece (80-137 Holy damage on a Judgement) now also triggers
+  on Judgement of the Crusader and Judgement of Fury (it only did Judgement of Command and Righteousness).
+  Bonuses left as no-ops on purpose: healing procs, Holy Light cost, Judgement of Light heal chance, Judgement duration (Judgement
+  Armor 2-piece), and the Righteous Armor 8-piece low-mana cost discount (no dynamic cost mechanism).
+- **Judgement of Command correction:** top rank is 220-238 Holy damage normally and 441-475 if the target is stunned, incapacitated or disoriented (an earlier
+  entry said 441-475 either way, which was a misreading). The sim has no stunned targets, so it always uses the 220-238 case (441-475 halved).
+- **Judgement Armor 8-piece** is now its own spell (23590, a flat 80-137 Holy hit without spell power scaling) instead of extra damage inside the Judgement row, and it is in the spell
+  database as "Judgement Armor 8-piece" (`SharedSpellsIcons` in `tools/database/overrides.go`) so its name shows in the log and damage tables.
+- **Bug found and fixed: Judgement Armor 6-piece and 8-piece never did anything.** Their auras were registered but never activated (no `MakePermanent`), so
+  the 50% chance of 220 mana on Judgement and the 80-137 Holy hit on Judgement were dead code. Both work now (verified in the sim log: "Judgement Armor 8-piece"),
+  and the paladin golden results changed. Other classes' set bonus auras that use plain `RegisterAura` without `MakePermanent` or an `OnReset` activation may have the same bug.

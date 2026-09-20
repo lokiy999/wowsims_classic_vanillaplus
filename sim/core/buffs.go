@@ -422,7 +422,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing {
-		RetributionAura(character, GetTristateValueInt32(raidBuffs.RetributionAura, 0, 2))
+		RetributionAura(character, GetTristateValueInt32(raidBuffs.RetributionAura, 0, 2), raidBuffs.RetributionAuraBonusDamage)
 	}
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
@@ -680,8 +680,8 @@ func StoneskinTotemAura(unit *Unit, baseArmor float64, points int32, bonusMultip
 	})
 }
 
-func RetributionAura(character *Character, points int32) *Aura {
-	baseDamage := 20.0
+func RetributionAura(character *Character, points int32, bonusDamage int32) *Aura {
+	baseDamage := 50.0 + float64(bonusDamage) // DBC 10301: 50 Holy damage at the top rank; Righteous Armor 4-piece adds 6
 
 	actionID := ActionID{SpellID: 10301}
 

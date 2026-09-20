@@ -40,7 +40,6 @@ export const RighteousFuryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".
-// Only shows SoC if it's talented.
 export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecProtectionPaladin, PaladinSeal>({
 	fieldName: 'primarySeal',
 	values: [
@@ -51,7 +50,6 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 		{
 			actionId: () => ActionId.fromSpellId(20920),
 			value: PaladinSeal.Command,
-			showWhen: (player: Player<Spec.SpecProtectionPaladin>) => player.getTalents().sealOfCommand,
 		},
 		{
 			actionId: () => ActionId.fromSpellId(407798),

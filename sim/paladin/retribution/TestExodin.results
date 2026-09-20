@@ -113,8 +113,8 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase5-AllItems-JudgementArmor"
  value: {
-  dps: 596.18726
-  tps: 637.77973
+  dps: 612.17018
+  tps: 658.0622
  }
 }
 dps_results: {
