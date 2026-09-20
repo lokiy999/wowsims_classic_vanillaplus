@@ -2,6 +2,7 @@ package druid
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -41,7 +42,8 @@ func (druid *Druid) registerMoonfireSpell() {
 }
 
 func (druid *Druid) getMoonfireBaseConfig(rank int) core.SpellConfig {
-	ticks := MoonfireDotTicks[rank]
+	// Power of Nature (DBC 33736/33737): +25%/50% duration of Moonfire.
+	ticks := int32(math.Round(float64(MoonfireDotTicks[rank]) * (1 + 0.25*float64(druid.Talents.PowerOfNature))))
 	tickLength := time.Second * 3
 
 	spellId := MoonfireSpellId[rank]

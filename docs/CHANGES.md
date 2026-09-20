@@ -2742,3 +2742,33 @@ From the buff audit list in `docs/TODO.md`, the items the user had already confi
   (Improved Sanctity Aura, Improved Defensive Auras) for a paladin outside the sim. New `RaidBuffs` proto fields 40-43
   (`improved_sanctity_aura`, `improved_defensive_auras`, `sanctity_aura_bonus`, `resistance_aura_bonus`): run `make proto`
   after pulling.
+
+## Part BD — More talents from the TODO list (2026-09-20)
+
+- **Mayhem** (warlock, `sim/warlock/mayhem.go`): a 2 min cooldown that gives the next Shadow Bolt, Immolate, Conflagrate,
+  Searing Pain, Soul Fire or Shadowburn +100% crit chance (DBC 34020).
+- **Power of Nature** (druid): +25%/50% duration of Moonfire and Insect Swarm (more ticks, DBC 33736/33737). Insect Swarm's 6
+  ticks become 8 (rounded from 7.5) at rank 1. The Barkskin, Faerie Fire and healing spell durations are not changed.
+- **Sadism** was already implemented (8%/rank chance for 666 mana on a spell crit); the TODO note was out of date.
+
+## Part BE — Paladin talents from the TODO list (2026-09-20)
+
+New file `sim/paladin/talents_extra.go`:
+
+- **Improved Purifying:** -15%/rank mana cost of Consecration, Exorcism, Holy Wrath and Hammer of Wrath, and +15%/rank crit
+  chance on Exorcism, Holy Wrath and Hammer of Wrath (DBC 33445-33447).
+- **Holy Grasp:** -0.5s/rank cast time of Holy Wrath and Hammer of Wrath (DBC 20359-20361).
+- **Blessed Strikes:** -4%/rank threat from all actions unless Righteous Fury is on (the armor penetration was already there).
+- The Improved Purifying crit is per spell, so it is not in the sidebar.
+- **Seal of Fury** implemented (`sim/paladin/seal_of_fury.go`): 8% of base mana, lasts 2 min, melee attacks deal an extra 30%
+  of normal weapon damage to up to 3 enemies (confirmed in game). Its Judgement (forced attack) has no damage and is not
+  modeled. New `PaladinSeal.Fury` value in `proto/paladin.proto` and a Seal of Fury choice in the primary seal picker of the
+  protection and retribution pages (shown when the talent is taken): run `make proto` after pulling.
+- **Improved Retribution Aura** implemented: with a Retribution Aura in the raid buffs, the paladin's melee hits taken deal
+  Holy damage back equal to 5%/10% of the damage taken (DBC 20091/20092).
+- **Vengeance** confirmed in game: 2% per stack, 10 stacks (the code was already right).
+- **Seal of Command** proc damage is 50% of normal weapon damage (was 70%, the Season of Discovery value), confirmed in game. The
+  7 procs per minute and 1s cooldown are unchanged and unverified. Retribution golden results regenerated.
+- **Seal of Command** proc rate is 12 procs per minute (was 7), confirmed in game; the 1s internal cooldown is unchanged.
+- **Seal of Command** lasts 120s (was 30s). **Judgement of Command** (top rank) is 441-475 Holy damage whether or not the target is
+  stunned (the old code halved the damage unless stunned); lower ranks keep their old values. Confirmed in game.

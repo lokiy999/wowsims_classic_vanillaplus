@@ -17,8 +17,8 @@ Still open, the calculator confirmed the text but not the mechanics:
 - Mage **Mind Mastery**: also +20%/rank Arcane Intellect effect (buff pipeline, not done).
 - Not modeled: Shaman Armaments of Storm (5%/rank, up to 300 Nature, level scaled), Shamanism, Aftershock;
   Rogue Improved Sinister Strike proc, Coup de Grace, Gaining an Advantage, Brigandage; Hunter Find Weakness,
-  Deadeye, Thrill of the Hunt; Warlock Defiler, Prolonged Misery, Demonic Embrace regen; Druid Killer Instincts
-  attack speed part, Power of Nature; Warrior Cleaving (Thunder Clap/Whirlwind), Improved Execute.
+  Deadeye, Thrill of the Hunt; Warlock Defiler, Prolonged Misery, Demonic Embrace regen, Demonic Onslaught (pet crit, the DBC effect is 20% but the per-rank scaling is unclear); Druid Killer Instincts
+  attack speed part; Warrior Cleaving (Thunder Clap/Whirlwind), Improved Execute.
 
 ## Raised 2026-09-19 — warrior talents (CHANGES.md Part AO)
 
@@ -58,11 +58,13 @@ Still open, the calculator confirmed the text but not the mechanics:
 
 ## Raised 2026-09-19 — paladin talents (CHANGES.md Part AL)
 
-- Not modeled: Divine Concentration, Divine Grace, Holy Grasp, Illumination, Light's Mercy,
-  Improved Purifying, Holy Purge, Divine Might/Improved Sanctity Aura/Sanctity Aura
-  (buff pipeline, see the buff audit above), Seal of Command/Fury, Redoubt values,
-  Eye for an Eye, Repentance, Improved Retribution Aura, Codex Holy Light
-  cost/cast time, Blessed Strikes threat reduction, Vengeance max stacks (code 10, unchecked).
+- Not modeled (2026-09-20): Divine Grace (needs Seal/Judgement of Light and Wisdom, not in the sim), Illumination (the
+  server text looks odd: 20% of the base mana cost back on a crit at rank 1, a chance for 50% at rank 5, ranks 2-4
+  unknown; user wants to look at it later), Light's Mercy (Flash of Light is not in the sim), Holy Purge, Eye for an Eye
+  (5%/10% of spell damage taken reflected), Repentance, Codex Holy Light cost/cast time, the Judgement of Fury forced
+  attack. Done: Divine Concentration, Improved Purifying, Holy Grasp, Blessed Strikes threat, Sanctity Aura talents,
+  Seal of Fury, Improved Retribution Aura, Vengeance confirmed (CHANGES.md Parts BC and BE).
+- Seal of Command: the 1s internal cooldown is unverified (damage 50%, 12 procs per minute, 120s duration and top rank Judgement of Command 441-475 are confirmed; lower Judgement of Command ranks are still the old values).
 - Improved Lay on Hands cooldown checked: DBC is -15 min/rank, matches the code.
 - Paladin audit round 2 (CHANGES.md Part AY): Holy Shock, Hammer of Wrath, Righteous Fury, Redoubt and Holy Shield are
   now confirmed. Still open: Consecration and Exorcism rank/damage not compared, Holy Wrath / Avenging Wrath / Divine Favor

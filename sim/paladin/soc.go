@@ -46,10 +46,10 @@ func (paladin *Paladin) registerSealOfCommand() {
 		{level: 30, spellID: 20915, manaCost: 110, scaleLevel: 38, proc: proc{spellID: 20944}, judge: judge{spellID: 20963, minDamage: 146, maxDamage: 160, scale: 6.1}},
 		{level: 40, spellID: 20918, manaCost: 140, scaleLevel: 48, proc: proc{spellID: 20945}, judge: judge{spellID: 20964, minDamage: 204, maxDamage: 224, scale: 5.6}},
 		{level: 50, spellID: 20919, manaCost: 180, scaleLevel: 58, proc: proc{spellID: 20946}, judge: judge{spellID: 20965, minDamage: 261, maxDamage: 287, scale: 6.1}},
-		{level: 60, spellID: 20920, manaCost: 210, scaleLevel: 60, proc: proc{spellID: 20947}, judge: judge{spellID: 20966, minDamage: 339, maxDamage: 373, scale: 6.1}},
+		{level: 60, spellID: 20920, manaCost: 210, scaleLevel: 60, proc: proc{spellID: 20947}, judge: judge{spellID: 20966, minDamage: 441, maxDamage: 475, scale: 0}},
 	}
 
-	ppmm := paladin.AutoAttacks.NewPPMManager(7, core.ProcMaskMelee)
+	ppmm := paladin.AutoAttacks.NewPPMManager(12, core.ProcMaskMelee) // 12 procs per minute (confirmed in game)
 
 	icd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
@@ -78,7 +78,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			BonusCoefficient: 0.429,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
+				baseDamage := sim.Roll(minDamage, maxDamage) // 441-475 whether or not the target is stunned (confirmed in game)
 
 				// Seal of Command requires this spell to act as its intermediary dummy,
 				// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
@@ -99,7 +99,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeProc | core.ProcMaskMeleeDamageProc,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNotAProc,
 
-			DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
+			DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier(), // 50% of normal weapon damage (DBC 20424, confirmed in game)
 			ThreatMultiplier: 1,
 
 			BonusCoefficient: 0.29,
@@ -120,7 +120,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 		aura := paladin.RegisterAura(core.Aura{
 			Label:    "Seal of Command" + paladin.Label + strconv.Itoa(i+1),
 			ActionID: core.ActionID{SpellID: rank.spellID},
-			Duration: time.Second * 30,
+			Duration: time.Second * 120, // confirmed in game
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return

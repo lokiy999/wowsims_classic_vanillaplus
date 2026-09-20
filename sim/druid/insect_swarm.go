@@ -2,6 +2,7 @@ package druid
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -23,7 +24,8 @@ func (druid *Druid) registerInsectSwarmSpell() {
 	for rank := 1; rank <= InsectSwarmRanks; rank++ {
 		level := InsectSwarmLevel[rank]
 		if int32(level) <= druid.Level {
-			numTicks := int32(6)
+			// Power of Nature (DBC 33736/33737): +25%/50% duration of Insect Swarm.
+			numTicks := int32(math.Round(6 * (1 + 0.25*float64(druid.Talents.PowerOfNature))))
 			tickLength := time.Second * 2
 
 			spellID := InsectSwarmSpellId[rank]

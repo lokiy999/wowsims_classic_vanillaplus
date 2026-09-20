@@ -38,6 +38,7 @@ func (warlock *Warlock) ApplyTalents() {
 	warlock.applyDestructionCrit()
 	warlock.applyIntensity()
 	warlock.applySadism()
+	warlock.registerMayhemCD()
 }
 
 func (warlock *Warlock) applyWeaponImbue() {

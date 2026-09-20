@@ -74,6 +74,7 @@ func (paladin *Paladin) ApplyTalents() {
 	paladin.applyRedoubt()
 	paladin.applyReckoning()
 	paladin.applyImprovedLayOnHands()
+	paladin.applyAuditTalents()
 }
 
 func (paladin *Paladin) improvedSoR() float64 {

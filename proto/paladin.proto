@@ -97,6 +97,7 @@ enum PaladinSeal {
 	Righteousness = 1;
 	Command = 2;
 	Martyrdom = 3;
+	Fury = 4;
 }
 
 message PaladinOptions {

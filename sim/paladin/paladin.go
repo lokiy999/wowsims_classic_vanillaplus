@@ -52,12 +52,14 @@ type Paladin struct {
 	aurasSoR     []*core.Aura
 	aurasSoC     []*core.Aura
 	aurasSotC    []*core.Aura
+	aurasSoF     []*core.Aura
 
 	currentJudgement *core.Spell
 	allJudgeSpells   [][]*core.Spell
 	spellsJoR        []*core.Spell
 	spellsJoC        []*core.Spell
 	spellsJotC       []*core.Spell
+	spellsJoF        []*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	exorcism       []*core.Spell
@@ -70,6 +72,7 @@ type Paladin struct {
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
+	sealOfFury          *core.Spell
 }
 
 // Implemented by each Paladin spec.
@@ -89,6 +92,8 @@ func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// Improved Sanctity Aura (3/5%) and Improved Defensive Auras (25/50%) improve the paladin's auras for the raid.
 	raidBuffs.SanctityAuraBonus = max(raidBuffs.SanctityAuraBonus, []int32{0, 3, 5}[paladin.Talents.ImprovedSanctityAura])
 	raidBuffs.ResistanceAuraBonus = max(raidBuffs.ResistanceAuraBonus, []int32{0, 25, 50}[paladin.Talents.ImprovedDefensiveAuras])
+
+	paladin.applyImprovedRetributionAura(raidBuffs)
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
@@ -102,14 +107,17 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerSealOfRighteousness()
 	paladin.registerSealOfCommand()
 	paladin.registerSealOfTheCrusader()
+	paladin.registerSealOfFury()
 
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoR)
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoC)
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJotC)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoF)
 
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoR)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoC)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoF)
 
 	// Active abilities
 	paladin.registerForbearance()
@@ -198,6 +206,11 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 	switch primarySeal {
 	case proto.PaladinSeal_Command:
 		return paladin.sealOfCommand
+	case proto.PaladinSeal_Fury:
+		if paladin.sealOfFury != nil {
+			return paladin.sealOfFury
+		}
+		return paladin.sealOfRighteousness
 	case proto.PaladinSeal_Righteousness:
 		return paladin.sealOfRighteousness
 	default:
