@@ -2657,3 +2657,33 @@ Second audit round for the hunter, checked against `CSV's/Spell.csv`.
   and the school interrupt are not modeled, and it has no cooldown or mana cost because they are unknown.
 - **Aspect of the Monkey** now gives +5% dodge and +5% melee crit (confirmed in game), plus 1% per rank of Improved Aspect
   of the Monkey (DBC).
+
+## Part BA — Rogue audit (2026-09-20)
+
+Second audit round for the rogue, checked against `CSV's/Spell.csv`. Work in progress, the cooldown questions below still
+need answers from the game.
+
+- **Talent decoding:** new test `sim/rogue/talents_string_test.go` (all 60 talents decode to the right proto field).
+- **Elusiveness:** Evasion and Vanish cooldown -1 min per rank (DBC 13981). The old Evasion table had `5s - 90s` for rank 2
+  (a bug that gave a negative cooldown) and Vanish used 45s per rank.
+- **Coup de Grace** implemented: +5%/rank damage below 20% health (uses the sim's execute phase).
+- **Exhaustion** implemented for Slice and Dice: +25/50% duration (DBC 14165/14166). Rupture and Expose Armor are not done.
+- **Improved Sinister Strike** implemented: 3/5% chance of an extra Sinister Strike on the same target (no cost, no combo
+  point).
+- **Checked, no change:** Deflection 3/5%, Malice, Precision, Aggression 5%/rank, Lethality 10%/rank, Improved Eviscerate
+  5%/rank, Improved Backstab 15%/rank, Improved Ambush 20%/rank, Opportunity 4%/rank, Cold Blooded 3/5%, Deadliness 4%/rank,
+  Dual Wield Specialization 5%/rank, Combat Expertise, Vigor, Ruthlessness 30%/rank, Seal Fate 20%/rank, Initiative
+  30%/rank, Relentless Strikes 35 energy, Combat Rush 4%/rank for 20 energy, Improved Poisons, Weapon Expertise.
+- **Blade Flurry** duration 15s -> 20s. Adrenaline Rush stays 15s (both confirmed in game).
+- **Evasion** cooldown is 5 min minus 1 min per rank of Elusiveness and of Physical Prowess; Vanish is 5 min minus 1 min per
+  rank of Elusiveness (confirmed in game).
+- **Physical Prowess** implemented: +50%/100% Strength (the Sprint part is not in the sim).
+- **Bloodthirsty** now also shortens the tick interval, and so the duration, of Garrote and Rupture by 10%/rank (the +10%/rank
+  damage was already there).
+- **Cooldowns set to the server data** (confirmed in game): Cold Blood 2 min (was 3), Adrenaline Rush 3 min (was 5) and it now
+  also gives +30% melee attack speed, Blade Flurry 30s (was 2 min) and it no longer gives +20% attack speed (it only strikes an
+  extra target), Preparation 5 min (was 10), Premeditation 10 min (was 2), Riposte 5s (was 6), Feint 20s (was 10).
+- **Gaining an Advantage** implemented (`sim/rogue/talents_extra.go`): auto attacks have a 20%/rank chance to add a stack of
+  +1% Agility, up to 20 stacks, 15s. The stat reduction on the target is not modeled.
+- **Brigandage** implemented: auto attacks have a 20%/rank chance to deal 0.5 x level Shadow damage (30 at level 60). The
+  mana/energy/rage drain only affects the target, so it is not modeled.

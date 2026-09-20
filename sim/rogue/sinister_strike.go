@@ -22,6 +22,30 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		60: 11294,
 	}[rogue.Level]
 
+	// Improved Sinister Strike (DBC 13732/13863): 3%/5% chance to land an extra Sinister Strike on the same target.
+	var extraStrike *core.Spell
+	if rogue.Talents.ImprovedSinisterStrike > 0 {
+		extraStrike = rogue.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: spellID}.WithTag(2),
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+			CritDamageBonus: rogue.lethality(),
+
+			DamageMultiplier: []float64{1, 1.05, 1.10, 1.15, 1.20, 1.25}[rogue.Talents.Aggression],
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			},
+		})
+	}
+	extraStrikeChance := []float64{0, 0.03, 0.05}[rogue.Talents.ImprovedSinisterStrike]
+
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_RogueSinisterStrike,
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -55,6 +79,9 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
+				if extraStrike != nil && sim.Proc(extraStrikeChance, "Improved Sinister Strike") {
+					extraStrike.Cast(sim, target)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

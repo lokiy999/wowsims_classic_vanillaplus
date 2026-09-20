@@ -29,7 +29,7 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 			DefaultCast: core.Cast{},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: []time.Duration{time.Minute * 5, time.Minute*5 - time.Second*45, time.Second*5 - time.Second*90}[rogue.Talents.Elusiveness],
+				Duration: time.Minute*5 - time.Minute*time.Duration(rogue.Talents.Elusiveness+rogue.Talents.PhysicalProwess), // 5 min, -1 min/rank of Elusiveness and of Physical Prowess (confirmed in game)
 			},
 			IgnoreHaste: true,
 		},

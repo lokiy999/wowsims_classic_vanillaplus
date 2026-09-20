@@ -23,7 +23,7 @@ func (rogue *Rogue) registerFeintSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: time.Second * 20, // DBC 1966, confirmed
 			},
 			IgnoreHaste: true,
 		},

@@ -30,7 +30,7 @@ func (rogue *Rogue) registerVanishSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * time.Duration(300-float64(45*rogue.Talents.Elusiveness)),
+				Duration: time.Minute*5 - time.Minute*time.Duration(rogue.Talents.Elusiveness), // DBC: Elusiveness -1 min/rank
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

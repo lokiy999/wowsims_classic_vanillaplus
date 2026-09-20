@@ -40,7 +40,9 @@ Still open, the calculator confirmed the text but not the mechanics:
   Exhaustion, Combat Rush, Brigandage, Gaining an Advantage, Dazing Bolts, Survivor,
   Physical Prowess, Improved Kidney Shot, Remorseless Attacks, Weapon Expertise values.
 - Connivery is applied to all melee damage; DBC says attacks from behind only.
-- Rogue `.results` files stale.
+- Rogue audit round 2 (CHANGES.md Part BA) open: Exhaustion on Rupture and Expose Armor (Slice and Dice is done),
+  Remorseless Attacks (needs kills), Improved Kidney Shot (no Kidney Shot in the sim), Survivor, Sprint (Physical Prowess
+  cooldown part, Improved Sprint), Thistle Tea cooldown not in the DBC, Brigandage damage may need a coefficient check.
 
 ## Raised 2026-09-19 — hunter talents (CHANGES.md Part AM)
 

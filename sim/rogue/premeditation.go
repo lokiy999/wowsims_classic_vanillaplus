@@ -25,7 +25,7 @@ func (rogue *Rogue) registerPremeditation() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Minute * 2,
+				Duration: time.Minute * 10, // DBC 14183, confirmed
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

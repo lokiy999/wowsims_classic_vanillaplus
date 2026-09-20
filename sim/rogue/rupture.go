@@ -48,7 +48,7 @@ DamageMultiplier: 1 + 0.10*float64(rogue.Talents.Bloodthirsty), // Vanilla+ calc
 				Label: "Rupture",
 			},
 			NumberOfTicks: 0, // Set dynamically
-			TickLength:    time.Second * 2,
+			TickLength:    time.Duration(float64(time.Second*2) * (1 - 0.1*float64(rogue.Talents.Bloodthirsty))), // Bloodthirsty: -10%/rank
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, rogue.RuptureDamage(rogue.ComboPoints()), isRollover)
@@ -100,5 +100,5 @@ func (rogue *Rogue) RuptureTicks(comboPoints int32) int32 {
 }
 
 func (rogue *Rogue) RuptureDuration(comboPoints int32) time.Duration {
-	return time.Duration(rogue.RuptureTicks(comboPoints)) * time.Second * 2
+	return time.Duration(float64(rogue.RuptureTicks(comboPoints)) * float64(time.Second*2) * (1 - 0.1*float64(rogue.Talents.Bloodthirsty)))
 }

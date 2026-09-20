@@ -26,7 +26,7 @@ func (rogue *Rogue) applyRiposte() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: time.Second * 5, // DBC 14251, confirmed
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

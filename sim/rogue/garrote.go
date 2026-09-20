@@ -55,7 +55,8 @@ func (rogue *Rogue) registerGarrote() {
 				Label: "Garrote",
 			},
 			NumberOfTicks: 6,
-			TickLength:    time.Second * 3,
+			// Bloodthirsty shortens the tick interval (and so the duration) by 10%/rank.
+			TickLength:    time.Duration(float64(time.Second*3) * (1 - 0.1*float64(rogue.Talents.Bloodthirsty))),
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				damage := baseDamage + dot.Spell.MeleeAttackPower()*0.03
 				dot.Snapshot(target, damage, isRollover)

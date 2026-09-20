@@ -20,7 +20,7 @@ func (rogue *Rogue) registerPreparationCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Minute * 10,
+				Duration: time.Minute * 5, // DBC 14185, confirmed
 			},
 			IgnoreHaste: true,
 		},

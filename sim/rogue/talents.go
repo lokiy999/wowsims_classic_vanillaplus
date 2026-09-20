@@ -10,6 +10,11 @@ import (
 
 func (rogue *Rogue) ApplyTalents() {
 	rogue.applyRuthlessness()
+	rogue.applyAuditTalents()
+	// Physical Prowess: +50%/100% Strength (confirmed in game); the Sprint and Evasion cooldown part is in evasion.go.
+	if rogue.Talents.PhysicalProwess > 0 {
+		rogue.MultiplyStat(stats.Strength, 1+0.5*float64(rogue.Talents.PhysicalProwess))
+	}
 	rogue.applyCombatRush()
 rogue.applyMurder()
 	rogue.applyRelentlessStrikes()
@@ -52,7 +57,17 @@ rogue.applyMurder()
 		})
 	}
 
-	// TODO: Coup de Grace (DBC): +5%/rank damage vs targets below 20% health (execute range).
+	// Coup de Grace (DBC 14113-14117): +5%/rank damage against targets below 20% health.
+	if rogue.Talents.CoupDeGrace > 0 {
+		mult := 1 + 0.05*float64(rogue.Talents.CoupDeGrace)
+		rogue.RegisterResetEffect(func(sim *core.Simulation) {
+			sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+				if isExecute == 20 {
+					rogue.PseudoStats.DamageDealtMultiplier *= mult
+				}
+			})
+		})
+	}
 
 	// Connivery (DBC): +2%/rank damage from all attacks from behind (assumed always true vs a raid boss).
 	if rogue.Talents.Connivery > 0 {
@@ -165,7 +180,7 @@ func (rogue *Rogue) registerColdBloodCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Minute * 3,
+				Duration: time.Minute * 2, // DBC 14177, confirmed
 			},
 		},
 
@@ -342,13 +357,8 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
 		ActionID: core.ActionID{SpellID: 13877},
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1.2)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1/1.2)
-		},
+		Duration: time.Second * 20, // confirmed in game
+		// DBC 13877: only strikes an extra nearby target, no attack speed bonus (confirmed).
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.GetNumTargets() < 2 {
 				return
@@ -366,7 +376,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		},
 	})
 
-	cooldownDur := time.Minute * 2
+	cooldownDur := time.Second * 30 // DBC 13877, confirmed
 	rogue.BladeFlurry = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode: SpellCode_RogueBladeFlurry,
 		ActionID:  core.ActionID{SpellID: 13877},
@@ -422,9 +432,11 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.ApplyEnergyTickMultiplier(1.0)
+			rogue.MultiplyMeleeSpeed(sim, 1.3) // DBC 13750: +30% melee attack speed
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.ApplyEnergyTickMultiplier(-1.0)
+			rogue.MultiplyMeleeSpeed(sim, 1/1.3)
 		},
 	})
 
@@ -438,7 +450,7 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Minute * 5,
+				Duration: time.Minute * 3, // DBC 13750, confirmed
 			},
 		},
 
