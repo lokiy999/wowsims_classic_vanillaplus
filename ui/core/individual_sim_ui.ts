@@ -148,7 +148,28 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
 }
 
+// Testing switch: when true every spec starts empty. The gear and talent preset lists are hidden, and the defaults
+// are blank gear, no talents, and every buff, debuff and consumable off. Rotations are kept, since a spec with no
+// rotation has nothing to cast. Settings people saved in their browser are not touched. The preset files
+// themselves stay in place because the Go tests read the same gear sets and rotations.
+export const START_WITH_EMPTY_PRESETS = true;
+
+function applyEmptyPresets<SpecType extends Spec>(config: IndividualSimUIConfig<SpecType>) {
+	config.presets.gear = [];
+	config.presets.talents = [];
+	if (config.presets.builds) config.presets.builds = [];
+
+	config.defaults.gear = EquipmentSpec.create({});
+	config.defaults.talents = SavedTalents.create({ talentsString: '' });
+	config.defaults.consumes = Consumes.create({});
+	config.defaults.raidBuffs = RaidBuffs.create({});
+	config.defaults.partyBuffs = PartyBuffs.create({});
+	config.defaults.individualBuffs = IndividualBuffs.create({});
+	config.defaults.debuffs = Debuffs.create({});
+}
+
 export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
+	if (START_WITH_EMPTY_PRESETS) applyEmptyPresets(config);
 	registerPlayerConfig(spec, config);
 	return config;
 }

@@ -2435,3 +2435,16 @@ difference is in the item data, not stale caching, and is not changed here.
   the sim still treats it as Normal. Presets that set `arcaneBrilliance: true` keep working. Verified in the browser
   on the mage page: Intellect 360 (Normal) -> 368 (37) -> 394 (60) -> 402 (67); a mage always gets its own Arcane
   Intellect from `AddRaidBuffs`, so Disabled and Normal both show 360 there.
+
+## Part AT — Empty presets and defaults for testing (2026-09-20)
+
+`ui/core/individual_sim_ui.ts` has a switch, `START_WITH_EMPTY_PRESETS` (currently `true`), applied in
+`registerSpecConfig` for every spec:
+- the gear, talent and build preset lists are empty (no preset buttons, no "Pre-BiS" etc.);
+- the defaults are blank gear, no talents, and every raid, party and individual buff, debuff and consumable off.
+Rotations are kept (a spec with no rotation has nothing to cast), and specs' own options, race, professions, EP
+weights and encounter settings are unchanged. Sets people saved in their browser are untouched, and pages that
+already have an auto-saved state keep it until "Restore Defaults" is pressed. The preset files under `ui/<spec>/`
+were not deleted because the Go tests read the same gear sets and rotations. To bring the presets back, set the
+switch to `false`. Verified on the rogue page: after Restore Defaults there is no gear, 51 talent points remaining,
+no active buff icons and only base stats (Health 2123, Strength 82, Agility 126).
