@@ -6,6 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 import { Player } from '../core/player.js';
 import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
+import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as Presets from './presets.js';
 
@@ -52,6 +53,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
+
+	modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {
+		const talents = player.getTalents();
+		let stats = new Stats();
+		// Intensity: -2%/rank resist chance on Destruction spells (Shadow Bolt, the Fire spells). Suppression is the
+		// same for Affliction spells (Corruption, curses, drains) and is not shown here.
+		const intensityHit = talents.intensity * 2 * SPELL_HIT_RATING_PER_HIT_CHANCE;
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, intensityHit);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitShadow, intensityHit);
+
+		return {
+			talents: stats,
+			// Devastation: +1%/rank crit on Destruction spells (all the crittable Fire spells and Shadow Bolt).
+			schoolCrit: { shadow: talents.devastation * 1, fire: talents.devastation * 1 },
+		};
+	},
 
 	defaults: {
 		// Default equipped gear.

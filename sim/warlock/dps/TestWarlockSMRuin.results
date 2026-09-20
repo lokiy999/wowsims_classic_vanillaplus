@@ -53,17 +53,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.34171
+  weights: 0.34786
   weights: 0
-  weights: 0.24745
-  weights: 0
-  weights: 0
+  weights: 0.23131
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.37721
+  weights: 0
+  weights: 0
+  weights: 5.37753
   weights: 1.65985
   weights: 0
   weights: 0
@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 567.16782
-  tps: 468.39632
+  dps: 566.62835
+  tps: 467.45002
  }
 }
 dps_results: {
@@ -176,8 +176,8 @@ dps_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Average-Default"
  value: {
-  dps: 649.18484
-  tps: 550.56189
+  dps: 649.18074
+  tps: 550.55687
  }
 }
 dps_results: {
@@ -204,15 +204,15 @@ dps_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-NoBuffs-Consumes-LongMultiTarget"
  value: {
-  dps: 332.34759
-  tps: 1204.88806
+  dps: 313.69085
+  tps: 1098.41373
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-NoBuffs-Consumes-LongSingleTarget"
  value: {
-  dps: 332.34759
-  tps: 325.94898
+  dps: 313.69085
+  tps: 302.04105
  }
 }
 dps_results: {

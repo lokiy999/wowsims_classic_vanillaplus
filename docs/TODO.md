@@ -364,3 +364,8 @@ Improved Dispel Magic, Insanity, and all healing talents (Spiritual Healing, Imp
 Improved Power Word: Shield, Improved Prayer of Healing, Holy Focus, Holy Reach, Holy Nova, Light's Grace, Blessed
 Recovery, Spirit of Redemption, Holy Link), which need the healing spells enabled first. Spirit Tap also needs a
 kill trigger with the 50%/100% per-rank proc chance.
+
+## Warlock, open after the second audit (2026-09-20)
+- Improved Drain Soul: the Health/Mana regen on kill (stacks to 5) is not modeled.
+- Suppression is not in the sidebar (only Affliction spells, unlike the school-based Spell Hit tooltip).
+- Bring the Pain (+5%/rank crit on 4 spells) is not in the sidebar.

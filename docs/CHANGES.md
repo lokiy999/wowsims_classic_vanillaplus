@@ -2450,3 +2450,21 @@ already have an auto-saved state keep it until "Restore Defaults" is pressed. Th
 were not deleted because the Go tests read the same gear sets and rotations. To bring the presets back, set the
 switch to `false`. Verified on the rogue page: after Restore Defaults there is no gear, 51 talent points remaining,
 no active buff icons and only base stats (Health 2123, Strength 82, Agility 126).
+
+## Part AU — Warlock audit round 2 (2026-09-20)
+
+Same checks as the mage pass (server data cooldowns, wrong talent uses, sidebar, talent-string decoding):
+- **Talent string decoding:** new `sim/warlock/talents_string_test.go` checks that all 60 talents in
+  `ui/core/talents/trees/warlock.json` decode to the proto field of the same name (tab order and position). Passes.
+- **Cooldowns from the server data (RecoveryTime), all previously missing or wrong** (each spell has one timer shared
+  by all ranks, `Warlock.sharedTimer`): Life Tap 10s (every rank), Dark Pact 60s, Drain Soul 20s, Fel Domination 5 min
+  (was 15). Improved Drain Soul now does what it says: -5s Drain Soul cooldown per rank (its Health/Mana regen on kill
+  is still not modeled).
+- **Curse of Doom** no longer has its threat reduced by Improved Drain Soul (a wrong use of the talent).
+- **Suppression** hit now uses the spell hit constant instead of the crit constant (same value, correct name).
+- **Sidebar:** `ui/warlock/sim.ts` `modifyDisplayStats` adds Intensity (+2%/rank Fire and Shadow hit) and Devastation
+  (+1%/rank Fire and Shadow crit, shown in the Spell Crit tooltip). Suppression (Affliction spells only) is not shown.
+- `TestWarlockSMRuin` and `TestWarlockDSRuin` goldens regenerated (DPS is lower now that Life Tap, Drain Soul and
+  Dark Pact have cooldowns: SM Ruin 332 -> 314).
+- Conflagrate stays at 10s: the server data has 15s on the player ranks and 10s on the talent spell, and the 10s
+  value was confirmed in game.

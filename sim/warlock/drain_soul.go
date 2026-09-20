@@ -38,6 +38,11 @@ func (warlock *Warlock) getDrainSoulBaseConfig(rank int) core.SpellConfig {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			CD: core.Cooldown{
+				Timer: warlock.sharedTimer("DrainSoul"),
+				// DBC: 20s cooldown, Improved Drain Soul takes 5s off per rank.
+				Duration: time.Second*20 - time.Second*5*time.Duration(warlock.Talents.ImprovedDrainSoul),
+			},
 		},
 
 		DamageMultiplier: 1,

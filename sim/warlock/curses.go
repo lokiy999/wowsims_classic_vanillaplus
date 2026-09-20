@@ -350,7 +350,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 		CritDamageBonus: 0,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
+		ThreatMultiplier: 1,
 		FlatThreatBonus:  160,
 		BonusCoefficient: 1,
 

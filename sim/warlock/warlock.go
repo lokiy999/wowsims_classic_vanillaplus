@@ -41,6 +41,8 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
+	cdTimers map[string]*core.Timer // cooldown timers shared by all ranks of a spell
+
 	BasePets   []*WarlockPet
 	ActivePet  *WarlockPet
 	Felhunter  *WarlockPet
@@ -201,4 +203,17 @@ type WarlockAgent interface {
 
 func isWarlockSpell(spell *core.Spell) bool {
 	return spell.Flags.Matches(WarlockFlagAffliction) || spell.Flags.Matches(WarlockFlagDemonology) || spell.Flags.Matches(WarlockFlagDestruction)
+}
+
+// One cooldown timer per spell, shared by all of its ranks.
+func (warlock *Warlock) sharedTimer(key string) *core.Timer {
+	if warlock.cdTimers == nil {
+		warlock.cdTimers = map[string]*core.Timer{}
+	}
+	if timer, ok := warlock.cdTimers[key]; ok {
+		return timer
+	}
+	timer := warlock.NewTimer()
+	warlock.cdTimers[key] = timer
+	return timer
 }

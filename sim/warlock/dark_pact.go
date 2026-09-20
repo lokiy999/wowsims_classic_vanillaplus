@@ -1,6 +1,8 @@
 package warlock
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 )
 
@@ -24,6 +26,10 @@ func (warlock *Warlock) getDarkPactConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    warlock.sharedTimer("DarkPact"),
+				Duration: time.Minute, // DBC: 60s cooldown
 			},
 		},
 

@@ -145,7 +145,7 @@ func (warlock *Warlock) applySuppression() {
 	points := float64(warlock.Talents.Suppression)
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(WarlockFlagAffliction) {
-			spell.BonusHitRating += 2 * points * core.CritRatingPerCritChance
+			spell.BonusHitRating += 2 * points * core.SpellHitRatingPerHitChance
 		}
 	})
 }

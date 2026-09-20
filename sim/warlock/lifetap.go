@@ -1,6 +1,8 @@
 package warlock
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 )
 
@@ -37,6 +39,10 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    warlock.sharedTimer("LifeTap"),
+				Duration: time.Second * 10, // DBC: 10s cooldown on every rank
 			},
 		},
 
