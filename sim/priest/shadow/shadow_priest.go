@@ -53,6 +53,9 @@ func (spriest *ShadowPriest) GetPriest() *priest.Priest {
 
 func (spriest *ShadowPriest) Initialize() {
 	spriest.Priest.Initialize()
+	if spriest.options.Armor == proto.ShadowPriest_Options_InnerFire {
+		spriest.Priest.ApplyInnerFire()
+	}
 }
 
 func (spriest *ShadowPriest) Reset(sim *core.Simulation) {

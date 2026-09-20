@@ -58,6 +58,9 @@ func (hpriest *HealingPriest) Initialize() {
 	hpriest.CurrentTarget = hpriest.GetMainTarget()
 	hpriest.Priest.Initialize()
 	hpriest.Priest.RegisterHealingSpells()
+	if hpriest.Options.UseInnerFire {
+		hpriest.Priest.ApplyInnerFire()
+	}
 }
 
 func (hpriest *HealingPriest) Reset(sim *core.Simulation) {

@@ -63,12 +63,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
+		// Defensive
+		Stat.StatArmor,
 	],
 	displayPseudoStats: [],
 
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();
-		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitShadow, player.getTalents().shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		const talents = player.getTalents();
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitShadow, talents.shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		// Applied per spell in the sim (sim/priest/talents.go), so they are not in the sim's stat totals.
+		// Spell Focus: +2%/rank spell hit. Force of Will: +1%/rank spell crit.
+		stats = stats.addStat(Stat.StatSpellHit, talents.spellFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		stats = stats.addStat(Stat.StatSpellCrit, talents.forceOfWill * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 
 		return {
 			talents: stats,

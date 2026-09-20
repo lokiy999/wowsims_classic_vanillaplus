@@ -2370,3 +2370,20 @@ which needs new `PlayerStats` proto fields) and the reason for this stopgap are 
 
 Also verified with the helm alone: the served database has 643 armor on item 19372 (Wowhead lists 679); the
 difference is in the item data, not stale caching, and is not changed here.
+
+## Part AR — Priest: Inner Fire and Spirit Tap (2026-09-20)
+
+- **Inner Fire implemented** (`sim/priest/inner_fire.go`). The UI options (Shadow "Armor: Inner Fire", Healing
+  "Use Inner Fire") existed but nothing in the sim read them. It now applies a permanent buff of the highest rank
+  for the character's level (DBC armor 315/495/720/945/1170/1395 at levels 12/20/30/40/50/60, spell ids
+  588/7128/602/1006/10951/10952) with 20 charges, one removed per melee/ranged hit taken. Improved Inner Fire adds
+  10/20/30% (DBC 9/19/29, +1) to both the armor and the charge count. The buff is in the Buffs build phase so
+  it shows in the sidebar. `TestP1Shadow.results` regenerated: only armor changed (896 -> 2291 at level 60).
+- **Spirit Tap** does not proc at all for now. The aura was already never activated by anything; the comment in
+  `sim/priest/talents.go` now says that on purpose, since the real talent procs on kills and the sim has no kill
+  trigger.
+- The Armor row is now in the Shadow and Healing Priest sidebar stat lists (`ui/shadow_priest/sim.ts`,
+  `ui/healing_priest/sim.ts`) so Inner Fire is visible.
+- Shadow Priest sidebar: Spell Focus (+2%/rank Spell Hit) and Force of Will (+1%/rank Spell Crit) are now added
+  in `modifyDisplayStats` in `ui/shadow_priest/sim.ts`. They are per-spell bonuses in the sim, so they were not
+  in the stat totals. `CLAUDE.md` now requires sim changes to be reflected in the sidebar too.

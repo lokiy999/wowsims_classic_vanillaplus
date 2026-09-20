@@ -355,3 +355,12 @@ consumable add:**
   the Base column. Only armor, only the gear phase. Base therefore includes
   gear-Agility armor until the derived column exists; remove the stopgap when
   that lands.
+
+## Priest talents still not implemented (2026-09-20)
+
+Inner Fire and a no-proc Spirit Tap are done (Part AR). Still to do: Blackout, Wand Specialization, Blur, Focused
+Casting, Improved Psychic Scream / Shadow Word: Silence / Shadow Word: Numb, Pilgrimage, Martyrdom, Stratagem,
+Improved Dispel Magic, Insanity, and all healing talents (Spiritual Healing, Improved Healing, Improved Renew,
+Improved Power Word: Shield, Improved Prayer of Healing, Holy Focus, Holy Reach, Holy Nova, Light's Grace, Blessed
+Recovery, Spirit of Redemption, Holy Link), which need the healing spells enabled first. Spirit Tap also needs a
+kill trigger with the 50%/100% per-rank proc chance.

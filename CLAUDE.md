@@ -19,3 +19,11 @@ When you make a nontrivial change, append to `docs/CHANGES.md` (new dated
 `## Part <letter>` section, following the existing format) instead of starting
 a separate file. If something comes up that's worth doing later but isn't part
 of the current task, add it to `docs/TODO.md` rather than letting it drop.
+
+Whenever you add or change something that affects the sim (a talent, buff, item effect,
+stat or spell modifier), make sure the sidebar stats also show it. Check the spec's
+`displayStats` and `modifyDisplayStats` in `ui/<spec>/sim.ts`: effects that are applied
+per spell or per proc (hit, crit, damage modifiers) are not in the sim's stat totals, so
+they need adding to `modifyDisplayStats` by hand. Verify in the browser that the sidebar
+number moves when the talent or buff changes, and note any deliberate exception in
+`docs/TODO.md`.

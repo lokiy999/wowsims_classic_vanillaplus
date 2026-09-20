@@ -174,7 +174,9 @@ func (priest *Priest) applySpiritTap() {
 	}
 
 	// DBC values match (100% Spirit, +50% casting regen, 15s).
-	// TODO: model the 50%/100% on-kill proc chance per rank instead of a flat aura.
+	// The aura is registered but deliberately never activated: the real talent procs on
+	// kills (50%/100% per rank) and the sim has no kill events yet, so it does not proc at all.
+	// TODO: activate it from a kill trigger with the per-rank proc chance.
 
 	spellID := []int32{0, 15270, 15335, 15336, 15337, 15338}[priest.Talents.SpiritTap]
 	statDep := priest.NewDynamicMultiplyStat(stats.Spirit, 2.0)
