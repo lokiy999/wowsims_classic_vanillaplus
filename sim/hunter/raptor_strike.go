@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"time"
 
 	"github.com/wowsims/classic/sim/core"
 )
@@ -43,12 +42,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 			FlatCost: manaCost,
 		},
 
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 6,
-			},
-		},
+		// No cooldown (confirmed in game).
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},

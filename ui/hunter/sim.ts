@@ -4,7 +4,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { PartyBuffs, PseudoStat, Spec, Stat } from '../core/proto/common.js';
+import { ItemSlot, PartyBuffs, PseudoStat, RangedWeaponType, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
@@ -67,6 +67,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatRangedSpeedMultiplier],
+
+	modifyDisplayStats: (player: Player<Spec.SpecHunter>) => {
+		const talents = player.getTalents();
+		// Ranged-only crit (shown in the Melee Crit tooltip): Lethal Shots +1%/rank, and Weapon Expertise +1%/rank with a crossbow.
+		let rangedCrit = talents.lethalShots * 1;
+		if (player.getEquippedItem(ItemSlot.ItemSlotRanged)?.item?.rangedWeaponType === RangedWeaponType.RangedWeaponTypeCrossbow) {
+			rangedCrit += talents.weaponExpertise * 1;
+		}
+		return { rangedCrit };
+	},
 
 	defaults: {
 		race: Presets.OtherDefaults.race,

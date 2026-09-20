@@ -51,6 +51,12 @@ Still open, the calculator confirmed the text but not the mechanics:
 - Reconnaissance is coded 3%/rank all damage; DBC spell 34063 (3%) may be flat at every
   rank. Unchecked.
 - Hunter `.results` files stale.
+- Hunter audit round 2 (CHANGES.md Part AZ) still open: Thrill of the Hunt (proc chance unknown, restores 3 x level mana);
+  Kill Command mana cost (assumed free, check in game); Savage Blow damage (placeholder: one main-hand and one off-hand
+  weapon hit), range and the Hawk/Cheetah/Wild effects; Whirling Axe cooldown, mana cost and range (none set), slow and
+  interrupt not modeled; Aspect of the Beast/Pack stat effects not applied (Monkey is done); Aspect Mastery (later); Hunter's Mark melee AP (+90) not modeled; Team Play, Stalking's kill bonus,
+  Deep Freeze, Vantage Point not modeled; shot damage and mana tables by rank not compared; Lethal Shots and Weapon
+  Expertise crossbow crit are shown in the Melee Crit tooltip only.
 
 ## Raised 2026-09-19 — paladin talents (CHANGES.md Part AL)
 

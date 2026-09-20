@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 19.33082
   final_stats: 0
   final_stats: 0
-  final_stats: 1365.177
+  final_stats: 1310.177
   final_stats: 0
   final_stats: 23.63712
   final_stats: 0
@@ -51,7 +51,7 @@ stat_weights_results: {
  key: "TestShockadin-Phase5-StatWeights-Default"
  value: {
   weights: 0.23175
-  weights: 0.13466
+  weights: 0.13113
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.05685
+  weights: 2.05616
   weights: 0.27086
   weights: 0
   weights: 0
   weights: 0.0916
   weights: 0
-  weights: 2.04054
+  weights: 1.99015
   weights: 0
   weights: 0
   weights: 0
@@ -99,57 +99,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-FieldMarshal'sAegis"
  value: {
-  dps: 532.19347
-  tps: 572.99673
+  dps: 527.43744
+  tps: 568.2407
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-Freethinker'sArmor"
  value: {
-  dps: 431.06208
-  tps: 472.02196
+  dps: 426.47271
+  tps: 467.43258
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-JudgementArmor"
  value: {
-  dps: 529.04406
-  tps: 570.18093
+  dps: 524.21085
+  tps: 565.34772
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-LawbringerArmor"
  value: {
-  dps: 492.68755
-  tps: 533.54718
+  dps: 488.07947
+  tps: 528.9391
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-LieutenantCommander'sRedoubt"
  value: {
-  dps: 495.26647
-  tps: 536.24601
+  dps: 490.65863
+  tps: 531.63817
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-RighteousArmor"
  value: {
-  dps: 452.69267
-  tps: 493.90577
+  dps: 448.12879
+  tps: 489.34189
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 392.5697
-  tps: 433.33783
+  dps: 387.98158
+  tps: 428.7497
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Average-Default"
  value: {
-  dps: 390.73225
-  tps: 431.93468
+  dps: 386.16954
+  tps: 427.37198
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 355.75884
-  tps: 394.51565
+  dps: 351.86007
+  tps: 390.61687
  }
 }

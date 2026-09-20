@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 18.50678
   final_stats: 0
   final_stats: 0
-  final_stats: 1320
+  final_stats: 1265
   final_stats: 0
   final_stats: 30.9019
   final_stats: 0
@@ -99,57 +99,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-CataclysmArmor"
  value: {
-  dps: 309.71248
-  tps: 371.68627
+  dps: 303.60611
+  tps: 365.53412
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
-  dps: 260.97127
-  tps: 323.09025
+  dps: 255.96313
+  tps: 318.08212
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheEarthfury"
  value: {
-  dps: 239.1046
-  tps: 299.25201
+  dps: 234.22035
+  tps: 294.36776
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheFiveThunders"
  value: {
-  dps: 292.88657
-  tps: 353.47922
+  dps: 287.49739
+  tps: 348.09005
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheStonefury"
  value: {
-  dps: 269.04094
-  tps: 332.56142
+  dps: 264.04937
+  tps: 327.56985
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheTenStorms"
  value: {
-  dps: 264.70731
-  tps: 331.0536
+  dps: 259.82306
+  tps: 326.16935
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 274.04744
-  tps: 336.37118
+  dps: 268.90606
+  tps: 331.2298
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Average-Default"
  value: {
-  dps: 226.8825
-  tps: 284.2708
+  dps: 221.99333
+  tps: 279.38163
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 211.63067
-  tps: 271.1163
+  dps: 207.39129
+  tps: 266.87692
  }
 }

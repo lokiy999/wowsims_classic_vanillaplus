@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 19.33082
   final_stats: 0
   final_stats: 0
-  final_stats: 1365.177
+  final_stats: 1310.177
   final_stats: 0
   final_stats: 23.63712
   final_stats: 0
@@ -51,7 +51,7 @@ stat_weights_results: {
  key: "TestProtection-Phase4-StatWeights-Default"
  value: {
   weights: 0.23396
-  weights: 0.1388
+  weights: 0.13526
   weights: 0
   weights: 0.19432
   weights: 0
@@ -69,7 +69,7 @@ stat_weights_results: {
   weights: 0
   weights: 0.09247
   weights: 0
-  weights: 2.01647
+  weights: 1.96559
   weights: 0
   weights: 0
   weights: 0
@@ -99,57 +99,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestProtection-Phase4-AllItems-FieldMarshal'sAegis"
  value: {
-  dps: 463.45926
-  tps: 628.95323
+  dps: 458.65765
+  tps: 622.71114
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-AllItems-Freethinker'sArmor"
  value: {
-  dps: 376.12439
-  tps: 516.41665
+  dps: 371.49333
+  tps: 510.39628
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-AllItems-JudgementArmor"
  value: {
-  dps: 471.53202
-  tps: 640.53977
+  dps: 466.65529
+  tps: 634.20001
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-AllItems-LawbringerArmor"
  value: {
-  dps: 421.82563
-  tps: 574.38122
+  dps: 417.17916
+  tps: 568.34081
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-AllItems-LieutenantCommander'sRedoubt"
  value: {
-  dps: 439.37209
-  tps: 598.63437
+  dps: 434.72562
+  tps: 592.59396
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-AllItems-RighteousArmor"
  value: {
-  dps: 389.86315
-  tps: 534.13631
+  dps: 385.26004
+  tps: 528.15226
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 342.8593
-  tps: 473.16774
+  dps: 338.25619
+  tps: 467.1837
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Average-Default"
  value: {
-  dps: 343.16067
-  tps: 473.82596
+  dps: 338.54933
+  tps: 467.83121
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 307.5484
-  tps: 426.6392
+  dps: 303.61461
+  tps: 421.52528
  }
 }

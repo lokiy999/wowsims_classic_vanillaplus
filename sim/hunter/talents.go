@@ -113,6 +113,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyReconnaissance()
 	hunter.applySavageFlurry()
 	hunter.applyBrutality()
+	hunter.applyAuditTalents()
 }
 
 func (hunter *Hunter) applyReconnaissance() {

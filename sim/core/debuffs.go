@@ -158,7 +158,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(DemoralizingShoutAura(target, 0, GetTristateValueInt32(debuffs.DemoralizingShout, 0, 5)))
 	}
 	if debuffs.HuntersMark != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(HuntersMarkAura(target, GetTristateValueInt32(debuffs.HuntersMark, 0, 5)))
+		MakePermanent(HuntersMarkAura(target, GetTristateValueInt32(debuffs.HuntersMark, 0, 2)))
 	}
 
 	// Atk spd reduction
@@ -794,10 +794,10 @@ func CurseOfWeaknessAura(target *Unit, points int32) *Aura {
 const HuntersMarkAuraTag = "HuntersMark"
 
 func HuntersMarkAura(target *Unit, points int32) *Aura {
-	bonus := 110.0
+	// DBC 14325 (rank 3): +180 ranged attack power (and +90 melee, not modeled). Improved Hunter's Mark adds 20% per rank.
+	bonus := 180.0
 
-	bonus *= 1 + 0.03*float64(points)
-
+	bonus *= 1 + 0.2*float64(points)
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "HuntersMark-" + strconv.Itoa(int(bonus)),
 		Tag:      HuntersMarkAuraTag,

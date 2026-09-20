@@ -92,6 +92,12 @@ type Hunter struct {
 	ImmolationTrap  *core.Spell
 	FreezingTrap    *core.Spell
 	KillCommand     *core.Spell
+	SavageBlow      *core.Spell
+	WhirlingAxe     *core.Spell
+
+	aspectOfTheMonkey *core.Aura
+	aspectOfTheBeast  *core.Aura
+	aspectOfThePack   *core.Aura
 	MultiShot       *core.Spell
 	RapidFire       *core.Spell
 	RaptorStrike    *core.Spell
@@ -124,15 +130,7 @@ func (hunter *Hunter) GetHunter() *Hunter {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if raidBuffs.TrueshotAura && hunter.Talents.TrueshotAura {
-		hunter.AddStat(stats.RangedAttackPower, map[int32]float64{
-			25: 0,
-			40: 50,
-			50: 75,
-			60: 100,
-		}[hunter.Level])
-	}
-
+	// Trueshot Aura is applied by the core raid buff (100 ranged / 50 melee AP); adding it here as well counted it twice.
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
@@ -177,6 +175,11 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerFreezingTrapSpell(traps)
 
 	hunter.registerRapidFire()
+	hunter.registerDeadeye()
+	hunter.applyFindWeakness()
+	hunter.registerKillCommand()
+	hunter.registerSavageBlow()
+	hunter.registerWhirlingAxe()
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {

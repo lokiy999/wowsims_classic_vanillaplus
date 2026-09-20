@@ -1515,8 +1515,9 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, ha
 }
 
 func TrueshotAura(unit *Unit) *Aura {
+	// DBC 20906: +100 ranged attack power, +50 melee attack power.
 	rangedAP := 100.0
-	meleeAP := 100.0
+	meleeAP := 50.0
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Trueshot Aura",

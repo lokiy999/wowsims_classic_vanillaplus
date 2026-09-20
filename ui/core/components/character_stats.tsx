@@ -12,7 +12,8 @@ import { NumberPicker } from './number_picker';
 
 // schoolCrit: extra spell crit % that only applies to one school (e.g. Critical Mass for Fire), shown in the Spell Crit tooltip.
 export type SchoolCritMods = { arcane?: number; fire?: number; frost?: number; holy?: number; nature?: number; shadow?: number };
-export type StatMods = { talents?: Stats; buffs?: Stats; schoolCrit?: SchoolCritMods };
+// rangedCrit: extra crit % that only applies to ranged attacks (e.g. Lethal Shots), shown in the Melee Crit tooltip.
+export type StatMods = { talents?: Stats; buffs?: Stats; schoolCrit?: SchoolCritMods; rangedCrit?: number };
 
 const statGroups = new Map<string, Array<UnitStat>>([
 	['Primary', [UnitStat.fromStat(Stat.StatHealth), UnitStat.fromStat(Stat.StatMana)]],
@@ -375,6 +376,20 @@ export class CharacterStats extends Component {
 								<span>{(offHandItem.item.weaponSpeed / speedStat).toFixed(2)}s</span>
 							</div>
 						)}
+					</div>,
+				);
+			} else if (stat.isStat() && stat.getStat() === Stat.StatMeleeCrit && statMods.rangedCrit !== undefined && !this.shouldShowMeleeCritCap(player)) {
+				const baseCrit = finalStats.getStat(Stat.StatMeleeCrit) / Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE;
+				tooltipContent.appendChild(
+					<div className="ps-2">
+						<div className="character-stats-tooltip-row">
+							<span>Melee</span>
+							<span>{`${baseCrit.toFixed(2)}%`}</span>
+						</div>
+						<div className="character-stats-tooltip-row">
+							<span>Ranged</span>
+							<span>{`${(baseCrit + statMods.rangedCrit).toFixed(2)}%`}</span>
+						</div>
 					</div>,
 				);
 			} else if (stat.isStat() && stat.getStat() === Stat.StatMeleeCrit && this.shouldShowMeleeCritCap(player)) {

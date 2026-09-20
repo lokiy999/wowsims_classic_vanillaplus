@@ -48,7 +48,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 60,
+				Duration: time.Second * 10,
 			},
 		},
 

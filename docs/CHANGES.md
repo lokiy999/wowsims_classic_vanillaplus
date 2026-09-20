@@ -2603,3 +2603,57 @@ Second audit round for the paladin, checked against `CSV's/Spell.csv`.
 - Paladin golden results regenerated.
 - **Righteous Fury** threat now applies to all of the paladin's threat (a threat multiplier on the paladin), not only Holy
   spells (confirmed in game). Protection golden results regenerated.
+
+## Part AZ — Hunter audit (2026-09-20)
+
+Second audit round for the hunter, checked against `CSV's/Spell.csv`.
+
+- **Talent decoding:** new test `sim/hunter/talents_string_test.go` (all 60 talents decode to the right proto field).
+- **Trueshot Aura** (`sim/core/buffs.go`): melee attack power 100 -> 50 (DBC 20906 gives 100 ranged / 50 melee). This is a
+  shared raid buff, so the golden results of every class that uses the full buff set changed.
+- **Hunter's own Trueshot** (`sim/hunter/hunter.go`): `AddRaidBuffs` added +100 ranged AP on top of the core buff, so a
+  hunter with the talent got it twice. Removed the extra add.
+- **Sidebar:** Lethal Shots (+1%/rank crit on shots and ranged autos) is shown in the Melee Crit row
+  (`modifyDisplayStats` in `ui/hunter/sim.ts`), since the hunter's ranged crit is the same stat as melee crit.
+- **Checked, no change:** Aimed Shot / Arcane Shot 6s, Multi-Shot 10s, Mongoose Bite 5s, traps 15s, Rapid Fire 5 min,
+  Snapshot, Efficiency 3%/rank, Mortal Shots 10%/rank, Barrage 10%/rank, Improved Stings 10%/rank, Improved Arcane Shot
+  10%/rank, Improved Aspect of the Hawk chance 10%/rank, Killer Instinct, Brutality, Savage Strikes 3%/rank, Lightning
+  Reflexes 3%/rank, Survivalist, Deflection, Two-Handed Weapon Specialization, Ranged Weapon Specialization 2%/rank,
+  Clever Traps 15%/rank, pet talents (Ferocity 3%, Unleashed Fury 2%, Endurance Training, Bestial Discipline, Savage
+  Flurry 3%), Aspect of the Hawk AP by rank.
+- Golden results regenerated for the classes affected by the Trueshot change.
+- **Volley** cooldown 60s -> 10s. **Rapid Fire** now +30% ranged speed (was 40%) for 20s (was 15s), 3 min cooldown
+  (was 5), minus 1 min per Stalking rank. **Raptor Strike** has no cooldown any more (all confirmed in game).
+- **Melee Specialization** implemented: +30% melee speed, -30% ranged speed, +1.5s shot time on Aimed Shot and Multi-Shot
+  (the speeds show in the sidebar speed rows through the stat totals).
+- **Dual Wield Specialization** implemented: +20/30/40/50% off-hand damage.
+- **Weapon Expertise** implemented per ranged weapon type (`sim/hunter/talents_extra.go`): Bow = 1%/rank chance for an extra
+  arrow (extra ranged attack), Crossbow = +1%/rank ranged crit, Gun = shots ignore 2 armor per level per rank (applied to
+  all attacks, melee included, since armor penetration is a character stat).
+- **Improved Tracking** implemented: +3%/rank damage to Beast, Demon, Dragonkin, Elemental, Giant, Humanoid and Undead
+  targets, assuming the tracking is always on.
+- **Spirit Bond** implemented: the pet gets 6%/rank of the hunter's ranged attack power, melee crit and stamina.
+- **Sidebar:** the Melee Crit tooltip now shows a Melee and a Ranged line. Ranged includes Lethal Shots and, with a
+  crossbow equipped, Weapon Expertise (`rangedCrit` in `StatMods`, `ui/core/components/character_stats.tsx`).
+- Golden results for the hunter regenerated.
+- **Find Weakness** implemented: ranged crits have a 20%/rank chance to give the target +5% crit taken from all attackers for
+  20s (DBC 33584-33589, duration confirmed).
+- **Deadeye** implemented: cooldown spell (2 min), the aura lasts until used, +100% crit on the next Aimed Shot,
+  Multi-Shot or Arcane Shot.
+- **Kill Command** implemented: pet +100% damage for 5s, only usable when the target is at 20% or less health. It has no
+  cooldown or mana cost yet because those are unknown.
+- **Rapid Fire** mana cost removed (0 in game).
+- **Hunter's Mark** debuff (`sim/core/debuffs.go`): +180 ranged attack power (was 110), Improved Hunter's Mark +20%/rank
+  (max 2 ranks, the "Improved" option is now 2 ranks; it was 5 ranks of 3%). The +90 melee attack power is not modeled.
+  Golden results of every spec that uses the debuff changed.
+- **Kill Command** now has a 5s cooldown (5s active, only below 20% health); mana cost assumed free.
+- **Savage Blow** implemented (`sim/hunter/savage_blow.go`): 12% base mana, 6s cooldown, one main-hand and one off-hand
+  weapon hit (placeholder damage). Bonus by active aspect: Beast hits all other enemies too, Monkey lets you use Mongoose
+  Bite (starts the same window as a dodge), Pack takes 10% off all costs for 20s. Hawk, Cheetah and Wild effects do
+  nothing in the sim.
+- **Aspects of the Monkey, Beast and Pack** added as castable spells (only registered when the hunter has Savage Blow), in
+  the same exclusive group as Aspect of the Hawk. Their own stat effects are not applied yet.
+- **Whirling Axe** implemented: 10% of melee attack power as physical damage, always crits, no weapon needed. The 60% slow
+  and the school interrupt are not modeled, and it has no cooldown or mana cost because they are unknown.
+- **Aspect of the Monkey** now gives +5% dodge and +5% melee crit (confirmed in game), plus 1% per rank of Improved Aspect
+  of the Monkey (DBC).

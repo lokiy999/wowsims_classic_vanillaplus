@@ -12,27 +12,26 @@ func (hunter *Hunter) registerRapidFire() {
 	}
 
 	actionID := core.ActionID{SpellID: 3045}
-	cooldown := time.Minute * 5
+	// +30% ranged speed for 20 sec, 3 min cooldown (confirmed in game); Stalking takes 1 min off per rank (DBC).
+	cooldown := time.Minute*3 - time.Minute*time.Duration(hunter.Talents.Stalking)
 
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
 		ActionID: actionID,
-		Duration: time.Second * 15,
+		Duration: time.Second * 20,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, 1.4)
+			aura.Unit.MultiplyRangedSpeed(sim, 1.3)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, 1/1.4)
+			aura.Unit.MultiplyRangedSpeed(sim, 1/1.3)
 		},
 	})
 
 	hunter.RapidFire = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 
-		ManaCost: core.ManaCostOptions{
-			FlatCost: 100,
-		},
+		// No mana cost (confirmed in game).
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
