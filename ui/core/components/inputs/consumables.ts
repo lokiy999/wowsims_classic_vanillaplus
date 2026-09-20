@@ -907,7 +907,17 @@ export const Windfury: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromSpellId(10614),
 	value: WeaponImbue.Windfury,
 	showWhen: player => {
-		return player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid);
+		// Shamans use their own Windfury Weapon.
+		return player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid) && player.getClass() !== Class.ClassShaman;
+	},
+};
+
+// Flametongue Totem (Buff)
+export const FlametongueTotem: ConsumableInputConfig<WeaponImbue> = {
+	actionId: () => ActionId.fromSpellId(16387),
+	value: WeaponImbue.FlametongueTotem,
+	showWhen: player => {
+		return player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid) && player.getClass() !== Class.ClassShaman;
 	},
 };
 
@@ -1130,6 +1140,7 @@ export const WEAPON_IMBUES_MH_CONFIG: ConsumableStatOption<WeaponImbue>[] = [
 	...ROGUE_IMBUES,
 	...SHAMAN_IMBUES(ItemSlot.ItemSlotMainHand),
 	{ config: Windfury, stats: [Stat.StatMeleeHit] },
+	{ config: FlametongueTotem, stats: [Stat.StatSpellPower] },
 	...CONSUMABLES_IMBUES(ItemSlot.ItemSlotMainHand),
 ];
 

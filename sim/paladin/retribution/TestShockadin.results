@@ -13,7 +13,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 77.25
+  final_stats: 83.5
   final_stats: 0
   final_stats: 19.33082
   final_stats: 0
@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Phase5-StatWeights-Default"
  value: {
-  weights: 0.23246
-  weights: 0.13526
+  weights: 0.23261
+  weights: 0.13561
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47561
+  weights: 0.47857
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.03257
-  weights: 0.24902
+  weights: 2.4666
+  weights: 0.26947
   weights: 0
   weights: 0
-  weights: 0.09188
+  weights: 0.09194
   weights: 0
-  weights: 2.06026
+  weights: 2.05153
   weights: 0
   weights: 0
   weights: 0
@@ -99,78 +99,78 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-FieldMarshal'sAegis"
  value: {
-  dps: 531.08444
-  tps: 572.05805
+  dps: 531.72477
+  tps: 572.51328
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-Freethinker'sArmor"
  value: {
-  dps: 430.263
-  tps: 471.67277
+  dps: 433.36576
+  tps: 474.5518
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-JudgementArmor"
  value: {
-  dps: 530.28252
-  tps: 571.92776
+  dps: 531.08791
+  tps: 572.3477
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-LawbringerArmor"
  value: {
-  dps: 494.80968
-  tps: 535.6499
+  dps: 495.23795
+  tps: 536.06808
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-LieutenantCommander'sRedoubt"
  value: {
-  dps: 496.12986
-  tps: 537.48554
+  dps: 495.7552
+  tps: 536.94124
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-RighteousArmor"
  value: {
-  dps: 450.07827
-  tps: 491.25647
+  dps: 453.2005
+  tps: 494.4726
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 391.31449
-  tps: 432.58659
+  dps: 395.65253
+  tps: 436.67141
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Average-Default"
  value: {
-  dps: 390.49045
-  tps: 431.93286
+  dps: 391.92252
+  tps: 433.3119
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Settings-Dwarf-blank-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 357.51607
-  tps: 570.61456
+  dps: 362.60236
+  tps: 576.29086
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Settings-Dwarf-blank-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 89.41953
-  tps: 100.15312
+  dps: 92.2291
+  tps: 102.97253
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Settings-Dwarf-blank-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 174.30365
-  tps: 191.33116
+  dps: 176.52131
+  tps: 193.62257
  }
 }
 dps_results: {
@@ -197,22 +197,22 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-Settings-Human-blank-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 359.20046
-  tps: 572.39729
+  dps: 362.96286
+  tps: 577.24135
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Settings-Human-blank-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 91.21708
-  tps: 101.96542
+  dps: 90.53406
+  tps: 101.27749
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Settings-Human-blank-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 174.64837
-  tps: 191.67587
+  dps: 177.09581
+  tps: 194.22165
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 354.75718
-  tps: 393.93352
+  dps: 357.44446
+  tps: 396.32909
  }
 }

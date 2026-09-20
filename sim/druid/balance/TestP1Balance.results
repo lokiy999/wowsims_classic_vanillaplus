@@ -1,8 +1,8 @@
 character_stats_results: {
  key: "TestP1Balance-Phase1-CharacterStats-Default"
  value: {
-  final_stats: 333.96
-  final_stats: 297.275
+  final_stats: 378.235
+  final_stats: 332.695
   final_stats: 461.725
   final_stats: 218.845
   final_stats: 298.54
@@ -13,26 +13,26 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 92.25
+  final_stats: 98.5
   final_stats: 0
   final_stats: 18.45471
   final_stats: 0
   final_stats: 0
-  final_stats: 1089.902
+  final_stats: 1187.307
   final_stats: 1
-  final_stats: 29.76375
+  final_stats: 31.53475
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 4246.675
   final_stats: 0
   final_stats: 0
-  final_stats: 2271.55
+  final_stats: 2342.39
   final_stats: 138.6
   final_stats: 16
   final_stats: 5.64
   final_stats: 0
-  final_stats: 17.40375
+  final_stats: 19.17475
   final_stats: 5.64
   final_stats: 0
   final_stats: 6857.82563
@@ -99,71 +99,71 @@ stat_weights_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-CenarionArmor"
  value: {
-  dps: 101.9432
-  tps: 108.0202
+  dps: 101.96899
+  tps: 108.04599
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-Champion'sRefuge"
  value: {
-  dps: 127.62052
-  tps: 133.69752
+  dps: 127.65934
+  tps: 133.73634
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-FeralheartRaiment"
  value: {
-  dps: 100.4475
-  tps: 107.73655
+  dps: 100.47329
+  tps: 107.58085
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-FieldMarshal'sSanctuary"
  value: {
-  dps: 129.54883
-  tps: 135.62583
+  dps: 129.57296
+  tps: 135.64996
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-LieutenantCommander'sRefuge"
  value: {
-  dps: 127.62052
-  tps: 133.69752
+  dps: 127.65934
+  tps: 133.73634
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-StormrageRaiment"
  value: {
-  dps: 116.99292
-  tps: 123.06992
+  dps: 117.01577
+  tps: 123.09277
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-TalonclawRegalia"
  value: {
-  dps: 170.13028
-  tps: 176.37937
+  dps: 170.15314
+  tps: 176.40222
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-UrsocArmor"
  value: {
-  dps: 99.23503
-  tps: 105.31203
+  dps: 99.27482
+  tps: 105.35182
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-Warlord'sSanctuary"
  value: {
-  dps: 129.54883
-  tps: 135.62583
+  dps: 129.57296
+  tps: 135.64996
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Average-Default"
  value: {
-  dps: 103.98332
-  tps: 110.10134
+  dps: 104.01341
+  tps: 110.11158
  }
 }
 dps_results: {
@@ -253,7 +253,7 @@ dps_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 102.21372
-  tps: 108.29072
+  dps: 102.24562
+  tps: 108.32262
  }
 }

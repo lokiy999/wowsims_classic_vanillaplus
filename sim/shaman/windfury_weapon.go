@@ -10,7 +10,7 @@ const WindfuryWeaponRanks = 4
 
 var WindfuryWeaponSpellId = [WindfuryWeaponRanks + 1]int32{0, 8232, 8235, 10486, 16362}
 var WindfuryWeaponEnchantId = [WindfuryWeaponRanks + 1]int32{0, 283, 284, 525, 1669}
-var WindfuryWeaponBonusAP = [WindfuryWeaponRanks + 1]float64{0, 104, 119, 249, 333}
+var WindfuryWeaponBonusAP = [WindfuryWeaponRanks + 1]float64{0, 60, 140, 300, 400} // server data
 var WindfuryWeaponLevel = [WindfuryWeaponRanks + 1]int32{0, 30, 40, 50, 60}
 
 var WindfuryWeaponRankByLevel = map[int32]int32{
@@ -47,7 +47,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			mAP := spell.MeleeAttackPower() + bonusAP*ewMultiplier*ewMultiplier
+			mAP := spell.MeleeAttackPower() + bonusAP*ewMultiplier
 			baseDamage := weaponDamageFunc(sim, mAP)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
@@ -73,9 +73,10 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = enchantId
 	}
 
-	var proc = 0.2
+	// 30% chance per hit (confirmed in game), or 1 - 0.7^2 when both weapons are imbued.
+	var proc = 0.3
 	if procMask == core.ProcMaskMelee {
-		proc = 0.36
+		proc = 0.51
 	}
 
 	icd := core.Cooldown{
@@ -87,7 +88,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Windfury Imbue",
-		Duration: core.NeverExpires,
+		Duration: time.Minute * 5, // weapon enchants last 5 minutes
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},

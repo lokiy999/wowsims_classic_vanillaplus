@@ -160,8 +160,10 @@ func (shaman *Shaman) GetCharacter() *core.Character {
 	return &shaman.Character
 }
 
-func (shaman *Shaman) AddRaidBuffs(_ *proto.RaidBuffs) {
-	// Buffs are handled explicitly through APLs now
+func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	// Most buffs are handled explicitly through APLs now. The Windfury Totem effect is not, so pass on the talent.
+	raidBuffs.ImprovedWeaponTotems = max(raidBuffs.ImprovedWeaponTotems, shaman.Talents.ImprovedWeaponTotems)
+	raidBuffs.GuardianTotems = max(raidBuffs.GuardianTotems, shaman.Talents.GuardianTotems)
 }
 
 func (shaman *Shaman) Initialize() {

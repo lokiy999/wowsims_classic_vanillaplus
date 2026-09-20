@@ -40,6 +40,7 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 	buffAura := core.StrengthOfEarthTotemAura(&shaman.Unit, multiplier)
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell.ManaCost.Multiplier -= 25 * shaman.Talents.EnhancingTotems // Enhancing Totems: -25%/50% mana
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -54,6 +55,8 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 const StoneskinTotemRanks = 6
 
 var StoneskinTotemSpellId = [StoneskinTotemRanks + 1]int32{0, 8071, 8154, 8155, 10406, 10407, 10408}
+// Armor by rank (server data).
+var StoneskinTotemArmor = [StoneskinTotemRanks + 1]float64{0, 130, 275, 390, 500, 600, 700}
 var StoneskinTotemManaCost = [StoneskinTotemRanks + 1]float64{0, 30, 60, 90, 115, 160, 210}
 var StoneskinTotemLevel = [StoneskinTotemRanks + 1]int{0, 4, 14, 24, 34, 44, 54}
 
@@ -88,7 +91,7 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell
 
-		core.StoneskinTotemAura(&shaman.Unit, shaman.Talents.GuardianTotems, shaman.TotemEffectivenessBonusMultiplier).Activate(sim)
+		core.StoneskinTotemAura(&shaman.Unit, StoneskinTotemArmor[rank], shaman.Talents.GuardianTotems, shaman.TotemEffectivenessBonusMultiplier).Activate(sim)
 	}
 	return spell
 }

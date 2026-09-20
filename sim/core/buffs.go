@@ -101,7 +101,7 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 		stats.BonusArmor: 735,
 	},
 	GraceOfAir: {
-		stats.Agility: TernaryFloat64(IncludeAQ, 77, 67),
+		stats.Agility: 70, // confirmed in game (Enhancing Totems 2/2 gives 105)
 	},
 	FireResistanceAura: {
 		stats.FireResistance: 60,
@@ -144,7 +144,7 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 		stats.ShadowResistance: 60,
 	},
 	StrengthOfEarth: {
-		stats.Strength: TernaryFloat64(IncludeAQ, 77, 61),
+		stats.Strength: 70, // confirmed in game (Enhancing Totems 2/2 gives 105)
 	},
 	ScrollOfAgility: {
 		stats.Agility: 15,
@@ -260,6 +260,7 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 // Applies buffs that affect individual players.
 func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	character := agent.GetCharacter()
+	character.ImprovedWeaponTotems = raidBuffs.ImprovedWeaponTotems
 	isAlliance := playerFaction == proto.Faction_Alliance
 	isHorde := playerFaction == proto.Faction_Horde
 	bonusResist := float64(0)
@@ -290,7 +291,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	if raidBuffs.NatureResistanceTotem {
 		updateStats := BuffSpellValues[NatureResistanceTotem]
-		updateStats[stats.NatureResistance] = updateStats[stats.NatureResistance] - bonusResist
+		updateStats[stats.NatureResistance] = math.Floor(updateStats[stats.NatureResistance]*(1+.25*float64(raidBuffs.GuardianTotems))) - bonusResist // 60, 90 with Guardian Totems 2/2
 		character.AddStats(updateStats)
 	} else if raidBuffs.AspectOfTheWild {
 		updateStats := BuffSpellValues[AspectOfTheWild]
@@ -304,7 +305,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		character.AddStats(updateStats)
 	} else if raidBuffs.FireResistanceTotem {
 		updateStats := BuffSpellValues[FireResistanceTotem]
-		updateStats[stats.FireResistance] = updateStats[stats.FireResistance] - bonusResist
+		updateStats[stats.FireResistance] = math.Floor(updateStats[stats.FireResistance]*(1+.25*float64(raidBuffs.GuardianTotems))) - bonusResist
 		character.AddStats(updateStats)
 	}
 
@@ -314,7 +315,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		character.AddStats(updateStats)
 	} else if raidBuffs.FrostResistanceTotem {
 		updateStats := BuffSpellValues[FrostResistanceTotem]
-		updateStats[stats.FrostResistance] = updateStats[stats.FrostResistance] - bonusResist
+		updateStats[stats.FrostResistance] = math.Floor(updateStats[stats.FrostResistance]*(1+.25*float64(raidBuffs.GuardianTotems))) - bonusResist
 		character.AddStats(updateStats)
 	}
 
@@ -419,7 +420,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
-		MakePermanent(StoneskinTotemAura(&character.Unit, GetTristateValueInt32(raidBuffs.StoneskinTotem, 0, 2), 0))
+		MakePermanent(StoneskinTotemAura(&character.Unit, StoneskinTotemTopRankArmor, GetTristateValueInt32(raidBuffs.StoneskinTotem, 0, 2), 0))
 	}
 
 	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
@@ -435,12 +436,12 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
-		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.15)
+		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.5) // improved = Enhancing Totems 2/2
 		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, multiplier))
 	}
 
 	if raidBuffs.GraceOfAirTotem > 0 && isHorde {
-		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.15)
+		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.5) // improved = Enhancing Totems 2/2
 		MakePermanent(GraceOfAirTotemAura(&character.Unit, multiplier))
 	}
 
@@ -454,7 +455,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	if raidBuffs.ManaSpringTotem > 0 {
 		updateStats := BuffSpellValues[ManaSpring]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.25)
+			updateStats = updateStats.Multiply(1.5) // Restorative Totems 2/2 (+30% at 1/2)
 		}
 		character.AddStats(updateStats)
 	}
@@ -655,24 +656,26 @@ func DevotionAuraAura(unit *Unit, points int32) *Aura {
 	})
 }
 
-func StoneskinTotemAura(unit *Unit, points int32, bonusMultiplier float64) *Aura {
-	meleeDamageReduction := -30.0
-	meleeDamageReduction *= 1 + .1*float64(points)
-	meleeDamageReduction *= 1 + bonusMultiplier
-	meleeDamageReduction = math.Floor(meleeDamageReduction)
+// Stoneskin Totem gives armor: 130/275/390/500/600/700 by rank (server data), and the Guardian Totems talent adds
+// 25% per rank (2 ranks), so 700 -> 1050 (confirmed in game).
+const StoneskinTotemTopRankArmor = 700.0
+
+func StoneskinTotemAura(unit *Unit, baseArmor float64, points int32, bonusMultiplier float64) *Aura {
+	armor := math.Floor(baseArmor * (1 + .25*float64(points)) * (1 + bonusMultiplier))
 
 	return unit.GetOrRegisterAura(Aura{
-		Label:    "Stoneskin",
-		ActionID: ActionID{SpellID: 10408},
-		Duration: NeverExpires,
+		Label:      "Stoneskin",
+		ActionID:   ActionID{SpellID: 10408},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusDamageTakenAfterModifiers[DefenseTypeMelee] += meleeDamageReduction
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.BonusArmor: armor})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusDamageTakenAfterModifiers[DefenseTypeMelee] += meleeDamageReduction
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.BonusArmor: -armor})
 		},
 	})
 }
@@ -1310,8 +1313,9 @@ func InnervateAura(character *Character, actionTag int32) *Aura {
 var ManaTideTotemActionID = ActionID{SpellID: 16190}
 var ManaTideTotemAuraTag = "ManaTideTotem"
 
-const ManaTideTotemDuration = time.Second * 12
-const ManaTideTotemCD = time.Minute * 5
+// Confirmed in game: 10 minute cooldown, 100 mana per second for 15 seconds (200 mana cost for the shaman).
+const ManaTideTotemDuration = time.Second * 15
+const ManaTideTotemCD = time.Minute * 10
 
 func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
 	if numManaTideTotems == 0 {
@@ -1358,7 +1362,7 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 		}
 	}
 
-	manaPerTick := 290.0
+	manaPerTick := 100.0
 
 	return character.GetOrRegisterAura(Aura{
 		Label:    "ManaTideTotem-" + actionID.String(),
@@ -1367,8 +1371,8 @@ func ManaTideTotemAura(character *Character, actionTag int32) *Aura {
 		Duration: ManaTideTotemDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			StartPeriodicAction(sim, PeriodicActionOptions{
-				Period:   ManaTideTotemDuration / 4,
-				NumTicks: 4,
+				Period:   time.Second,
+				NumTicks: 15,
 				OnAction: func(sim *Simulation) {
 					for i, player := range character.Party.Players {
 						if metrics[i] != nil {
@@ -1658,7 +1662,7 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 				return
 			}
 
-			if icd.IsReady(sim) && sim.RandomFloat(auraLabel) < 0.2 {
+			if icd.IsReady(sim) && sim.RandomFloat(auraLabel) < 0.1 { // 10% chance (confirmed in game)
 				icd.Use(sim)
 				apBuffAura.Activate(sim)
 				// aura is up _before_ the triggering swing lands, so if triggered by an auto attack, the aura fades right after the extra attack lands.
@@ -1684,7 +1688,7 @@ const WindfuryRanks = 3
 
 var (
 	WindfuryBuffSpellId = [WindfuryRanks + 1]int32{0, 8516, 10608, 10610}
-	WindfuryBuffBonusAP = [WindfuryRanks + 1]float64{0, 122, 229, 315}
+	WindfuryBuffBonusAP = [WindfuryRanks + 1]float64{0, 122, 229, 200} // rank 3: 200 AP confirmed in game
 )
 
 func GetWindfuryAP(aura *Aura, rank int32) float64 {
@@ -1696,7 +1700,11 @@ func ApplyWindfury(character *Character) *Aura {
 	spellId := WindfuryBuffSpellId[rank]
 	buffActionID := ActionID{SpellID: spellId}
 
-	return CreateExtraAttackAuraCommon(character, buffActionID, "Windfury", rank, GetWindfuryAP)
+	// Improved Weapon Totems adds +25%/50% to the effect (200 -> 250 / 300 attack power).
+	getAP := func(aura *Aura, rank int32) float64 {
+		return GetWindfuryAP(aura, rank) * (1 + 0.25*float64(character.ImprovedWeaponTotems))
+	}
+	return CreateExtraAttackAuraCommon(character, buffActionID, "Windfury", rank, getAP)
 
 }
 

@@ -8,7 +8,7 @@ import (
 
 // Shared logic for all shocks.
 func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool core.SpellSchool, baseCost float64, shockTimer *core.Timer) core.SpellConfig {
-	cdDuration := time.Second*6 - time.Second*time.Duration(shaman.Talents.Reverberation) // DBC: -1s/rank
+	cdDuration := time.Second*10 - time.Second*time.Duration(shaman.Talents.Reverberation) // DBC: 10s base (every shock rank), Reverberation -1s/rank
 
 	return core.SpellConfig{
 		ActionID:    actionId,

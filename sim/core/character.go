@@ -34,6 +34,9 @@ const CharacterBuildPhaseAll = CharacterBuildPhaseBase | CharacterBuildPhaseGear
 // class logic shares.
 // All players have stats, equipment, auras, etc
 type Character struct {
+	// Ranks of Improved Weapon Totems on the shaman providing Windfury Totem (from the raid buffs), +25%/rank effect.
+	ImprovedWeaponTotems int32
+
 	Unit
 
 	Name  string // Different from Label, needed for returned results.

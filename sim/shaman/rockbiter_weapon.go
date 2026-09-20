@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -10,7 +11,9 @@ import (
 const RockbiterWeaponRanks = 7
 
 var RockbiterWeaponEnchantId = [RockbiterWeaponRanks + 1]int32{0, 29, 6, 1, 503, 1663, 683, 1664}
-var RockbiterWeaponBonusAP = [RockbiterWeaponRanks + 1]float64{0, 50, 79, 118, 138, 319, 490, 653}
+// Server data: Rockbiter Weapon gives Strength and healing, not attack power.
+var RockbiterWeaponBonusStrength = [RockbiterWeaponRanks + 1]float64{0, 15, 0, 40, 60, 110, 200, 280}
+var RockbiterWeaponBonusHealing = [RockbiterWeaponRanks + 1]float64{0, 7, 0, 0, 33, 51, 0, 100} // rank 6 (level 50) unknown
 var RockbiterWeaponBonusTPS = [RockbiterWeaponRanks + 1]float64{0, 6, 10, 16, 27, 41, 55, 72}
 var RockbiterWeaponLevel = [RockbiterWeaponRanks + 1]int32{0, 1, 8, 16, 24, 34, 44, 54}
 
@@ -76,9 +79,12 @@ func (shaman *Shaman) ApplyRockbiterImbueToItem(item *core.Item) {
 	rank := RockbiterWeaponRankByLevel[shaman.Level]
 	enchantId := RockbiterWeaponEnchantId[rank]
 
-	bonusAP := RockbiterWeaponBonusAP[rank] * []float64{1, 1.10, 1.20, 1.30}[shaman.Talents.ElementalWeapons] * (1 + shaman.ElementalWeaponEnchantEffectivenessBonus)
+	effect := []float64{1, 1.10, 1.20, 1.30}[shaman.Talents.ElementalWeapons] * (1 + shaman.ElementalWeaponEnchantEffectivenessBonus)
 
-	newStats := stats.Stats{stats.AttackPower: bonusAP}
+	newStats := stats.Stats{
+		stats.Strength:     math.Floor(RockbiterWeaponBonusStrength[rank] * effect),
+		stats.HealingPower: math.Floor(RockbiterWeaponBonusHealing[rank] * effect),
+	}
 
 	item.Stats = item.Stats.Add(newStats)
 	item.TempEnchant = enchantId

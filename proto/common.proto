@@ -540,6 +540,9 @@ enum WeaponImbue {
 	// Windfury Imbues
 	Windfury = 8;
 
+	// Flametongue Totem buff (main hand)
+	FlametongueTotem = 25;
+
 	// Shaman imbues
 	RockbiterWeapon = 9;
 	FlametongueWeapon = 10;
@@ -663,6 +666,14 @@ message RaidBuffs {
 
 	// The Arcane Intellect variant picked in the UI (a buff from a mage outside the sim).
 	ArcaneIntellectType arcane_intellect_type = 37;
+
+	// Ranks of Improved Weapon Totems on a shaman in the raid: +25%/50% effect of the Windfury Totem buff.
+	// Set by the shaman's AddRaidBuffs, not chosen in the UI.
+	int32 improved_weapon_totems = 38;
+
+	// Ranks of Guardian Totems on a shaman in the raid: +25%/50% to the Fire, Frost and Nature Resistance totems.
+	// Set by the shaman's AddRaidBuffs, not chosen in the UI.
+	int32 guardian_totems = 39;
 }
 
 // Buffs that affect a single party.

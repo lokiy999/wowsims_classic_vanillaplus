@@ -373,3 +373,29 @@ kill trigger with the 50%/100% per-rank proc chance.
 ## Druid spells not in the sim, cooldowns confirmed in game (2026-09-20)
 Nature's Swiftness 5 min (`registerNaturesSwiftnessCD` is commented out in `sim/druid/talents.go`), Tranquility 2 min,
 Bash 1 min, Frenzied Regeneration 5 min (`sim/druid/_frenzied_regeneration.go` is disabled), Rebirth 30 min.
+
+## Shaman totems, still open (2026-09-20)
+- Mana Spring, Healing Stream and Windfury Totem dropped from the APL still use the hard-coded raid buff values
+  (see the TODO comments in `sim/shaman/air_totems.go` and `water_totems.go`).
+- Flametongue Totem is only the top rank (58+, +40 spell damage, 12.17 fire damage per second of weapon speed) and only
+  for non-shaman classes through the weapon imbue option; there is no Flametongue Totem spell for the shaman to cast.
+- Rockbiter Weapon healing at level 50 (rank 6) and the Frostbrand damage of ranks 2 to 4 are not in the server data lookup
+  (only ranks 1 and 5 were found); the sim only uses Frostbrand rank 5.
+- Rockbiter Weapon extra threat: the sim keeps the old per-rank bonus, the real value is unknown.
+- Windfury Weapon keeps a 1.5s internal cooldown between procs: test in game whether that is right.
+- Frostbrand's movement speed slow is not modeled (only the attack speed slow).
+- Weapon enchants last 5 minutes: the Flametongue, Windfury and Frostbrand procs now stop after 5 minutes, but the stats
+  from Flametongue (spell damage) and Rockbiter (Strength, healing) are permanent for the whole fight.
+- Mana Tide Totem is only a party buff (100 mana per second for 15s, 10 min cooldown); a shaman casting it (200 mana) is
+  not modeled (`registerManaTideTotemCD` in `sim/shaman/talents.go` is commented out).
+- Resistance totems get their Guardian Totems bonus (60 -> 90) only from a shaman in the sim; there is no picker in the
+  buff settings for an outside shaman. Same for Improved Weapon Totems.
+- A shaman dropping his own Mana Spring Totem does not use Restorative Totems (the raid buff "Improved" option is +50%).
+
+## Fire totems (2026-09-20)
+The fire totems are in the sim and match the server data at level 60; decide whether anything is missing.
+- Searing Totem rank 6: 40-54 Fire damage per attack, spell coefficient 0.083, 170 mana, lasts 55s.
+- Magma Totem rank 4 (level 56): 75 area Fire damage per pulse, coefficient 0.033, 650 mana.
+- Fire Nova Totem rank 5 (level 52): 413-459 area Fire damage, coefficient 0.143, 520 mana, 15s cooldown.
+- Call of Flame (+10%/rank damage) and Elemental Fury (crit damage) already apply; Improved Fire Totems (Fire Nova delay
+  -1s/-2s, Magma threat -50%/-100%) is not applied.

@@ -11,7 +11,7 @@ const HealingStreamTotemRanks = 5
 
 var HealingStreamTotemSpellId = [HealingStreamTotemRanks + 1]int32{0, 5394, 6375, 6377, 10462, 10463}
 var HealingStreamTotemHealId = [HealingStreamTotemRanks + 1]int32{0, 5672, 6371, 6372, 10460, 10461}
-var HealingStreamTotemBaseHealing = [HealingStreamTotemRanks + 1]float64{0, 6, 8, 10, 12, 14}
+var HealingStreamTotemBaseHealing = [HealingStreamTotemRanks + 1]float64{0, 8, 10, 12, 16, 20} // server data, 20 per tick at rank 5 confirmed in game
 var HealingStreamTotemSpellCoeff = [HealingStreamTotemRanks + 1]float64{0, .022, .022, .022, .022, .022}
 var HealingStreamTotemManaCost = [HealingStreamTotemRanks + 1]float64{0, 40, 50, 60, 70, 80}
 var HealingStreamTotemLevel = [HealingStreamTotemRanks + 1]int{0, 20, 30, 40, 50, 60}
@@ -36,7 +36,7 @@ func (shaman *Shaman) registerHealingStreamTotemSpell() {
 func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfig {
 	spellId := HealingStreamTotemSpellId[rank]
 	healId := HealingStreamTotemHealId[rank]
-	baseHealing := HealingStreamTotemBaseHealing[rank]*shaman.purificationHealingModifier() + shaman.restorativeTotemsModifier()
+	baseHealing := HealingStreamTotemBaseHealing[rank] * (1 + shaman.purificationHealingModifier()) * (1 + shaman.restorativeTotemsModifier()) // Restorative Totems +30/50%, Purification +2%/rank
 	spellCoeff := HealingStreamTotemSpellCoeff[rank]
 	manaCost := HealingStreamTotemManaCost[rank]
 	level := HealingStreamTotemLevel[rank]

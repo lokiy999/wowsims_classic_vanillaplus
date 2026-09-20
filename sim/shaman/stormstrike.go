@@ -32,7 +32,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Second * 20,
+				Duration: time.Second * 8, // DBC: 8s cooldown
 			},
 		},
 

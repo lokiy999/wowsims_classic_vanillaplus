@@ -1,6 +1,7 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumesInputs from '../core/components/inputs/consumables';
 import * as OtherInputs from '../core/components/other_inputs.js';
+import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
@@ -81,6 +82,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatShadowResistance,
 	],
 	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier],
+
+	modifyDisplayStats: (player: Player<Spec.SpecWardenShaman>) => {
+		// Elemental Precision: +5%/rank hit with Fire, Frost and Nature spells, applied per spell in the sim so it is not in
+		// the stat totals.
+		const hit = player.getTalents().elementalPrecision * 5 * SPELL_HIT_RATING_PER_HIT_CHANCE;
+		let stats = new Stats();
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, hit);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFrost, hit);
+		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitNature, hit);
+		return { talents: stats };
+	},
 
 	defaults: {
 		race: Race.RaceTroll,

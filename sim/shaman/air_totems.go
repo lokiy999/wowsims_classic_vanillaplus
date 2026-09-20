@@ -78,6 +78,7 @@ func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
 	})
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell.ManaCost.Multiplier -= 25 * shaman.Talents.ImprovedWeaponTotems // Improved Weapon Totems: -25%/50% mana
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -119,6 +120,7 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 	buffAura := core.GraceOfAirTotemAura(&shaman.Unit, multiplier)
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell.ManaCost.Multiplier -= 25 * shaman.Talents.EnhancingTotems // Enhancing Totems: -25%/50% mana
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

@@ -2484,3 +2484,69 @@ Same checks as the warlock pass:
   No golden files changed.
 - Confirmed but not implemented in the sim (see `docs/TODO.md`): Nature's Swiftness 5 min, Tranquility 2 min, Bash
   1 min, Frenzied Regeneration 5 min, Rebirth 30 min.
+
+## Part AW — Shaman audit round 2 (2026-09-20)
+
+- **Talent string decoding:** new `sim/shaman/talents_string_test.go` checks all 60 talents decode to their proto fields.
+- **Shock cooldown** is now 10s for Earth, Flame and Frost Shock (server data, every rank; it was 6s). Reverberation
+  still takes 1s off per rank, so 5/5 gives 5s (before, 5/5 gave a meaningless 1s).
+- **Stormstrike cooldown** 8s (server data; it was 20s).
+- `TestElemental`, `TestEnhancement` and `TestWardenShaman` goldens regenerated (elemental 371 -> 369, enhancement
+  549 -> 546, warden 338 -> 296).
+- **Sidebar:** Elemental, Enhancement and Warden Shaman add Elemental Precision (+5%/rank hit) to the Fire, Frost and
+  Nature lines of the Spell Hit tooltip (`ui/*_shaman/sim.ts`).
+- Not changed, need confirming: Elemental Mastery and Nature's Swiftness are 3 min in the sim and 0 in the server data;
+  Mana Tide Totem is 10 min in the server data but not implemented.
+- Shock 10s and Stormstrike 8s cooldowns confirmed in game.
+- **Buff totems (values confirmed in game):**
+  - Strength of Earth and Grace of Air are +70 base (were 61 and 67), +105 with Enhancing Totems 2/2 (`x1.25` at 1/2,
+    `x1.5` at 2/2, rounded down). The raid "Improved" option now means 2/2 (`x1.5`, was `x1.15`).
+  - Stoneskin Totem gives armor (`BonusArmor`), not melee damage reduction: 130/275/390/500/600/700 by rank (server
+    data), Guardian Totems +25% per rank so 700 -> 1050. It is now in the Buffs build phase so it shows in the sidebar.
+    `core.StoneskinTotemAura` takes the base armor as a parameter.
+  - Healing Stream: 8/10/12/16/20 healing per 2s by rank (server data, 20 confirmed), Restorative Totems +30/50%.
+    It previously multiplied the base by the Purification modifier alone (0 with no talents, so it healed 0 plus a flat
+    0.3); it is now `base x (1 + Purification) x (1 + Restorative)`.
+  - Windfury Totem (`core.ApplyWindfury`, used by the Windfury imbue option of every non-shaman melee class): 10%
+    chance (was 20%) for 1 extra attack with +200 attack power (was 315).
+  - Mana Spring was confirmed correct as is.
+  All `.results` goldens that use these buffs were regenerated (melee DPS moves both ways: more Strength/Agility, less
+  Windfury).
+- **Talent mana costs and Improved Weapon Totems** (+25%/50% confirmed in game): Enhancing Totems now also lowers the
+  mana cost of Strength of Earth and Grace of Air by 25%/50%, Improved Weapon Totems lowers the Windfury Totem cost by
+  25%/50% and raises the Windfury Totem attack power buff (200 -> 250 / 300). The shaman passes the rank on through the
+  new `RaidBuffs.improved_weapon_totems` (proto field 38, set in `Shaman.AddRaidBuffs`; `Character.ImprovedWeaponTotems`
+  is read in `core.ApplyWindfury`). Not tested with talents (the test builds have none). There is no Flametongue Totem
+  in the sim, so its half of the talent has nothing to apply to. There is also no picker for an outside shaman's
+  Improved Weapon Totems in the buff settings yet.
+- **Flametongue Totem** added as a main-hand weapon imbue option next to the Windfury Totem (proto
+  `WeaponImbue.FlametongueTotem = 25`, `sim/core/flametongue_totem.go`, `ui/core/components/inputs/consumables.ts`, Horde
+  only, not for feral druids). Values from the server data (rank 4) and confirmed in game: +40 spell damage, and each
+  main-hand hit deals `1217 * weapon speed / 100` Fire damage (the tooltip's 15.8 to 48.7 across weapon speeds, 12.17
+  per second of speed). Improved Weapon Totems (+25%/50%) scales both the spell damage and the fire damage. Checked
+  with a hunter test build: spell power +40; not checked in the browser.
+- **Shaman weapon imbues moved to the server data** (talented = Elemental Weapons 3/3, +30%):
+  - Rockbiter gives Strength and healing instead of attack power: 60/110/200/280 Strength at levels 25/40/50/60, 280 -> 364
+    talented, and +100 healing at level 60 (33 and 51 at levels 25 and 40; level 50 is not known).
+  - Windfury Weapon extra attack attack power 60/140/300/400 (was 104/119/249/333), 400 -> 520 talented. Fixed a bug
+    that applied the Elemental Weapons multiplier to it twice.
+  - Flametongue fire damage `(base points + 1) * weapon speed / 100` (24.98 per second at level 60, was 28) and it now gives
+    spell damage: 77 at level 60, 100 with Elemental Weapons 3/3 (confirmed in game), added once however many weapons
+    are imbued.
+  - Frostbrand rank 5 damage 190 (was 187) and it now reduces the threat you generate by 10% (13% with Elemental Weapons
+    3/3, confirmed in game).
+  `TestEnhancement` golden regenerated (567 -> 568).
+- **More totem and weapon enchant values, confirmed in game:**
+  - Improved Mana Spring in the raid buffs is +50% (Restorative Totems 2/2; was +25%).
+  - Fire, Frost and Nature Resistance totems: 60, 90 with Guardian Totems 2/2 (+25%/rank), passed on from a shaman in the
+    raid through the new `RaidBuffs.guardian_totems` (proto field 39).
+  - Mana Tide Totem: 10 min cooldown (was 5), 100 mana per second for 15 seconds (was 290 every 3s for 12s).
+  - Windfury: the shaman's Windfury Weapon has a 30% proc chance (was 20%; 51% with both weapons imbued), the Windfury
+    Totem for every other melee class stays 10%. The Windfury and Flametongue Totem imbue options are hidden for shamans
+    and ignored for them in `sim/core/consumes.go`.
+  - Frostbrand slows the target's attack speed by 20% (26% with Elemental Weapons 3/3), through the shared
+    `AtkSpeedReductionEffect`.
+  - Weapon enchant procs (Windfury, Flametongue, Frostbrand) last 5 minutes.
+  - Flametongue talented: 100 spell damage and 42.2 to 129.9 Fire damage per hit at weapon speeds 1.3 to 4.0
+    (matches the numbers already in the sim). Elemental Mastery and Nature's Swiftness stay at 3 minutes.
+  Goldens regenerated (Enhancement 568 -> 659, the rest within about 1%).

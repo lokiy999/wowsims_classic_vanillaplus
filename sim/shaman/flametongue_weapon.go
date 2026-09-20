@@ -1,14 +1,20 @@
 package shaman
 
 import (
+	"math"
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/stats"
 )
 
 const FlametongueWeaponRanks = 6
 
 var FlametongueWeaponSpellId = [FlametongueWeaponRanks + 1]int32{0, 8024, 8027, 8030, 16339, 16341, 16342}
 var FlametongueWeaponEnchantId = [FlametongueWeaponRanks + 1]int32{0, 5, 4, 3, 523, 1665, 1666}
-var FlametongueWeaponMaxDamage = [FlametongueWeaponRanks + 1]float64{0, 18, 26, 42, 57, 85, 112}
+// Server data: fire damage per hit is (proc base points + 1) * weapon speed / 100, and the imbue also gives spell damage.
+var FlametongueWeaponDamagePerSecond = [FlametongueWeaponRanks + 1]float64{0, 3.26, 4.79, 7.16, 11.44, 18.76, 24.98}
+var FlametongueWeaponSpellPower = [FlametongueWeaponRanks + 1]float64{0, 12, 18, 26, 37, 55, 77}
 
 var FlametongueWeaponRankByLevel = map[int32]int32{
 	25: 2,
@@ -20,9 +26,7 @@ var FlametongueWeaponRankByLevel = map[int32]int32{
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 	rank := FlametongueWeaponRankByLevel[shaman.Level]
 	spellID := FlametongueWeaponSpellId[rank]
-	maxDamage := FlametongueWeaponMaxDamage[rank]
-
-	baseDamage := maxDamage / 4
+	baseDamage := FlametongueWeaponDamagePerSecond[rank]
 	spellCoeff := .1
 
 	return shaman.RegisterSpell(core.SpellConfig{
@@ -74,12 +78,16 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 	rank := FlametongueWeaponRankByLevel[shaman.Level]
 	enchantId := FlametongueWeaponEnchantId[rank]
 
+	// Spell damage from the imbue (77 at rank 6, 100 with Elemental Weapons 3/3), once however many weapons are imbued.
+	effect := []float64{1, 1.10, 1.20, 1.30}[shaman.Talents.ElementalWeapons] * (1 + shaman.ElementalWeaponEnchantEffectivenessBonus)
+	shaman.AddStat(stats.SpellPower, math.Floor(FlametongueWeaponSpellPower[rank]*effect))
+
 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
 	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand())
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Flametongue Imbue",
-		Duration: core.NeverExpires,
+		Duration: time.Minute * 5, // weapon enchants last 5 minutes
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},

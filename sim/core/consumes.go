@@ -181,8 +181,13 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 				weapon.BaseDamageMax += 8
 			}
 		// Windfury
+		case proto.WeaponImbue_FlametongueTotem:
+			if isMh && character.Class != proto.Class_ClassShaman {
+				ApplyFlametongueTotem(character)
+			}
 		case proto.WeaponImbue_Windfury:
-			if !character.PseudoStats.FeralCombatEnabled {
+			// The Windfury Totem buff for everyone but shamans, who use their own Windfury Weapon.
+			if !character.PseudoStats.FeralCombatEnabled && character.Class != proto.Class_ClassShaman {
 				ApplyWindfury(character)
 			}
 		case proto.WeaponImbue_ShadowOil:

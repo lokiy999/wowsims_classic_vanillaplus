@@ -10,18 +10,22 @@ const FrostbrandWeaponRanks = 5
 
 var FrostbrandWeaponSpellId = [FrostbrandWeaponRanks + 1]int32{0, 8033, 8038, 10456, 16355, 16356}
 var FrostbrandWeaponEnchantId = [FrostbrandWeaponRanks + 1]int32{0, 2, 12, 524, 1667, 1668}
-var FrostbrandWeaponBaseDamage = [FrostbrandWeaponRanks + 1]float64{0, 46, 77, 94, 142, 187}
+var FrostbrandWeaponBaseDamage = [FrostbrandWeaponRanks + 1]float64{0, 40, 77, 94, 142, 190} // server data (ranks 1 and 5)
 var FrostbrandWeaponLevel = [FrostbrandWeaponRanks + 1]int32{0, 20, 28, 38, 48, 58}
 
 func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 	rank := int32(5)
 	spellId := FrostbrandWeaponSpellId[rank]
 
-	return target.GetOrRegisterAura(core.Aura{
+	aura := target.GetOrRegisterAura(core.Aura{
 		Label:    "Frostbrand Attack-" + shaman.Label,
 		ActionID: core.ActionID{SpellID: spellId},
 		Duration: time.Second * 8,
 	})
+	// Slows attack speed by 20% (26% with Elemental Weapons 3/3), confirmed in game. Movement speed is not modeled.
+	slow := 0.20 * []float64{1, 1.10, 1.20, 1.30}[shaman.Talents.ElementalWeapons] * (1 + shaman.ElementalWeaponEnchantEffectivenessBonus)
+	core.AtkSpeedReductionEffect(aura, 1/(1-slow))
+	return aura
 }
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
@@ -60,6 +64,9 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = enchantId
 	}
 
+	// Frostbrand reduces the threat you generate by 10% (13% with Elemental Weapons 3/3).
+	shaman.PseudoStats.ThreatMultiplier *= 1 - 0.10*[]float64{1, 1.10, 1.20, 1.30}[shaman.Talents.ElementalWeapons]*(1+shaman.ElementalWeaponEnchantEffectivenessBonus)
+
 	ppmm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
 
 	mhSpell := shaman.newFrostbrandImbueSpell()
@@ -69,7 +76,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Frostbrand Imbue",
-		Duration: core.NeverExpires,
+		Duration: time.Minute * 5, // weapon enchants last 5 minutes
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
