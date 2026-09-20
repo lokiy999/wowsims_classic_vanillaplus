@@ -198,7 +198,7 @@ touch item stats/inclusion/phases broadly, not just a handful of items.
 `go test ./sim/...` fails the same ~15 packages (`warrior/tank_warrior`,
 `druid/balance`, `druid/feral`, `hunter`, `mage`, `paladin/protection`,
 `paladin/retribution`, `priest/shadow`, `rogue/dps_rogue`, `shaman/elemental`,
-`shaman/enhancement`, `shaman/warden`, `warlock/dps`, `warrior/dps_warrior`) on
+`shaman/enhancement`, `shaman/tank`, `warlock/dps`, `warrior/dps_warrior`) on
 a clean `HEAD` checkout with no changes at all — confirmed by stashing
 everything from the Part AE session and re-running; identical failure list both
 times. Committed `.results` files are stale relative to current item/racial/etc

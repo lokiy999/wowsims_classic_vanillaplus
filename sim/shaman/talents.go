@@ -446,7 +446,7 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 	return aura
 }
 
-// With the Warden T1 2pc it's possible to have 2 different Flurry auras if using less than 5/5 points in Flurry.
+// With the Tank T1 2pc it's possible to have 2 different Flurry auras if using less than 5/5 points in Flurry.
 // The two different buffs don't stack whatsoever. Instead the stronger aura takes precedence and each one is only refreshed by the corresponding triggers.
 func (shaman *Shaman) makeFlurryConsumptionTrigger(flurryAura *core.Aura) *core.Aura {
 	icd := core.Cooldown{

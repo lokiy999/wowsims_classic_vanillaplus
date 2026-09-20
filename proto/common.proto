@@ -12,7 +12,7 @@ enum Spec {
 	SpecElementalShaman = 1;
 	SpecEnhancementShaman = 9;
 	SpecRestorationShaman = 19;
-	SpecWardenShaman = 21;
+	SpecTankShaman = 21;
 	SpecHunter = 8;
 	SpecMage = 2;
 	SpecHolyPaladin = 20;

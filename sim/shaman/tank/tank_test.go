@@ -1,4 +1,4 @@
-package warden
+package tank
 
 import (
 	"testing"
@@ -8,10 +8,10 @@ import (
 )
 
 func init() {
-	RegisterWardenShaman()
+	RegisterTankShaman()
 }
 
-func TestWardenShaman(t *testing.T) {
+func TestTankShaman(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassShaman,
@@ -20,8 +20,8 @@ func TestWardenShaman(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
 			Talents:     DefaultTalents,
-			GearSet:     core.GetGearSet("../../../ui/warden_shaman/gear_sets", "blank"),
-			Rotation:    core.GetAplRotation("../../../ui/warden_shaman/apls", "default"),
+			GearSet:     core.GetGearSet("../../../ui/tank_shaman/gear_sets", "blank"),
+			Rotation:    core.GetAplRotation("../../../ui/tank_shaman/apls", "default"),
 			Buffs:       core.FullBuffs,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsBasic},
@@ -33,9 +33,9 @@ func TestWardenShaman(t *testing.T) {
 	}))
 }
 
-var PlayerOptionsBasic = &proto.Player_WardenShaman{
-	WardenShaman: &proto.WardenShaman{
-		Options: &proto.WardenShaman_Options{},
+var PlayerOptionsBasic = &proto.Player_TankShaman{
+	TankShaman: &proto.TankShaman{
+		Options: &proto.TankShaman_Options{},
 	},
 }
 

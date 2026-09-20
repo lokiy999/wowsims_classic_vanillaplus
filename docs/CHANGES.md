@@ -268,7 +268,7 @@ Go wasn't installed in the session; installed via `winget install GoLang.Go`
 `go test ./sim/...` both clean; promoted the 18 `.results.tmp` files that
 came out different from the committed baseline (druid balance/feral, hunter,
 mage, paladin protection/retribution×3, priest shadow, rogue×2, shaman
-elemental/enhancement/warden, warlock×2, warrior dps/tank) — expected, since
+elemental/enhancement/tank, warlock×2, warrior dps/tank) — expected, since
 ilvl/item/enchant changes shift every spec's sim numbers. A second full test
 run confirmed the freshly-promoted baselines are stable (no further diff).
 
@@ -1890,7 +1890,7 @@ Changed all three `} else if raidBuffs.ScrollOfX { ... }` in `applyBuffEffects` 
 
 ### `ui/core/components/inputs/buffs_debuffs.ts` — un-pack scrolls from the raid buff cells
 
-`StaminaBuff`/`IntellectBuff`/`SpiritBuff` used to be `InputHelpers.makeMultiIconInput({ values: [mainBuff, scroll] })` — two icons sharing one Raid Buffs grid cell. Reduced each back to just the single main-buff picker (`withLabel(makeTristateRaidBuffInput(...))` / `withLabel(makeBooleanRaidBuffInput(...))`), and added three new standalone exports (`ScrollOfStamina`, `ScrollOfIntellect`, `ScrollOfSpirit`) for use elsewhere. Existing `includeBuffDebuffInputs` references to `BuffDebuffInputs.StaminaBuff`/`IntellectBuff`/`SpiritBuff` in `ui/hunter/sim.ts`, `ui/feral_druid/sim.ts`, `ui/enhancement_shaman/sim.ts`, `ui/shadow_priest/sim.ts`, `ui/warden_shaman/sim.ts` needed no changes since those export names and their meaning (just the main buff now) were kept stable.
+`StaminaBuff`/`IntellectBuff`/`SpiritBuff` used to be `InputHelpers.makeMultiIconInput({ values: [mainBuff, scroll] })` — two icons sharing one Raid Buffs grid cell. Reduced each back to just the single main-buff picker (`withLabel(makeTristateRaidBuffInput(...))` / `withLabel(makeBooleanRaidBuffInput(...))`), and added three new standalone exports (`ScrollOfStamina`, `ScrollOfIntellect`, `ScrollOfSpirit`) for use elsewhere. Existing `includeBuffDebuffInputs` references to `BuffDebuffInputs.StaminaBuff`/`IntellectBuff`/`SpiritBuff` in `ui/hunter/sim.ts`, `ui/feral_druid/sim.ts`, `ui/enhancement_shaman/sim.ts`, `ui/shadow_priest/sim.ts`, `ui/tank_shaman/sim.ts` needed no changes since those export names and their meaning (just the main buff now) were kept stable.
 
 **Caught by a console error, not by eye:** `RAID_BUFFS_CONFIG`'s entries for these three still said `picker: MultiIconPicker`, which crashed (`Cannot read properties of undefined (reading 'map')` inside `new MultiIconPicker`, since the config no longer has a `.values` array) as soon as the Raid Buffs section tried to render — silently breaking the *entire* Raid Buffs grid, not just these three cells. Fixed by changing those three entries to `picker: IconPicker` to match the now-single-icon config shape.
 
@@ -2035,7 +2035,7 @@ These are fully custom private-server items (not on Wowhead), so `ActionId.fromI
 
 ### Pre-existing test staleness found, explicitly not touched
 
-`go test ./sim/...` fails the same ~15 packages (`warrior/tank_warrior`, `druid/balance`, `druid/feral`, `hunter`, `mage`, `paladin/protection`, `paladin/retribution`, `priest/shadow`, `rogue/dps_rogue`, `shaman/elemental`, `shaman/enhancement`, `shaman/warden`, `warlock/dps`, `warrior/dps_warrior`) both with and without this change (verified by stashing everything and re-testing a clean `HEAD` checkout — identical failure list, byte-for-byte, both times). Pre-existing, unrelated to this work — left untouched rather than mass-regenerating `.results` files as a side effect of an unrelated task. Flagged in `docs/TODO.md`.
+`go test ./sim/...` fails the same ~15 packages (`warrior/tank_warrior`, `druid/balance`, `druid/feral`, `hunter`, `mage`, `paladin/protection`, `paladin/retribution`, `priest/shadow`, `rogue/dps_rogue`, `shaman/elemental`, `shaman/enhancement`, `shaman/tank`, `warlock/dps`, `warrior/dps_warrior`) both with and without this change (verified by stashing everything and re-testing a clean `HEAD` checkout — identical failure list, byte-for-byte, both times). Pre-existing, unrelated to this work — left untouched rather than mass-regenerating `.results` files as a side effect of an unrelated task. Flagged in `docs/TODO.md`.
 
 ### Verification
 
@@ -2491,9 +2491,9 @@ Same checks as the warlock pass:
 - **Shock cooldown** is now 10s for Earth, Flame and Frost Shock (server data, every rank; it was 6s). Reverberation
   still takes 1s off per rank, so 5/5 gives 5s (before, 5/5 gave a meaningless 1s).
 - **Stormstrike cooldown** 8s (server data; it was 20s).
-- `TestElemental`, `TestEnhancement` and `TestWardenShaman` goldens regenerated (elemental 371 -> 369, enhancement
-  549 -> 546, warden 338 -> 296).
-- **Sidebar:** Elemental, Enhancement and Warden Shaman add Elemental Precision (+5%/rank hit) to the Fire, Frost and
+- `TestElemental`, `TestEnhancement` and `TestTankShaman` goldens regenerated (elemental 371 -> 369, enhancement
+  549 -> 546, tank 338 -> 296).
+- **Sidebar:** Elemental, Enhancement and Tank Shaman add Elemental Precision (+5%/rank hit) to the Fire, Frost and
   Nature lines of the Spell Hit tooltip (`ui/*_shaman/sim.ts`).
 - Not changed, need confirming: Elemental Mastery and Nature's Swiftness are 3 min in the sim and 0 in the server data;
   Mana Tide Totem is 10 min in the server data but not implemented.
@@ -2550,3 +2550,20 @@ Same checks as the warlock pass:
   - Flametongue talented: 100 spell damage and 42.2 to 129.9 Fire damage per hit at weapon speeds 1.3 to 4.0
     (matches the numbers already in the sim). Elemental Mastery and Nature's Swiftness stay at 3 minutes.
   Goldens regenerated (Enhancement 568 -> 659, the rest within about 1%).
+
+## Part AX — Warden Shaman renamed to Tank Shaman (2026-09-20)
+
+- The page is now `/classic/tank_shaman/` (it was the old "warden" link), and the title and labels say "Tank Shaman" / "Tank".
+- Renamed everywhere in the code: the `ui/` and `ui/scss/sims/` folders, `sim/shaman/tank` (package `tank`,
+  `TestTankShaman`), the background image `assets/img/tank_shaman_background.png`, the proto message `TankShaman`,
+  `Spec.SpecTankShaman`, the `makefile` entry and the browser storage key `__classic_tank_shaman`. The old names in
+  earlier entries of this file were changed to match.
+- **Consequence:** settings and gear sets saved in the browser under the old storage key are not loaded on the new page,
+  and saved JSON that says `wardenShaman` no longer imports.
+- Not renamed: item names in the item database (the "Warden's..." items) and the WarcraftLogs importer's `DruidWarden`
+  entry in `ui/raid/components/importers/raid_wcl_importer.tsx`, which is WarcraftLogs' own name for the tank druid spec and
+  has to match their data to import those logs.
+- After pulling this, the dev server has to be restarted (its list of pages is read from the `makefile` at start), and
+  `make proto` is needed for the generated files.
+- The dev server's `tsc` check also caught two type errors in the Windfury/Flametongue Totem imbue options
+  (`getClass` after the `isSpec` guard); fixed by checking the class first.

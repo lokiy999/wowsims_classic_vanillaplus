@@ -52,7 +52,7 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 		phase: Phase.Phase1,
 		status: LaunchStatus.Unlaunched,
 	},
-	[Spec.SpecWardenShaman]: {
+	[Spec.SpecTankShaman]: {
 		phase: Phase.Phase1,
 		status: LaunchStatus.Launched,
 	},

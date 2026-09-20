@@ -1,0 +1,4 @@
+// Set color variables which control the site theme.
+.tank-shaman-sim-ui {
+	@include theme-color($shaman, 0.95, '/classic/assets/img/tank_shaman_background.png');
+}

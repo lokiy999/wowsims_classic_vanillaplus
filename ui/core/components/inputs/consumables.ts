@@ -908,7 +908,7 @@ export const Windfury: ConsumableInputConfig<WeaponImbue> = {
 	value: WeaponImbue.Windfury,
 	showWhen: player => {
 		// Shamans use their own Windfury Weapon.
-		return player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid) && player.getClass() !== Class.ClassShaman;
+		return player.getClass() !== Class.ClassShaman && player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid);
 	},
 };
 
@@ -917,7 +917,7 @@ export const FlametongueTotem: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromSpellId(16387),
 	value: WeaponImbue.FlametongueTotem,
 	showWhen: player => {
-		return player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid) && player.getClass() !== Class.ClassShaman;
+		return player.getClass() !== Class.ClassShaman && player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid);
 	},
 };
 

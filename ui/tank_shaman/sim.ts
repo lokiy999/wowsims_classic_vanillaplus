@@ -12,8 +12,8 @@ import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 // import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
-const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
-	cssClass: 'warden-shaman-sim-ui',
+const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankShaman, {
+	cssClass: 'tank-shaman-sim-ui',
 	cssScheme: 'shaman',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
@@ -83,7 +83,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 	],
 	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier],
 
-	modifyDisplayStats: (player: Player<Spec.SpecWardenShaman>) => {
+	modifyDisplayStats: (player: Player<Spec.SpecTankShaman>) => {
 		// Elemental Precision: +5%/rank hit with Fire, Frost and Nature spells, applied per spell in the sim so it is not in
 		// the stat totals.
 		const hit = player.getTalents().elementalPrecision * 5 * SPELL_HIT_RATING_PER_HIT_CHANCE;
@@ -230,8 +230,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 	],
 });
 
-export class WardenShamanSimUI extends IndividualSimUI<Spec.SpecWardenShaman> {
-	constructor(parentElem: HTMLElement, player: Player<Spec.SpecWardenShaman>) {
+export class TankShamanSimUI extends IndividualSimUI<Spec.SpecTankShaman> {
+	constructor(parentElem: HTMLElement, player: Player<Spec.SpecTankShaman>) {
 		super(parentElem, player, SPEC_CONFIG);
 	}
 }
