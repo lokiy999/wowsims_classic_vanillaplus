@@ -2440,7 +2440,9 @@ difference is in the item data, not stale caching, and is not changed here.
 
 `ui/core/individual_sim_ui.ts` has a switch, `START_WITH_EMPTY_PRESETS` (currently `true`), applied in
 `registerSpecConfig` for every spec:
-- the gear, talent and build preset lists are empty (no preset buttons, no "Pre-BiS" etc.);
+- the gear and talent preset lists contain only an "Empty" preset each (no "Pre-BiS" etc.), and the Saved Settings
+  panel gets an "Empty" settings preset (all buffs, debuffs and consumables off; race, professions and misc options
+  keep their values; `ui/core/components/individual_sim_ui/settings_tab.ts`), so any class can be reset in one click;
 - the defaults are blank gear, no talents, and every raid, party and individual buff, debuff and consumable off.
 Rotations are kept (a spec with no rotation has nothing to cast), and specs' own options, race, professions, EP
 weights and encounter settings are unchanged. Sets people saved in their browser are untouched, and pages that

@@ -1,6 +1,6 @@
 import * as Tooltips from '../../constants/tooltips';
 import { Encounter } from '../../encounter';
-import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
+import { IndividualSimUI, InputSection, START_WITH_EMPTY_PRESETS } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import { Consumes, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs, Spec } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
@@ -398,6 +398,24 @@ export class SettingsTab extends SimTab {
 		this.simUI.sim.waitForInit().then(() => {
 			savedEncounterManager.loadUserData();
 			savedSettingsManager.loadUserData();
+
+			if (START_WITH_EMPTY_PRESETS) {
+				const player = this.simUI.player;
+				// Every buff, debuff and consumable off. Race, professions and the misc options keep their current values.
+				savedSettingsManager.addSavedData({
+					name: 'Empty',
+					tooltip: 'All buffs, debuffs and consumables off, for testing.',
+					isPreset: true,
+					data: SavedSettings.create({
+						race: player.getRace(),
+						professions: player.getProfessions(),
+						reactionTimeMs: player.getReactionTime(),
+						channelClipDelayMs: player.getChannelClipDelay(),
+						inFrontOfTarget: player.getInFrontOfTarget(),
+						distanceFromTarget: player.getDistanceFromTarget(),
+					}),
+				});
+			}
 		});
 	}
 

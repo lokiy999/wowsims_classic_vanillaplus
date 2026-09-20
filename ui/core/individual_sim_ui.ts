@@ -21,7 +21,7 @@ import { SimSettingCategories } from './constants/sim_settings';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
-import { PresetBuild, PresetGear, PresetRotation } from './preset_utils';
+import { makePresetGear, makePresetTalents, PresetBuild, PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -148,15 +148,16 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	raidSimPresets: Array<RaidSimPreset<SpecType>>;
 }
 
-// Testing switch: when true every spec starts empty. The gear and talent preset lists are hidden, and the defaults
-// are blank gear, no talents, and every buff, debuff and consumable off. Rotations are kept, since a spec with no
+// Testing switch: when true every spec starts empty. The only gear and talent presets are an "Empty" one each (plus an
+// "Empty" settings preset, see settings_tab.ts), and the defaults are blank gear, no talents, and every buff, debuff
+// and consumable off. Rotations are kept, since a spec with no
 // rotation has nothing to cast. Settings people saved in their browser are not touched. The preset files
 // themselves stay in place because the Go tests read the same gear sets and rotations.
 export const START_WITH_EMPTY_PRESETS = true;
 
 function applyEmptyPresets<SpecType extends Spec>(config: IndividualSimUIConfig<SpecType>) {
-	config.presets.gear = [];
-	config.presets.talents = [];
+	config.presets.gear = [makePresetGear('Empty', {}, { tooltip: 'No gear, for testing.' })];
+	config.presets.talents = [makePresetTalents('Empty', SavedTalents.create({ talentsString: '' }))];
 	if (config.presets.builds) config.presets.builds = [];
 
 	config.defaults.gear = EquipmentSpec.create({});
