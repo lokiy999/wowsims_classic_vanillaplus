@@ -85,8 +85,10 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 	return paladin
 }
 
-func (paladin *Paladin) AddRaidBuffs(_ *proto.RaidBuffs) {
-	// Buffs are handled explicitly through APLs now
+func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	// Improved Sanctity Aura (3/5%) and Improved Defensive Auras (25/50%) improve the paladin's auras for the raid.
+	raidBuffs.SanctityAuraBonus = max(raidBuffs.SanctityAuraBonus, []int32{0, 3, 5}[paladin.Talents.ImprovedSanctityAura])
+	raidBuffs.ResistanceAuraBonus = max(raidBuffs.ResistanceAuraBonus, []int32{0, 25, 50}[paladin.Talents.ImprovedDefensiveAuras])
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
@@ -187,7 +189,7 @@ func (paladin *Paladin) registerStopAttackMacros() {
 func (paladin *Paladin) ResetCurrentPaladinAura() {
 	paladin.currentPaladinAura = nil
 	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
-		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter(), []int32{0, 3, 5}[paladin.Talents.ImprovedSanctityAura])
 	}
 }
 

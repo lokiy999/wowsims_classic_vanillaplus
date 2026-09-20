@@ -674,6 +674,18 @@ message RaidBuffs {
 	// Ranks of Guardian Totems on a shaman in the raid: +25%/50% to the Fire, Frost and Nature Resistance totems.
 	// Set by the shaman's AddRaidBuffs, not chosen in the UI.
 	int32 guardian_totems = 39;
+
+	// Improved Sanctity Aura (+5% at 2/2, on top of the 10% base) picked in the UI for a paladin outside the sim.
+	bool improved_sanctity_aura = 40;
+
+	// Improved Defensive Auras (+50% at 2/2) on the Fire, Frost and Shadow Resistance Auras, picked in the UI for a
+	// paladin outside the sim.
+	bool improved_defensive_auras = 41;
+
+	// Percentage bonuses from a paladin in the raid (Improved Sanctity Aura 3/5, Improved Defensive Auras 25/50).
+	// Set by the paladin's AddRaidBuffs, not chosen in the UI.
+	int32 sanctity_aura_bonus = 42;
+	int32 resistance_aura_bonus = 43;
 }
 
 // Buffs that affect a single party.

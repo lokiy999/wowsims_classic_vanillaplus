@@ -13,12 +13,12 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 199
-  final_stats: 90.5
+  final_stats: 94.1
   final_stats: 1
-  final_stats: 22.48168
+  final_stats: 19.48168
   final_stats: 0
   final_stats: 0
-  final_stats: 546.975
+  final_stats: 839.685
   final_stats: 0
   final_stats: 26.95425
   final_stats: 0
@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.53767
+  weights: 0.32726
   weights: 0
-  weights: 0.4749
-  weights: 0
-  weights: 0
+  weights: 0.27208
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.83243
-  weights: 1.65958
+  weights: 0
+  weights: 0
+  weights: 6.38483
+  weights: 1.47083
   weights: 0
   weights: 0
   weights: 0
@@ -99,133 +99,133 @@ stat_weights_results: {
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-Champion'sDreadgear"
  value: {
-  dps: 655.32278
-  tps: 551.4738
+  dps: 779.17518
+  tps: 658.41126
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-DeathmistRaiment"
  value: {
-  dps: 661.37079
-  tps: 556.67193
+  dps: 781.9666
+  tps: 660.29115
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-Demoniac'sThreads"
  value: {
-  dps: 658.86292
-  tps: 556.25259
+  dps: 785.67863
+  tps: 665.949
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-FelheartRaiment"
  value: {
-  dps: 724.36952
-  tps: 614.89136
+  dps: 850.13626
+  tps: 723.92758
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-FieldMarshal'sThreads"
  value: {
-  dps: 674.90662
-  tps: 570.69138
+  dps: 805.80547
+  tps: 685.20477
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-Hazza'rah'sCharmofDestruction-19957"
  value: {
-  dps: 652.24195
-  tps: 548.93185
+  dps: 768.949
+  tps: 648.53284
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 574.40278
-  tps: 469.59587
+  dps: 682.25652
+  tps: 560.1008
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-LieutenantCommander'sDreadgear"
  value: {
-  dps: 655.32278
-  tps: 551.4738
+  dps: 779.17518
+  tps: 658.41126
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-NemesisRaiment"
  value: {
-  dps: 701.38362
-  tps: 555.3426
+  dps: 829.67023
+  tps: 667.78733
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-TheBlackBook-19337"
  value: {
-  dps: 666.21452
-  tps: 547.9723
+  dps: 784.37426
+  tps: 647.10293
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-AllItems-Warlord'sThreads"
  value: {
-  dps: 674.90662
-  tps: 570.69138
+  dps: 805.80547
+  tps: 685.20477
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Average-Default"
  value: {
-  dps: 655.24716
-  tps: 550.56548
+  dps: 775.50283
+  tps: 654.84716
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-FullBuffs-Consumes-LongMultiTarget"
  value: {
-  dps: 654.49391
-  tps: 1271.61907
+  dps: 770.74075
+  tps: 1483.98698
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-FullBuffs-Consumes-LongSingleTarget"
  value: {
-  dps: 654.49391
-  tps: 551.18381
+  dps: 770.74075
+  tps: 650.32459
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-FullBuffs-Consumes-ShortSingleTarget"
  value: {
-  dps: 673.00912
-  tps: 563.50168
+  dps: 788.92243
+  tps: 653.84703
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-NoBuffs-Consumes-LongMultiTarget"
  value: {
-  dps: 313.69085
-  tps: 1098.41373
+  dps: 351.74091
+  tps: 1164.89105
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-NoBuffs-Consumes-LongSingleTarget"
  value: {
-  dps: 313.69085
-  tps: 302.04105
+  dps: 351.74091
+  tps: 341.97917
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-NoBuffs-Consumes-ShortSingleTarget"
  value: {
-  dps: 346.08941
-  tps: 325.6546
+  dps: 393.03855
+  tps: 378.56368
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 654.49391
-  tps: 551.18381
+  dps: 770.74075
+  tps: 650.32459
  }
 }

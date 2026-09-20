@@ -1,4 +1,4 @@
-import { ArcaneIntellectType, BlessingOfKingsType, Class, Faction, SaygesFortune, Stat, TristateEffect } from '../../proto/common';
+import { ArcaneIntellectType, BlessingOfKingsType, Class, SaygesFortune, Stat, TristateEffect } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { IconEnumPicker } from '../icon_enum_picker';
 import {
@@ -84,7 +84,6 @@ export const ArmorBuff = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(10293),
 		impId: ActionId.fromSpellId(20142),
-		showWhen: player => player.getFaction() === Faction.Alliance,
 		fieldName: 'devotionAura',
 	}),
 	'Devotion Aura',
@@ -94,7 +93,6 @@ export const PhysDamReductionBuff = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(10408),
 		impId: ActionId.fromSpellId(16293),
-		showWhen: player => player.getFaction() === Faction.Horde,
 		fieldName: 'stoneskinTotem',
 	}),
 	'Stoneskin',
@@ -133,7 +131,6 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(10601),
 			fieldName: 'natureResistanceTotem',
-			showWhen: player => player.getFaction() === Faction.Horde,
 		}),
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(20190),
@@ -143,23 +140,19 @@ export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(19900),
 			fieldName: 'fireResistanceAura',
-			showWhen: player => player.getFaction() === Faction.Alliance,
 		}),
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(10538),
 			fieldName: 'fireResistanceTotem',
-			showWhen: player => player.getFaction() === Faction.Horde,
 		}),
 		// Frost
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(19898),
 			fieldName: 'frostResistanceAura',
-			showWhen: player => player.getFaction() === Faction.Alliance,
 		}),
 		makeBooleanRaidBuffInput({
 			actionId: () => ActionId.fromSpellId(10479),
 			fieldName: 'frostResistanceTotem',
-			showWhen: player => player.getFaction() === Faction.Horde,
 		}),
 	],
 	label: 'Resistances',
@@ -194,7 +187,6 @@ export const BlessingOfMight = withLabel(
 		actionId: () => ActionId.fromSpellId(25291),
 		impId: ActionId.fromSpellId(20048),
 		fieldName: 'blessingOfMight',
-		showWhen: player => player.getFaction() === Faction.Alliance,
 	}),
 	'Blessing of Might',
 );
@@ -204,7 +196,6 @@ export const StrengthBuffHorde = withLabel(
 		actionId: () => ActionId.fromSpellId(25361),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'strengthOfEarthTotem',
-		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	'Strength',
 );
@@ -214,7 +205,6 @@ export const GraceOfAir = withLabel(
 		actionId: () => ActionId.fromSpellId(25359),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'graceOfAirTotem',
-		showWhen: player => player.getFaction() === Faction.Horde,
 	}),
 	'Agility',
 );
@@ -354,13 +344,21 @@ export const RetributionAura = makeTristateRaidBuffInput({
 	actionId: () => ActionId.fromSpellId(10301),
 	impId: ActionId.fromSpellId(20092),
 	fieldName: 'retributionAura',
-	showWhen: player => player.getFaction() === Faction.Alliance,
 });
 
 export const SanctityAura = makeBooleanRaidBuffInput({
 	actionId: () => ActionId.fromSpellId(20218),
 	fieldName: 'sanctityAura',
-	showWhen: player => player.getFaction() === Faction.Alliance,
+});
+
+export const ImprovedSanctityAura = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(33489),
+	fieldName: 'improvedSanctityAura',
+});
+
+export const ImprovedDefensiveAuras = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(20138),
+	fieldName: 'improvedDefensiveAuras',
 });
 
 export const Thorns = makeTristateRaidBuffInput({
@@ -610,7 +608,6 @@ export const JudgementOfWisdom = withLabel(
 	makeBooleanDebuffInput({
 		actionId: () => ActionId.fromSpellId(20355),
 		fieldName: 'judgementOfWisdom',
-		showWhen: player => player.getFaction() === Faction.Alliance,
 	}),
 	'Judgement of Wisdom',
 );
@@ -619,7 +616,6 @@ export const JudgementOfTheCrusader = withLabel(
 		actionId: () => ActionId.fromSpellId(20303),
 		impId: ActionId.fromSpellId(20337),
 		fieldName: 'judgementOfTheCrusader',
-		showWhen: player => player.getFaction() === Faction.Alliance,
 	}),
 	'Judgement of the Crusader',
 );
@@ -628,7 +624,6 @@ export const JudgementOfTheCrusader = withLabel(
 export const JudgementOfLight = makeBooleanDebuffInput({
 	actionId: () => ActionId.fromSpellId(20346),
 	fieldName: 'judgementOfLight',
-	showWhen: player => player.getFaction() === Faction.Alliance,
 });
 export const GiftOfArthas = makeBooleanDebuffInput({
 	actionId: () => ActionId.fromSpellId(11374),
@@ -764,6 +759,16 @@ export const MISC_BUFFS_CONFIG = [
 		config: SanctityAura,
 		picker: IconPicker,
 		stats: [Stat.StatHolyPower],
+	},
+	{
+		config: ImprovedSanctityAura,
+		picker: IconPicker,
+		stats: [Stat.StatHolyPower],
+	},
+	{
+		config: ImprovedDefensiveAuras,
+		picker: IconPicker,
+		stats: [Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatShadowResistance],
 	},
 	{
 		config: Innervate,

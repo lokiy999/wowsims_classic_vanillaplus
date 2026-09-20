@@ -17,9 +17,7 @@ const (
 	BattleShout
 	BlessingOfMight
 	BlessingOfWisdom
-	HornOfLordaeron
 	BloodPact
-	CommandingShout
 	DevotionAura
 	DivineSpirit
 	GraceOfAir
@@ -87,18 +85,11 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 	BlessingOfWisdom: {
 		stats.MP5: TernaryFloat64(IncludeAQ, 33, 30),
 	},
-	HornOfLordaeron: {
-		stats.Strength: TernaryFloat64(IncludeAQ, 89, 70.15),
-		stats.Agility:  TernaryFloat64(IncludeAQ, 89, 70.15),
-	},
 	BloodPact: {
 		stats.Stamina: 42,
 	},
-	CommandingShout: {
-		stats.Stamina: 42,
-	},
 	DevotionAura: {
-		stats.BonusArmor: 735,
+		stats.BonusArmor: 700, // confirmed in game; Improved Devotion Aura is +25% per point (1050 at 2/2)
 	},
 	GraceOfAir: {
 		stats.Agility: 70, // confirmed in game (Enhancing Totems 2/2 gives 105)
@@ -299,9 +290,12 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		character.AddStats(updateStats)
 	}
 
+	// Improved Defensive Auras (+25%/50%): 60 -> 90 at 2/2, from a paladin in the raid or the UI toggle.
+	resistAuraMult := 1 + 0.01*float64(max(raidBuffs.ResistanceAuraBonus, TernaryInt32(raidBuffs.ImprovedDefensiveAuras, 50, 0)))
+
 	if raidBuffs.FireResistanceAura {
 		updateStats := BuffSpellValues[FireResistanceAura]
-		updateStats[stats.FireResistance] = updateStats[stats.FireResistance] - bonusResist
+		updateStats[stats.FireResistance] = math.Floor(updateStats[stats.FireResistance]*resistAuraMult) - bonusResist
 		character.AddStats(updateStats)
 	} else if raidBuffs.FireResistanceTotem {
 		updateStats := BuffSpellValues[FireResistanceTotem]
@@ -311,7 +305,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	if raidBuffs.FrostResistanceAura {
 		updateStats := BuffSpellValues[FrostResistanceAura]
-		updateStats[stats.FrostResistance] = updateStats[stats.FrostResistance] - bonusResist
+		updateStats[stats.FrostResistance] = math.Floor(updateStats[stats.FrostResistance]*resistAuraMult) - bonusResist
 		character.AddStats(updateStats)
 	} else if raidBuffs.FrostResistanceTotem {
 		updateStats := BuffSpellValues[FrostResistanceTotem]
@@ -324,7 +318,11 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.MoonkinAura {
-		character.AddStat(stats.SpellCrit, 3*SpellCritRatingPerCritChance)
+		// Confirmed in game: +5% to all spell damage and healing, multiplicative with other damage modifiers.
+		for school := stats.SchoolIndexArcane; school < stats.SchoolLen; school++ {
+			character.PseudoStats.SchoolDamageDealtMultiplier[school] *= 1.05
+		}
+		character.PseudoStats.HealingDealtMultiplier *= 1.05
 	}
 
 	if raidBuffs.LeaderOfThePack {
@@ -373,7 +371,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	if raidBuffs.ShadowResistanceAura {
 		updateStats := BuffSpellValues[ShadowResistanceAura]
-		updateStats[stats.ShadowResistance] = updateStats[stats.ShadowResistance] - bonusResist
+		updateStats[stats.ShadowResistance] = math.Floor(updateStats[stats.ShadowResistance]*resistAuraMult) - bonusResist
 		character.AddStats(updateStats)
 	} else if raidBuffs.ShadowProtection {
 		updateStats := BuffSpellValues[ShadowProtection]
@@ -404,8 +402,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		MakePermanent(BlessingOfKingsAura(character, individualBuffs.BlessingOfKingsType))
 	}
 
-	if raidBuffs.SanctityAura && isAlliance {
-		MakePermanent(SanctityAuraAura(character))
+	if raidBuffs.SanctityAura {
+		MakePermanent(SanctityAuraAura(character, max(raidBuffs.SanctityAuraBonus, TernaryInt32(raidBuffs.ImprovedSanctityAura, 5, 0))))
 	}
 
 	// TODO: Classic
@@ -415,15 +413,15 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		}
 	*/
 
-	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
+	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(DevotionAuraAura(&character.Unit, GetTristateValueInt32(raidBuffs.DevotionAura, 0, 2)))
 	}
 
-	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
+	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(StoneskinTotemAura(&character.Unit, StoneskinTotemTopRankArmor, GetTristateValueInt32(raidBuffs.StoneskinTotem, 0, 2), 0))
 	}
 
-	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
+	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing {
 		RetributionAura(character, GetTristateValueInt32(raidBuffs.RetributionAura, 0, 2))
 	}
 
@@ -431,16 +429,16 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0, false)) // Do we implement 3pc wrath for the other sims?
 	}
 
-	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
+	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5)))
 	}
 
-	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
+	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing {
 		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.5) // improved = Enhancing Totems 2/2
 		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, multiplier))
 	}
 
-	if raidBuffs.GraceOfAirTotem > 0 && isHorde {
+	if raidBuffs.GraceOfAirTotem > 0 {
 		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.5) // improved = Enhancing Totems 2/2
 		MakePermanent(GraceOfAirTotemAura(&character.Unit, multiplier))
 	}
@@ -537,7 +535,9 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	applyBuffEffects(petAgent, playerFaction, raidBuffs, partyBuffs, individualBuffs)
 }
 
-func SanctityAuraAura(character *Character) *Aura {
+// Sanctity Aura: +10% Holy damage, plus the Improved Sanctity Aura bonus in percentage points (3 or 5).
+func SanctityAuraAura(character *Character, bonusPct int32) *Aura {
+	multiplier := 1.1 + 0.01*float64(bonusPct)
 	return character.GetOrRegisterAura(Aura{
 		Label:    "Sanctity Aura",
 		ActionID: ActionID{SpellID: 20218},
@@ -546,10 +546,10 @@ func SanctityAuraAura(character *Character) *Aura {
 			aura.Activate(sim)
 		},
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= multiplier
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= multiplier
 		},
 	})
 }
@@ -641,7 +641,7 @@ func ApplyInspiration(character *Character, uptime float64) {
 
 func DevotionAuraAura(unit *Unit, points int32) *Aura {
 	updateStats := BuffSpellValues[DevotionAura]
-	updateStats = updateStats.Multiply(1 + .125*float64(points))
+	updateStats = updateStats.Multiply(1 + .25*float64(points))
 
 	return unit.RegisterAura(Aura{
 		Label:    "Devotion Aura",

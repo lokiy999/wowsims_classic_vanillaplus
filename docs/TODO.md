@@ -29,9 +29,6 @@ Still open, the calculator confirmed the text but not the mechanics:
   (0.25s/rank); Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute rage-to-damage ratio (sim 15).
 - Para Bellum applies to every warrior spell with a cooldown and a spell code; verify it
   does not wrongly shorten stance-change or shared-cooldown timers.
-- Warrior `.results` files stale.
-- **Whole-pass note:** all nine classes now have stale `.results` (see the 2026-09-18 item
-  above); regenerating them is a separate review-sized task.
 
 ## Raised 2026-09-19 — rogue talents (CHANGES.md Part AN)
 
@@ -52,7 +49,6 @@ Still open, the calculator confirmed the text but not the mechanics:
   Improved Tracking, Deep Freeze, Savage Blow, Whirling Axe, most pet utility talents.
 - Reconnaissance is coded 3%/rank all damage; DBC spell 34063 (3%) may be flat at every
   rank. Unchecked.
-- Hunter `.results` files stale.
 - Hunter audit round 2 (CHANGES.md Part AZ) still open: Thrill of the Hunt (proc chance unknown, restores 3 x level mana);
   Kill Command mana cost (assumed free, check in game); Savage Blow damage (placeholder: one main-hand and one off-hand
   weapon hit), range and the Hawk/Cheetah/Wild effects; Whirling Axe cooldown, mana cost and range (none set), slow and
@@ -80,9 +76,7 @@ Still open, the calculator confirmed the text but not the mechanics:
   Shield, Primal Endurance, Guardian Totems (partly in core), Rockhide, Improved Fire Totems,
   Improved Ghost Wolf, Blood Lust, Elemental Mastery values unchecked, all healing talents
   (Healing Way, Purification damage part, Tidal Mastery speed part), Nature Grace/Guardian.
-- Healing Stream Totem base healing formula in `water_totems.go` (`base*purification + restorative`)
-  looks wrong (adds instead of multiplies); left alone.
-- Shaman `.results` files stale.
+- ~~Healing Stream Totem base healing formula~~ fixed 2026-09-20 (CHANGES.md Part AW).
 
 ## Raised 2026-09-19 — druid talents (CHANGES.md Part AJ)
 
@@ -94,7 +88,6 @@ Still open, the calculator confirmed the text but not the mechanics:
   (custom DBC values look malformed), Primal Fury, Survival Instincts, Leader of the Pack
   crit value (DBC 3%), Furor values, all healing talents (Improved Rejuvenation/Regrowth,
   Gift of Nature healing part, Tranquil Spirit), Swiftbloom, Naturalist.
-- Druid `.results` files stale.
 
 ## Raised 2026-09-19 — mage talents (CHANGES.md Part AI)
 
@@ -103,20 +96,17 @@ Still open, the calculator confirmed the text but not the mechanics:
   spell 34266), Advanced Ice Shielding, Frost Warding/Fire Warding, Practical talents,
   Brilliance Aura, Magic Absorption mana-on-resist, Arcane Intellect +%/rank from Mind Mastery.
 - Hot Streak/Pyromania untested in a fire rotation (default mage APL is not fire).
-- Mage `.results` files stale.
 
 ## Raised 2026-09-19 — warlock talents (CHANGES.md Part AH)
 
 - Not modeled: Defiler (-20% tick time/duration/GCD), Prolonged Misery (+2/4/6s dot
   duration, not a multiple of the 3s tick), Jinx, Improved Drain Soul (DBC: Drain
-  Soul cooldown -5/-10s + mana/health on kill; code wrongly uses it as a Curse of Doom
-  threat reduction in `curses.go`), Inevitable Doom, Herald of Woe, Sadism, Feeding
+  Soul cooldown -5/-10s + mana/health on kill; the cooldown and the wrong Curse of Doom use were fixed 2026-09-20), Inevitable Doom, Herald of Woe, Sadism, Feeding
   Demons, Fel Pact, Demonic Onslaught, Improved Immolate (2 stacks; current 5% bonus
   is a guess), Pyroclasm/Mayhem/Shock and Awe, Demonic Embrace regen, Soul Link
   damage split (redirect is 20% per DBC; code uses a flat multiplier).
 - Master Demonologist Felhunter resist and Voidwalker values were assumed to scale
   3/rank and 2/rank from rank-1 DBC only; ranks 2-5 of the sub-spells not checked.
-- Warlock `.results` files stale (see the existing stale-results item above).
 
 ## Raised 2026-09-19 — priest talents (CHANGES.md Part AG)
 
@@ -136,53 +126,12 @@ Still open, the calculator confirmed the text but not the mechanics:
 
 Going through `sim/core/buffs.go` buff-by-buff with the user. Agreed so far:
 
-- **Devotion Aura is wrong in the sim.** Code uses base 735 and +12.5%/talent
-  point (max ×1.25). Should be base **700**, Improved Devotion Aura **+25%/point,
-  2 points (max ×1.50 → 1050)**. Libram of Truth adds a flat **+55 to the base
-  before the talent multiplier**: (700+55)×1.5 = 1132.5. Make the Libram a
-  toggle like the other tristates (default / enhanced / enhanced+ — i.e. none,
-  talents, talents+Libram; exact UI wording to be settled). Touches
-  `BuffSpellValues[DevotionAura]` and `DevotionAuraAura` in `sim/core/buffs.go`,
-  plus the raid-buff picker in `ui/core/components/inputs/buffs_debuffs.ts`
-  (proto change likely needed for a third state).
-- **Commanding Shout is SoD-only — remove it** (`CommandingShout` in
-  `BuffSpellValues` and its raid-buff toggle/proto field).
-- **Horn of Lordaeron — remove** (user asked to drop it from the list).
-- `IncludeAQ` in `sim/core/config.go` is `false`, but the user's server has the
-  AQ spell books — flip it (or make it phase-driven) so Battle Shout / Blessing
-  of Might / Grace of Air / Strength of Earth use the AQ rank values.
-- **Resistance totems/auras get an Improved state:** Fire/Frost/Nature
-  Resistance Totem and Fire/Frost/Shadow Resistance Aura are 60 base, +50% from
-  talents → **90**. Currently only a plain 60 in `BuffSpellValues` with boolean
-  toggles (no tristate), so needs a proto/UI change to a tristate. Keep the
-  existing subtraction of Gift of the Wild's resist (`bonusResist`) working
-  against the 90 value.
-- **Sanctity Aura is not Alliance-only on this server** — Horde can get it too.
-  `sim/core/buffs.go` gates it with `raidBuffs.SanctityAura && isAlliance`;
-  drop the faction check (and any UI-side faction hiding in
-  `ui/core/components/inputs/buffs_debuffs.ts`). **Confirmed by user: both
-  factions can use all faction-gated buffs** — so also drop `isAlliance` /
-  `isHorde` gating on Devotion Aura, Retribution Aura, Blessing of Might,
-  Stoneskin Totem, Strength of Earth Totem, Grace of Air Totem.
-- **Sanctity Aura gets an Improved state:** base +10% Holy damage, talents +5%
-  → **15%**. Currently hardcoded ×1.1 with a boolean toggle in
-  `SanctityAuraAura`; needs a tristate (proto/UI) and 1.15 for improved.
-- **Trueshot Aura is wrong:** code gives +100 AP and +100 RAP; should be
-  **+50 melee AP and +100 RAP** (`TrueshotAura` in `sim/core/buffs.go`,
-  `meleeAP := 100.0` → 50).
-- **Moonkin Aura is wrong:** code gives +3% spell crit; should be **+5% to all
-  spell damage and healing** (a damage/healing multiplier, not crit). Fix in
-  the `raidBuffs.MoonkinAura` block of `sim/core/buffs.go` (currently
-  `SpellCrit` 3×`SpellCritRatingPerCritChance`) — need to add a spell damage +
-  healing done multiplier (×1.05) instead. Confirmed by user: stacks
-  multiplicatively with other damage multipliers and applies to the Moonkin
-  druid's own spells too.
-- **Arcane Intellect is wrong and needs Improved states:** code has a flat
-  +31 Int with a boolean toggle. Should be **30 base**, talents **+100%** (→60),
-  ZG set **+25% more**. User believes the full-improved total is **67**
-  (additive, 67.5 floored) — **ask again at the end of the list**; user will
-  verify in-game (alternative if multiplicative: 75). Needs a proto/UI change from boolean to
-  multi-state (none / talents / talents+ZG set, etc.).
+- **Done 2026-09-20 (CHANGES.md Part BC):** Devotion Aura 700 and +25%/point, Commanding Shout and Horn of Lordaeron removed,
+  `IncludeAQ` on, faction gating dropped, Moonkin Aura +5% spell damage and healing, Trueshot Aura 50 melee AP.
+- **Still open from this list:** Libram of Truth (+55 to the Devotion Aura base before the talent multiplier,
+  (700+55) x 1.5 = 1132.5) as a toggle; needs the UI wording. Resistance totems for an outside shaman still have no picker
+  (Guardian Totems from a shaman in the sim works). Sanctity Aura and the resistance auras were done (CHANGES.md Part BC).
+- ~~Arcane Intellect~~ done 2026-09-20 (30/37/60/67 picker, CHANGES.md Part AS).
 - **When the buff list is finished, consolidate all of the above into one
   to-do** (user's request) — not done yet.
 - ~~Fix while here: improved Gift of the Wild armor is 384 (285×1.35 floored).~~ Done 2026-09-19: Improved MotW is 20%/rank (x1.6, armor 456), see CHANGES.md Part AP.
@@ -203,20 +152,9 @@ just the 6 new items instead). If you want the DB brought current with your
 latest server dump, that's a distinct, reviewable piece of work — expect it to
 touch item stats/inclusion/phases broadly, not just a handful of items.
 
-## Raised 2026-09-18 — pre-existing `go test ./sim/...` failures, unrelated to this session
+## Raised 2026-09-18 — pre-existing `go test ./sim/...` failures: RESOLVED 2026-09-20
 
-`go test ./sim/...` fails the same ~15 packages (`warrior/tank_warrior`,
-`druid/balance`, `druid/feral`, `hunter`, `mage`, `paladin/protection`,
-`paladin/retribution`, `priest/shadow`, `rogue/dps_rogue`, `shaman/elemental`,
-`shaman/enhancement`, `shaman/tank`, `warlock/dps`, `warrior/dps_warrior`) on
-a clean `HEAD` checkout with no changes at all — confirmed by stashing
-everything from the Part AE session and re-running; identical failure list both
-times. Committed `.results` files are stale relative to current item/racial/etc
-data (same situation flagged before, e.g. Part R's "committed sim/*/*.results
-are STALE" note). Not touched here since regenerating dozens of `.results`
-files is a separate, reviewable piece of work, not a side effect of adding 6
-scrolls. Run `make test && make update-tests` (or the equivalent manual
-`go test` + promote-`.results.tmp` steps) when you're ready to take that on.
+All `.results` files were regenerated during the second audit round; `go test ./sim/...` passes with and without `--tags=with_db`.
 
 ## Raised 2026-09-17 — consumables that exist on the server but aren't in the sim at all
 

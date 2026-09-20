@@ -2722,3 +2722,23 @@ Second audit round for the warrior, checked against `CSV's/Spell.csv`. Work in p
 - **Two-Handed Weapon Specialization** also raises Rend and Deep Wounds damage by 5%/rank with a two-hander (DBC second effect).
 - **Constitution:** +Strength, Agility and Spirit equal to 1% of maximum health, applied when the fight starts (not shown in
   the sidebar, health is not a base stat).
+
+## Part BC — Buff audit items that were agreed but not built (2026-09-20)
+
+From the buff audit list in `docs/TODO.md`, the items the user had already confirmed:
+
+- **Devotion Aura** base armor 700 (was 735) and Improved Devotion Aura +25% per point (was 12.5%), so 1050 at 2/2.
+- **Commanding Shout** and **Horn of Lordaeron** removed from `BuffSpellValues` in `sim/core/buffs.go` (they had no toggle).
+- **AQ spell books:** `IncludeAQ` in `sim/core/config.go` is now `true`, so Battle Shout, Blessing of Might, Blessing of Wisdom
+  and the other ranks that depend on it use the AQ values.
+- **Faction gating removed:** Sanctity Aura, Devotion Aura, Retribution Aura, Blessing of Might, Stoneskin Totem, Strength
+  of Earth and Grace of Air apply for both factions in the sim, and `ui/core/components/inputs/buffs_debuffs.ts` no longer
+  hides any buff, resistance aura/totem or judgement by faction.
+- **Moonkin Aura** is now +5% to all spell damage and healing (multiplicative), not +3% spell crit.
+- Golden results regenerated for every class that uses the full buff set.
+- **Improved Sanctity Aura and Improved Defensive Auras:** Sanctity Aura is now +10% Holy damage plus 3% or 5% from Improved
+  Sanctity Aura, and the Fire, Frost and Shadow Resistance Auras get +25%/50% from Improved Defensive Auras (60 -> 90). A
+  paladin in the sim provides them from its talents (`AddRaidBuffs`), and there are two new toggles in the buff settings
+  (Improved Sanctity Aura, Improved Defensive Auras) for a paladin outside the sim. New `RaidBuffs` proto fields 40-43
+  (`improved_sanctity_aura`, `improved_defensive_auras`, `sanctity_aura_bonus`, `resistance_aura_bonus`): run `make proto`
+  after pulling.
