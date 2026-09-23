@@ -23,7 +23,6 @@ listed at the end of this overview so the older sections don't need rewriting.
 - Consumables the user chose to skip (Part P): still absent if ever wanted.
 
 **Needs data from the game**
-- Crushing blows: does avoidance push them off the table on the server, like classic? (asked 2026-09-23)
 - Trinkets: Arcanite Dragonling and Cannonball Runner (pet damage), Six Demon Bag (effects); Orb of Chaotic Elements
   heal amount is assumed equal to its damage.
 - Talent and set values marked "confirm in game" in the class sections.
