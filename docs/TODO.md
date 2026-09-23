@@ -478,3 +478,9 @@ Still open: the custom items that need a cooldown from the game (list above), Ar
 (summons, no pet data), Six Demon Bag (random effects), Grace of Earth and Two-Faced Medallion use effects.
 Other things now possible with `addFlatDamageReduction`: Memory of Hyjal's "reduces all damage received by up to 14"
 (item 81015) and absorb shields such as the Protection potions.
+
+## Trinkets, status after CHANGES.md Part BM (2026-09-23)
+
+All custom-item cooldowns are in (from in-game tooltips). Still open: Arcanite Dragonling and Cannonball Runner
+(summons, no pet data), Six Demon Bag (random effects), Grace of Earth and Two-Faced Medallion use effects, Banner of
+Challenge (taunt). The Orb of Chaotic Elements heal is assumed to equal the damage dealt.

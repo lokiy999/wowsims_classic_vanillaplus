@@ -106,8 +106,8 @@ dps_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-Confessor'sRaiment"
  value: {
-  dps: 269.77385
-  tps: 281.05319
+  dps: 269.41963
+  tps: 280.68422
  }
 }
 dps_results: {

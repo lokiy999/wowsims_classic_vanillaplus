@@ -9,7 +9,7 @@ import (
 
 // Trinkets whose effect had no code (see docs/TODO.md, 2026-09-23). Effect text is the
 // private server's (VPlusItemDB.lua); cooldowns are the classic ones from Wowhead because
-// the server data has none.
+// the server data has none. Custom items and the ZG charms use the cooldowns from the in-game tooltips.
 const (
 	ChainedEssenceOfEranikus         = 10455
 	SmokeysLighter                   = 13171
@@ -44,6 +44,15 @@ const (
 	UthersStrength                   = 11302
 	ForceOfWill                      = 11810
 	ReactiveAutoRecaster             = 26223
+	HibernationCrystal               = 20636
+	IronbarkTeaLeaf                  = 26070
+	OrbOfChaoticElements             = 26229
+	MarkOfBestialFury                = 26312
+	ScarletBattleOrders              = 26323
+	TheFinalGaze                     = 26328
+	DarkIronBookmark                 = 80011
+	EverlastingLiver                 = 81041
+	BloodScarredScale                = 83075
 	TwoFacedMedallion                = 26353
 	OnyxEgg                          = 83003
 	BlueMottledEgg                   = 83006
@@ -288,7 +297,7 @@ func init() {
 	//                                 Use effects
 	///////////////////////////////////////////////////////////////////////////
 
-	// Gri'lek's Charm of Valor: Use: Increases the critical hit chance of Holy spells and physical attacks by 10% for 30 sec. (3 Min Cooldown)
+	// Gri'lek's Charm of Valor: Use: Increases the critical hit chance of Holy spells and physical attacks by 10% for 30 sec. (2 Min Cooldown)
 	core.NewItemEffect(GrileksCharmOfValor, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		aura := character.RegisterAura(core.Aura{
@@ -304,10 +313,10 @@ func init() {
 				character.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] -= 10 * core.SpellCritRatingPerCritChance
 			},
 		})
-		registerOnUseAura(character, GrileksCharmOfValor, aura, time.Minute*3, core.CooldownTypeDPS)
+		registerOnUseAura(character, GrileksCharmOfValor, aura, time.Minute*2, core.CooldownTypeDPS)
 	})
 
-	// Wushoolay's Charm of Nature: Use: Increases damage done and healing of your Nature spells by 20% for 15 sec. (3 Min Cooldown)
+	// Wushoolay's Charm of Nature: Use: Increases damage done and healing of your Nature spells by 20% for 15 sec. (2 Min Cooldown)
 	core.NewItemEffect(WushoolaysCharmOfNature, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		aura := character.RegisterAura(core.Aura{
@@ -321,10 +330,10 @@ func init() {
 				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.2
 			},
 		})
-		registerOnUseAura(character, WushoolaysCharmOfNature, aura, time.Minute*3, core.CooldownTypeDPS)
+		registerOnUseAura(character, WushoolaysCharmOfNature, aura, time.Minute*2, core.CooldownTypeDPS)
 	})
 
-	// Hazza'rah's Charm of Healing: Use: Increases the Priest's casting speed by 40% for 15 sec. (3 Min Cooldown)
+	// Hazza'rah's Charm of Healing: Use: Increases the Priest's casting speed by 40% for 15 sec. (2 Min Cooldown)
 	core.NewItemEffect(HazzarahsCharmOfHealing, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		aura := character.RegisterAura(core.Aura{
@@ -332,7 +341,7 @@ func init() {
 			Label:    "Hazza'rah's Charm of Healing",
 			Duration: time.Second * 15,
 		}).AttachMultiplyCastSpeed(&character.Unit, 1.4)
-		registerOnUseAura(character, HazzarahsCharmOfHealing, aura, time.Minute*3, core.CooldownTypeDPS)
+		registerOnUseAura(character, HazzarahsCharmOfHealing, aura, time.Minute*2, core.CooldownTypeDPS)
 	})
 
 	// Mar'li's Eye: Use: Restores 60 mana every 5 sec for 30 sec. (3 Min Cooldown)
@@ -622,6 +631,143 @@ func init() {
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
+	})
+
+	// Mark of Bestial Fury: Use: Increases melee and ranged attack power by 200 and increases damage done by magical
+	// spells and effects by up to 120 for 30 sec. CD: 2.0 min (Bestial Fury, 36225)
+	core.NewSimpleStatOffensiveTrinketEffect(MarkOfBestialFury, stats.Stats{stats.AttackPower: 200, stats.RangedAttackPower: 200, stats.SpellDamage: 120}, time.Second*30, time.Minute*2)
+
+	// Blood Scarred Scale: Use: Increases damage and healing done by magical spells and effects by up to 25 and all
+	// resistances by 17 for 30 sec. CD: 2.0 min. (Its Equip mp5 is in the item stats; the 5 health per 5 sec has no stat.)
+	bloodScarredScale := resistances(17)
+	bloodScarredScale[stats.SpellPower] = 25
+	core.NewSimpleStatOffensiveTrinketEffect(BloodScarredScale, bloodScarredScale, time.Second*30, time.Minute*2)
+
+	// Hibernation Crystal: Use: Increases healing done by magical spells and effects by up to 350 for 15 sec. CD: 1.5 min
+	core.NewSimpleStatOffensiveTrinketEffect(HibernationCrystal, stats.Stats{stats.HealingPower: 350}, time.Second*15, time.Second*90)
+
+	// Scarlet Battle Orders: Use: Increases movement, attack and casting speed by 20% for 20 sec. CD: 5.0 min (Double Time!, 36244)
+	core.NewItemEffect(ScarletBattleOrders, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: ScarletBattleOrders},
+			Label:    "Double Time!",
+			Duration: time.Second * 20,
+		}).AttachMultiplyAttackSpeed(&character.Unit, 1.2).AttachMultiplyCastSpeed(&character.Unit, 1.2)
+		registerOnUseAura(character, ScarletBattleOrders, aura, time.Minute*5, core.CooldownTypeDPS)
+	})
+
+	// The Final Gaze: Use: Greatly reduces the chance your attacks and spells will miss or be resisted for 10 sec.
+	// CD: 2.0 min (True Sight, 36250: +100% hit, so no misses or full resists; partial resists still happen)
+	core.NewSimpleStatOffensiveTrinketEffect(TheFinalGaze, stats.Stats{stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance, stats.SpellHit: 100 * core.SpellHitRatingPerHitChance}, time.Second*10, time.Minute*2)
+
+	// Dark Iron Bookmark: Use: Blasts the enemy for 168 to 202 Fire damage. CD: 3.0 min
+	// (Shown under the item: the spell is the same as Fire Blast rank 4, which a mage could also have.)
+	core.NewItemEffect(DarkIronBookmark, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{ItemID: DarkIronBookmark},
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 3,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(168, 202), spell.OutcomeMagicHitAndCrit)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{Type: core.CooldownTypeDPS, Spell: spell})
+	})
+
+	// Orb of Chaotic Elements: Use: Releases the power of wild elements, dealing 1 to 1000 Fire, Frost or Nature damage to
+	// enemy and healing you. CD: 2.0 min (35326). The heal is assumed equal to the damage dealt.
+	core.NewItemEffect(OrbOfChaoticElements, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 35326})
+		cd := core.Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 2}
+		schools := []core.SpellSchool{core.SpellSchoolFire, core.SpellSchoolFrost, core.SpellSchoolNature}
+		spells := make([]*core.Spell, len(schools))
+		for i, school := range schools {
+			spells[i] = character.RegisterSpell(core.SpellConfig{
+				ActionID:         core.ActionID{SpellID: 35326}.WithTag(int32(i + 1)),
+				SpellSchool:      school,
+				DefenseType:      core.DefenseTypeMagic,
+				ProcMask:         core.ProcMaskEmpty,
+				Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					result := spell.CalcAndDealDamage(sim, target, sim.Roll(1, 1000), spell.OutcomeMagicHitAndCrit)
+					if result.Damage > 0 {
+						character.GainHealth(sim, result.Damage, healthMetrics)
+					}
+				},
+			})
+		}
+		use := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: OrbOfChaoticElements},
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast:     core.CastConfig{CD: cd},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+				spells[int(sim.RandomFloat("Orb of Chaotic Elements")*float64(len(spells)))%len(spells)].Cast(sim, target)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{Type: core.CooldownTypeDPS, Spell: use})
+	})
+
+	// Everlasting Liver: Use: Restores 3% of your total Health every 3 sec and increases your Spirit by 40. Lasts 30 sec. CD: 6.0 min
+	core.NewItemEffect(EverlastingLiver, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: EverlastingLiver})
+		var pa *core.PendingAction
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: EverlastingLiver},
+			Label:    "Everlasting Liver",
+			Duration: time.Second * 30,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 3,
+					NumTicks: 10,
+					OnAction: func(sim *core.Simulation) {
+						character.GainHealth(sim, 0.03*character.MaxHealth(), healthMetrics)
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if pa != nil {
+					pa.Cancel(sim)
+				}
+			},
+		}).AttachStatBuff(stats.Spirit, 40)
+		registerOnUseAura(character, EverlastingLiver, aura, time.Minute*6, core.CooldownTypeSurvival)
+	})
+
+	// Ironbark Tea Leaf: Use: Instantly heals 500 damage. Also increases armor by 1500 and healing taken by 15% for 30 sec.
+	// CD: 5.0 min (Ironbark Tea, 34630)
+	core.NewItemEffect(IronbarkTeaLeaf, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: IronbarkTeaLeaf})
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: IronbarkTeaLeaf},
+			Label:    "Ironbark Tea",
+			Duration: time.Second * 30,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.GainHealth(sim, 500, healthMetrics)
+				character.PseudoStats.HealingTakenMultiplier *= 1.15
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.HealingTakenMultiplier /= 1.15
+			},
+		}).AttachStatBuff(stats.BonusArmor, 1500)
+		registerOnUseAura(character, IronbarkTeaLeaf, aura, time.Minute*5, core.CooldownTypeSurvival)
 	})
 
 	// Reactive Auto-Recaster: Equip: 4% chance to recast instantly the just casted spell.

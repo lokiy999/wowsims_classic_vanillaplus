@@ -9228,6 +9228,7 @@
 {"id":34831,"name":"Divine Concentration","icon":"spell_holy_fanaticism","rank":2,"tooltip":"<b class=\"whtt-name\">Divine Concentration</b><br />Rank 2<br />Regenerates 1% of your total Mana every 10 seconds."},
 {"id":34832,"name":"Divine Concentration","icon":"spell_holy_fanaticism","rank":3,"tooltip":"<b class=\"whtt-name\">Divine Concentration</b><br />Rank 3<br />Regenerates 1% of your total Mana every 5 seconds."},
 {"id":34917,"name":"Lacerate","icon":"temp","tooltip":"<b class=\"whtt-name\">Lacerate</b><br />1350 damage to target."},
+{"id":35326,"name":"Orb of Chaotic Elements","icon":"temp","tooltip":"<b class=\"whtt-name\">Orb of Chaotic Elements</b><br />Releases the power of wild elements, dealing 1 to 1000 Fire, Frost or Nature damage to enemy and healing you."},
 {"id":35394,"name":"Searing Light","icon":"spell_holy_searinglightpriest","rank":3,"tooltip":"<b class=\"whtt-name\">Searing Light</b><br />Rank 3<br />Increases the damage of your Smite and Holy Fire spells by 9%."},
 {"id":35395,"name":"Searing Light","icon":"spell_holy_searinglightpriest","rank":4,"tooltip":"<b class=\"whtt-name\">Searing Light</b><br />Rank 4<br />Increases the damage of your Smite and Holy Fire spells by 12%."},
 {"id":35396,"name":"Searing Light","icon":"spell_holy_searinglightpriest","rank":5,"tooltip":"<b class=\"whtt-name\">Searing Light</b><br />Rank 5<br />Increases the damage of your Smite and Holy Fire spells by 15%."},

@@ -1057,16 +1057,16 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=11809/flame-wrath
-	// Chance on hit: Envelops the caster with a Fire shield for 15 sec and shoots a ring of fire dealing 130 to 170 damage to all nearby enemies.
-	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcSpell(FlameWrath, "Flame Wrath", 1.0, func(character *core.Character) *core.Spell {
+	// Use: Envelops the caster with a Fire shield for 15 sec and shoots a ring of fire dealing 210 to 250 damage to all
+	// nearby enemies. CD: 2.0 min (server; classic was a chance on hit)
+	core.NewItemEffect(FlameWrath, func(agent core.Agent) {
+		character := agent.GetCharacter()
 		shieldActionID := core.ActionID{SpellID: 16560}
 		shieldSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:         shieldActionID,
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
-			BonusCoefficient: 1, // Only the shield portion has scaling
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -1089,21 +1089,28 @@ func init() {
 				}
 			},
 		})
-		return character.RegisterSpell(core.SpellConfig{
+		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 16559},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				shieldAura.Activate(sim)
-
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(130, 170), spell.OutcomeMagicHit)
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(210, 250), spell.OutcomeMagicHit)
 				}
 			},
 		})
+		character.AddMajorCooldown(core.MajorCooldown{Type: core.CooldownTypeDPS, Spell: spell})
 	})
 
 	// PPM from Armaments discord
@@ -1804,26 +1811,30 @@ func init() {
 	core.NewMobTypeAttackPowerEffect(PitchforkOfMadness, []proto.MobType{proto.MobType_MobTypeDemon}, 117)
 
 	// https://www.wowhead.com/classic/item=18348/quelserrar
-	// Chance on hit: When active, grants the wielder 13 defense and 300 armor for 10 sec.
-	// Proc rate estimated based on data from WoW Armaments Discord for the original item
-	itemhelpers.CreateWeaponProcAura(QuelSerrar, "Quel'Serrar", 2.0, func(character *core.Character) *core.Aura {
-		return character.RegisterAura(core.Aura{
+	// Equip: Improves your chance to hit by 1%. (item stats)
+	// Use: Grants the wielder 40 defense and 1400 armor for 20 sec. CD: 10.0 min (server; classic was a chance on hit)
+	core.NewItemEffect(QuelSerrar, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 22850},
 			Label:    "Sanctuary",
-			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatsDynamic(sim, stats.Stats{
-					stats.Defense:    13,
-					stats.BonusArmor: 300,
-				})
+			Duration: time.Second * 20,
+		}).AttachStatsBuff(stats.Stats{stats.Defense: 40, stats.BonusArmor: 1400})
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: QuelSerrar},
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 10,
+				},
 			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatsDynamic(sim, stats.Stats{
-					stats.Defense:    -13,
-					stats.BonusArmor: -300,
-				})
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				aura.Activate(sim)
 			},
 		})
+		character.AddMajorCooldown(core.MajorCooldown{Type: core.CooldownTypeSurvival, Spell: spell})
 	})
 
 	// https://www.wowhead.com/classic/item=10626/ragehammer

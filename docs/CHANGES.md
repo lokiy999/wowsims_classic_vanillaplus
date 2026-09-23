@@ -2958,3 +2958,26 @@ per-hit reductions; helpers `addFlatDamageReduction` and `registerThorns` in `vp
 - **Reactive Auto-Recaster** (26223): 4% chance when a rotation damage spell finishes casting to apply it again for free
   (no cost, no cooldown, can't chain; channeled spells excluded).
 - Checked in the browser: a tank warrior with Uther's Strength and Force of Will gets both procs against a boss.
+
+## Part BM — Trinkets and weapons from in-game tooltips (2026-09-23)
+
+The user sent in-game tooltips (with cooldowns) for the custom items. Values from the tooltips and Spell.csv.
+
+- **ZG charms are 2 min** for all classes (confirmed by the user): Gri'lek's Charm of Valor, Wushoolay's Charm of
+  Nature, Hazza'rah's Charm of Healing (were 3 min). Aegis of Preservation stays 5 min (confirmed).
+- **Mark of Bestial Fury** (26312): +200 AP, +200 RAP, +120 spell damage for 30 sec, 2 min (Bestial Fury, 36225).
+- **Blood Scarred Scale** (83075): +25 spell power and +17 all resistances for 30 sec, 2 min.
+- **Hibernation Crystal** (20636): +350 healing for 15 sec, 1.5 min.
+- **Scarlet Battle Orders** (26323): +20% attack and cast speed for 20 sec, 5 min (Double Time!, 36244).
+- **The Final Gaze** (26328): +100% melee and spell hit for 10 sec, 2 min (True Sight, 36250).
+- **Dark Iron Bookmark** (80011): 168-202 Fire damage, 3 min.
+- **Orb of Chaotic Elements** (26229): 1-1000 Fire, Frost or Nature damage (random school), heals for the damage dealt
+  (the heal amount is an assumption), 2 min.
+- **Everlasting Liver** (81041): 3% of max health every 3 sec and +40 Spirit for 30 sec, 6 min.
+- **Ironbark Tea Leaf** (26070): heals 500, +1500 armor and +15% healing taken for 30 sec, 5 min.
+- **Flame Wrath** (11809) and **Quel'Serrar** (18348) are now the server's Use versions instead of the classic
+  chance-on-hit ones: Flame Wrath fire shield for 15 sec plus a 210-250 fire ring to all enemies, 2 min; Quel'Serrar +40
+  defense and +1400 armor for 20 sec, 10 min. The SoD spell power scaling on the Flame Wrath shield was removed.
+- Not modeled: Banner of Challenge (a 5 sec taunt, no sim value).
+- Checked in the browser (tank warrior): Mark of Bestial Fury, Dark Iron Bookmark, Quel'Serrar, The Final Gaze, Scarlet
+  Battle Orders and Flame Wrath are all used. Shadow priest golden result updated (Hazza'rah's Charm cooldown).
