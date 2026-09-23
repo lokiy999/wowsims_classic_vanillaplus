@@ -431,11 +431,10 @@ fixed (2026-09-12):
 
 ## Known implementation wrinkles
 
-- `gen_phases.py` currently only scans `Instances/`. It must also scan `Crafting/`
-  (via `craftItem`), `Factions/` (incl. `Zandalar*` → P3), `PvP/`, `WorldBosses/`,
-  `WorldEvents/`, `Sets/` (by name+slot).
+- `gen_phases.py` goes through `serverdata.atlasloot()`, which covers all seven AtlasLoot folders (`Instances/`,
+  `Crafting/`, `Factions/`, `PvP/`, `WorldBosses/`, `WorldEvents/`, `Sets/`). (It used to scan only `Instances/`.)
 - `gen_phases.py` table-prefix match: the Naxx prefix is `NAX`, not `NAXX`.
-- Custom sets (Talonclaw, Ursoc, Cataclysm, Stonefury, Righteous) have stats only —
-  no coded set bonuses in `sim/*/item_sets_pve.go`.
+- Custom sets (Talonclaw, Ursoc, Cataclysm, Stonefury, Righteous) have coded set bonuses in
+  `sim/*/item_sets_pve.go` since 2026-09-13 (CHANGES.md Part C).
 - `core.NewItemEffect` / `core.NewItemSet` silently skip missing items/sets so
   removed content does not crash every sim.

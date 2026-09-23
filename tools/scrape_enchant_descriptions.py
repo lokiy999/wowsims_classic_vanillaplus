@@ -22,6 +22,7 @@ SERVER_DESCRIPTIONS = {
     1504: "Crit suppression +1%",          # Lesser Arcanum of Tenacity
     2543: "Haste +2%",                     # Arcanum of Rapidity
     2544: "Healing and Spell Damage +10",  # Arcanum of Focus
+    2583: "All Stats +10",                 # Presence of Might
 }
 
 if len(sys.argv) < 3:

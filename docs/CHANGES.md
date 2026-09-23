@@ -2981,3 +2981,18 @@ The user sent in-game tooltips (with cooldowns) for the custom items. Values fro
 - Not modeled: Banner of Challenge (a 5 sec taunt, no sim value).
 - Checked in the browser (tank warrior): Mark of Bestial Fury, Dark Iron Bookmark, Quel'Serrar, The Final Gaze, Scarlet
   Battle Orders and Flame Wrath are all used. Shadow priest golden result updated (Hazza'rah's Charm cooldown).
+
+## Part BN — TODO items: absorbs, flat reduction, enchants, Black Book (2026-09-23)
+
+- **Greater Protection Potions** (Arcane 13461, Fire 13457, Frost 13456, Holy 13460, Nature 13458, Shadow 13459) are
+  in: `makeSchoolProtectionConsumableMCD` in `sim/core/consumes.go` absorbs 1950-3250 damage of the potion's school for
+  1 hour (server tooltip), 2 min potion cooldown. Selectable in the potion picker (they were commented out, waiting
+  for an absorb mechanic).
+- **Memory of Hyjal** (rank V protection scroll, 81015): the "reduces all damage received by up to 14" part now
+  works (14 less damage per hit), on top of its armor.
+- **The Black Book** (19337): the pet takes no damage while the buff is up (server text), instead of +100% armor.
+- **Presence of Might** (enchant 2583): +10 to all stats (server) instead of Stamina +20 / Defense +7 / Block Value
+  +15. Label "All Stats +10" (also kept in the scraper's `SERVER_DESCRIPTIONS`).
+- **Enchant Shield - Law of Nature** (7603, SoD) removed.
+- `docs/TODO.md` has a new "Open items at a glance" overview at the top. Two stale lines in
+  `docs/private-server-item-rules.md` fixed (gen_phases scope, custom set bonuses).

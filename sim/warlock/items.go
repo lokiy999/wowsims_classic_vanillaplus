@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
-	"github.com/wowsims/classic/sim/core/stats"
 )
 
 const (
@@ -72,7 +71,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=19337/the-black-book
-	// Use: Empowers your pet, increasing pet damage by 100% and increasing pet armor by 100% for 30 sec.
+	// Use: Empowers your pet, increasing pet damage by 100% and reducing damage taken by your pet by 100% for 30 sec. (server)
 	// This spell will only affect an Imp, Succubus, Incubus, Voidwalker, or Felhunter. (5 Min Cooldown)
 	core.NewItemEffect(TheBlackBook, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
@@ -80,11 +79,6 @@ func init() {
 		actionID := core.ActionID{ItemID: TheBlackBook}
 		duration := time.Second * 30
 		affectedPet := warlock.ActivePet
-
-		statDeps := map[string]*stats.StatDependency{}
-		for _, pet := range warlock.BasePets {
-			statDeps[pet.Name] = pet.NewDynamicMultiplyStat(stats.Armor, 2)
-		}
 
 		buffAura := warlock.RegisterAura(core.Aura{
 			ActionID: actionID,
@@ -94,16 +88,24 @@ func init() {
 				affectedPet = warlock.ActivePet
 				if affectedPet != nil {
 					affectedPet.PseudoStats.DamageDealtMultiplier *= 2.0
-					affectedPet.EnableDynamicStatDep(sim, statDeps[affectedPet.Name])
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				if affectedPet != nil {
 					affectedPet.PseudoStats.DamageDealtMultiplier /= 2.0
-					affectedPet.DisableDynamicStatDep(sim, statDeps[affectedPet.Name])
 				}
 			},
 		})
+
+		// Server: "reducing damage taken by your pet by 100%" while the buff is up.
+		for _, pet := range warlock.BasePets {
+			pet := pet
+			pet.AddDynamicDamageTakenModifier(func(_ *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				if buffAura.IsActive() && affectedPet == pet {
+					result.Damage = 0
+				}
+			})
+		}
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

@@ -453,10 +453,13 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 		case proto.ArmorElixir_ScrollOfProtection:
 			character.AddStats(BuffSpellValues[ScrollOfProtection])
 		case proto.ArmorElixir_ScrollOfProtectionV:
-			// Memory of Hyjal also "reduces all damage received by up to 14" - no flat
-			// per-hit damage reduction primitive exists in the sim, so only the Armor
-			// stat is modeled here. See docs/TODO.md.
+			// Memory of Hyjal also "reduces all damage received by up to 14" (per hit).
 			character.AddStats(BuffSpellValues[ScrollOfProtectionV])
+			character.AddDynamicDamageTakenModifier(func(_ *Simulation, _ *Spell, result *SpellResult) {
+				if result.Damage > 0 {
+					result.Damage = max(0, result.Damage-14)
+				}
+			})
 		}
 	}
 
@@ -1226,6 +1229,54 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 	}
 }
 
+// Greater X Protection Potion: Use: Absorbs 1950 to 3250 <school> damage. Lasts 1 hour. (2 min potion cooldown)
+func makeSchoolProtectionConsumableMCD(itemID int32, label string, school SpellSchool, character *Character, cdTimer *Timer) MajorCooldown {
+	actionID := ActionID{ItemID: itemID}
+	remaining := 0.0
+	shield := character.RegisterAura(Aura{
+		ActionID: actionID,
+		Label:    label,
+		Duration: time.Hour,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			remaining = sim.Roll(1950, 3250)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			remaining = 0
+		},
+	})
+	character.AddDynamicDamageTakenModifier(func(sim *Simulation, spell *Spell, result *SpellResult) {
+		if !shield.IsActive() || result.Damage <= 0 || !spell.SpellSchool.Matches(school) {
+			return
+		}
+		absorbed := min(remaining, result.Damage)
+		result.Damage -= absorbed
+		remaining -= absorbed
+		if remaining <= 0 {
+			shield.Deactivate(sim)
+		}
+	})
+
+	return MajorCooldown{
+		Type: CooldownTypeSurvival,
+		Spell: character.GetOrRegisterSpell(SpellConfig{
+			ActionID: actionID,
+			Flags:    SpellFlagNoOnCastComplete,
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    cdTimer,
+					Duration: time.Minute * 2,
+				},
+				ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+					character.CancelShapeshift(sim)
+				},
+			},
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				shield.Activate(sim)
+			},
+		}),
+	}
+}
+
 func makeMagicResistancePotionMCD(character *Character, cdTimer *Timer) MajorCooldown {
 	actionID := ActionID{ItemID: 9036}
 	cdDuration := time.Minute * 2
@@ -1363,18 +1414,18 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 
 	case proto.Potions_MajorRejuvenationPotion:
 		return makeHealthAndManaConsumableMCD(18253, character, potionCD)
-	// case proto.Potions_GreaterArcaneProtectionPotion:
-	// 	return makeSchoolProtectionConsumableMCD(13461, character, potionCD)
-	// case proto.Potions_GreaterFireProtectionPotion:
-	// 	return makeSchoolProtectionConsumableMCD(13457, character, potionCD)
-	// case proto.Potions_GreaterFrostProtectionPotion:
-	// 	return makeSchoolProtectionConsumableMCD(13456, character, potionCD)
-	// case proto.Potions_GreaterFrostProtectionPotion:
-	// 	return makeSchoolProtectionConsumableMCD(13460, character, potionCD)
-	// case proto.Potions_GreaterFrostProtectionPotion:
-	// 	return makeSchoolProtectionConsumableMCD(13458, character, potionCD)
-	// case proto.Potions_GreaterFrostProtectionPotion:
-	// 	return makeSchoolProtectionConsumableMCD(13459, character, potionCD)
+	case proto.Potions_GreaterArcaneProtectionPotion:
+		return makeSchoolProtectionConsumableMCD(13461, "Greater Arcane Protection Potion", SpellSchoolArcane, character, potionCD)
+	case proto.Potions_GreaterFireProtectionPotion:
+		return makeSchoolProtectionConsumableMCD(13457, "Greater Fire Protection Potion", SpellSchoolFire, character, potionCD)
+	case proto.Potions_GreaterFrostProtectionPotion:
+		return makeSchoolProtectionConsumableMCD(13456, "Greater Frost Protection Potion", SpellSchoolFrost, character, potionCD)
+	case proto.Potions_GreaterHolyProtectionPotion:
+		return makeSchoolProtectionConsumableMCD(13460, "Greater Holy Protection Potion", SpellSchoolHoly, character, potionCD)
+	case proto.Potions_GreaterNatureProtectionPotion:
+		return makeSchoolProtectionConsumableMCD(13458, "Greater Nature Protection Potion", SpellSchoolNature, character, potionCD)
+	case proto.Potions_GreaterShadowProtectionPotion:
+		return makeSchoolProtectionConsumableMCD(13459, "Greater Shadow Protection Potion", SpellSchoolShadow, character, potionCD)
 	default:
 		return MajorCooldown{}
 	}

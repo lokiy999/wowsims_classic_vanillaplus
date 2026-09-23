@@ -739,31 +739,31 @@ export const MagicResistancePotion: ConsumableInputConfig<Potions> = {
 	actionId: () => ActionId.fromItemId(9036),
 	value: Potions.MagicResistancePotion,
 };
-// TODO: Not yet implemented in the back-end. Missing school shields and shields don't actually absorb damage right now
-// export const GreaterArcaneProtectionPotion: ConsumableInputConfig<Potions> = {
-// 	actionId: () => ActionId.fromItemId(13461),
-// 	value: Potions.GreaterArcaneProtectionPotion,
-// };
-// export const GreaterFireProtectionPotion: ConsumableInputConfig<Potions> = {
-// 	actionId: () => ActionId.fromItemId(13457),
-// 	value: Potions.GreaterFireProtectionPotion,
-// };
-// export const GreaterFrostProtectionPotion: ConsumableInputConfig<Potions> = {
-// 	actionId: () => ActionId.fromItemId(13456),
-// 	value: Potions.GreaterFrostProtectionPotion,
-// };
-// export const GreaterHolyProtectionPotion: ConsumableInputConfig<Potions> = {
-// 	actionId: () => ActionId.fromItemId(13460),
-// 	value: Potions.GreaterHolyProtectionPotion,
-// };
-// export const GreaterNatureProtectionPotion: ConsumableInputConfig<Potions> = {
-// 	actionId: () => ActionId.fromItemId(13458),
-// 	value: Potions.GreaterNatureProtectionPotion,
-// };
-// export const GreaterShadowProtectionPotion: ConsumableInputConfig<Potions> = {
-// 	actionId: () => ActionId.fromItemId(13459),
-// 	value: Potions.GreaterShadowProtectionPotion,
-// };
+// Greater Protection Potions: absorb 1950 to 3250 damage of one school for 1 hour.
+export const GreaterArcaneProtectionPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(13461),
+	value: Potions.GreaterArcaneProtectionPotion,
+};
+export const GreaterFireProtectionPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(13457),
+	value: Potions.GreaterFireProtectionPotion,
+};
+export const GreaterFrostProtectionPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(13456),
+	value: Potions.GreaterFrostProtectionPotion,
+};
+export const GreaterHolyProtectionPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(13460),
+	value: Potions.GreaterHolyProtectionPotion,
+};
+export const GreaterNatureProtectionPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(13458),
+	value: Potions.GreaterNatureProtectionPotion,
+};
+export const GreaterShadowProtectionPotion: ConsumableInputConfig<Potions> = {
+	actionId: () => ActionId.fromItemId(13459),
+	value: Potions.GreaterShadowProtectionPotion,
+};
 
 export const GreaterStoneshieldPotion: ConsumableInputConfig<Potions> = {
 	actionId: () => ActionId.fromItemId(13455),
@@ -813,6 +813,13 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	// { config: MagicResistancePotion, stats: [] },
 	{ config: GreaterStoneshieldPotion, stats: [Stat.StatArmor] },
 	{ config: LesserStoneshieldPotion, stats: [Stat.StatArmor] },
+
+	{ config: GreaterFireProtectionPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterShadowProtectionPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterNatureProtectionPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterFrostProtectionPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterArcaneProtectionPotion, stats: [Stat.StatArmor] },
+	{ config: GreaterHolyProtectionPotion, stats: [Stat.StatArmor] },
 
 	{ config: MajorTrollsBloodPotion, stats: [Stat.StatArmor] },
 	{ config: MightyTrollsBloodPotion, stats: [Stat.StatArmor] },

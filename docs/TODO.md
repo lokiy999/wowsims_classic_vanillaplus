@@ -6,6 +6,44 @@ came up, most concrete first.
 
 _As of 2026-09-19._
 
+## Open items at a glance (updated 2026-09-23)
+
+One list of everything still open; the details are in the dated sections below. Items finished on 2026-09-23 are
+listed at the end of this overview so the older sections don't need rewriting.
+
+**Affects sim results**
+- Spell values that differ between the server (`Spell.csv`) and the sim numbers, e.g. Immolation Trap rank 5 (966 over
+  21 sec vs 690 over 15). The tooltips show the server values; a full per-class comparison of the sim numbers is not done.
+- Talents not modeled yet: per-class lists in the 2026-09-19/20 sections (rogue, hunter, warlock, mage, druid, shaman,
+  paladin, priest, warrior).
+- Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
+- Healing: priest healing spells are disabled; druid Nature's Swiftness, Tranquility, Bash, Frenzied Regeneration and
+  Rebirth are not in the sim; the shaman casting Mana Tide Totem is not modeled.
+- Shaman totem and weapon imbue items (2026-09-20 sections).
+- Consumables the user chose to skip (Part P): still absent if ever wanted.
+
+**Needs data from the game**
+- Crushing blows: does avoidance push them off the table on the server, like classic? (asked 2026-09-23)
+- Trinkets: Arcanite Dragonling and Cannonball Runner (pet damage), Six Demon Bag (effects); Orb of Chaotic Elements
+  heal amount is assumed equal to its damage.
+- Talent and set values marked "confirm in game" in the class sections.
+- Scarlet Monastery set completeness (never answered).
+
+**Data / pipeline**
+- The item database is older than the current `CSV's/` dump (2026-09-18 section).
+- Crafted items are all Phase 1 (deferred by the user).
+- Local spell names that differ from the server (list in the 2026-09-23 tooltip audit section).
+- "Level 60" target uses a SoD NPC id (display only); BWL encounter mechanics were copied from SoD, unverified.
+
+**Cosmetic / housekeeping**
+- Sidebar: armor from gear Agility is shown under Base (stopgap), see "Sidebar stat breakdown".
+- `ASpiritA` world boss name; stray scratch files at the repo root (keep or delete, user's call).
+
+**Done 2026-09-23** (older sections may still mention these): SoD content removed or replaced (Part BI); trinkets
+(Parts BJ-BM, only the items listed above remain); boss crit only reduced by Defense (Part BK); Memory of Hyjal flat
+damage reduction, Greater Protection Potions (absorb shields), The Black Book pet damage reduction, Presence of Might
++10 all stats, Law of Nature removed (Part BN); the committed-work and pipeline-doc notes below.
+
 ## Raised 2026-09-19 — after the talent-calculator cross-check (CHANGES.md Part AP)
 
 Still open, the calculator confirmed the text but not the mechanics:
@@ -273,7 +311,7 @@ consumable add:**
 
 ## Housekeeping, not content
 
-- **Nothing from this work is committed.** `git log` still shows the same last
+- ~~**Nothing from this work is committed.**~~ Resolved: everything is committed and pushed. Old note: `git log` still shows the same last
   commit as when this all started; `git status` has 216 modified/new files
   covering everything from this session (item pipeline rewrite, Int→Spell
   Power, script move, determinism fixes) plus the earlier talent-tree work.
