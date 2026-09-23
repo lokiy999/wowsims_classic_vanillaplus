@@ -469,3 +469,12 @@ The trinket list above is partly done. Still open:
 - Use effects of Grace of Earth and Two-Faced Medallion (threat/aggro radius) are not modeled.
 - Cooldowns assumed from classic where the server changed the effect: Gri'lek's, Wushoolay's and Hazza'rah's charms
   (3 min), Aegis of Preservation (5 min). Confirm in game.
+
+## Trinkets, status after CHANGES.md Part BL (2026-09-23)
+
+Done since Part BJ: Uther's Strength, Force of Will, Ragged John's Cup and Blazing Emblem damage reduction, Heart of
+the Scale thorns, Petrified Scarab decay, Aegis of Preservation heal, Sawtooth Talisman 5%, Reactive Auto-Recaster.
+Still open: the custom items that need a cooldown from the game (list above), Arcanite Dragonling and Cannonball Runner
+(summons, no pet data), Six Demon Bag (random effects), Grace of Earth and Two-Faced Medallion use effects.
+Other things now possible with `addFlatDamageReduction`: Memory of Hyjal's "reduces all damage received by up to 14"
+(item 81015) and absorb shields such as the Protection potions.

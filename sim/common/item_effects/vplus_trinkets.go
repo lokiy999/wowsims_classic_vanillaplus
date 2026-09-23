@@ -41,6 +41,9 @@ const (
 	MarkOfTheVeteranSpellHitB        = 26174
 	MarkOfThirst                     = 26203
 	SawtoothTalisman                 = 26212
+	UthersStrength                   = 11302
+	ForceOfWill                      = 11810
+	ReactiveAutoRecaster             = 26223
 	TwoFacedMedallion                = 26353
 	OnyxEgg                          = 83003
 	BlueMottledEgg                   = 83006
@@ -135,6 +138,43 @@ func registerOnUseDamage(itemID int32, spellID int32, school core.SpellSchool, m
 	})
 }
 
+// addFlatDamageReduction lowers every matching hit taken by `amount` while `aura` is active.
+func addFlatDamageReduction(character *core.Character, aura *core.Aura, amount float64, applies func(spell *core.Spell) bool) {
+	character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if aura.IsActive() && result.Damage > 0 && applies(spell) {
+			result.Damage = max(0, result.Damage-amount)
+		}
+	})
+}
+
+func isPhysical(spell *core.Spell) bool { return spell.SpellSchool == core.SpellSchoolPhysical }
+func isFire(spell *core.Spell) bool     { return spell.SpellSchool.Matches(core.SpellSchoolFire) }
+func isMelee(spell *core.Spell) bool    { return spell.ProcMask.Matches(core.ProcMaskMelee) }
+
+// registerThorns makes a spell that hits a melee attacker for `damage` while `aura` is active.
+func registerThorns(character *core.Character, aura *core.Aura, spellID int32, school core.SpellSchool, damage float64) {
+	thorns := character.RegisterSpell(core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: spellID},
+		SpellSchool:      school,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskEmpty,
+		Flags:            core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+		},
+	})
+	core.MakePermanent(character.RegisterAura(core.Aura{
+		Label: aura.Label + " (thorns)",
+		OnSpellHitTaken: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if aura.IsActive() && result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+				thorns.Cast(sim, spell.Unit)
+			}
+		},
+	}))
+}
+
 func init() {
 	core.AddEffectsToTest = false
 
@@ -216,10 +256,11 @@ func init() {
 		agent.GetCharacter().PseudoStats.DamageTakenMultiplier *= 0.99
 	})
 
-	// Sawtooth Talisman: Equip: Your attacks ignore 250 of your enemies' Armor.
-	// The second line ("ignore 5% of your enemies' Armor") is not modeled: the engine has no percentage armor penetration.
+	// Sawtooth Talisman: Equip: Your attacks ignore 5% of your enemies' Armor. / Equip: Your attacks ignore 250 of your enemies' Armor.
 	core.NewItemEffect(SawtoothTalisman, func(agent core.Agent) {
-		agent.GetCharacter().AddStat(stats.ArmorPenetration, 250)
+		character := agent.GetCharacter()
+		character.AddStat(stats.ArmorPenetration, 250)
+		character.PseudoStats.IgnoreArmorPercent += 0.05
 	})
 
 	// Shen'dralar Badge of Deterrence: Equip: Threat +5%
@@ -325,22 +366,75 @@ func init() {
 	// Blessed Prayer Beads: Use: Increases healing done by spells and effects by up to 190 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(BlessedPrayerBeads, stats.Stats{stats.HealingPower: 190}, time.Second*20, time.Minute*2)
 
-	// Defensive trinkets (stat part only).
+	// Defensive trinkets.
 	// Blazing Emblem: Use: Increases Fire resistance by 50 and reduces all Fire damage taken by up to 25 for 15 sec. (10 Min Cooldown)
-	core.NewSimpleStatDefensiveTrinketEffect(BlazingEmblem, stats.Stats{stats.FireResistance: 50}, time.Second*15, time.Minute*10)
-	// Heart of the Scale: Use: Increases Fire Resistance by 20 and deals 20 Fire damage to attackers for 5 min. (30 Min Cooldown)
-	core.NewSimpleStatDefensiveTrinketEffect(HeartOfTheScale, stats.Stats{stats.FireResistance: 20}, time.Minute*5, time.Minute*30)
-	// Petrified Scarab: Use: Increases your spell resistances by 100 for 1 min. (3 Min Cooldown)
-	// The "-10 per hostile spell" decay is not modeled.
-	core.NewSimpleStatDefensiveTrinketEffect(PetrifiedScarab, resistances(100), time.Minute, time.Minute*3)
+	core.NewItemEffect(BlazingEmblem, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: BlazingEmblem},
+			Label:    "Blazing Emblem",
+			Duration: time.Second * 15,
+		}).AttachStatBuff(stats.FireResistance, 50)
+		addFlatDamageReduction(character, aura, 25, isFire)
+		registerOnUseAura(character, BlazingEmblem, aura, time.Minute*10, core.CooldownTypeSurvival)
+	})
+
+	// Heart of the Scale: Use: Increases Fire Resistance by 20 and deals 20 Fire damage to anyone who strikes you with a
+	// melee attack for 5 min. (30 Min Cooldown)
+	core.NewItemEffect(HeartOfTheScale, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: HeartOfTheScale},
+			Label:    "Heart of the Scale",
+			Duration: time.Minute * 5,
+		}).AttachStatBuff(stats.FireResistance, 20)
+		registerThorns(character, aura, 17275, core.SpellSchoolFire, 20)
+		registerOnUseAura(character, HeartOfTheScale, aura, time.Minute*30, core.CooldownTypeSurvival)
+	})
+
+	// Petrified Scarab: Use: Increases your spell resistances by 100 for 1 min. Every time a hostile spell lands on you,
+	// this bonus is reduced by 10 resistance. (3 Min Cooldown)
+	core.NewItemEffect(PetrifiedScarab, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		bonus := 0.0
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: PetrifiedScarab},
+			Label:    "Petrified Scarab",
+			Duration: time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				bonus = 100
+				character.AddStatsDynamic(sim, resistances(bonus))
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatsDynamic(sim, resistances(-bonus))
+				bonus = 0
+			},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if bonus > 0 && result.Landed() && !isPhysical(spell) {
+					character.AddStatsDynamic(sim, resistances(-10))
+					bonus -= 10
+				}
+			},
+		})
+		registerOnUseAura(character, PetrifiedScarab, aura, time.Minute*3, core.CooldownTypeSurvival)
+	})
+
 	// Ragged John's Neverending Cup: Use: Increases Stamina by 28 and reduces physical damage taken by 22 for 10 min. (30 Min Cooldown)
-	// The flat damage reduction is not modeled (no flat per-hit reduction in the engine).
-	core.NewSimpleStatDefensiveTrinketEffect(RaggedJohnsNeverendingCup, stats.Stats{stats.Stamina: 28}, time.Minute*10, time.Minute*30)
+	core.NewItemEffect(RaggedJohnsNeverendingCup, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: RaggedJohnsNeverendingCup},
+			Label:    "Ragged John's Neverending Cup",
+			Duration: time.Minute * 10,
+		}).AttachStatBuff(stats.Stamina, 28)
+		addFlatDamageReduction(character, aura, 22, isPhysical)
+		registerOnUseAura(character, RaggedJohnsNeverendingCup, aura, time.Minute*30, core.CooldownTypeSurvival)
+	})
 
 	// Aegis of Preservation: Use: Decreases damage taken by 10%, and heals for 30% of damage taken for 20 sec. (5 Min Cooldown)
-	// The healing part is not modeled.
 	core.NewItemEffect(AegisOfPreservation, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: AegisOfPreservation})
 		aura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: AegisOfPreservation},
 			Label:    "Aegis of Preservation",
@@ -351,8 +445,68 @@ func init() {
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.DamageTakenMultiplier /= 0.9
 			},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Damage > 0 {
+					character.GainHealth(sim, 0.3*result.Damage, healthMetrics)
+				}
+			},
 		})
 		registerOnUseAura(character, AegisOfPreservation, aura, time.Minute*5, core.CooldownTypeSurvival)
+	})
+
+	// Force of Will: Equip: When struck in combat has a 1% chance of reducing all melee damage taken by 25 for 10 sec.
+	core.NewItemEffect(ForceOfWill, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: ForceOfWill},
+			Label:    "Force of Will",
+			Duration: time.Second * 10,
+		})
+		addFlatDamageReduction(character, aura, 25, isMelee)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Force of Will Trigger",
+			Callback:   core.CallbackOnSpellHitTaken,
+			ProcMask:   core.ProcMaskMelee,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.01,
+			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				aura.Activate(sim)
+			},
+		})
+	})
+
+	// Uther's Strength: Equip: When you take damage has a 2% chance to protect you with a holy shield.
+	// The shield is Uther's Light Effect (10368): absorbs 200 damage, lasts 15 sec.
+	core.NewItemEffect(UthersStrength, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		remaining := 0.0
+		shield := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 10368},
+			Label:    "Uther's Light",
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				remaining = 200
+			},
+		})
+		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			if !shield.IsActive() || result.Damage <= 0 {
+				return
+			}
+			absorbed := min(remaining, result.Damage)
+			result.Damage -= absorbed
+			remaining -= absorbed
+			if remaining <= 0 {
+				shield.Deactivate(sim)
+			}
+		})
+		core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Uther's Strength Trigger",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Damage > 0 && sim.RandomFloat("Uther's Strength") < 0.02 {
+					shield.Activate(sim)
+				}
+			},
+		}))
 	})
 
 	// Fetish of the Sand Reaver: Use: Reduces the threat you generate by 70% for 20 sec. (3 Min Cooldown)
@@ -468,6 +622,24 @@ func init() {
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
+	})
+
+	// Reactive Auto-Recaster: Equip: 4% chance to recast instantly the just casted spell.
+	// Only damage spells cast from the rotation; the recast costs nothing, doesn't trigger a cooldown and can't chain.
+	core.NewItemEffect(ReactiveAutoRecaster, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Reactive Auto-Recaster",
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if !spell.Flags.Matches(core.SpellFlagAPL) || !spell.ProcMask.Matches(core.ProcMaskSpellDamage) ||
+					spell.Flags.Matches(core.SpellFlagChanneled) || character.CurrentTarget == nil {
+					return
+				}
+				if sim.RandomFloat("Reactive Auto-Recaster") < 0.04 {
+					spell.ApplyEffects(sim, character.CurrentTarget, spell)
+				}
+			},
+		}))
 	})
 
 	core.AddEffectsToTest = true

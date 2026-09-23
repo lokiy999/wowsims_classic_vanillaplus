@@ -2940,3 +2940,21 @@ dodge, parry and block don't push crits off the attack table.
 - New test `sim/core/enemy_crit_test.go`: a level 63 boss against a player with 90% dodge, 30% parry and 30% block
   crits 5.6% of the time (its base chance). With the old order the same test gave 0%.
 - No golden results changed (the class test suites don't measure damage taken).
+
+## Part BL — Trinkets, second batch: absorbs, flat damage reduction, armor ignore, recast (2026-09-23)
+
+Uses the existing target-side hook `AddDynamicDamageTakenModifier` (runs after the outcome roll) for absorbs and flat
+per-hit reductions; helpers `addFlatDamageReduction` and `registerThorns` in `vplus_trinkets.go`.
+
+- **Uther's Strength** (11302): 2% chance when you take damage to get Uther's Light (10368): absorbs 200 damage, 15 sec.
+- **Force of Will** (11810): 1% chance when struck by a melee attack to take 25 less melee damage per hit for 10 sec.
+- **Ragged John's Neverending Cup**: +28 Stamina and 22 less physical damage per hit for 10 min.
+- **Blazing Emblem**: +50 fire resistance and 25 less Fire damage per hit for 15 sec.
+- **Heart of the Scale**: +20 fire resistance and 20 Fire damage (spell 17275) to melee attackers for 5 min.
+- **Petrified Scarab**: +100 resistances, reduced by 10 each time a hostile spell lands.
+- **Aegis of Preservation**: now also heals for 30% of damage taken while active.
+- **Sawtooth Talisman**: the 5% armor ignore works now. New `PseudoStats.IgnoreArmorPercent` (attacker), applied in
+  `AttackTable.GetArmorDamageModifier` before flat armor penetration.
+- **Reactive Auto-Recaster** (26223): 4% chance when a rotation damage spell finishes casting to apply it again for free
+  (no cost, no cooldown, can't chain; channeled spells excluded).
+- Checked in the browser: a tank warrior with Uther's Strength and Force of Will gets both procs against a boss.

@@ -431,6 +431,8 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
+	IgnoreArmorPercent float64 // Fraction of the target's armor this unit's attacks ignore (e.g. Sawtooth Talisman, 0.05).
+
 	DamageDealtMultiplier       float64                   // All damage
 	SchoolDamageDealtMultiplier SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
