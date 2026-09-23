@@ -9,17 +9,34 @@ import (
 
 const (
 	KnightLieutenantsChainGauntlets = 16403
-	BloodGuardsChainGauntlets = 16530
-	MarshalsChainGrips = 16463
-	GeneralsChainGloves = 16571
-	RenatakisCharmofBeasts = 19953
-	DevilsaurEye   = 19991
-	DevilsaurTooth = 19992
-	KnightLieutenantsChainVices= 23279
-	BloodGuardsChainVices = 22862
+	BloodGuardsChainGauntlets       = 16530
+	MarshalsChainGrips              = 16463
+	GeneralsChainGloves             = 16571
+	RenatakisCharmofBeasts          = 19953
+	DevilsaurEye                    = 19991
+	DevilsaurTooth                  = 19992
+	KnightLieutenantsChainVices     = 23279
+	BloodGuardsChainVices           = 22862
+	MarkOfTheVeteranHunterA         = 26162
+	MarkOfTheVeteranHunterB         = 26171
 )
 
 func init() {
+	// Mark of the Veteran (hunter): Equip: Reduces the cooldown of your Multi-Shot by 2 sec.
+	markOfTheVeteranHunter := func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Mark of the Veteran (Multi-Shot)",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.MultiShot != nil {
+					hunter.MultiShot.CD.Duration -= time.Second * 2
+				}
+			},
+		}))
+	}
+	core.NewItemEffect(MarkOfTheVeteranHunterA, markOfTheVeteranHunter)
+	core.NewItemEffect(MarkOfTheVeteranHunterB, markOfTheVeteranHunter)
+
 	// Equip: Reduces the mana cost of your Arcane Shot by 15.
 	core.NewItemEffect(KnightLieutenantsChainGauntlets, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
@@ -44,47 +61,47 @@ func init() {
 			},
 		}))
 	})
-	
+
 	// Equip: Increases the damage done by your Multi-Shot by 4%
 	core.NewItemEffect(MarshalsChainGrips, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
-				Label: "Multi-Shot Damage Increase",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
-				},
-			}))
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Multi-Shot Damage Increase",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+			},
+		}))
 	})
 	// Equip: Increases the damage done by your Multi-Shot by 4%
 	core.NewItemEffect(GeneralsChainGloves, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
-				Label: "Multi-Shot Damage Increase",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
-				},
-			}))
-	})	
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Multi-Shot Damage Increase",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+			},
+		}))
+	})
 	// Equip: Increases the damage done by your Multi-Shot by 4%
 	core.NewItemEffect(KnightLieutenantsChainVices, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
-				Label: "Multi-Shot Damage Increase",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
-				},
-			}))
-	})	
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Multi-Shot Damage Increase",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+			},
+		}))
+	})
 	// Equip: Increases the damage done by your Multi-Shot by 4%
 	core.NewItemEffect(BloodGuardsChainVices, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
-				Label: "Multi-Shot Damage Increase",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
-				},
-			}))
-	})			
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Multi-Shot Damage Increase",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+			},
+		}))
+	})
 	// Use: Instantly clears the cooldowns of Aimed Shot, Multishot, Volley, and Arcane Shot. (cooldown 3 min)
 	core.NewItemEffect(RenatakisCharmofBeasts, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
@@ -119,7 +136,7 @@ func init() {
 			Spell: spell,
 		})
 	})
-	
+
 	core.NewItemEffect(DevilsaurEye, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 

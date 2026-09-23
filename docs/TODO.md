@@ -455,3 +455,17 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
 - `tools/database/atlasloot.go` still reads the AtlasLootClassic_SoD repository (a data source only).
 - Comments in core mentioning SoD behaviour (rollovers, expertise, stat weights) were left; they describe mechanics
   that have no confirmed classic value.
+
+## Trinkets, status after CHANGES.md Part BJ (2026-09-23)
+
+The trinket list above is partly done. Still open:
+- **Need the cooldown from the game** (custom server items, not on Wowhead): Mark of Bestial Fury (26312), Blood
+  Scarred Scale (83075), Scarlet Battle Orders (26323), The Final Gaze (26328), Dark Iron Bookmark (80011), Orb of
+  Chaotic Elements (26229), Everlasting Liver (81041), Ironbark Tea Leaf (26070), Banner of Challenge (26340); also
+  Hibernation Crystal (20636, Wowhead shows no cooldown).
+- **Need a new mechanic:** Arcanite Dragonling and Cannonball Runner (summons), Six Demon Bag (random effects),
+  Reactive Auto-Recaster (spell recast), Force of Will and Ragged John's Cup (flat damage reduction), Uther's Strength
+  and Aegis of Preservation's heal (absorb/heal), Sawtooth Talisman's 5% armor ignore, Petrified Scarab's decay.
+- Use effects of Grace of Earth and Two-Faced Medallion (threat/aggro radius) are not modeled.
+- Cooldowns assumed from classic where the server changed the effect: Gri'lek's, Wushoolay's and Hazza'rah's charms
+  (3 min), Aegis of Preservation (5 min). Confirm in game.

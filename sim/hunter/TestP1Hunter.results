@@ -174,6 +174,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestP1Hunter-Phase1-AllItems-MarkoftheVeteran-26162"
+ value: {
+  dps: 472.20995
+  tps: 296.57248
+ }
+}
+dps_results: {
+ key: "TestP1Hunter-Phase1-AllItems-MarkoftheVeteran-26171"
+ value: {
+  dps: 472.20995
+  tps: 296.57248
+ }
+}
+dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Marshal'sChainGrips-16463"
  value: {
   dps: 484.47336

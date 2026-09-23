@@ -19,6 +19,14 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 
 	castTime := time.Millisecond * 2000
 
+	// Mark of the Veteran (warlock): Equip: Reduces the time between periodic ticks of your Corruption spell by 1 sec.
+	// Same duration and damage per tick, so more ticks.
+	tickLength := time.Second * 3
+	if warlock.HasTrinketEquipped(MarkOfTheVeteranWarlockA) || warlock.HasTrinketEquipped(MarkOfTheVeteranWarlockB) {
+		ticks = int32(time.Duration(ticks) * tickLength / (time.Second * 2))
+		tickLength = time.Second * 2
+	}
+
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolShadow,
@@ -51,7 +59,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			},
 
 			NumberOfTicks:    ticks,
-			TickLength:       time.Second * 3,
+			TickLength:       tickLength,
 			BonusCoefficient: dotTickCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

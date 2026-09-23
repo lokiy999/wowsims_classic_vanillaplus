@@ -426,7 +426,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0, false)) // Do we implement 3pc wrath for the other sims?
+		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0, 0)) // Do we implement 3pc wrath for the other sims?
 	}
 
 	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing {
@@ -1496,7 +1496,8 @@ func BoomingVoiceDurationMultiplier(points int32) float64 {
 	return []float64{1, 1.3, 1.5}[points]
 }
 
-func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, has3pcWrath bool) *Aura {
+// bonusAP is a flat attack power bonus on top of the shout (e.g. the warrior Mark of the Veteran, +42).
+func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, bonusAP float64) *Aura {
 	rank := TernaryInt32(IncludeAQ, 7, 6)
 	spellId := BattleShoutSpellId[rank]
 	baseAP := BattleShoutBaseAP[rank]
@@ -1508,12 +1509,12 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, ha
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(baseAP*(1+0.05*float64(impBattleShout)) + TernaryFloat64(has3pcWrath, 30, 0)),
+				stats.AttackPower: math.Floor(baseAP*(1+0.05*float64(impBattleShout)) + bonusAP),
 			})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(baseAP*(1+0.05*float64(impBattleShout))+TernaryFloat64(has3pcWrath, 30, 0)),
+				stats.AttackPower: -1 * math.Floor(baseAP*(1+0.05*float64(impBattleShout))+bonusAP),
 			})
 		},
 	})

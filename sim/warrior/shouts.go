@@ -43,14 +43,25 @@ func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, 
 	})
 }
 
+const (
+	MarkOfTheVeteranBattleShoutA = 26159
+	MarkOfTheVeteranBattleShoutB = 26168
+)
+
 func (warrior *Warrior) registerBattleShout() {
 	rank := core.TernaryInt32(core.IncludeAQ, 7, 6)
 	actionId := core.BattleShoutSpellId[rank]
 	// Battlegear of Wrath's real tooltip does not grant a Battle Shout AP bonus (that was a stale
 	// retail-generic assumption); the set's actual bonuses are wired in item_sets_pve.go.
 
+	// Mark of the Veteran (warrior): Equip: Increases the attack power granted by Battle Shout by 42.
+	bonusAP := 0.0
+	if warrior.HasTrinketEquipped(MarkOfTheVeteranBattleShoutA) || warrior.HasTrinketEquipped(MarkOfTheVeteranBattleShoutB) {
+		bonusAP = 42
+	}
+
 	warrior.BattleShout = warrior.newShoutSpellConfig(core.ActionID{SpellID: actionId}, rank, warrior.NewPartyAuraArray(func(unit *core.Unit) *core.Aura {
-		return core.BattleShoutAura(unit, warrior.Talents.ImprovedCombatShouts, warrior.Talents.BoomingVoice, false) // TODO: verify Improved Combat Shouts +5% Battle Shout
+		return core.BattleShoutAura(unit, warrior.Talents.ImprovedCombatShouts, warrior.Talents.BoomingVoice, bonusAP) // TODO: verify Improved Combat Shouts +5% Battle Shout
 	}))
 }
 

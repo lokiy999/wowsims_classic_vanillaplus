@@ -139,6 +139,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombatDaggers-Phase5-AllItems-MarkoftheVeteran-26164"
+ value: {
+  dps: 418.47309
+  tps: 297.11589
+ }
+}
+dps_results: {
+ key: "TestCombatDaggers-Phase5-AllItems-MarkoftheVeteran-26173"
+ value: {
+  dps: 418.47309
+  tps: 297.11589
+ }
+}
+dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-NightslayerArmor"
  value: {
   dps: 414.59442

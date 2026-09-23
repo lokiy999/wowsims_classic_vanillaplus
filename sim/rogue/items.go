@@ -7,11 +7,20 @@ import (
 )
 
 const (
-	VenomousTotem                    = 19342
-	RenatakisCharmofTrickery         = 19954
+	VenomousTotem            = 19342
+	RenatakisCharmofTrickery = 19954
+	MarkOfTheVeteranRogueA   = 26164
+	MarkOfTheVeteranRogueB   = 26173
 )
 
 func init() {
+	// Mark of the Veteran (rogue): Equip: Increases your Energy regeneration by 2 per tick.
+	markOfTheVeteranRogue := func(agent core.Agent) {
+		agent.(RogueAgent).GetRogue().ApplyEnergyTickMultiplier(0.1)
+	}
+	core.NewItemEffect(MarkOfTheVeteranRogueA, markOfTheVeteranRogue)
+	core.NewItemEffect(MarkOfTheVeteranRogueB, markOfTheVeteranRogue)
+
 	core.AddEffectsToTest = false
 
 	// https://www.wowhead.com/classic/item=19954/renatakis-charm-of-trickery

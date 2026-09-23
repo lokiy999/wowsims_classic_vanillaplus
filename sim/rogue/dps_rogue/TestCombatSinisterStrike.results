@@ -139,6 +139,20 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombatSinisterStrike-Phase5-AllItems-MarkoftheVeteran-26164"
+ value: {
+  dps: 690.17619
+  tps: 490.0251
+ }
+}
+dps_results: {
+ key: "TestCombatSinisterStrike-Phase5-AllItems-MarkoftheVeteran-26173"
+ value: {
+  dps: 690.17619
+  tps: 490.0251
+ }
+}
+dps_results: {
  key: "TestCombatSinisterStrike-Phase5-AllItems-NightslayerArmor"
  value: {
   dps: 664.30512

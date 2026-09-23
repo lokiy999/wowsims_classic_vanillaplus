@@ -2890,3 +2890,39 @@ exists in neither. Found by scanning for SoD spell ids (400000+), SoD item ids (
 - 60U import/export labels no longer say "SoD"; the EP export goes to sixtyupgrades.com/era.
 - Links in comments that pointed to SoD item pages now point to the classic items.
 - All tests pass (with and without `--tags=with_db`); paladin and enhancement golden results updated.
+
+## Part BJ — Trinkets that did nothing, first batch (2026-09-23)
+
+From the TODO list of trinkets with a Use/Equip effect but no code. Effects follow the server tooltip
+(`VPlusItemDB.lua`); the server data has no cooldowns, so cooldowns are the classic ones from Wowhead's tooltip API.
+Where the server changed the effect but not the cooldown (ZG charms, Aegis of Preservation), the classic cooldown is
+an assumption.
+
+New file `sim/common/item_effects/vplus_trinkets.go`:
+- **Equip:** Mark of the Veteran +2% crit (26160/26163/26170/26172), Mark of the Veteran +5% spell hit for 20s after a
+  resist (26165/26174), Mark of Thirst (+20% attack and cast speed below 20% health), Royal Seal of Eldre'Thalas +12 all
+  attributes (18466) and -2% spell cost (18471/18472), Blue Mottled/Pink Speckled Egg +10 all resistances, Onyx Egg -1%
+  damage taken, Sawtooth Talisman 250 armor penetration (the 5% part is not modeled: no percentage armor pen),
+  Shen'dralar Badge of Deterrence +5% threat, Fetish of the Sand Reaver/Grace of Earth/Two-Faced Medallion -5% threat,
+  The Lion Horn of Stormwind (wearer only: +250 armor, +10 resistances).
+- **Use (offensive, shared trinket cooldown):** Gri'lek's Charm of Valor (+10% crit on Holy spells and physical attacks,
+  30s, 3 min), Wushoolay's Charm of Nature (+20% Nature damage, 15s, 3 min), Hazza'rah's Charm of Healing (+40% cast
+  speed, 15s, 3 min), Blessed Prayer Beads (+190 healing, 20s, 2 min), Mar'li's Eye (60 mana per 5s for 30s, 3 min).
+- **Use (damage):** Shard of the Fallen Star (400-442 Fire to all targets, 3 min), Ramstein's Lightning Bolts (200-440
+  Nature to all, 5 min), Smokey's Lighter (125 Fire to all, 5 min), Chained Essence of Eranikus (50 Nature every 5s
+  for 45s to all, 15 min). Spell ids from Spell.csv.
+- **Use (defensive):** Aegis of Preservation (-10% damage taken 20s, 5 min; the heal is not modeled), Fetish of
+  Chitinous Spikes (82 Nature to melee attackers, 30s, 3 min), Blazing Emblem (+50 fire res), Heart of the Scale (+20
+  fire res), Petrified Scarab (+100 resistances, no decay), Ragged John's Neverending Cup (+28 Stamina). Fetish of the
+  Sand Reaver's -70% threat is castable from an APL but not auto-used.
+
+Class-specific:
+- Warrior Mark of the Veteran (26159/26168): Battle Shout +42 AP. `core.BattleShoutAura` now takes a flat `bonusAP`
+  instead of the unused `has3pcWrath` bool.
+- Hunter Mark of the Veteran (26162/26171): Multi-Shot cooldown -2 sec.
+- Rogue Mark of the Veteran (26164/26173): +2 energy per tick (energy tick multiplier +0.1).
+- Warlock Mark of the Veteran (26167/26176): Corruption ticks every 2 sec instead of 3, same duration (6 -> 9 ticks).
+- Pimgib's Collar (18354): Imp Firebolt +18 damage.
+
+Checked in the browser: a mage with Shard of the Fallen Star and Mar'li's Eye uses both. Golden results updated for
+hunter, rogue (new Mark of the Veteran tests) and shadow priest (Hazza'rah's Charm is part of Confessor's Raiment).

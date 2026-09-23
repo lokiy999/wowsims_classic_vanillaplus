@@ -10,6 +10,9 @@ import (
 const (
 	TheBlackBook                = 19337
 	HazzarahsCharmOfDestruction = 19957
+	PimgibsCollar               = 18354
+	MarkOfTheVeteranWarlockA    = 26167
+	MarkOfTheVeteranWarlockB    = 26176
 )
 
 func init() {
