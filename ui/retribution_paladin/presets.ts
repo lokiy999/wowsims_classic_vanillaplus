@@ -24,17 +24,7 @@ import {
 } from '../core/proto/common.js';
 import { PaladinAura, PaladinOptions as RetributionPaladinOptions, PaladinSeal } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import APLP1RetJson from './apls/p1ret.apl.json';
-import APLP2RetJson from './apls/p2ret.apl.json';
-import APLP3RetJson from './apls/p3ret.apl.json';
-import APLP4RetJson from './apls/p4ret.apl.json';
-import APLP4RetExodinJson from './apls/p4ret-exodin.apl.json';
-import APLP4RetExodin6PcT1Json from './apls/p4ret-exodin-6pcT1.apl.json';
-import APLP4RetTwisting6PcT1Json from './apls/p4ret-twisting-6pcT1.apl.json';
-import APLPP5ExodinJson from './apls/p5ret-exodin-6CF2DR.apl.json';
-import APLPP5TwistingSlowJson from './apls/p5ret-twist-4DR-3.5-3.6.apl.json';
-import APLPP5TwistingSlowerJson from './apls/p5ret-twist-4DR-3.7-4.0.apl.json';
-import APLPP5ShockadinJson from './apls/p5Shockadin.apl.json';
+import APLRetJson from './apls/ret.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
 
 // Preset options for this spec.
@@ -55,27 +45,13 @@ export const DefaultGear = GearBlank;
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson);
-export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', APLP2RetJson);
-export const APLP3Ret = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', APLP3RetJson);
-export const APLP4RetTwist = PresetUtils.makePresetAPLRotation('P4 Ret Twist', APLP4RetJson);
-export const APLP4RetTwist6pT1 = PresetUtils.makePresetAPLRotation('P4 Ret Twist 6pT1', APLP4RetTwisting6PcT1Json);
-export const APLP4RetExodin = PresetUtils.makePresetAPLRotation('P4 Ret Exodin', APLP4RetExodinJson);
-export const APLP4RetExodin6pT1 = PresetUtils.makePresetAPLRotation('P4 Ret Exodin 6pT1', APLP4RetExodin6PcT1Json);
-export const APLPP5Twisting4DRSlow = PresetUtils.makePresetAPLRotation('P5 Twist 4DR Slow 3.5-3.6', APLPP5TwistingSlowJson);
-export const APLPP5Twisting4DRSlower = PresetUtils.makePresetAPLRotation('P5 Twist 4DR Slower 3.7+', APLPP5TwistingSlowerJson);
-export const APLPP5Exodin = PresetUtils.makePresetAPLRotation('P5 Exodin', APLPP5ExodinJson);
-export const APLPP5Shockadin = PresetUtils.makePresetAPLRotation('P5 Shockadin', APLPP5ShockadinJson);
+export const APLRet = PresetUtils.makePresetAPLRotation('Ret', APLRetJson);
 
 export const APLPresets = {
-	[Phase.Phase1]: [APLP1Ret],
-	[Phase.Phase2]: [APLP2Ret],
-	[Phase.Phase3]: [APLP3Ret],
-	[Phase.Phase4]: [APLP4RetTwist, APLP4RetTwist6pT1, APLP4RetExodin, APLP4RetExodin6pT1],
-	[Phase.Phase5]: [APLPP5Twisting4DRSlow, APLPP5Twisting4DRSlower, APLPP5Exodin, APLPP5Shockadin],
+	[Phase.Phase1]: [APLRet],
 };
 
-export const DefaultAPL = APLPresets[Phase.Phase5][0];
+export const DefaultAPL = APLPresets[Phase.Phase1][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent presets
@@ -84,27 +60,13 @@ export const DefaultAPL = APLPresets[Phase.Phase5][0];
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const P1RetTalents = PresetUtils.makePresetTalents('P1 Ret', SavedTalents.create({ talentsString: '' }));
-
-export const P2RetTalents = PresetUtils.makePresetTalents('P2 Ret', SavedTalents.create({ talentsString: '' }));
-
-export const P2ShockadinTalents = PresetUtils.makePresetTalents('P2 Shockadin', SavedTalents.create({ talentsString: '' }));
-
-export const P3RetTalents = PresetUtils.makePresetTalents('P3 Ret', SavedTalents.create({ talentsString: '' }));
-
-export const P4RetTalents = PresetUtils.makePresetTalents('P4/P5 Ret', SavedTalents.create({ talentsString: '' }));
-
-export const P5ShockadinTalents = PresetUtils.makePresetTalents('P5 Shockadin', SavedTalents.create({ talentsString: '' }));
+export const RetTalents = PresetUtils.makePresetTalents('Ret', SavedTalents.create({ talentsString: '' }));
 
 export const TalentPresets = {
-	[Phase.Phase1]: [P1RetTalents],
-	[Phase.Phase2]: [P2RetTalents, P2ShockadinTalents],
-	[Phase.Phase3]: [P3RetTalents],
-	[Phase.Phase4]: [P4RetTalents],
-	[Phase.Phase5]: [P4RetTalents, P5ShockadinTalents],
+	[Phase.Phase1]: [RetTalents],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase5][0];
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -112,7 +74,7 @@ export const DefaultTalents = TalentPresets[Phase.Phase5][0];
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	aura: PaladinAura.SanctityAura,
-	primarySeal: PaladinSeal.Martyrdom,
+	primarySeal: PaladinSeal.Righteousness,
 });
 
 export const DefaultConsumes = Consumes.create({

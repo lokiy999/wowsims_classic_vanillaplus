@@ -518,8 +518,6 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput({
 	label: 'Attack Power',
 });
 
-// TODO: SoD Mangle
-//export const BleedDebuff = withLabel(makeBooleanDebuffInput({ actionId: () => ActionId.fromSpellId(409828), fieldName: 'mangle' }), 'Bleed');
 
 export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput({
 	values: [

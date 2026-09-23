@@ -2859,3 +2859,34 @@ Wowhead, and custom server spells are not on Wowhead. Checked all spell ids in `
 - **Build note:** `make wowsimclassic` does not rebuild the UI bundle when only `.json` files change (the rule only
   tracks `.ts/.tsx/.scss/.html`). Run `rm -f dist/classic/bundle/.dirstamp` first after editing rotation JSON.
 - All tests pass, with and without `--tags=with_db`. Trinket list and other findings: TODO.md, 2026-09-23.
+
+## Part BI — Season of Discovery content removed or replaced (2026-09-23)
+
+Rule (user): replace SoD content with the V+ server version, or classic if the server has no data; remove it if it
+exists in neither. Found by scanning for SoD spell ids (400000+), SoD item ids (200000+), "SoD"/"S03"/rune code.
+
+- **Paladin:** every ret/prot rotation was built on SoD rune spells (Divine Storm, Seal of Martyrdom, SoD Crusader
+  Strike, Avenger's Shield, ...) that are not in the sim, and the default seal was **Seal of Martyrdom, which was never
+  implemented**, so default paladin sims cast no seal. Removed the Martyrdom seal (`proto/paladin.proto`, reserved) and
+  its UI option; default seal is Righteousness. Replaced all 13 rotations with one each: `ret.apl.json` (seal upkeep,
+  Hammer of Wrath <20%, Crusader Strike, Judgement + reseal, Exorcism) and `prot.apl.json` (seal upkeep, Holy Shield,
+  Judgement + reseal, Consecration, Exorcism). Removed the SoD-only Exodin and Shockadin test suites.
+- **Exorcism** was the SoD rune version (guaranteed crit on Undead/Demon); now the server version: any target, +50%
+  damage to Undead and Demons.
+- **Seal of Righteousness:** removed the 2h coefficient x1.1 "from testing in SoD".
+- **Windfury Weapon:** the two extra attacks now roll on the white hit table (can glance), as in classic; SoD made them
+  yellow hits. Enhancement shaman results -2.6% to -3.8%.
+- **Swipe:** SoD "S03 tuning" +101% threat removed (classic has no extra modifier).
+- **Weapon procs:** SoD spell ids replaced with server ids (Drake Talon Cleaver 21140, Halberd of Smiting 24241,
+  Jeklik's Crusher 24257, Zulian Slicer 24251, Flame Wrath 16559/16560, Gutgore Ripper 21151, Masterwork Stormhammer
+  16921, Quel'Serrar 22850, Shadowstrike 21170, Thunderstrike 21179, Ravager aura 9632, Primal Blessing 24255).
+  Server values: Halberd of Smiting 418-607 (was 452-676), Masterwork Stormhammer 110-200 (was 105-145). SoD spell
+  power scaling removed from Zulian Slicer (0.35) and Shadowstrike (1.0). Talisman of Ascendance lasts 25 sec (server).
+- **Dragon's Call:** up to 3 Emerald Dragon Whelps at a time (classic); the single-whelp version was SoD.
+- **Removed (SoD only):** Cassandra's Tome (231509), Core Hound's Call set guardian, Mangle debuff (409828),
+  commented-out SoD warrior sets, hunter Melee Specialist Raptor Strike ids, warlock SoD Demon Armor option (403619),
+  "Rune Equipped" APL value (`proto/apl.proto`, field 74 reserved) and its picker, SoD pets/icon overrides/buff ids in
+  `action_id.ts`, SoD Starfall on the timeline, the Homunculi known issue, rune wording in messages.
+- 60U import/export labels no longer say "SoD"; the EP export goes to sixtyupgrades.com/era.
+- Links in comments that pointed to SoD item pages now point to the classic items.
+- All tests pass (with and without `--tags=with_db`); paladin and enhancement golden results updated.

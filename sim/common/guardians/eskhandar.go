@@ -8,7 +8,6 @@ import (
 )
 
 // https://www.wowhead.com/classic/item-set=1781/spirit-of-eskhandar
-// https://www.wowhead.com/classic/spell=461990/call-of-eskhandar
 // https://www.wowhead.com/classic/npc=14306/eskhandar
 
 type Eskhandar struct {

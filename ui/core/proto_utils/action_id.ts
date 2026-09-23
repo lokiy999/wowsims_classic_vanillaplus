@@ -559,11 +559,7 @@ export class ActionId {
 type ActionIdOverride = { itemId?: number; spellId?: number };
 
 // Some items/spells have weird icons, so use this to show a different icon instead.
-const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
-	[JSON.stringify({ spellId: 449288 }), { itemId: 221309 }], // Darkmoon Card: Sandstorm
-	[JSON.stringify({ spellId: 455864 }), { spellId: 9907 }], // Tier 1 Balance Druid "Improved Faerie Fire"
-	[JSON.stringify({ spellId: 457544 }), { spellId: 10408 }], // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
-]);
+const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([]);
 
 const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([]);
 
@@ -611,22 +607,11 @@ const spellIDsToShowBuffs = new Set([
 	23768, // https://www.wowhead.com/classic/spell=23768/sayges-dark-fortune-of-damage
 	24907, // https://www.wowhead.com/classic/spell=24907/moonkin-aura
 	24932, // https://www.wowhead.com/classic/spell=24932/leader-of-the-pack
-	402808, // https://www.wowhead.com/classic/spell=402808/cripple
-	425415, // https://www.wowhead.com/classic/spell=425415/enrage
-	461252, // https://www.wowhead.com/classic/spell=461252/shadowflame-fury
-	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
-	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
-const petNameToActionId: Record<string, ActionId> = {
-	'Eye of the Void': ActionId.fromSpellId(402789),
-	'Frozen Orb 1': ActionId.fromSpellId(440802),
-	'Frozen Orb 2': ActionId.fromSpellId(440802),
-	Homunculi: ActionId.fromSpellId(402799),
-	Shadowfiend: ActionId.fromSpellId(401977),
-};
+const petNameToActionId: Record<string, ActionId> = {};
 
 // https://wowhead.com/classic/hunter-pets
 const petNameToIcon: Record<string, string> = {

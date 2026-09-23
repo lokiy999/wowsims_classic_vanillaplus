@@ -294,7 +294,7 @@ var ItemSetPrimalBlessing = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 
 			aura := character.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467742},
+				ActionID: core.ActionID{SpellID: 24255},
 				Label:    "Primal Blessing",
 				Duration: time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {

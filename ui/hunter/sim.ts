@@ -157,9 +157,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	autoRotation: player => {
 		const isMelee = false;
-		//player.hasRune(ItemSlot.ItemSlotWaist, HunterRune.RuneBeltMeleeSpecialist) ||
-		//player.hasRune(ItemSlot.ItemSlotFeet, HunterRune.RuneBootsDualWieldSpecialization) ||
-		//player.hasRune(ItemSlot.ItemSlotFeet, HunterRune.RuneBootsWyvernStrike);
 
 		return Presets.DefaultAPL.rotation.rotation!;
 

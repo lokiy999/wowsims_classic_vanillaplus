@@ -100,10 +100,6 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(GiftOfArthasAura(target))
 	}
 
-	/* if debuffs.Mangle {
-		MakePermanent(MangleAura(target, level))
-	} */
-
 	if debuffs.CrystalYield {
 		MakePermanent(CrystalYieldAura(target))
 	}
@@ -594,14 +590,6 @@ func HemorrhageAura(target *Unit) *Aura {
 			aura.RemoveStack(sim)
 		},
 	})
-}
-
-func MangleAura(target *Unit) *Aura {
-	return bleedDamageAura(target, Aura{
-		Label:    "Mangle",
-		ActionID: ActionID{SpellID: 409828},
-		Duration: time.Minute,
-	}, 1.3)
 }
 
 // Bleed Damage Multiplier category

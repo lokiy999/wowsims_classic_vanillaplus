@@ -30,7 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: 'priest',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['The Homunculi Rune is not currently implemented until more data is available'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [

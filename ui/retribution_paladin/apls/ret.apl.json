@@ -1,0 +1,14 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castPaladinPrimarySeal":{}},"doAtValue":{"const":{"val":"-1.5s"}}}
+  ],
+  "priorityList": [
+    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":20271}}},{"castPaladinPrimarySeal":{}}]}}},
+    {"action":{"condition":{"isExecutePhase":{"threshold":"E20"}},"castSpell":{"spellId":{"spellId":24239}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":33487}}}},
+    {"action":{"condition":{"spellCanCast":{"spellId":{"spellId":20271}}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":20271}}},{"castPaladinPrimarySeal":{}}]}}},
+    {"action":{"castSpell":{"spellId":{"spellId":10314}}}}
+  ]
+}

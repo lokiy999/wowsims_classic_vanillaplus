@@ -442,3 +442,16 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
   Poison I), 13948 Enchant Gloves - Minor Haste (Lesser Haste), 15487 Silence (Shadow Word: Silence), 28271/28272
   Polymorph (Polymorph: Turtle / Pig). The Arcanum names and "Judgement Armor 8-piece" are deliberate.
 - 13 custom enchants (900101-900212) have no spell row or label; the gear slot shows their name, which reads fine.
+
+## Raised 2026-09-23 — after the SoD removal (CHANGES.md Part BI)
+
+- **Flame Wrath** and **Quel'Serrar** are "Use:" effects on the server (Flame Wrath: fire shield + 210-250 fire ring;
+  Quel'Serrar: +40 defense and +1400 armor for 20 sec) but the server data has no cooldown for them, so the sim keeps
+  the classic chance-on-hit versions. Needs the cooldowns from the game.
+- The paladin rotations are new and simple (no Consecration for ret, no mana management); tune them in game.
+- The "Level 60" preset target uses NPC id 213336 (a SoD id, display only) in `sim/encounters/default_presets.go`.
+- BWL encounter mechanics were copied from SoD and are unverified (comments in `sim/encounters/blackwing_lair.go`).
+- The disabled feral tank and healing priest rotations use spell ids from a later expansion (48xxx), not SoD.
+- `tools/database/atlasloot.go` still reads the AtlasLootClassic_SoD repository (a data source only).
+- Comments in core mentioning SoD behaviour (rollovers, expertise, stat weights) were left; they describe mechanics
+  that have no confirmed classic value.

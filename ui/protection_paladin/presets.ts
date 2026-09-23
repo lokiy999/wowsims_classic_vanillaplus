@@ -26,8 +26,7 @@ import {
 } from '../core/proto/common.js';
 import { Blessings, PaladinAura, PaladinOptions as ProtectionPaladinOptions,PaladinSeal } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import APLP4ProtJson from './apls/p4prot.apl.json';
-import APLP5ProtJson from './apls/p5prot.apl.json';
+import APLProtJson from './apls/prot.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
 
 // Preset options for this spec.
@@ -48,18 +47,13 @@ export const DefaultGear = GearBlank;
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLP5Prot = PresetUtils.makePresetAPLRotation('P5 Prot', APLP5ProtJson);
-export const APLP4Prot = PresetUtils.makePresetAPLRotation('P4 Prot', APLP4ProtJson);
+export const APLProt = PresetUtils.makePresetAPLRotation('Prot', APLProtJson);
 
 export const APLPresets = {
-	[Phase.Phase1]: [],
-	[Phase.Phase2]: [],
-	[Phase.Phase3]: [],
-	[Phase.Phase4]: [APLP4Prot, APLP5Prot],
-	[Phase.Phase5]: [APLP4Prot, APLP5Prot],
+	[Phase.Phase1]: [APLProt],
 };
 
-export const DefaultAPL = APLPresets[Phase.Phase5][0];
+export const DefaultAPL = APLPresets[Phase.Phase1][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent presets
@@ -68,29 +62,18 @@ export const DefaultAPL = APLPresets[Phase.Phase5][0];
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const P4ProtTalents = {
-	name: 'P4 Prot',
-	data: SavedTalents.create({
-		talentsString: '',
-	}),
-};
-
-export const P5ProtTalents = {
-	name: 'P5 Prot',
+export const ProtTalents = {
+	name: 'Prot',
 	data: SavedTalents.create({
 		talentsString: '',
 	}),
 };
 
 export const TalentPresets = {
-	[Phase.Phase1]: [],
-	[Phase.Phase2]: [],
-	[Phase.Phase3]: [],
-	[Phase.Phase4]: [P4ProtTalents],
-	[Phase.Phase5]: [P5ProtTalents],
+	[Phase.Phase1]: [ProtTalents],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase5][0];
+export const DefaultTalents = TalentPresets[Phase.Phase1][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -98,7 +81,7 @@ export const DefaultTalents = TalentPresets[Phase.Phase5][0];
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	aura: PaladinAura.SanctityAura,
-	primarySeal: PaladinSeal.Martyrdom,
+	primarySeal: PaladinSeal.Righteousness,
 	personalBlessing: Blessings.BlessingOfSanctuary,
 	righteousFury: true,
 });

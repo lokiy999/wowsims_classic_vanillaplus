@@ -62,8 +62,7 @@ func (ai *VaelastraszTheCorruptAI) Initialize(target *core.Target, config *proto
 
 func (ai *VaelastraszTheCorruptAI) registerSpells() {
 	essenceOfTheRedActionID := core.ActionID{SpellID: 23513}
-	//burningAdrenalineActionID := core.ActionID{SpellID: 367987}
-	//burningAdrenalineTankActionID := core.ActionID{SpellID: 469261}
+	//burningAdrenalineActionID := core.ActionID{SpellID: 18173}
 	//fireNovaActionID := core.ActionID{SpellID: 23462}
 	//flameBreathActionID := core.ActionID{SpellID: 23461}
 	//cleaveActionID := core.ActionID{SpellID: 19983}

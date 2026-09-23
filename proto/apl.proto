@@ -84,6 +84,7 @@ message APLAction {
 
 // NextIndex: 78
 message APLValue {
+    reserved 74; // rune_is_equipped (Season of Discovery runes)
     oneof value {
         // Operators
         APLValueConst const = 1;
@@ -149,9 +150,6 @@ message APLValue {
         APLValueAuraInternalCooldown aura_internal_cooldown = 39;
         APLValueAuraICDIsReadyWithReactionTime aura_icd_is_ready_with_reaction_time = 51;
         APLValueAuraShouldRefresh aura_should_refresh = 43;
-
-        // Rune values TODO: remove once APLs for classes are updated
-        APLValueRuneIsEquipped rune_is_equipped = 74;
 
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
@@ -495,11 +493,6 @@ message APLValueAuraShouldRefresh {
     UnitReference source_unit = 2;
     ActionID aura_id = 1;
     APLValue max_overlap = 3;
-}
-
-// TODO: remove once APLs for classes are updated
-message APLValueRuneIsEquipped {
-    ActionID rune_id = 1;
 }
 
 message APLValueDotIsActive {

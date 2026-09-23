@@ -52,10 +52,6 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 			value: PaladinSeal.Command,
 		},
 		{
-			actionId: () => ActionId.fromSpellId(407798),
-			value: PaladinSeal.Martyrdom,
-		},
-		{
 			actionId: () => ActionId.fromSpellId(20423),
 			value: PaladinSeal.Fury,
 			showWhen: (player: Player<Spec.SpecProtectionPaladin>) => player.getTalents().sealOfFury,

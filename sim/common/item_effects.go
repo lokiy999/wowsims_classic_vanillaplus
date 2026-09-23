@@ -358,7 +358,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=228606/blackblade-of-shahram
+	// https://www.wowhead.com/classic/item=12592/blackblade-of-shahram
 	// Chance on hit: Summons the infernal spirit of Shahram.
 	// Summons an NPC "Shahram" who has an equal chance to cast one of 6 spells:
 	// Curse of Shahram: -50% movement speed and -25% attack speed on all enemies within 10 yards of Shahram for 10 seconds.
@@ -801,10 +801,10 @@ func init() {
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			PPM:               1.0, // Reported by armaments discord
-			//ICD:               time.Minute * 1,  Removed ICD due to comments on multiple from Classic but am not implementing multiple pets
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// Up to 3 whelps at a time: summon the first one that isn't already out.
 				for _, petAgent := range character.PetAgents {
-					if whelp, ok := petAgent.(*guardians.EmeraldDragonWhelp); ok {
+					if whelp, ok := petAgent.(*guardians.EmeraldDragonWhelp); ok && !whelp.IsEnabled() {
 						whelp.EnableWithTimeout(sim, whelp, time.Second*15)
 						break
 					}
@@ -815,8 +815,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=19353/drake-talon-cleaver
 	// Chance on hit: Delivers a fatal wound for 240 damage.
-	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
-	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 240, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 21140, core.SpellSchoolPhysical, 240, 0, 0.0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=19170/ebon-hand
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 125 to 275 Shadow damage.
@@ -1061,7 +1060,7 @@ func init() {
 	// Chance on hit: Envelops the caster with a Fire shield for 15 sec and shoots a ring of fire dealing 130 to 170 damage to all nearby enemies.
 	// Estimated based on data from WoW Armaments Discord
 	itemhelpers.CreateWeaponProcSpell(FlameWrath, "Flame Wrath", 1.0, func(character *core.Character) *core.Spell {
-		shieldActionID := core.ActionID{SpellID: 461152}
+		shieldActionID := core.ActionID{SpellID: 16560}
 		shieldSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:         shieldActionID,
 			SpellSchool:      core.SpellSchoolFire,
@@ -1091,7 +1090,7 @@ func init() {
 			},
 		})
 		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 461151},
+			ActionID:         core.ActionID{SpellID: 16559},
 			SpellSchool:      core.SpellSchoolFire,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
@@ -1322,7 +1321,7 @@ func init() {
 		})
 
 		return character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 461682},
+			ActionID:         core.ActionID{SpellID: 21151},
 			SpellSchool:      core.SpellSchoolShadow,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
@@ -1373,8 +1372,8 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(GutRipper, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=19874/halberd-of-smiting
-	// Equip: Chance to decapitate the target on a melee swing, causing 452 to 676 damage.
-	itemhelpers.CreateWeaponEquipProcDamage(HalberdOfSmiting, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // Works as phantom strike
+	// Equip: Chance to decapitate the target on a melee swing, causing 418 to 607 damage. (server)
+	itemhelpers.CreateWeaponEquipProcDamage(HalberdOfSmiting, "Halberd of Smiting", 2.1, 24241, core.SpellSchoolPhysical, 418, 189, 0.0, core.DefenseTypeMelee) // Works as phantom strike
 
 	// https://www.wowhead.com/classic/item=15814/hameyas-slayer
 	// Chance on hit: Wounds the target causing them to bleed for 80 damage over 30 sec.
@@ -1434,7 +1433,6 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=13937/headmasters-charge
 	// Use: Gives 20 additional intellect to party members within 30 yards. (10 Min Cooldown)
-	// Originally did not stack with Arcane Intellect, but is reported to stack in SoD
 	/* core.NewItemEffect(HeadmastersCharge, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 18264}
@@ -1525,8 +1523,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=19918/jekliks-crusher
 	// Chance on hit: Wounds the target for 200 to 220 damage.
-	// Original proc rate 4.0 lowered to 1.5 in SoD phase 5
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 24257, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=17054/joonhos-mercy
 	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
@@ -1675,12 +1672,12 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=12794/masterwork-stormhammer
-	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
+	// Chance on hit: Blasts up to 3 targets for 110 to 200 Nature damage. (server)
 	// Estimated based on data from WoW Armaments Discord
 	itemhelpers.CreateWeaponProcSpell(MasterworkStormhammer, "Masterwork Stormhammer", 0.5, func(character *core.Character) *core.Spell {
 		maxHits := int(min(3, character.Env.GetNumTargets()))
 		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 463946},
+			ActionID:         core.ActionID{SpellID: 16921},
 			SpellSchool:      core.SpellSchoolNature,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
@@ -1688,7 +1685,7 @@ func init() {
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for numHits := 0; numHits < maxHits; numHits++ {
-					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
+					spell.CalcAndDealDamage(sim, target, sim.Roll(110, 200), spell.OutcomeMagicHitAndCrit)
 					target = character.Env.NextTargetUnit(target)
 				}
 			},
@@ -1811,7 +1808,7 @@ func init() {
 	// Proc rate estimated based on data from WoW Armaments Discord for the original item
 	itemhelpers.CreateWeaponProcAura(QuelSerrar, "Quel'Serrar", 2.0, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 463105},
+			ActionID: core.ActionID{SpellID: 22850},
 			Label:    "Sanctuary",
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -1851,7 +1848,7 @@ func init() {
 		tickActionID := core.ActionID{SpellID: 9633}
 		procActionID := core.ActionID{SpellID: 9632}
 		//Used as part of a canceling ravager APL
-		auraActionID := core.ActionID{SpellID: 433801}
+		auraActionID := core.ActionID{SpellID: 9632}.WithTag(1)
 
 		ravegerBladestormTickSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    tickActionID,
@@ -2057,7 +2054,7 @@ func init() {
 	// Chance on hit: Steals 100 to 180 life from target enemy.
 	// Estimated based on data from WoW Armaments Discord
 	itemhelpers.CreateWeaponProcSpell(Shadowstrike, "Shadowstrike", 2.2, func(character *core.Character) *core.Spell {
-		actionID := core.ActionID{SpellID: 461683}
+		actionID := core.ActionID{SpellID: 21170}
 		healthMetrics := character.NewHealthMetrics(actionID)
 		return character.RegisterSpell(core.SpellConfig{
 			ActionID:         actionID,
@@ -2066,7 +2063,6 @@ func init() {
 			ProcMask:         core.ProcMaskEmpty,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-			BonusCoefficient: 1.0,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealDamage(sim, target, sim.Roll(100, 180), spell.OutcomeMagicHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
@@ -2363,7 +2359,6 @@ func init() {
 	// https://www.wowhead.com/classic/item=19334/the-untamed-blade
 	// Chance on hit: Increases Strength by 300 for 8 sec.
 	// Estimated based on data from WoW Armaments Discord
-	// Original proc rate 1.0 lowered to approximately 0.55 in SoD phase 5
 	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 1.0, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 23719},
@@ -2476,7 +2471,7 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcSpell(Thunderstrike, "Thunderstrike", 1.5, func(character *core.Character) *core.Spell {
 		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 461686},
+			ActionID:         core.ActionID{SpellID: 21179},
 			SpellSchool:      core.SpellSchoolNature,
 			DefenseType:      core.DefenseTypeMagic,
 			ProcMask:         core.ProcMaskEmpty,
@@ -2607,7 +2602,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=19901/zulian-slicer
 	// Chance on hit: Slices the enemy for 72 to 96 Nature damage.
-	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicer, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicer, "Zulian Slicer", 1.2, 24251, core.SpellSchoolNature, 72, 24, 0, core.DefenseTypeMelee)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
@@ -3089,14 +3084,14 @@ func init() {
 	// Equip: +81 Attack Power when fighting Undead.
 	core.NewMobTypeAttackPowerEffect(SealOfTheDawn, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
 
-	// https://www.wowhead.com/classic/item=237283/talisman-of-ascendance
-	// Use: Your next 5 damage or healing spells cast within 20 seconds will grant a bonus of up to 40 damage and up to 75 healing, stacking up to 5 times.
-	// Expires after 6 damage or healing spells or 20 seconds, whichever occurs first. (50 Sec Cooldown)
+	// https://www.wowhead.com/classic/item=22678/talisman-of-ascendance
+	// Use: Your next 5 damage or healing spells cast within 25 sec seconds will grant a bonus of up to 40 damage and up to 75 healing, stacking up to 5 times.
+	// Expires after 6 damage or healing spells or 25 seconds, whichever occurs first. (server)
 	core.NewItemEffect(TalismanOfAscendance, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: TalismanOfAscendance}
-		duration := time.Second * 20
+		duration := time.Second * 25
 		bonusPerStack := stats.Stats{
 			stats.SpellDamage:  40,
 			stats.HealingPower: 75,
@@ -3361,7 +3356,7 @@ func init() {
 	// Use: Increases Attack Power by 100 for 30 sec. (15 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(CloudkeeperLegplates, stats.Stats{stats.AttackPower: 100, stats.RangedAttackPower: 100}, time.Second*30, time.Minute*15)
 
-	// https://www.wowhead.com/classic/item=228266/drillborer-disk
+	// https://www.wowhead.com/classic/item=17066/drillborer-disk
 	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
 	core.NewItemEffect(DrillborerDisk, func(agent core.Agent) {
 		thornsArcaneDamageEffect(agent, DrillborerDisk, "Drillborer Disk", 3)

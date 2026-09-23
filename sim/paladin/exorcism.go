@@ -65,14 +65,15 @@ func (paladin *Paladin) registerExorcism() {
 			BonusCoefficient: 0.429,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				bonusCrit := 0.0
+				// Server: usable on any target, 50% more damage to Undead and Demons.
+				multiplier := 1.0
 				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
-					bonusCrit += 100 * core.CritRatingPerCritChance
+					multiplier = 1.5
 				}
 
-				spell.BonusCritRating += bonusCrit
+				spell.DamageMultiplier *= multiplier
 				spell.CalcAndDealDamage(sim, target, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
-				spell.BonusCritRating -= bonusCrit
+				spell.DamageMultiplier /= multiplier
 			},
 		})
 

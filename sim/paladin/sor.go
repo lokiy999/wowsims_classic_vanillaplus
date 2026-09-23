@@ -94,7 +94,6 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		coeff := rank.proc.coeff
 		damage := value * 0.85 * paladin.MainHand().SwingSpeed
 		if paladin.has2hEquipped() {
-			coeff = rank.proc.coeff * 1.1 // from testing in SoD
 			damage = value * 1.2 * paladin.MainHand().SwingSpeed
 		}
 

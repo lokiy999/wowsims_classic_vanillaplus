@@ -49,7 +49,8 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			mAP := spell.MeleeAttackPower() + bonusAP*ewMultiplier
 			baseDamage := weaponDamageFunc(sim, mAP)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			// Classic: the extra attacks roll on the white hit table (they can glance), not the special attack table.
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
 	}
 
@@ -104,8 +105,6 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 			if sim.RandomFloat("Windfury Imbue") < proc {
 				icd.Use(sim)
 
-				// TODO: Vanilla uses two extra attacks but SoD replaced this with yellow hits
-				// This needs to be refactored
 				shaman.WindfuryWeaponMH.Cast(sim, result.Target)
 				shaman.WindfuryWeaponMH.Cast(sim, result.Target)
 			}

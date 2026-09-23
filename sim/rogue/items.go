@@ -51,7 +51,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=230250/venomous-totem
+	// https://www.wowhead.com/classic/item=19342/venomous-totem
 	// Increases the chance to apply Rogue poisons to your target by 30% for 20 sec. (5 Min Cooldown)
 	core.NewItemEffect(VenomousTotem, func(agent core.Agent) {
 		rogue := agent.(RogueAgent).GetRogue()

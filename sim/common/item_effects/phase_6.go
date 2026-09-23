@@ -94,7 +94,7 @@ func init() {
 	// Equip: Increases damage done to Undead and Demons by magical spells and effects by up to 85.
 	core.NewMobTypeSpellPowerEffect(MarkOfTheChampionSpell, []proto.MobType{proto.MobType_MobTypeUndead, proto.MobType_MobTypeDemon}, 85)
 
-	// https://www.wowhead.com/classic/item=236334/slayers-crest
+	// https://www.wowhead.com/classic/item=23041/slayers-crest
 	// Use: Increases Attack Power by 280 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(SlayersCrest, stats.Stats{stats.AttackPower: 260, stats.RangedAttackPower: 260}, time.Second*20, time.Minute*2)
 

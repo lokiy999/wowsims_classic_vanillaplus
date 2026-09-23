@@ -132,7 +132,9 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 func constructEmeralDragonWhelps(character *core.Character) {
 	if character.HasMHWeapon() && character.GetMHWeapon().ID == DragonsCall ||
 		character.HasOHWeapon() && character.GetOHWeapon().ID == DragonsCall {
-		// Original could have up to 3 whelps active at a time however the SoD version seems to only summon 1 whelp on a 1 minute cooldown
-		character.AddPet(NewEmeraldDragonWhelp(character))
+		// Up to 3 whelps can be active at a time.
+		for i := 0; i < 3; i++ {
+			character.AddPet(NewEmeraldDragonWhelp(character))
+		}
 	}
 }

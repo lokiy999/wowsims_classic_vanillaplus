@@ -144,12 +144,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	},
 
 	autoRotation: player => {
-		// Try to find a rotation by hand rune
 		const preset = Presets.DefaultAPLs[0];
 
 		if (preset) return preset.rotation.rotation!;
 
-		throw new Error('Auto rotation is not supported for your level / hand rune combination. Please select an APL manually.');
+		throw new Error('No default rotation found. Please select an APL manually.');
 	},
 
 	raidSimPresets: [

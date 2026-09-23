@@ -306,54 +306,6 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 	}
 }
 
-// TODO: remove once APLs for classes are updated
-export interface APLRunePickerConfig<ModObject>
-	extends Omit<DropdownPickerConfig<ModObject, ActionID, null>, 'defaultLabel' | 'equals' | 'setOptionContent' | 'values' | 'getValue' | 'setValue'> {
-	getValue: (obj: ModObject) => ActionID;
-	setValue: (eventID: EventID, obj: ModObject, newValue: ActionID) => void;
-}
-
-// TODO: remove once APLs for classes are updated
-export class APLRunePicker extends DropdownPicker<Player<any>, ActionID, null> {
-	constructor(parent: HTMLElement, player: Player<any>, config: APLRunePickerConfig<Player<any>>) {
-		super(parent, player, {
-			...config,
-			sourceToValue: (src: ActionID) => {
-				return null;
-			},
-			valueToSource: (val: null) => {
-				return ActionID.create({
-					rawId: {
-						oneofKind: 'spellId',
-						spellId: 0,
-					},
-				});
-			},
-			defaultLabel: 'Runes',
-			equals: (a, b) => a == b,
-			setOptionContent: (button, valueConfig) => {
-				const actionId = ActionId.fromSpellId(0);
-				const iconElem = document.createElement('a');
-				iconElem.classList.add('apl-actionid-item-icon');
-				iconElem.dataset.whtticon = 'false';
-				iconElem.classList.add('apl-actionid-item-icon');
-				actionId.fillAndSet(iconElem, true, true);
-				button.appendChild(iconElem);
-
-				const textElem = document.createTextNode("");
-				button.appendChild(textElem);
-			},
-			values: [],
-		});
-
-		const updateValues = async () => {
-			this.setOptions([]);
-		};
-		updateValues();
-		player.rotationChangeEmitter.on(() => this.update);
-	}
-}
-
 export type UNIT_SET = 'aura_sources' | 'aura_sources_targets_first' | 'targets';
 
 const unitSets: Record<
@@ -625,20 +577,6 @@ export function actionIdFieldConfig(
 				defaultUnitRef: defaultUnitRef || 'self',
 			}),
 		...(options || {}),
-	};
-}
-
-// TODO: remove once APLs for classes are updated
-export function runeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
-	return {
-		field: field,
-		newValue: () => ActionID.create(),
-		factory: (parent, player, config, _getParentValue) => {
-			return new APLRunePicker(parent, player, {
-				id: randomUUID(),
-				...config,
-			});
-		},
 	};
 }
 

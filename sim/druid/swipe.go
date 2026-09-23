@@ -10,9 +10,8 @@ var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
 var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 18, 25, 36, 60, 83}
 var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 
-// See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
-// Modifies Threat +101%:
-const SwipeThreatMultiplier = 2.0
+// Classic Swipe has no extra threat modifier (Bear Form's threat bonus is applied separately).
+const SwipeThreatMultiplier = 1.0
 
 func (druid *Druid) registerSwipeBearSpell() {
 	rank := map[int32]int{

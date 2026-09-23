@@ -25,7 +25,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				updateOn: simUI.player.changeEmitter,
 				getContent: () => {
 					if (simUI.player.getSpecOptions().primarySeal == 0) {
-						return `Your previously selected seal is no longer available because of a talent or rune change.
+						return `Your previously selected seal is no longer available because of a talent change.
 							No seal will be cast with this configuration. Please select an available seal in the Settings>Player menu.`;
 					} else {
 						return '';
@@ -143,21 +143,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
-		rotations: [
-			...Presets.APLPresets[Phase.Phase5],
-			...Presets.APLPresets[Phase.Phase4],
-			...Presets.APLPresets[Phase.Phase3],
-			...Presets.APLPresets[Phase.Phase2],
-			...Presets.APLPresets[Phase.Phase1],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase1]],
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase5],
-			...Presets.TalentPresets[Phase.Phase4],
-			...Presets.TalentPresets[Phase.Phase3],
-			...Presets.TalentPresets[Phase.Phase2],
-			...Presets.TalentPresets[Phase.Phase1],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase1]],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.DefaultGear],
 	},

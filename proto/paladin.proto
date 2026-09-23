@@ -96,7 +96,8 @@ enum PaladinSeal {
 	NoSeal = 0;
 	Righteousness = 1;
 	Command = 2;
-	Martyrdom = 3;
+	reserved 3; // Seal of Martyrdom (Season of Discovery rune)
+	reserved "Martyrdom";
 	Fury = 4;
 }
 
