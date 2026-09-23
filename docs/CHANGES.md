@@ -2927,3 +2927,16 @@ Class-specific:
 
 Checked in the browser: a mage with Shard of the Fallen Star and Mar'li's Eye uses both. Golden results updated for
 hunter, rogue (new Mark of the Veteran tests) and shadow priest (Hazza'rah's Charm is part of Confessor's Raiment).
+
+## Part BK — Boss crit chance is only reduced by Defense (2026-09-23)
+
+User rule for the V+ server: a boss's chance to crit a player is only lowered by Defense (and crit-reduction effects);
+dodge, parry and block don't push crits off the attack table.
+
+- `outcomeEnemyMeleeWhite` in `sim/core/spell_outcome.go` rolled one table in the order miss, dodge, parry, block,
+  crit, crushing, hit, so enough avoidance pushed crit (and crushing) off the table. Crit now comes right after miss:
+  miss, crit, dodge, parry, block, crushing, hit. The crit chance is the full base chance minus Defense, whatever the
+  avoidance; dodge, parry and block share the rest. Crushing blows still come after block and can be pushed off.
+- New test `sim/core/enemy_crit_test.go`: a level 63 boss against a player with 90% dodge, 30% parry and 30% block
+  crits 5.6% of the time (its base chance). With the old order the same test gave 0%.
+- No golden results changed (the class test suites don't measure damage taken).

@@ -632,18 +632,26 @@ func (spell *Spell) outcomeEnemyMeleeWhite(sim *Simulation, result *SpellResult,
 	roll := sim.RandomFloat("Enemy White Hit Table")
 	chance := 0.0
 
-	didHit := !result.applyEnemyAttackTableMiss(spell, attackTable, roll, &chance, countHits)
-	if !result.Target.IsCasting(sim) {
-		didHit = didHit &&
-			!result.applyEnemyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyEnemyAttackTableBlock(spell, attackTable, roll, &chance, countHits)
+	if result.applyEnemyAttackTableMiss(spell, attackTable, roll, &chance, countHits) {
+		return
 	}
 
-	if didHit && !result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
-		if didHit && !result.applyEnemyAttackTableCrush(spell, attackTable, roll, &chance, countHits) {
-			result.applyAttackTableHit(spell, countHits)
+	// V+ server: the chance to be crit is only reduced by Defense (and crit-reduction effects), so crit sits right
+	// after miss in the table. Dodge, parry and block share what is left and never push crits off the table.
+	if result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
+		return
+	}
+
+	if !result.Target.IsCasting(sim) {
+		if result.applyEnemyAttackTableDodge(spell, attackTable, roll, &chance, countHits) ||
+			result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance, countHits) ||
+			result.applyEnemyAttackTableBlock(spell, attackTable, roll, &chance, countHits) {
+			return
 		}
+	}
+
+	if !result.applyEnemyAttackTableCrush(spell, attackTable, roll, &chance, countHits) {
+		result.applyAttackTableHit(spell, countHits)
 	}
 }
 
