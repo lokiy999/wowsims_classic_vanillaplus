@@ -64,7 +64,7 @@ func (ai *Patchwerk10AI) Reset(*core.Simulation) {
 }
 
 func (ai *Patchwerk10AI) registerHatefulStrikeSpell(target *core.Target) {
-	actionID := core.ActionID{SpellID: 59192}
+	actionID := core.ActionID{SpellID: 28308}
 
 	ai.HatefulStrike = target.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

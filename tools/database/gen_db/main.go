@@ -386,6 +386,10 @@ func main() {
 		db.AddSpellIcon(spellId, spellTooltips)
 	}
 
+	for _, spellId := range database.SimSpellIds {
+		db.AddSpellIcon(spellId, spellTooltips)
+	}
+
 	for _, spellIds := range GetAllTalentSpellIds(&inputsDir) {
 		for _, spellId := range spellIds {
 			db.AddSpellIcon(spellId, spellTooltips)

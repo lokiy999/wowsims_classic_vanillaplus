@@ -588,7 +588,7 @@ func (shaman *Shaman) applyShamanExtras() {
 	// Lightning Overlord: Lightning Bolt/Chain Lightning crits refund 10%/rank of base mana cost.
 	if shaman.Talents.LightningOverlord > 0 {
 		refund := 0.10 * float64(shaman.Talents.LightningOverlord)
-		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 33012})
+		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 34286}) // Lightning Overlord mana restore
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Lightning Overlord",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

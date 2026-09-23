@@ -1297,7 +1297,7 @@ func init() {
 	itemhelpers.CreateWeaponProcSpell(GutgoreRipper, "Gutgore Ripper", 1.0, func(character *core.Character) *core.Spell {
 		procAuras := character.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 			return target.GetOrRegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 461682},
+				ActionID: core.ActionID{SpellID: 21151},
 				Label:    "Gutgore Ripper",
 				Duration: time.Second * 30,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {

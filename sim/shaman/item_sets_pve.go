@@ -120,7 +120,7 @@ var ItemSetCataclysmArmor = core.NewItemSet(core.ItemSet{
 		// Your Shock spells criticals will refund 150% of their base mana cost.
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 25046})
+			manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 34534}) // Echoes of Shock 3/4
 
 			shaman.RegisterAura(core.Aura{
 				Label:    "Cataclysm Armor 6pc",

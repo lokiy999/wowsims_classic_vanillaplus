@@ -15,6 +15,15 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 
+# Enchants the private server changed (see tools/database/enchant_overrides.go). The
+# scraped Wowhead text is the retail value, so these always win over the scrape.
+SERVER_DESCRIPTIONS = {
+    1483: "Mana +200",                     # Lesser Arcanum of Rumination
+    1504: "Crit suppression +1%",          # Lesser Arcanum of Tenacity
+    2543: "Haste +2%",                     # Arcanum of Rapidity
+    2544: "Healing and Spell Damage +10",  # Arcanum of Focus
+}
+
 if len(sys.argv) < 3:
     raise Exception("Missing arguments, expected input_file_path and output_file_path")
 input_file_path = sys.argv[1]
@@ -67,5 +76,5 @@ driver.quit()
 with open(output_file_path, "w") as outfile:
     outfile.write("{\n")
     for i, enchant in enumerate(enchants):
-        outfile.write("\t\"{}\": \"{}\"{}\n".format(enchant["effect_id"], enchant["description"], "" if i == len(enchants) - 1 else ","))
+        outfile.write("\t\"{}\": \"{}\"{}\n".format(enchant["effect_id"], SERVER_DESCRIPTIONS.get(enchant["effect_id"], enchant["description"]), "" if i == len(enchants) - 1 else ","))
     outfile.write("}")

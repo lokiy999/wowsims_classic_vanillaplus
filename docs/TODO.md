@@ -354,3 +354,91 @@ The fire totems are in the sim and match the server data at level 60; decide whe
 - **The Black Book** (19337): the server tooltip says pet damage +100% and pet damage taken -100% for 30s; the sim gives
   +100% pet armor instead of the damage reduction. Pet damage is right, so DPS is unaffected. The sim's 5 min cooldown is
   not in the server tooltip; confirm in game.
+
+## Raised 2026-09-23 — trinkets that do nothing in the sim (CHANGES.md Part BH)
+
+204 trinkets are in the item database; 38 have code (`core.NewItemEffect`). Of the other 166, 39 only give plain
+stats (those work without code) and 5 have no effect text. The rest have a Use/Equip effect with no code, so
+equipping them does nothing beyond their stats. Effect text is from `VPlusItemDB.lua`.
+
+**Could matter for a DPS/tank sim** (31 Use, 28 Equip):
+
+- Use:
+  - Aegis of Preservation (19345): Use: Decreases damage taken by 10%, and heals for 30% of damage taken for 20 sec.
+  - Arcanite Dragonling (16022): Use: Activates your Arcanite Dragonling to fight for you for 1 min. It requires an hour to cool down before it can be used again.
+  - Banner of Challenge (26340): Use: Forces the target to attack you for 5 sec.
+  - Blazing Emblem (2802): Use: Increases Fire resistance by 50 and reduces all Fire damage taken by up to 25 for 15 sec.
+  - Blessed Prayer Beads (19990): Use: Increases healing done by spells and effects by up to 190 for 20 sec.
+  - Blood Scarred Scale (83075): Use: Increases damage and healing done by magical spells and effects by up to 25 and all resistances by 17 for 30 sec.
+  - Cannonball Runner (13382): Use: Summons a cannon that will fire at enemies in front of it for 20 sec.
+  - Chained Essence of Eranikus (10455): Use: Poisons all enemies in an 8 yard radius around the caster. Victims of the poison suffer 50 Nature damage every 5 sec for 45 sec.
+  - Dark Iron Bookmark (80011): Use: Blasts the enemy for 168 to 202 Fire damage.
+  - Everlasting Liver (81041): Use: Restores 3% of your total Health every 3 sec and increases your Spirit by 40. Lasts 30 sec.
+  - Fetish of Chitinous Spikes (21488): Use: Spikes sprout from you causing 82 Nature damage to attackers when hit. Lasts 30 sec.
+  - Fetish of the Sand Reaver (21647): Use: Reduces the threat you generate by 70% for 20 sec. / Equip: Reduces the threat you generate by 5%.
+  - Grace of Earth (21181): Use: Reduces your threat to enemy targets within 30 yards, making them less likely to attack you. / Equip: Reduces the threat you generate by 5%.
+  - Gri'lek's Charm of Valor (19952): Use: Increases the critical hit chance of Holy spells and physical attacks by 10% for 30 sec.
+  - Hazza'rah's Charm of Healing (19958): Use: Increases the Priest's casting speed by 40% for 15 sec.
+  - Heart of the Scale (13164): Use: Increases Fire Resistance by 20 and deals 20 Fire damage to anyone who strikes you with a melee attack for 5 min.
+  - Hibernation Crystal (20636): Use: Increases healing done by magical spells and effects by up to 350 for 15 sec.
+  - Ironbark Tea Leaf (26070): Use: Instantly heals 500 damage. Also increases armor by 1500 and healing taken by 15% for 30 sec.
+  - Mar'li's Eye (19930): Use: Restores 60 mana every 5 sec for 30 sec.
+  - Mark of Bestial Fury (26312): Use: Increases melee and ranged attack power by 200 and increases damage done by magical spells and effects by up to 120 for 30 sec.
+  - Orb of Chaotic Elements (26229): Use: Releases the power of wild elements, dealing 1 to 1000 Fire, Frost or Nature damage to enemy and healing you.
+  - Petrified Scarab (21685): Use: Increases your spell resistances by 100 for 1 min. Every time a hostile spell lands on you, this bonus is reduced by 10 resistance.
+  - Ragged John's Neverending Cup (15873): Use: Increases Stamina by 28 and reduces physical damage taken by 22 for 10 min. However, lowers your movement speed by 25%.
+  - Ramstein's Lightning Bolts (13515): Use: Harness the power of lightning to strike down all enemies around you for 200 to 440 Nature damage.
+  - Scarlet Battle Orders (26323): Use: Increases movement, attack and casting speed by 20% for 20 sec.
+  - Shard of the Fallen Star (21891): Use: Calls down a meteor, burning all enemies within the area for 400 to 442 total Fire damage.
+  - Six Demon Bag (7734): Use: Blasts enemies in front of you with the power of wind, fire, all that kind of thing!
+  - Smokey's Lighter (13171): Use: Deals 125 Fire damage to all targets in a cone in front of the caster.
+  - The Final Gaze (26328): Use: Greatly reduces the chance your attacks and spells will miss or be resisted for 10 sec. / Equip: Increases your stealth detection.
+  - Two-Faced Medallion (26353): Use: Attempts to disguise you as the targeted dead creature, reducing the radius at which enemies will attack you. / Equip: Reduces the threat you ...
+  - Wushoolay's Charm of Nature (19955): Use: Increases damage done and healing of your Nature spells by 20% for 15 sec.
+- Equip:
+  - Blue Mottled Egg (83006): Equip: +10 All Resistances.
+  - Force of Will (11810): Equip: When struck in combat has a 1% chance of reducing all melee damage taken by 25 for 10 sec.
+  - Mark of Thirst (26203): Equip: Increases your attack, casting and movement speed by 20% against targets below 20% health.
+  - Mark of the Veteran (26159,26168): Equip: Increases the attack power granted by Battle Shout by 42.
+  - Mark of the Veteran (26160,26163,26170,26172): Equip: Improves your critical strike chance for all attacks and spells by 2%.
+  - Mark of the Veteran (26162,26171): Equip: Reduces the cooldown of your Multi-Shot by 2 sec.
+  - Mark of the Veteran (26164,26173): Equip: Increases your Energy regeneration by 2 per tick.
+  - Mark of the Veteran (26165,26174): Equip: Grants +5% increased spell hit chance for 20 sec when one of your spells is resisted.
+  - Mark of the Veteran (26167,26176): Equip: Reduces the time between periodic ticks of your Corruption spell by 1 sec.
+  - Onyx Egg (83003): Equip: Decreases damage taken by 1%.
+  - Pimgib's Collar (18354): Equip: Increases the damage of your Imp's Firebolt spell by 18.
+  - Pink Speckled Egg (83007): Equip: +10 All Resistances.
+  - Reactive Auto-Recaster (26223): Equip: 4% chance to recast instantly the just casted spell.
+  - Royal Seal of Eldre'Thalas (18466): Equip: +12 to all attributes.
+  - Royal Seal of Eldre'Thalas (18471,18472): Equip: Reduces the cost of your spells by 2%.
+  - Sawtooth Talisman (26212): Equip: Your attacks ignore 5% of your enemies' Armor. / Equip: Your attacks ignore 250 of your enemies' Armor.
+  - Shen'dralar Badge of Deterrence (26094): Equip: Threat +5%
+  - The Lion Horn of Stormwind (14557): Equip: Generates an aura that protects nearby party members by increasing their armor by 250 and magic resistances by 10.
+  - Uther's Strength (11302): Equip: When you take damage has a 2% chance to protect you with a holy shield.
+
+**Utility only, fine to leave** (62): Abyss Shard, Alchemists' Stone, Ankh of Life, Arcane Infused Gem, Arena Grand Master, Barov Peasant Caller, Chronomirage, Dalaran Spellshackles, Darkmoon Card: Twisting Nether, Defender of the Timbermaw, Defiler's Talisman, Dimensional Ripper - Everlook, Dog Whip, Elementium Echo Modulator, Enamored Water Spirit, Gnomish Universal Remote, Gyrofreeze Ice Reflector, Heart of Noxxion, Hederine Shackles, Hook of the Master Angler, Hyper-Radiant Flame Reflector, Insignia of the Alliance, Insignia of the Gladiator, Insignia of the Horde, Insignia of the Unfettered, Insignia of the Unfettered Champion, Leyguard Charm, Lifestone, Major Recombobulator, Minor Recombobulator, Orb of Deception, Personal Harm Prevention Field Emitter, Piccolo of the Flaming Fire, Scarlet Hound Whistle, Scarlet Triage Kit, Still Eye of the Watcher, Talisman of Arathor, The Wall's Chime, Ultra-Flash Shadow Reflector, Ultrasafe Transporter: Gadgetzan, Vial of Elune's Light.
+
+Also: Shard of the Flame (17082) has no stats in the DB (server: 16 health per 5 sec, no DPS effect);
+Scrolls of Blinding Light (19343) is not in the server data. Royal Seal of Eldre'Thalas (18466) "+12 to all
+attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not in their DB stats.
+
+## Raised 2026-09-23 — tooltip/icon audit (CHANGES.md Part BH)
+
+- **Weapons coded as their Season of Discovery versions**, not the server's (proc spell ids are SoD, and the effect
+  may be too): Flame Wrath (11809, server: Use: fire shield + 210-250 fire ring; sim: on-hit proc), Quel'Serrar
+  (18348, server: +1% hit, Use: +40 defense/+1400 armor for 20s; sim: proc aura 463105), Shadowstrike (17074, server:
+  chance to steal 100-180 life), Thunderstrike (17223, server: 150-250 Nature to up to 3 targets), Masterwork
+  Stormhammer (12794, server: 110-200 Nature to up to 3 targets), Ravager aura id 433801. Check each against
+  `VPlusItemDB.lua`. Also SoD ids still in use: Mangle debuff (`core/debuffs.go`, 409828; vanilla has no Mangle),
+  Primal Blessing set proc (467742, `common/item_sets/item_sets_pve.go`).
+- **Presence of Might** (enchant 2583, item 19782): the server says "+10 to all Stats"; the sim gives Stamina +20,
+  Defense +7, Block Value +15 (`tools/database/enchant_overrides.go`). Its label says Stamina +10.
+- **Enchant Shield - Law of Nature** (7603, item 228982) is a Season of Discovery enchant, not in the server data.
+- **Server spell values that differ from the sim** (found when the tooltips were corrected), e.g. Immolation Trap rank
+  5: server 966 Fire over 21 sec, sim 690 over 15 sec (`sim/hunter/immolation_trap.go`); Arcane Shot 14286: server 212.
+  The tooltips now show the server values; the sim numbers were not changed.
+- **Local spell names that differ from the server, left as they are:** 713 Summon Incubus (server: Turn Undead),
+  1098/11725/11726 Subjugate Demon (Enslave Demon), 10326 Turn Undead (Turn Evil), 13219 Wound Poison (Wound
+  Poison I), 13948 Enchant Gloves - Minor Haste (Lesser Haste), 15487 Silence (Shadow Word: Silence), 28271/28272
+  Polymorph (Polymorph: Turtle / Pig). The Arcanum names and "Judgement Armor 8-piece" are deliberate.
+- 13 custom enchants (900101-900212) have no spell row or label; the gear slot shows their name, which reads fine.

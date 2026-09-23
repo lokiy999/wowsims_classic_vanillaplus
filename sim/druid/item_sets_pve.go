@@ -99,7 +99,7 @@ var ItemSetCenarionArmor = core.NewItemSet(core.ItemSet{
 		// (6) Set : Your finishing moves now refund 40 energy on a Miss, Dodge, Block, or Parry.
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 22961}
+			actionID := core.ActionID{SpellID: 26107} // Cenarion 3/4 Finisher Bonus
 			energyMetrics := c.NewEnergyMetrics(actionID)
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				Name:     "Cenarion Armor Finisher Bonus",

@@ -284,7 +284,7 @@ func (paladin *Paladin) applyVerifiedExtras() {
 	// Divine Concentration: regenerates 1% of total mana every 15/10/5 seconds.
 	if paladin.Talents.DivineConcentration > 0 {
 		period := []time.Duration{0, 15 * time.Second, 10 * time.Second, 5 * time.Second}[paladin.Talents.DivineConcentration]
-		manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 33000})
+		manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: []int32{0, 34830, 34831, 34832}[paladin.Talents.DivineConcentration]})
 		paladin.RegisterResetEffect(func(sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period: period,

@@ -269,6 +269,19 @@ var SpellIconoverrides = []*proto.IconData{
 	{Id: 15404, Name: "Lesser Arcanum of Voracity", Icon: "inv_misc_gem_03", Tooltip: `<table><tr><td><a class="whtt-name" href="/classic/spell=15404/lesser-arcanum-of-voracity"><b class="whtt-name">Lesser Arcanum of Voracity</b></a></td></tr></table><table><tr><td><span class="wowhead-tooltip-requirements">Requires Helms, Pants</span><div class="q">Permanently adds 8 intellect to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div></td></tr></table>`},
 	{Id: 15406, Name: "Lesser Arcanum of Voracity", Icon: "inv_misc_gem_03", Tooltip: `<table><tr><td><a class="whtt-name" href="/classic/spell=15406/lesser-arcanum-of-voracity"><b class="whtt-name">Lesser Arcanum of Voracity</b></a></td></tr></table><table><tr><td><span class="wowhead-tooltip-requirements">Requires Helms, Pants</span><div class="q">Permanently adds 8 spirit to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div></td></tr></table>`},
 	{Id: 22844, Name: "Arcanum of Focus", Icon: "inv_misc_gem_02", Tooltip: `<table><tr><td><a class="whtt-name" href="/classic/spell=22844/arcanum-of-focus"><b class="whtt-name">Arcanum of Focus</b></a></td></tr></table><table><tr><td><span class="wowhead-tooltip-requirements">Requires Helms, Pants</span><div class="q">Permanently adds +10 to your Healing and Damage from spells to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div></td></tr></table>`},
+	// Proc/aura spells whose only icon (Wowhead and server) is the "temp" placeholder.
+	// Icon picked to match the source item/effect; name and tooltip are left as they are.
+	{Id: 13889, Icon: "ability_rogue_sprint"},           // Minor Speed (boot enchant)
+	{Id: 13897, Icon: "spell_fire_flametounge"},         // Fiery Weapon (weapon enchant)
+	{Id: 20004, Icon: "spell_shadow_lifedrain02"},       // Life Steal (Lifestealing enchant)
+	{Id: 23545, Icon: "ability_stealth"},                // Subtlety (Arcanist Regalia 6pc, -15% threat)
+	{Id: 26107, Icon: "ability_druid_ferociousbite"},    // Cenarion 3/4 Finisher Bonus
+	{Id: 27498, Icon: "spell_holy_holysmite"},           // Crusader's Wrath (Lightforge 4pc)
+	{Id: 27774, Icon: "spell_nature_callstorm"},         // The Furious Storm (The Five Thunders 4pc)
+	{Id: 27785, Icon: "classicon_hunter"},               // Hunter Armor Energize
+	{Id: 27787, Icon: "classicon_rogue"},                // Rogue Armor Energize
+	{Id: 28308, Icon: "ability_warrior_decisivestrike"}, // Hateful Strike (Patchwerk)
+	{Id: 34534, Icon: "spell_nature_earthshock"},        // Echoes of Shock 3/4 (Cataclysm Armor 6pc)
 	{Id: 22840, Name: "Arcanum of Rapidity", Icon: "inv_misc_gem_02", Tooltip: `<table><tr><td><a class="whtt-name" href="/classic/spell=22840/arcanum-of-rapidity"><b class="whtt-name">Arcanum of Rapidity</b></a></td></tr></table><table><tr><td><span class="wowhead-tooltip-requirements">Requires Helms, Pants</span><div class="q">Permanently adds 2% haste to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div></td></tr></table>`},
 }
 

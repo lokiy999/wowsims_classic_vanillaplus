@@ -2824,3 +2824,38 @@ against the item database. Removed what does not exist on the server; fixed spel
   (19337) itself is in `sim/warlock/items.go`; see TODO for its tooltip difference.
 - Kept on purpose (planned in TODO): the disabled druid bear/tank and restoration code (including `_maul.go` and
   `_demoralizing_roar.go`), the priest healing spells, shaman restoration and Mana Tide Totem.
+
+## Part BH — "Spell not found", missing icons, enchant labels (2026-09-23)
+
+**Why spells showed "Spell not found":** the UI database only stored spells from `SharedSpellsIcons`, talents and
+rotations. Every other spell the sim shows (auras, procs, set bonuses, mana/energy gains) was looked up live on
+Wowhead, and custom server spells are not on Wowhead. Checked all spell ids in `sim/`: 209 were not stored locally,
+18 of those are not on Wowhead at all.
+
+- **Every spell id in `sim/` is now stored locally.** `tools/gen_spell_value_overrides.py` writes the list to
+  `tools/database/sim_spell_ids.go` (`SimSpellIds`, generated), and `gen_db` adds them. Its id scan now also finds
+  lower-case struct fields (`spellID: 879`) and `spellId := [N]int32{...}` arrays, which it missed before; that found
+  120 more tooltips whose numbers were corrected from `Spell.csv`, and 2 new DBC-only rows. After a spell change:
+  `python3 tools/gen_spell_value_overrides.py` then `go run ./tools/database/gen_db -outDir=./assets -gen=db`.
+- **Placeholder spell ids replaced with real server ids** (they were not in `Spell.csv`, so no name/icon was possible):
+  Cenarion Armor 6pc energy 22961 -> 26107, Cataclysm Armor 6pc mana 25046 -> 34534, Divine Concentration 33000 ->
+  34830-34832 (by rank), Lightning Overlord 33012 -> 34286, Patchwerk Hateful Strike 59192 -> 28308, Gutgore Ripper
+  proc 461682 (SoD) -> 21151.
+- **Server names instead of Wowhead's** for spells the server renamed (`RENAME_TO_SERVER` in the script): Ravager
+  proc Bladestorm, Thunderfury proc Thunderblade, Venomspitter Venom Poison, Darkmoon Card: Maelstrom proc Maelstrom,
+  Omen of Clarity proc Clarity, Demonic Sacrifice Touch of Anger, Ghostly Trick, Metamorphose Rune, Cenarion 3/4
+  Finisher Bonus. Not applied to every name difference on purpose (see TODO).
+- **Icons for "temp" placeholders** (neither Wowhead nor `SpellIcon.csv` has one): 11 proc spells got a matching icon in
+  `SpellIconoverrides` (Fiery Weapon, Life Steal, Minor Speed, Crusader's Wrath, The Furious Storm, Hateful Strike, ...).
+- **Enchant labels** (the text under the gear slot, `assets/enchants/descriptions.json`) still had the Wowhead values:
+  Arcanum of Focus +8 -> +10, Lesser Arcanum of Rumination Mana +150 -> +200, Lesser Arcanum of Tenacity Armor +125 ->
+  Crit suppression +1%, Arcanum of Rapidity Attack Speed +1% -> Haste +2%. `tools/scrape_enchant_descriptions.py` now
+  has a `SERVER_DESCRIPTIONS` list that wins over the scrape, so a re-scrape keeps them. Checked all 186 enchants
+  against their sim stats; these were the only wrong labels.
+- **Equipped item tooltips now show the enchant.** Items with a local tooltip (almost all of them) showed no enchant
+  line at all; `player.ts` now adds the enchant label as a green line after the item stats (`addEnchantLine`), and
+  `ActionId.trySetLocalTooltip` takes an optional transform for it. Verified in the browser: Cap of the Scarlet Savant
+  with Arcanum of Focus shows "Healing and Spell Damage +10" in the gear slot and in the hover tooltip.
+- **Build note:** `make wowsimclassic` does not rebuild the UI bundle when only `.json` files change (the rule only
+  tracks `.ts/.tsx/.scss/.html`). Run `rm -f dist/classic/bundle/.dirstamp` first after editing rotation JSON.
+- All tests pass, with and without `--tags=with_db`. Trinket list and other findings: TODO.md, 2026-09-23.

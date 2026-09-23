@@ -222,11 +222,12 @@ export class ActionId {
 	// If the local DB has a tooltip for this spell (e.g. a custom/rebalanced value),
 	// render it in a local tippy tooltip instead of the Wowhead-powered one.
 	// Returns true if a local tooltip was attached.
-	async trySetLocalTooltip(elem: HTMLElement): Promise<boolean> {
+	// `transform` can adjust an item's local tooltip HTML before it is shown (e.g. add the enchant line).
+	async trySetLocalTooltip(elem: HTMLElement, transform?: (html: string) => string): Promise<boolean> {
 		if (this.itemId) {
 			const tooltip = Database.localItemTooltip(this.itemId);
 			if (!tooltip) return false;
-			this.attachLocalTippy(elem, tooltip);
+			this.attachLocalTippy(elem, transform ? transform(tooltip) : tooltip);
 			return true;
 		}
 		if (!this.spellId) return false;

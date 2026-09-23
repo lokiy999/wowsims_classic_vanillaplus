@@ -44,6 +44,7 @@ import {
 } from './proto/ui.js';
 import { ActionId } from './proto_utils/action_id.js';
 import { Database } from './proto_utils/database.js';
+import { getEnchantDescription } from './proto_utils/enchants.js';
 import { EquippedItem, getWeaponDPS } from './proto_utils/equipped_item.js';
 import { Gear, ItemSwapGear } from './proto_utils/gear.js';
 import { Stats } from './proto_utils/stats.js';
@@ -1161,7 +1162,15 @@ export class Player<SpecType extends Spec> {
 			elem.removeAttribute('data-wowhead');
 			elem.removeAttribute('href');
 			elem.dataset.whtticon = 'false';
-			ActionId.fromItem(equippedItem.item).trySetLocalTooltip(elem);
+			const actionId = ActionId.fromItem(equippedItem.item);
+			if (equippedItem.enchant) {
+				// Same text as the label under the gear slot (server values, see enchants/descriptions.json).
+				getEnchantDescription(equippedItem.enchant).then(description =>
+					actionId.trySetLocalTooltip(elem, html => addEnchantLine(html, description)),
+				);
+			} else {
+				actionId.trySetLocalTooltip(elem);
+			}
 			return;
 		}
 
@@ -1511,4 +1520,12 @@ export class Player<SpecType extends Spec> {
 			);
 		});
 	}
+}
+
+// Inserts a green enchant line into a local item tooltip, after the item's own stats (where
+// Wowhead puts it): before the first requirement/effect/rarity line, or at the end.
+function addEnchantLine(html: string, description: string): string {
+	const line = `<div style="color:#1eff00">${description}</div>`;
+	const idx = html.search(/<div[^>]*>(Requires|Classes:|Equip:|Use:|Chance on hit:|Rarity:|Durability|\()/);
+	return idx >= 0 ? html.slice(0, idx) + line + html.slice(idx) : html + line;
 }
