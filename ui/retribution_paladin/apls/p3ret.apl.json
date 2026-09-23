@@ -8,7 +8,7 @@
     {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":20271}}},{"castPaladinPrimarySeal":{}}]}}},
     {"action":{"castSpell":{"spellId":{"spellId":24275,"rank":1}}}},
-    {"action":{"castSpell":{"spellId":{"spellId":415071}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":10312}}}},
     {"action":{"castSpell":{"spellId":{"spellId":407676}}}},
     {"action":{"condition":{"spellCanCast":{"spellId":{"spellId":20271}}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":20271}}},{"castPaladinPrimarySeal":{}}]}}},
     {"action":{"castSpell":{"spellId":{"spellId":407778}}}},

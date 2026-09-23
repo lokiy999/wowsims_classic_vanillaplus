@@ -9,7 +9,7 @@ import (
 )
 
 func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
-	spellId := [4]int32{0, 409532, 409534, 409535}[rank]
+	spellId := [4]int32{0, 13813, 14316, 14317}[rank]
 	dotDamage := [4]float64{0, 15, 24, 33}[rank]
 	minDamage := [4]float64{0, 104, 145, 208}[rank]
 	maxDamage := [4]float64{0, 135, 193, 265}[rank]

@@ -9,8 +9,7 @@ import (
 func (warrior *Warrior) registerThunderClapSpell() {
 	spellID := int32(11581)
 	baseDamage := 103.0
-	has5pcConq := warrior.HasSetBonus(ItemSetConquerorsBattleGear, 5)
-	attackSpeedReduction := core.TernaryInt32(has5pcConq, 15, 10)
+	attackSpeedReduction := int32(10)
 	stanceMask := BattleStance
 
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
@@ -43,7 +42,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 		CritDamageBonus: warrior.impale(),
 
 		// DBC: Improved Thunder Clap +50%/rank damage (and slow), Cleaving +25%/rank damage.
-		DamageMultiplier: core.TernaryFloat64(has5pcConq, 1.5, 1) * (1 + 0.5*float64(warrior.Talents.ImprovedThunderClap)) * (1 + 0.25*float64(warrior.Talents.Cleaving)),
+		DamageMultiplier: (1 + 0.5*float64(warrior.Talents.ImprovedThunderClap)) * (1 + 0.25*float64(warrior.Talents.Cleaving)),
 		ThreatMultiplier: 2.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

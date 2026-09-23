@@ -2795,3 +2795,32 @@ New file `sim/paladin/talents_extra.go`:
 - **Bug found and fixed: Judgement Armor 6-piece and 8-piece never did anything.** Their auras were registered but never activated (no `MakePermanent`), so
   the 50% chance of 220 mana on Judgement and the 80-137 Holy hit on Judgement were dead code. Both work now (verified in the sim log: "Judgement Armor 8-piece"),
   and the paladin golden results changed. Other classes' set bonus auras that use plain `RegisterAura` without `MakePermanent` or an `OnReset` activation may have the same bug.
+
+## Part BG — Spell audit: removed spells and sets that are not on the server (2026-09-23)
+
+Checked every spell id in `sim/<class>/` against the server `Spell.csv` (names looked up by id) and every class item set
+against the item database. Removed what does not exist on the server; fixed spell ids that were the Season of Discovery ones.
+
+- **Avenging Wrath removed** (`sim/paladin/avenging_wrath.go`, spell 407788). It was a Season of Discovery rune, not on the
+  server, and every paladin had it as an automatic cooldown (+20% damage for 20s every 3 min). Also removed from the
+  `p4prot`/`p5prot` rotations. Paladin golden results went down (short fights about 10-20%, long fights a few %).
+- **28 item sets removed** (no items in the sim database):
+  - Season of Discovery sets, not on the server at all: Unstoppable Might, Unstoppable Wrath, Immoveable Wrath, Conqueror's
+    Advance, Conqueror's Bulwark (warrior), Champion's Raiment, Lieutenant Commander's Raiment (priest), Champion's
+    Earthshaker (shaman), The Highlander's Fortitude (common).
+  - AQ20/AQ40/Naxx sets (on the server, but that content is not in the sim; user's call): Symbols of Unending Life,
+    Striker's Garb, Cryptstalker Armor, Enigma Vestments, Frostfire Regalia, Avenger's Battlegear, Redemption Armor,
+    Garments of the Oracle, Vestments of Faith, Deathdealer's Embrace, Bonescythe Armor, Stormcaller's Garb, Gift of the
+    Gathering Storm, The Earthshatterer, Doomcaller's Attire, Plagueheart Raiment, Conqueror's Battlegear, Dreadnaught's
+    Battlegear, Battlegear of Unyielding Strength. ZG sets are kept.
+  - The Conqueror's 5-piece (Thunder Clap) and Dreadnaught's 2-piece (Revenge) checks were removed from
+    `thunder_clap.go`/`revenge.go` with the sets.
+- **Spell ids changed from Season of Discovery to server ids** (icon/tooltip only, results unchanged; checked by running the
+  paladin tests with old and new Exorcism ids, identical output):
+  - Exorcism ranks 1-6: 415068-415073 -> 879, 5614, 5615, 10312, 10313, 10314 (`exorcism.go` and every paladin rotation).
+  - Immolation Trap 13795, 14302-14305; Explosive Trap 13813, 14316, 14317; Freezing Trap 14311 (were 4095xx).
+  - Vanish aura 457437 -> 11327.
+- Removed stale commented-out calls in `warlock.go` (Seed of Corruption, Inferno, Black Book). **The Black Book** trinket
+  (19337) itself is in `sim/warlock/items.go`; see TODO for its tooltip difference.
+- Kept on purpose (planned in TODO): the disabled druid bear/tank and restoration code (including `_maul.go` and
+  `_demoralizing_roar.go`), the priest healing spells, shaman restoration and Mana Tide Totem.

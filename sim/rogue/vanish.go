@@ -9,7 +9,7 @@ import (
 func (rogue *Rogue) registerVanishSpell() {
 	rogue.VanishAura = rogue.RegisterAura(core.Aura{
 		Label:    "Vanish",
-		ActionID: core.ActionID{SpellID: 457437},
+		ActionID: core.ActionID{SpellID: 11327},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 		},

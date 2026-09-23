@@ -190,43 +190,6 @@ var ItemSetConfessorsRaiment = core.NewItemSet(core.ItemSet{
 //                            Classic Phase 5 Item Sets - AQ
 ///////////////////////////////////////////////////////////////////////////
 
-var ItemSetGarmentsOfTheOracle = core.NewItemSet(core.ItemSet{
-	Name: "Avenger's Battlegear",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increases the duration of your Judgements by 20%.
-		3: func(agent core.Agent) {
-			// Nothing to do
-		},
-		// Increases damage and healing done by magical spells and effects by up to 71.
-		5: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 71)
-		},
-	},
-})
-
 ///////////////////////////////////////////////////////////////////////////
 //                            Classic Phase 6 Item Sets - Naxx
 ///////////////////////////////////////////////////////////////////////////
-
-var ItemSetVestmentsOfFaith = core.NewItemSet(core.ItemSet{
-	Name: "Redemption Armor",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increases the amount healed by your Judgement of Light by 20.
-		2: func(agent core.Agent) {
-			// Nothing to do
-		},
-		// Reduces cooldown on your Lay on Hands by 12 min.
-		4: func(agent core.Agent) {
-			// Nothing to do
-		},
-		// Your Flash of Light and Holy Light spells have a chance to imbue your target with Holy Power.
-		6: func(agent core.Agent) {
-			// Nothing to do
-		},
-		// Your Cleanse spell also heals the target for 200.
-		8: func(agent core.Agent) {
-			// Nothing to do
-		},
-	},
-})

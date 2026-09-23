@@ -349,3 +349,8 @@ The fire totems are in the sim and match the server data at level 60; decide whe
 - Fire Nova Totem rank 5 (level 52): 413-459 area Fire damage, coefficient 0.143, 520 mana, 15s cooldown.
 - Call of Flame (+10%/rank damage) and Elemental Fury (crit damage) already apply; Improved Fire Totems (Fire Nova delay
   -1s/-2s, Magma threat -50%/-100%) is not applied.
+
+## Raised 2026-09-23 — spell audit (CHANGES.md Part BG)
+- **The Black Book** (19337): the server tooltip says pet damage +100% and pet damage taken -100% for 30s; the sim gives
+  +100% pet armor instead of the damage reduction. Pet damage is right, so DPS is unaffected. The sim's 5 min cooldown is
+  not in the server tooltip; confirm in game.

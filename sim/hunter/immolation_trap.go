@@ -9,7 +9,7 @@ import (
 )
 
 func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
-	spellId := [6]int32{0, 409521, 409524, 409526, 409528, 409530}[rank]
+	spellId := [6]int32{0, 13795, 14302, 14303, 14304, 14305}[rank]
 	dotDamage := [6]float64{0, 105, 215, 340, 510, 690}[rank]
 	manaCost := [6]float64{0, 50, 90, 135, 190, 245}[rank]
 	level := [6]int{0, 16, 26, 36, 46, 56}[rank]
