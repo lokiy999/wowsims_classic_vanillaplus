@@ -93,7 +93,8 @@ func registerOnUseAura(character *core.Character, itemID int32, aura *core.Aura,
 }
 
 // registerOnUseDamage makes an on-use trinket that hits every target (or only the main target) for min-max damage.
-func registerOnUseDamage(itemID int32, spellID int32, school core.SpellSchool, minDamage, maxDamage float64, cooldown time.Duration, aoe bool) {
+// With split, min-max is the total: it is rolled once and divided evenly between all targets.
+func registerOnUseDamage(itemID int32, spellID int32, school core.SpellSchool, minDamage, maxDamage float64, cooldown time.Duration, aoe bool, split bool) {
 	core.NewItemEffect(itemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		spell := character.RegisterSpell(core.SpellConfig{
@@ -113,6 +114,13 @@ func registerOnUseDamage(itemID int32, spellID int32, school core.SpellSchool, m
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				if !aoe {
 					spell.CalcAndDealDamage(sim, target, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
+					return
+				}
+				if split {
+					damage := sim.Roll(minDamage, maxDamage) / float64(len(sim.Encounter.TargetUnits))
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+					}
 					return
 				}
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -410,11 +418,12 @@ func init() {
 
 	// Damage trinkets.
 	// Shard of the Fallen Star: Use: Calls down a meteor, burning all enemies within the area for 400 to 442 total Fire damage. (3 Min Cooldown)
-	registerOnUseDamage(ShardOfTheFallenStar, 26789, core.SpellSchoolFire, 400, 442, time.Minute*3, true)
+	// The damage is a total split evenly between the targets hit (confirmed in game: two targets take about 200 each).
+	registerOnUseDamage(ShardOfTheFallenStar, 26789, core.SpellSchoolFire, 400, 442, time.Minute*3, true, true)
 	// Ramstein's Lightning Bolts: Use: strike down all enemies around you for 200 to 440 Nature damage. (5 Min Cooldown)
-	registerOnUseDamage(RamsteinsLightningBolts, 17668, core.SpellSchoolNature, 200, 440, time.Minute*5, true)
+	registerOnUseDamage(RamsteinsLightningBolts, 17668, core.SpellSchoolNature, 200, 440, time.Minute*5, true, false)
 	// Smokey's Lighter: Use: Deals 125 Fire damage to all targets in a cone in front of the caster. (5 Min Cooldown)
-	registerOnUseDamage(SmokeysLighter, 17283, core.SpellSchoolFire, 125, 125, time.Minute*5, true)
+	registerOnUseDamage(SmokeysLighter, 17283, core.SpellSchoolFire, 125, 125, time.Minute*5, true, false)
 
 	// Chained Essence of Eranikus: Use: Poisons all enemies in an 8 yard radius around the caster.
 	// Victims of the poison suffer 50 Nature damage every 5 sec for 45 sec. (15 Min Cooldown)

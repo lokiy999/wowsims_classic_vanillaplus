@@ -2908,7 +2908,8 @@ New file `sim/common/item_effects/vplus_trinkets.go`:
 - **Use (offensive, shared trinket cooldown):** Gri'lek's Charm of Valor (+10% crit on Holy spells and physical attacks,
   30s, 3 min), Wushoolay's Charm of Nature (+20% Nature damage, 15s, 3 min), Hazza'rah's Charm of Healing (+40% cast
   speed, 15s, 3 min), Blessed Prayer Beads (+190 healing, 20s, 2 min), Mar'li's Eye (60 mana per 5s for 30s, 3 min).
-- **Use (damage):** Shard of the Fallen Star (400-442 Fire to all targets, 3 min), Ramstein's Lightning Bolts (200-440
+- **Use (damage):** Shard of the Fallen Star (400-442 Fire in total, split evenly between the targets hit, 3 min;
+  confirmed in game by the user), Ramstein's Lightning Bolts (200-440
   Nature to all, 5 min), Smokey's Lighter (125 Fire to all, 5 min), Chained Essence of Eranikus (50 Nature every 5s
   for 45s to all, 15 min). Spell ids from Spell.csv.
 - **Use (defensive):** Aegis of Preservation (-10% damage taken 20s, 5 min; the heal is not modeled), Fetish of
