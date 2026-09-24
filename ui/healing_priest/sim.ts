@@ -18,11 +18,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 	],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatSpellPower,
+	epReferenceStat: Stat.StatHealingPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5, Stat.StatArmor],
+	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5, Stat.StatArmor],
 	displayPseudoStats: [],
 
 	defaults: {
@@ -32,6 +32,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 2.73,
 			[Stat.StatSpirit]: 1.63,
+			[Stat.StatHealingPower]: 1,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.75,
 			[Stat.StatMP5]: 2.05,

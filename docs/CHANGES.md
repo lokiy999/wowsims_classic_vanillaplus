@@ -3368,3 +3368,20 @@ instead of 120); the lookups detect this.
   "Phase 1 - Alpha". Fixed the commented-out raid link (`/classicic/raid/`).
 - How to add a new page to the start page: copy an `<li>` block in `ui/index.html` inside the class dropdown and change
   the link, icon and title; the page itself must also be in `ui/core/launched_sims.ts`.
+
+## Part CI — Healing Power in the healer stat weights (2026-09-24)
+
+- Healing Priest, Restoration Shaman, Restoration Druid and Holy Paladin: added Healing Power (+healing gear) to the
+  stat weight stats, the sidebar stats and the default EP weights (1, same as spell power), and the EP reference stat
+  is now Healing Power instead of Spell Power. The stat weights of these four pages are calculated from HPS by default
+  (`isHealingSpec` in `ui/core/proto_utils/utils.ts`); Spell Power stays in the list because it also adds to heals
+  (`Spell.HealingPower` in `sim/core/spell_result.go` = spell power + healing power).
+- How to edit: the lists are `epStats`, `epReferenceStat`, `displayStats` and `defaults.epWeights` in
+  `ui/<spec>/sim.ts`.
+- Sidebar: Healing Power was missing from the stat names and the sidebar groups (`ui/core/proto_utils/names.ts`,
+  `ui/core/components/character_stats.tsx`), so it never showed, also not on Protection Paladin. It now shows the
+  total bonus healing = Spell Power + Healing Power, with the healing-only part in brackets, like Spell Damage.
+- "Increases damage and healing done by magical spells" items are stored as Spell Power (617 items in the db) and count
+  for heals and damage; "Increases healing done" items are Healing Power (242 items) and only count for heals; damage-only
+  bonuses are Spell Damage (none in the item db, only consumables/enchants). Mapping is in
+  `tools/database/wowhead_tooltips.go` (spellPowerRegex / spellHealingRegex).

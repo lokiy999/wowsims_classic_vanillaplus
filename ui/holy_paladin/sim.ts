@@ -17,11 +17,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatSpellPower,
+	epReferenceStat: Stat.StatHealingPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
+	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	displayPseudoStats: [],
 
 	modifyDisplayStats: (player: Player<Spec.SpecHolyPaladin>) => {
@@ -38,6 +38,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.38,
 			[Stat.StatSpirit]: 0.34,
+			[Stat.StatHealingPower]: 1,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.69,
 			[Stat.StatMP5]: 0.0,
