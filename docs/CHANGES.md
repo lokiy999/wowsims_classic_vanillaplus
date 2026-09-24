@@ -3133,3 +3133,15 @@ the shaman casts the top rank known (level 40/48/58: 50/80/100 mana per second t
 mana, 10 min cooldown, from Spell.csv) as a mana cooldown once the full amount fits, or from the APL. It replaces the
 water totem for 15 sec. The old commented-out talent version was removed. Test averages: elemental 479 -> 484,
 enhancement 660 -> 661. Arcane Missiles Energize confirmed as one stack per cast, 5 max (no change).
+
+## Part BW — Sidebar: "From other stats" row (2026-09-24)
+
+The sidebar stat tooltip counted derived stats in the phase that caused them (Agility on a helm showed up as Gear
+armor/AP/crit/dodge); a display-only stopgap moved gear-Agility armor to Base. Proper fix:
+- `PlayerStats` has five new fields (`base/gear/talents/buffs/consumes_stats_raw`, proto fields 13-17): the same
+  phases measured without stat dependencies (`character.stats`), set in `applyAllEffects` (`sim/core/character.go`).
+- `character_stats.tsx` shows Base/Gear/Talents/Buffs/Consumes from the raw values and a new **From other stats** row
+  for what the dependencies add (armor from Agility, AP from Strength, crit from Agility, Kings, ...). The stopgap is
+  removed. Checked in the browser: warrior Attack Power shows "From other stats: 240" for 120 Strength.
+- Also fixed: Mana Tide Totem's mana gain and its cast cost shared one metrics key, which broke the multi-threaded
+  result comparison in the shaman tests; the gain now uses tag 1.

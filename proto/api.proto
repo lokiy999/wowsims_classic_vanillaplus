@@ -458,6 +458,14 @@ message PlayerStats {
 	UnitStats consumes_stats = 9;
 	UnitStats final_stats = 2;
 
+	// The same phases without stat dependencies (no armor from Agility, AP from Strength, Kings, ...). The sidebar
+	// shows each source from these and the difference as "From other stats".
+	UnitStats base_stats_raw = 13;
+	UnitStats gear_stats_raw = 14;
+	UnitStats talents_stats_raw = 15;
+	UnitStats buffs_stats_raw = 16;
+	UnitStats consumes_stats_raw = 17;
+
 	repeated string sets = 3;
 	IndividualBuffs buffs = 4;
 

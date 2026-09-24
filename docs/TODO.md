@@ -80,7 +80,7 @@ listed at the end of this overview so the older sections don't need rewriting.
 - "Level 60" target uses a SoD NPC id (display only); BWL encounter mechanics were copied from SoD, unverified.
 
 **Cosmetic / housekeeping**
-- Sidebar: armor from gear Agility is shown under Base (stopgap), see "Sidebar stat breakdown".
+- ~~Sidebar: armor from gear Agility is shown under Base (stopgap)~~ fixed 2026-09-24 (Part BW).
 - `ASpiritA` world boss name; stray scratch files at the repo root (keep or delete, user's call).
 
 **Done 2026-09-23** (older sections may still mention these): SoD content removed or replaced (Part BI); trinkets
@@ -367,7 +367,7 @@ consumable add:**
   `_removelist.json`, `_removelist_aqnaxx.json`, `"Start Server.bat"`. Flagged
   before, still there — delete or keep, your call.
 
-## Sidebar stat breakdown: derived stats are counted as "Gear"
+## Sidebar stat breakdown: derived stats are counted as "Gear" (FIXED 2026-09-24, Part BW)
 
 - The Base/Gear/Talents/Buffs/Consumes columns in the left sidebar
   (`ui/core/components/character_stats.tsx`) are built from cumulative

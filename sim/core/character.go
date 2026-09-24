@@ -323,10 +323,14 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
 	}
+	measureRawStats := func() *proto.UnitStats {
+		return &proto.UnitStats{Stats: character.stats.ToFloatArray()}
+	}
 
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)
 	playerStats.BaseStats = measureStats()
+	playerStats.BaseStatsRaw = measureRawStats()
 
 	character.applyEquipment()
 	character.applyWeaponSkills()
@@ -334,18 +338,22 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyItemSetBonusEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseGear)
 	playerStats.GearStats = measureStats()
+	playerStats.GearStatsRaw = measureRawStats()
 
 	agent.ApplyTalents()
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
+	playerStats.TalentsStatsRaw = measureRawStats()
 
 	applyBuffEffects(agent, agent.GetCharacter().GetFaction(), raidBuffs, partyBuffs, individualBuffs)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBuffs)
 	playerStats.BuffsStats = measureStats()
+	playerStats.BuffsStatsRaw = measureRawStats()
 
 	applyConsumeEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseConsumes)
 	playerStats.ConsumesStats = measureStats()
+	playerStats.ConsumesStatsRaw = measureRawStats()
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 
 	for _, petAgent := range character.PetAgents {

@@ -168,18 +168,22 @@ export class CharacterStats extends Component {
 		const debuffStats = this.getDebuffStats();
 		const bonusStats = player.getBonusStats();
 
-		let baseDelta = baseStats;
-		let gearDelta = gearStats.subtract(baseStats).subtract(bonusStats);
+		// Each source is shown without stat dependencies (an item's own armor, not the armor from its Agility); what
+		// the dependencies add (armor from Agility, AP from Strength, Kings, ...) is shown as "From other stats".
+		const hasRaw = !!playerStats.consumesStatsRaw;
+		const raw = (s: typeof playerStats.baseStats, fallback: Stats) => (hasRaw && s ? Stats.fromProto(s) : fallback);
+		const baseRaw = raw(playerStats.baseStatsRaw, baseStats);
+		const gearRaw = raw(playerStats.gearStatsRaw, gearStats);
+		const talentsRaw = raw(playerStats.talentsStatsRaw, talentsStats);
+		const buffsRaw = raw(playerStats.buffsStatsRaw, buffsStats);
+		const consumesRaw = raw(playerStats.consumesStatsRaw, consumesStats);
 
-		// Armor gained from gear Agility is not item armor, so show it under Base
-		// instead of Gear. Mirrors the 2 armor per Agility rule in sim/core/character.go.
-		// Display only. See docs/TODO.md for the proper "derived stats" column.
-		const gearAgilityArmor = 2 * gearDelta.getStat(Stat.StatAgility);
-		gearDelta = gearDelta.addStat(Stat.StatArmor, -gearAgilityArmor);
-		baseDelta = baseDelta.addStat(Stat.StatArmor, gearAgilityArmor);
-		const talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents);
-		const buffsDelta = buffsStats.subtract(talentsStats).add(statMods.buffs);
-		const consumesDelta = consumesStats.subtract(buffsStats);
+		const baseDelta = baseRaw;
+		const gearDelta = gearRaw.subtract(baseRaw).subtract(bonusStats);
+		const talentsDelta = talentsRaw.subtract(gearRaw).add(statMods.talents);
+		const buffsDelta = buffsRaw.subtract(talentsRaw).add(statMods.buffs);
+		const consumesDelta = consumesRaw.subtract(buffsRaw);
+		const derivedDelta = consumesStats.subtract(consumesRaw);
 
 		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(statMods.buffs).add(debuffStats);
 
@@ -233,6 +237,12 @@ export class CharacterStats extends Component {
 							<span>Consumes:</span>
 							<span>{this.statDisplayString(player, consumesStats, consumesDelta, stat)}</span>
 						</div>
+						{hasRaw && derivedDelta.getUnitStat(stat) != 0 && (
+							<div className="character-stats-tooltip-row">
+								<span>From other stats:</span>
+								<span>{this.statDisplayString(player, consumesStats, derivedDelta, stat)}</span>
+							</div>
+						)}
 						{stat.isStat() && debuffStats.getStat(stat.getStat()) != 0 && (
 							<div className="character-stats-tooltip-row">
 								<span>Debuffs:</span>

@@ -26,13 +26,13 @@ func (shaman *Shaman) registerManaTideTotemCD() {
 	metrics := make([]*core.ResourceMetrics, len(shaman.Party.Players))
 	for i, player := range shaman.Party.Players {
 		if char := player.GetCharacter(); char.HasManaBar() {
-			metrics[i] = char.NewManaMetrics(actionID)
+			metrics[i] = char.NewManaMetrics(actionID.WithTag(1)) // tag: separate from the cast cost metrics
 		}
 	}
 
 	mttAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mana Tide Totem (Shaman)",
-		ActionID: actionID,
+		ActionID: actionID.WithTag(1),
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
