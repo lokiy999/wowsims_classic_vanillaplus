@@ -33,6 +33,8 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     2, 3 and 4 return? (The sim uses 27.5 / 35 / 42.5%.)
 12. **Hunter Thrill of the Hunt**, **Shaman Armaments of Storm / Shamanism**: the server text has no proc chance
     ("a chance", "up to 300"). If you know the numbers, they can go in.
+13. **More DBC tables**: if you can export `SpellCastTimes.csv` (and `SpellCooldowns`/`SpellCategory` if your
+    tool has them) the same way as `Spell.csv`, I can check every cast time and cooldown against the sim too.
 
 ## Open items at a glance (updated 2026-09-24)
 
