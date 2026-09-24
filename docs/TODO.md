@@ -45,31 +45,52 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     "Cenarion Raiment". Do you want the sim to follow the dump (and keep or drop the Naxx items)? Until then the DB
     stays as it is.
 
-## Talents not in the sim code (generated 2026-09-24)
+## Talents not in the sim code (regenerated 2026-09-24, after Part CE)
 
 Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). This replaces the per-class
 "not modeled" lists in the older dated sections below, which are stale: about 70 talents listed there were implemented
-later (Part BS and others). Regenerate with a grep of `Talents\.` against `proto/<class>.proto` when needed.
+later (Part BS and others). Regenerate with a grep of `Talents\.` in `sim/<class>/` against `ui/core/talents/trees/<class>.json`
+(per class: some names like Survival Instincts and Cold Blood exist in two classes).
 
 Most of these are utility or PvP (stuns, fears, range, movement, stealth, pet utility, healing-only) and don't change a
-DPS or tank sim. The ones that could matter:
-- **Warlock Defiler**: -20% time between ticks, duration and GCD (DBC 34305). Needs per-spell tick changes.
-- **Paladin Divine Might**: Blessing of Might and Blessing of Kings +10/20% (DBC 20042/20045). Needs a way to say
-  which paladin casts the blessing (UI toggle like Libram of Truth, or from a paladin in the raid).
-- **Druid Feral Instinct**: Bear Form threat +5/10/15% (DBC 16947-16949). Bear Form is not in the sim (feral tank off).
-- **Hunter Improved Hunter's Mark**: covered by the "improved" Hunter's Mark debuff option (+20%/rank, 2/2 = +40%);
+DPS sim. Bosses can't be stunned, so stun-based bonuses (Improved Kidney Shot, Shock and Awe, Seal of Command's stunned
+judgement) are left out on purpose. Done on 2026-09-24 (Part CE): Defiler, Inevitable Doom, Feral Instinct (Tiger's
+Fury part), Death Mark, Seal of Command (now needs the talent); Divine Might is covered by the buff options (see below).
+Still open for a DPS sim:
+- **Divine Might** (paladin): not read by the sim code, but the Blessing of Might "improved" option (+20%) and the
+  Blessing of Kings 12%/13% options are exactly Divine Might 2/2 (labels now say so). Rank 1 (+10%) has no option.
+- **Improved Hunter's Mark**: covered by the "improved" Hunter's Mark debuff option (+20%/rank, 2/2 = +40%);
   the hunter doesn't cast the mark itself, so the talent field itself stays unused.
+- **Wand Specialization** (mage, priest): wands aren't used by any rotation.
 - Needs numbers: Shaman Armaments of Storm (25% chance, "up to 300", per hit or per imbue?), Shamanism (chance),
-  Bloodlust (cooldown), Hunter Thrill of the Hunt (chance).
+  Bloodlust (cooldown), Aftershock (cooldown, what it consumes), Hunter Thrill of the Hunt (chance), Mage Ice Shards
+  (cooldown and spell power coefficient; Cold Grip depends on it), Warlock Withering Shroud and Death and Decay
+  (cooldown, AoE only).
 
-- **Druid** (19 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Primal Tenacity, Brutal Impact, Feral Charge, Leap, Feral Instinct, Untamed Heart, Natures Focus, Naturalist, Improved Enrage, Custody Of The Nature, Improved Rejuvenation, Tranquil Spirit, Swiftmend, Catharsis, Improved Regrowth
+**PRIORITY: threat, tank and defensive talents to add or check later** (the user wants these done as one batch; the
+feral tank rotation is off, so bear talents wait for Bear Form):
+- Druid: Feral Instinct Bear Form threat +5/10/15%; Primal Tenacity and Improved Enrage (Enrage isn't in the sim);
+  Custody of the Nature (crit immunity after being crit).
+- Warrior: Mocker (Taunt/Challenging Shout/Mocking Blow hit +6%), Improved Defensive Stance (absorb shield on stance
+  swap), Concussion Blow and Shield Toss ("high amount of threat": the threat value and Shield Toss attack power
+  coefficient are unknown), Piercing Howl threat, Blood Craze, Berserker's Blood (needs the player's health).
+- Paladin: Shield of Faith (-15% spell damage taken), Guardian's Favor (Salvation/Sanctuary +20%), Second Wind,
+  Stoicism, Eye for an Eye, Improved Concentration Aura.
+- Warlock: Damned Vanguard (demon threat +30%, damage taken -30%).
+- Hunter: Intimidation threat, Improved Distracting Shot, Deterrence, pet Survival Instincts and Bestial Swiftness.
+- Others: Mage Cryo Core, Priest Blur and Martyrdom, Rogue Survivor and Heightened Senses, Shaman Earth Shield,
+  Earthquake threat and Tidal Barrier.
+- To check in game: Slam flat threat 140, Rockbiter Weapon threat, Shen'dralar Badge of Deterrence and threat-reducing
+  trinket effects (Fetish of the Sand Reaver, Grace of Earth, Two-Faced Medallion use effects).
+
+- **Druid** (18 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Primal Tenacity, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Naturalist, Improved Enrage, Custody Of The Nature, Improved Rejuvenation, Tranquil Spirit, Swiftmend, Catharsis, Improved Regrowth
 - **Hunter** (20 of 60): Improved Mend Pet, Aspect Mastery, Improved Revive Pet, Intimidation, Bestial Swiftness, Survival Instincts, Team Play, Terrifying Roar, Improved Hunters Mark, Improved Concussive Shot, Vantage Point, Hawk Eye, Improved Distracting Shot, Scatter Shot, Deterrence, Improved Wing Clip, Trapper, Thrill Of The Hunt, Deep Freeze, Wyvern Sting
-- **Mage** (21 of 60): Flame Throwing, Impact, Blazing Speed, Chain Reaction, Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
-- **Paladin** (19 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Lights Mercy, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Seal Of Command, Eye For An Eye, Repentance
+- **Mage** (21 of 60): Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Flame Throwing, Impact, Blazing Speed, Chain Reaction, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
+- **Paladin** (18 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Lights Mercy, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
 - **Priest** (20 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Improved Prayer Of Healing, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
-- **Rogue** (20 of 60): Remorseless Attacks, Seek And Destroy, Death Mark, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
+- **Rogue** (19 of 60): Remorseless Attacks, Seek And Destroy, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
 - **Shaman** (21 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Aftershock, Improved Ghost Wolf, Bloodlust, Armaments Of Storm, Shamanism, Spiritwalking, Improved Healing Wave, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Healing Way, Meditation, Cleansing Wave
-- **Warlock** (21 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Inevitable Doom, Defiler, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
+- **Warlock** (19 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
 - **Warrior** (12 of 60): Improved Charge, Improved Hamstring, Improved Rend, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
 
 ## Open items at a glance (updated 2026-09-24)
@@ -84,8 +105,8 @@ listed at the end of this overview so the older sections don't need rewriting.
   +1% Arcane crit is one stack per cast (could be per missile).
 - Talents not modeled yet: the damage/threat/mana ones with clear numbers were done in Part BS. Left: utility and
   PvP talents (stuns, fears, movement, range), healing talents (no healing spells in the sim), and ones needing a new
-  mechanic (freeze for Shatter/Frostbite/Deep Freeze, target health for Coup de Grace-style effects, Defiler's GCD,
-  Aftershock, Chain Reaction, Ice Shards, Withering Shroud, Death and Decay, Earthquake, Maim, Improved Rend stacks,
+  mechanic (freeze for Shatter/Frostbite/Deep Freeze, target health for Coup de Grace-style effects,
+  Aftershock, Chain Reaction, Ice Shards, Withering Shroud, Death and Decay, Earthquake, Improved Rend stacks,
   Berserker's Blood). The per-class lists in the 2026-09-19/20 sections are partly stale.
 - Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
 - No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).

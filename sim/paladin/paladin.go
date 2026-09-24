@@ -221,7 +221,10 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 	// Used in the Cast Primary Seal APLAction to get the max rank spell for the level.
 	switch primarySeal {
 	case proto.PaladinSeal_Command:
-		return paladin.sealOfCommand
+		if paladin.sealOfCommand != nil {
+			return paladin.sealOfCommand
+		}
+		return paladin.sealOfRighteousness
 	case proto.PaladinSeal_Fury:
 		if paladin.sealOfFury != nil {
 			return paladin.sealOfFury

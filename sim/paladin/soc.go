@@ -23,6 +23,11 @@ import (
 //   Judgement of Command when it successfully is cast.
 
 func (paladin *Paladin) registerSealOfCommand() {
+	// Seal of Command is a Retribution talent on this server.
+	if !paladin.Talents.SealOfCommand {
+		return
+	}
+
 	type judge struct {
 		spellID   int32
 		minDamage float64

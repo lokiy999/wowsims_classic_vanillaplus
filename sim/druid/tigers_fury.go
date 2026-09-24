@@ -26,7 +26,7 @@ func (druid *Druid) registerTigersFurySpell() {
 	druid.TigersFuryAura = druid.RegisterAura(core.Aura{
 		Label:    "Tiger's Fury Aura",
 		ActionID: actionID,
-		Duration: 10 * time.Second,
+		Duration: time.Duration(float64(10*time.Second) * (1 + 0.2*float64(druid.Talents.FeralInstinct))), // Feral Instinct: +20%/rank (DBC 16947-16949)
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.AddStatDynamic(sim, stats.AttackPower, apBonus)
 		},

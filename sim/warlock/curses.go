@@ -324,6 +324,11 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 		return
 	}
 
+	// Inevitable Doom (DBC 33933-33937, 35389-35393): per rank, Curse of Doom damage +20% and threat -20%,
+	// cooldown and duration -10%. The dispel resistance part is not modeled.
+	inevitableDoom := float64(warlock.Talents.InevitableDoom)
+	doomTime := 1 - 0.1*inevitableDoom
+
 	warlock.CurseOfDoom = warlock.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_WarlockCurseOfDoom,
 		ActionID:    core.ActionID{SpellID: 603},
@@ -343,15 +348,15 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 60,
+				Duration: time.Duration(float64(time.Second*60) * doomTime),
 			},
 		},
 
 		CritDamageBonus: 0,
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-		FlatThreatBonus:  160,
+		DamageMultiplier: 1 + 0.2*inevitableDoom,
+		ThreatMultiplier: 1 - 0.2*inevitableDoom,
+		FlatThreatBonus:  160 * (1 - 0.2*inevitableDoom),
 		BonusCoefficient: 1,
 
 		Dot: core.DotConfig{
@@ -359,7 +364,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 				Label: "CurseofDoom",
 			},
 			NumberOfTicks: 1,
-			TickLength:    time.Minute,
+			TickLength:    time.Duration(float64(time.Minute) * doomTime),
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 3200, isRollover)
 			},

@@ -66,13 +66,13 @@ export const BlessingOfKings = withLabel(
 					actionId: () => ActionId.fromSpellId(20217),
 					value: BlessingOfKingsType.BlessingOfKingsTalented,
 					text: '(12%)',
-					tooltip: 'Blessing of Kings + Improved Blessing of Kings talent (12%)',
+					tooltip: 'Blessing of Kings + Divine Might talent (12%)',
 				},
 				{
 					actionId: () => ActionId.fromSpellId(20217),
 					value: BlessingOfKingsType.BlessingOfKingsZgSetTalented,
 					text: '(13%)',
-					tooltip: "Blessing of Kings + Zandalar Vindicator's Regalia 3pc + Improved Blessing of Kings talent (13%)",
+					tooltip: "Blessing of Kings + Zandalar Vindicator's Regalia 3pc + Divine Might talent (13%)",
 				},
 			],
 		}),
@@ -190,7 +190,7 @@ export const BloodPactBuff = withLabel(
 export const BlessingOfMight = withLabel(
 	makeTristateIndividualBuffInput({
 		actionId: () => ActionId.fromSpellId(25291),
-		impId: ActionId.fromSpellId(20048),
+		impId: ActionId.fromSpellId(20045), // Divine Might 2/2: +20%
 		fieldName: 'blessingOfMight',
 	}),
 	'Blessing of Might',

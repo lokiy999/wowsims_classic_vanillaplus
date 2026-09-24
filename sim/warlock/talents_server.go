@@ -31,6 +31,34 @@ func (warlock *Warlock) applyServerTalents() {
 			}
 		})
 	}
+
+	warlock.applyDefiler()
+}
+
+// Defiler (DBC 34305): time between periodic ticks and duration -20%, global cooldown -0.3 sec on the
+// warlock's own spells (not the pet's). The number of ticks stays the same, so DoTs and channels deal the
+// same damage in less time. The extra Drain target is not modeled (single target sim).
+func (warlock *Warlock) applyDefiler() {
+	if !warlock.Talents.Defiler {
+		return
+	}
+	warlock.GetOrRegisterAura(core.Aura{
+		Label: "Defiler",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range warlock.Spellbook {
+				if spell.DefaultCast.GCD > 0 {
+					spell.DefaultCast.GCD = max(core.GCDMin, spell.DefaultCast.GCD-time.Millisecond*300)
+				}
+				dots := append([]*core.Dot{spell.AOEDot()}, spell.Dots()...)
+				for _, dot := range dots {
+					if dot != nil {
+						dot.TickLength = time.Duration(float64(dot.TickLength) * 0.8)
+						dot.RecomputeAuraDuration()
+					}
+				}
+			}
+		},
+	})
 }
 
 // Prolonged Misery: Corruption, Curse of Agony, Curse of Exhaustion and Immolate last 2 sec longer per rank.

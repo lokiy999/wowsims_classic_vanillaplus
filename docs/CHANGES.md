@@ -3261,3 +3261,35 @@ wording in `sim/`, `ui/`, `proto/` and `tools/`. The APL and gear preset JSON fi
   listed as missing were already implemented). Also confirmed as already done: Onyx Egg and Royal Seal cost effects,
   the SoD weapon versions (Part BI), Improved Hunter's Mark (via the improved debuff option).
 - No preset uses these talents (presets have no talents yet), so no golden results changed. Tests pass.
+
+## Part CE — Defiler, Inevitable Doom, Feral Instinct, Death Mark, Seal of Command talent, Divine Might labels (2026-09-24)
+
+Values from the server's Spell.csv (DBC ids below). Tested with temporary sims (1000 iterations, phase 1 gear, only
+the one talent), then the test files were deleted.
+- **Warlock Defiler** (34305): time between periodic ticks -20% (same number of ticks, so the duration is 20% shorter)
+  and global cooldown -0.3 sec, on all the warlock's own spells (not the pet). `applyDefiler` in
+  `sim/warlock/talents_server.go`, applied in `OnInit` after all spells exist. The extra Drain target is not modeled.
+  Test (Curse of Doom / Corruption / Shadow Bolt): 526.0 -> 539.7 DPS.
+- **Warlock Inevitable Doom** (33933-33937, 35389-35393): per rank, Curse of Doom damage +20% and threat -20%, cooldown
+  and duration -10% (5/5: double damage every 30 sec). `sim/warlock/curses.go`. Test: 526.0 -> 698.7 DPS with 5/5.
+  The dispel resistance part is not modeled.
+- **Druid Feral Instinct** (16947-16949): Tiger's Fury lasts 20% longer per rank (10 -> 16 sec at 3/3,
+  `sim/druid/tigers_fury.go`). Test with Tiger's Fury in the rotation: 464.4 -> 482.9 DPS (fewer casts, so more
+  energy for attacks). The Bear Form threat part waits for Bear Form (see the threat priority list in TODO.md).
+- **Rogue Death Mark** (33694/33695, effects 35827/35828): Ambush and Garrote mark the target for 10/25 sec; the marked
+  target has +10% chance to be critically hit by everyone's melee, ranged and spell attacks
+  (`applyDeathMark` in `sim/rogue/talents_server.go`). For this, physical crits now also read the target's
+  `SchoolCritTakenChance` for the physical school (`sim/core/spell_result.go`); nothing else sets that value, so no
+  other results change. Cheap Shot is not in the sim. No preset rotation opens with Garrote or Ambush, so it only
+  matters in custom rotations.
+- **Seal of Command** is a Retribution talent on this server; the sim gave it to every paladin. It now needs the
+  talent. Without it, "Seal of Command" as primary seal falls back to Seal of Righteousness (`sim/paladin/soc.go`,
+  `getPrimarySealSpell`).
+- **Divine Might** (20042/20045, +10/20% Blessing of Might and Kings): the existing options already are 2/2 Divine
+  Might (Blessing of Might "improved" = +20%, Blessing of Kings 12% = 10% x 1.2). Only the labels changed: the Might
+  "improved" icon is now Divine Might, and the Kings tooltips say "Divine Might talent" instead of "Improved Blessing
+  of Kings" (which doesn't exist on this server).
+- **TODO:** unused-talent lists regenerated; new "PRIORITY: threat, tank and defensive talents" list (the user asked
+  for threat work to wait and be tracked as one batch).
+- No preset uses these talents (presets have no talents yet), so no golden results changed. `go test ./sim/...`
+  (with and without `--tags=with_db`) and `tsc` pass.
