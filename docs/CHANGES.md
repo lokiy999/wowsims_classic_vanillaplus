@@ -3125,3 +3125,11 @@ Mind Flay rank 6 260 (was 205), Smite rank 8 240 (was 280), Earth Shock rank 7 3
 Frost Shock rank 4 400, Lightning Bolt rank 10 260, Windfury Totem rank 3 500 (was 250), Raptor Strike rank 8 200 (was
 100), Mongoose Bite rank 4 150, Wing Clip rank 3 150, Imp Firebolt rank 7 105, Lash of Pain rank 6 330. Test averages:
 elemental 469 -> 479, enhancement 668 -> 660; tank shaman and warlock only in mana metrics.
+
+## Part BV — Mana Tide Totem cast by the shaman (2026-09-24)
+
+Confirmed by the user: Mana Tide Totem is a trained spell on the server, not a talent. New `sim/shaman/mana_tide.go`:
+the shaman casts the top rank known (level 40/48/58: 50/80/100 mana per second to the party for 15 sec, 50/200/400
+mana, 10 min cooldown, from Spell.csv) as a mana cooldown once the full amount fits, or from the APL. It replaces the
+water totem for 15 sec. The old commented-out talent version was removed. Test averages: elemental 479 -> 484,
+enhancement 660 -> 661. Arcane Missiles Energize confirmed as one stack per cast, 5 max (no change).

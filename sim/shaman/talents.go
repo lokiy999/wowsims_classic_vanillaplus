@@ -49,7 +49,7 @@ func (shaman *Shaman) ApplyTalents() {
 	// TODO: Healing Way
 	// TODO: Ancestral Healing
 	shaman.registerNaturesSwiftnessCD()
-	// shaman.registerManaTideTotemCD()
+	shaman.registerManaTideTotemCD() // trained spell on the server, see mana_tide.go
 
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
@@ -480,50 +480,6 @@ func (shaman *Shaman) purificationHealingModifier() float64 {
 	return .02 * float64(shaman.Talents.Purification)
 }
 
-// func (shaman *Shaman) registerManaTideTotemCD() {
-// 	if !shaman.Talents.ManaTideTotem {
-// 		return
-// 	}
-
-// 	mttAura := core.ManaTideTotemAura(shaman.GetCharacter(), shaman.Index)
-// 	mttSpell := shaman.RegisterSpell(core.SpellConfig{
-// 		ActionID: core.ManaTideTotemActionID,
-// 		Flags:    core.SpellFlagNoOnCastComplete,
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD: time.Second,
-// 			},
-// 			IgnoreHaste: true,
-// 			CD: core.Cooldown{
-// 				Timer:    shaman.NewTimer(),
-// 				Duration: time.Minute * 5,
-// 			},
-// 		},
-// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 			mttAura.Activate(sim)
-
-// 			// If healing stream is active, cancel it while mana tide is up.
-// 			if shaman.HealingStreamTotem.Hot(&shaman.Unit).IsActive() {
-// 				for _, agent := range shaman.Party.Players {
-// 					shaman.HealingStreamTotem.Hot(&agent.GetCharacter().Unit).Cancel(sim)
-// 				}
-// 			}
-
-// 			// TODO: Current water totem buff needs to be removed from party/raid.
-// 			if shaman.Totems.Water != proto.WaterTotem_NoWaterTotem {
-// 				shaman.TotemExpirations[WaterTotem] = sim.CurrentTime + time.Second*12
-// 			}
-// 		},
-// 	})
-
-// 	shaman.AddMajorCooldown(core.MajorCooldown{
-// 		Spell: mttSpell,
-// 		Type:  core.CooldownTypeDPS,
-// 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-// 			return sim.CurrentTime > time.Second*30
-// 		},
-// 	})
-// }
 
 // Talents with DBC values not otherwise handled above.
 func (shaman *Shaman) applyShamanExtras() {

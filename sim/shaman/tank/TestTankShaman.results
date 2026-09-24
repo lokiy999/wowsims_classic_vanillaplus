@@ -156,14 +156,14 @@ dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
   dps: 102.19401
-  tps: 249.60065
+  tps: 278.45883
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
   dps: 102.19401
-  tps: 149.61222
+  tps: 151.05513
  }
 }
 dps_results: {
@@ -176,36 +176,36 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 44.00663
-  tps: 173.64173
+  dps: 45.10308
+  tps: 213.25903
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 44.00663
-  tps: 59.16874
+  dps: 45.10308
+  tps: 63.10692
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 63.16406
-  tps: 104.36946
+  dps: 64.61415
+  tps: 116.55526
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
   dps: 107.20577
-  tps: 215.97085
+  tps: 242.36423
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
   dps: 107.20577
-  tps: 157.95207
+  tps: 159.27174
  }
 }
 dps_results: {
@@ -218,22 +218,22 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 42.96698
-  tps: 171.42418
+  dps: 45.61859
+  tps: 215.04097
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 42.96698
-  tps: 56.95119
+  dps: 45.61859
+  tps: 64.31063
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 61.09331
-  tps: 99.30121
+  dps: 62.03217
+  tps: 110.72034
  }
 }
 dps_results: {

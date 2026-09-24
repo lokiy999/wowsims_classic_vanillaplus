@@ -17,14 +17,14 @@ Things only you can answer; everything else I keep working on. Newest at the bot
    a preset, or tell me to draft builds from the custom trees myself.
 2. **Pyroblast / Flame Shock / Insect Swarm / Arcane Missiles spell power**: cast each on a dummy with and without
    known +spell damage and send the tick numbers (combat log). The new tick counts use the classic total for now.
-3. **Arcane Missiles "energize"** (+1% Arcane crit for 20 sec, stacks 5): does one cast give one stack, or does every
+3. ~~**Arcane Missiles "energize"**~~ ANSWERED 2026-09-24: once per cast, 5 stacks max (as implemented). (+1% Arcane crit for 20 sec, stacks 5): does one cast give one stack, or does every
    missile give one?
 4. **Trinkets**: Arcanite Dragonling and Cannonball Runner (tooltip + what the pet does), Six Demon Bag (tooltip and
    which effects it rolls), Orb of Chaotic Elements (how much it heals).
 5. **Scarlet Monastery sets**: are all pieces in the game?
 6. **`ASpiritA` world boss**: what name should it show?
 7. **Scratch files at the sim repo root**: keep or delete?
-8. **Mana Tide Totem**: it is not in your shaman talent tree. Can a shaman learn it as a normal spell (from a
+8. ~~**Mana Tide Totem**~~ ANSWERED 2026-09-24: yes, trainable; now castable by the shaman (Part BV).: it is not in your shaman talent tree. Can a shaman learn it as a normal spell (from a
    trainer or a book)? If yes, the sim can let the shaman cast it.
 9. **Execute**: the server text converts extra rage into "$*10;F1" damage per point, which I can't read from the
    data. The sim uses 15 per rage (classic). What does the tooltip say?
@@ -35,6 +35,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     ("a chance", "up to 300"). If you know the numbers, they can go in.
 13. **More DBC tables**: if you can export `SpellCastTimes.csv` (and `SpellCooldowns`/`SpellCategory` if your
     tool has them) the same way as `Spell.csv`, I can check every cast time and cooldown against the sim too.
+14. **Cooldowns in Spell.csv**: column 20 looks like the cooldown (Mana Tide 600000 = 10 min). If so, the server
+    changed e.g. **Fire Blast to 20 sec** (classic 8), **Pyroblast to 1 min** (classic none) and the **shocks to
+    10 sec** (classic 6). Can you check Fire Blast / Pyroblast / Flame Shock cooldowns in your spellbook? If they
+    match, I will apply every cooldown from that column.
 
 ## Open items at a glance (updated 2026-09-24)
 
