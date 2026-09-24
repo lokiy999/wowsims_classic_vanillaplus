@@ -11,6 +11,7 @@ with enough shape (name/type/quality/etc.) to be usable.
 """
 import collections
 import json
+import os
 import re
 import sys
 
@@ -563,6 +564,12 @@ def main():
 
     json.dump({"items": out}, open(OUT, "w"), indent=1)
     renum_path = "assets/db_inputs/renumber.json"
+    # Keep earlier renumberings. After the first run the DB already holds the server ids, so the name pass finds
+    # nothing to renumber; without this the old classic ids come back as duplicates and presets break.
+    if os.path.exists(renum_path):
+        for k, v in json.load(open(renum_path)).items():
+            if int(k) not in renumber and v in lua:
+                renumber[int(k)] = v
     json.dump({str(k): v for k, v in sorted(renumber.items())},
               open(renum_path, "w"), indent=0)
     print(f"wrote {OUT}: {n_id} by id, {n_name} by name, {n_setslot} by set+slot, "

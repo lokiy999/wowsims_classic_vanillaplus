@@ -39,6 +39,11 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     changed e.g. **Fire Blast to 20 sec** (classic 8), **Pyroblast to 1 min** (classic none) and the **shocks to
     10 sec** (classic 6). Can you check Fire Blast / Pyroblast / Flame Shock cooldowns in your spellbook? If they
     match, I will apply every cooldown from that column.
+15. **Item list resync**: a full item pipeline run on the current dump (stats unchanged) would remove 349 items
+    (mostly low-level crafted and dungeon gear, e.g. Rhahk'Zor's Hammer, Thornspike, Fine Leather Boots) and add 95
+    (e.g. Headchopper, Rockfist, the Naxxramas T3 Dreadnaught/Redemption pieces), and rename the Cenarion set to
+    "Cenarion Raiment". Do you want the sim to follow the dump (and keep or drop the Naxx items)? Until then the DB
+    stays as it is.
 
 ## Open items at a glance (updated 2026-09-24)
 
@@ -70,11 +75,9 @@ listed at the end of this overview so the older sections don't need rewriting.
 - Scarlet Monastery set completeness (never answered).
 
 **Data / pipeline**
-- Item database vs the current `CSV's/` dump (checked 2026-09-24): a full pipeline run changes **no item stats** (all
-  3162 items in both are identical), so the DB is current. It would change inclusion (515 mostly low-level crafted and
-  dungeon items out, 115 in) and loses all 172 renumberings to server ids (`renumber.json` becomes empty, `parse_vplus.py`
-  now matches "0 by name"), which would move e.g. the Tier 1 belts/bracers back to classic ids and break presets. Not
-  applied; `parse_vplus.py` name matching needs fixing first.
+- Item database vs the current `CSV's/` dump (checked 2026-09-24): no item stats differ, so the DB is current. The
+  pipeline lost the 172 renumberings (fixed: `parse_vplus.py` now keeps earlier ones). A full rerun would still change
+  inclusion and was not applied (question 15).
 - Crafted items are all Phase 1 (deferred by the user).
 - Local spell names that differ from the server (list in the 2026-09-23 tooltip audit section).
 - "Level 60" target uses a SoD NPC id (display only); BWL encounter mechanics were copied from SoD, unverified.

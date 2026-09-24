@@ -3145,3 +3145,11 @@ armor/AP/crit/dodge); a display-only stopgap moved gear-Agility armor to Base. P
   removed. Checked in the browser: warrior Attack Power shows "From other stats: 240" for 120 Strength.
 - Also fixed: Mana Tide Totem's mana gain and its cast cost shared one metrics key, which broke the multi-threaded
   result comparison in the shaman tests; the gain now uses tag 1.
+
+## Part BX — Item pipeline keeps the renumberings (2026-09-24)
+
+`docs/parse_vplus.py` matched items against the current DB, where the renumbered set pieces already carry their server
+ids, so a rerun found nothing to renumber, wrote an empty `renumber.json`, and the classic ids came back as duplicates
+(e.g. Arcanist Leggings 16796 next to the server id). It now merges the previous `renumber.json` (entries whose server
+id is still in the dump). With that, a full run keeps all 172. The run itself was not applied: see TODO question 15
+(inclusion changes and the Cenarion set name).
