@@ -3189,4 +3189,5 @@ throwaway test) and compared. Changed: Blast Wave 60 sec (was 45), Combustion 2 
 base (was 3), Whirling Axe 15 sec (was none), Tiger's Fury 10 sec (was 1), Conflagrate 15 sec (was 10), Amplify
 Curse 5 min (was 3), Lash of Pain 6 sec (was 12), Stoneform 5 min (was 3). Test averages: shadow priest 280 -> 257,
 warlock 806 -> 835. Not changed: stance cooldowns (1 sec in the sim, 0 in the data) and buffs like Shadowform. The
-rogue could not be dumped (the test character crashed); rogue cooldowns are unchecked.
+rogue was checked afterwards (the dump needs a rotation for energy users): Adrenaline Rush, Blade Flurry, Cold Blood,
+Preparation, Riposte, Vanish, Feint all match.
