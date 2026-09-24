@@ -19,13 +19,13 @@ func applyRaceEffects(agent Agent) {
 
 		actionID := ActionID{SpellID: 20594}
 
-		statDep := character.NewDynamicMultiplyStat(stats.Armor, 1.1)
-		stoneFormAura := character.NewTemporaryStatsAuraWrapped("Stoneform", actionID, stats.Stats{}, time.Second*8, func(aura *Aura) {
+		// Server: physical damage taken -20% for 15 sec (Spell.csv).
+		stoneFormAura := character.NewTemporaryStatsAuraWrapped("Stoneform", actionID, stats.Stats{}, time.Second*15, func(aura *Aura) {
 			aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
-				aura.Unit.EnableDynamicStatDep(sim, statDep)
+				aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 0.8
 			})
 			aura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
-				aura.Unit.DisableDynamicStatDep(sim, statDep)
+				aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= 0.8
 			})
 		})
 
@@ -80,7 +80,7 @@ func applyRaceEffects(agent Agent) {
 		bloodFuryAura := character.RegisterAura(Aura{
 			Label:    "Blood Fury",
 			ActionID: actionID,
-			Duration: time.Second * 15,
+			Duration: time.Second * 20, // server (Spell.csv)
 			// Tooltip is misleading; ap bonus is base AP plus AP from current strength, does not include +attackpower on items/buffs
 			OnGain: func(aura *Aura, sim *Simulation) {
 				bloodFuryAP = (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * APPerStrength[character.Class]) + (character.GetStat(stats.Agility) * APPerAgility[character.Class])) * 0.25

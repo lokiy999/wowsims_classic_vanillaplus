@@ -3191,3 +3191,14 @@ Curse 5 min (was 3), Lash of Pain 6 sec (was 12), Stoneform 5 min (was 3). Test 
 warlock 806 -> 835. Not changed: stance cooldowns (1 sec in the sim, 0 in the data) and buffs like Shadowform. The
 rogue was checked afterwards (the dump needs a rotation for energy users): Adrenaline Rush, Blade Flurry, Cold Blood,
 Preparation, Riposte, Vanish, Feint all match.
+
+## Part CA — Buff effects from the server data (2026-09-24)
+
+Compared the big cooldown buffs with `Spell.csv` (duration column + effect values). Already matching: Arcane Power,
+Death Wish, Recklessness, Sweeping Strikes, Adrenaline Rush, Rapid Fire (+30% for 20 sec), Power Infusion (15%),
+Bestial Wrath, Evocation. Changed:
+- **Tiger's Fury**: +140/280/420/560 attack power for 10 sec (was +10-40 damage for 6 sec).
+- **Innervate**: +300% mana regeneration for 30 sec (was +400% for 20 sec).
+- **Blood Fury**: 20 sec (was 15).
+- **Stoneform**: physical damage taken -20% for 15 sec (was +10% armor for 8 sec).
+Test averages: DPS warrior 924 -> 930, tank warrior 300 -> 302, hunter 482 -> 482 (Blood Fury on the orc runs).

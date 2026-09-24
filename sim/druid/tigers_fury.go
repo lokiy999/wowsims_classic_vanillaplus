@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/stats"
 )
 
 func (druid *Druid) registerTigersFurySpell() {
@@ -14,22 +15,23 @@ func (druid *Druid) registerTigersFurySpell() {
 		60: 9846,
 	}[druid.Level]}
 
-	dmgBonus := map[int32]float64{
-		25: 10.0,
-		40: 20.0,
-		50: 30.0,
-		60: 40.0,
+	// Server: +140/280/420/560 attack power for 10 sec (Spell.csv).
+	apBonus := map[int32]float64{
+		25: 140.0,
+		40: 280.0,
+		50: 420.0,
+		60: 560.0,
 	}[druid.Level]
 
 	druid.TigersFuryAura = druid.RegisterAura(core.Aura{
 		Label:    "Tiger's Fury Aura",
 		ActionID: actionID,
-		Duration: 6 * time.Second,
+		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusPhysicalDamage += dmgBonus
+			druid.AddStatDynamic(sim, stats.AttackPower, apBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusPhysicalDamage -= dmgBonus
+			druid.AddStatDynamic(sim, stats.AttackPower, -apBonus)
 		},
 	})
 

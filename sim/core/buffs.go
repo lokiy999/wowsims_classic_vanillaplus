@@ -1243,7 +1243,7 @@ const ShatteringThrowCD = time.Minute * 5
 
 var InnervateAuraTag = "Innervate"
 
-const InnervateDuration = time.Second * 20
+const InnervateDuration = time.Second * 30 // server (Spell.csv 29166)
 const InnervateCD = time.Minute * 5
 
 func InnervateManaThreshold(character *Character) float64 {
@@ -1298,12 +1298,12 @@ func InnervateAura(character *Character, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: InnervateDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SpiritRegenMultiplier += 4
+			character.PseudoStats.SpiritRegenMultiplier += 3 // server: +300%
 			character.PseudoStats.ForceFullSpiritRegen = true
 			character.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SpiritRegenMultiplier -= 4
+			character.PseudoStats.SpiritRegenMultiplier -= 3
 			character.PseudoStats.ForceFullSpiritRegen = false
 			character.UpdateManaRegenRates()
 		},

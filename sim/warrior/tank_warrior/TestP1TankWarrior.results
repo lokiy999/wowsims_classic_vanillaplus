@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestP1TankWarrior-Phase1-StatWeights-Default"
  value: {
-  weights: 0.20067
+  weights: 0.42638
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.10163
+  weights: 0.12711
   weights: 0
   weights: 0
   weights: 0
@@ -99,64 +99,64 @@ stat_weights_results: {
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-BattlegearofHeroism"
  value: {
-  dps: 314.11129
-  tps: 310.03521
+  dps: 316.75877
+  tps: 312.59738
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-BattlegearofMight"
  value: {
-  dps: 337.61952
-  tps: 331.68665
+  dps: 340.0408
+  tps: 333.92498
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-BattlegearofWrath"
  value: {
-  dps: 282.87747
-  tps: 282.293
+  dps: 285.31115
+  tps: 284.56716
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-Champion'sBattlearmor"
  value: {
-  dps: 301.41636
-  tps: 298.34976
+  dps: 303.51963
+  tps: 300.08311
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-FieldMarshal'sBattlegear"
  value: {
-  dps: 322.33574
-  tps: 317.70666
+  dps: 325.81995
+  tps: 320.93411
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-LieutenantCommander'sBattlearmor"
  value: {
-  dps: 301.41636
-  tps: 298.34976
+  dps: 303.51963
+  tps: 300.08311
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-Vindicator'sBattlegear"
  value: {
-  dps: 317.18389
-  tps: 313.82831
+  dps: 318.36393
+  tps: 314.93717
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-Warlord'sBattlegear"
  value: {
-  dps: 322.33574
-  tps: 317.70666
+  dps: 325.81995
+  tps: 320.93411
  }
 }
 dps_results: {
  key: "TestP1TankWarrior-Phase1-Average-Default"
  value: {
-  dps: 300.16042
-  tps: 297.20968
+  dps: 302.15181
+  tps: 299.00282
  }
 }
 dps_results: {
@@ -414,7 +414,7 @@ dps_results: {
 dps_results: {
  key: "TestP1TankWarrior-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 251.38927
-  tps: 252.67685
+  dps: 253.04999
+  tps: 254.20729
  }
 }
