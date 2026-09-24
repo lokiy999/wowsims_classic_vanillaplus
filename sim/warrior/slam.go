@@ -41,7 +41,7 @@ func (warrior *Warrior) registerSlamSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  140, // Should this be 54 or the old 140 value from before SoD?
+		FlatThreatBonus:  140, // classic value; threat isn't in the server data
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

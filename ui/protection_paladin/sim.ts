@@ -48,7 +48,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -81,7 +80,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,

@@ -525,7 +525,7 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	individualBuffs.PowerInfusions = 0
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
-	// SoD versions were removed from pets though
+	// The other world buffs (Dire Maul, Darkmoon Faire, Songflower) are not applied to pets.
 	individualBuffs.FengusFerocity = false
 	individualBuffs.MoldarsMoxie = false
 	individualBuffs.SaygesFortune = proto.SaygesFortune_SaygesUnknown
@@ -1563,25 +1563,6 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32) *Aura {
 	return aura
 }
 
-// TODO: Are there exclusive AP buffs in SoD?
-// func attackPowerBonusEffect(aura *Aura, apBonus float64) *ExclusiveEffect {
-// 	return aura.NewExclusiveEffect("AttackPowerBonus", false, ExclusiveEffect{
-// 		Priority: apBonus,
-// 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-// 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-// 				stats.AttackPower:       ee.Priority,
-// 				stats.RangedAttackPower: ee.Priority,
-// 			})
-// 		},
-// 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-// 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-// 				stats.AttackPower:       -ee.Priority,
-// 				stats.RangedAttackPower: -ee.Priority,
-// 			})
-// 		},
-// 	})
-// }
-
 func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
 		Label:      "Battle Squawk",
@@ -1660,7 +1641,7 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			// charges are removed by every auto or next melee, whether it lands or not
 			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
-			//  but can be seen in both "vanilla" and "sod" era logs
+			//  but can be seen in classic logs
 			if apBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
 				apBuffAura.RemoveStack(sim)
 			}

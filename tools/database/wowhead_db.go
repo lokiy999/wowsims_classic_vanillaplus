@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/tailscale/hujson"
@@ -238,25 +236,9 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 	}
 }
 
-var SoDVersionRegex = regexp.MustCompile(`115[0-9]+`)
-
-// Get the SoD phase corresponding to the item's version number
-// 11500 (1.15.0) = phase 1
-// 11501 (1.15.1) = phase 2
-// 11502 (1.15.2) = phase 3
-// 11503 (1.15.3) = phase 4
-// etc.
-// Anything else we'll fall back to phase 1
+// Wowhead phase data is for Season of Discovery patches and doesn't apply here.
+// Vanilla+ phases come from item_phases.json (docs/gen_phases.py) and custom_items.json.
 func (wi WowheadItem) getPhase() int32 {
-	versionNumStr := strconv.Itoa(int(wi.Version))
-	if SoDVersionRegex.MatchString(versionNumStr) && wi.Phase != 0 {
-		return wi.Phase
-	}
-
-	if wi.Version >= 11500 && wi.Version < 11600 {
-		return wi.Version - 11500 + 1
-	}
-
 	return 1
 }
 

@@ -1441,11 +1441,6 @@ export function canEquipItem<SpecType extends Spec>(player: Player<SpecType>, it
 				return false;
 			}
 
-			// Only warriors with Titan's Grip can equip two-handers in the offhand
-			// TODO: SoD: Implement properly if Blizzard adds titan's grip
-			// if (slot == ItemSlot.ItemSlotOffHand && spec != Spec.SpecWarrior) {
-			// 	return false;
-			// }
 			// Offhands can only be equipped in the main-hand slot
 			if (slot == ItemSlot.ItemSlotOffHand) {
 				return false;

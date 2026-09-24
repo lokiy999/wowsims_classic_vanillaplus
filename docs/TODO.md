@@ -78,7 +78,8 @@ listed at the end of this overview so the older sections don't need rewriting.
 - ~~Item database resync~~ done 2026-09-24 (Part BY).
 - Crafted items are all Phase 1 (deferred by the user).
 - Local spell names that differ from the server (list in the 2026-09-23 tooltip audit section).
-- "Level 60" target uses a SoD NPC id (display only); BWL encounter mechanics were copied from SoD, unverified.
+- ~~"Level 60" target uses a SoD NPC id; BWL encounter mechanics copied from SoD~~ done 2026-09-24 (Part CB).
+- Unverified classic values (not in the server data): Slam flat threat 140, Lightforge Armor 6-piece proc chance 6%.
 
 **Cosmetic / housekeeping**
 - ~~Sidebar: armor from gear Agility is shown under Base (stopgap)~~ fixed 2026-09-24 (Part BW).
@@ -511,8 +512,7 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
   (18348, server: +1% hit, Use: +40 defense/+1400 armor for 20s; sim: proc aura 463105), Shadowstrike (17074, server:
   chance to steal 100-180 life), Thunderstrike (17223, server: 150-250 Nature to up to 3 targets), Masterwork
   Stormhammer (12794, server: 110-200 Nature to up to 3 targets), Ravager aura id 433801. Check each against
-  `VPlusItemDB.lua`. Also SoD ids still in use: Mangle debuff (`core/debuffs.go`, 409828; vanilla has no Mangle),
-  Primal Blessing set proc (467742, `common/item_sets/item_sets_pve.go`).
+  `VPlusItemDB.lua`. ~~Also SoD ids still in use: Mangle debuff, Primal Blessing set proc~~ (fixed in Part BI, confirmed 2026-09-24).
 - **Presence of Might** (enchant 2583, item 19782): the server says "+10 to all Stats"; the sim gives Stamina +20,
   Defense +7, Block Value +15 (`tools/database/enchant_overrides.go`). Its label says Stamina +10.
 - **Enchant Shield - Law of Nature** (7603, item 228982) is a Season of Discovery enchant, not in the server data.
@@ -531,12 +531,9 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
   Quel'Serrar: +40 defense and +1400 armor for 20 sec) but the server data has no cooldown for them, so the sim keeps
   the classic chance-on-hit versions. Needs the cooldowns from the game.
 - The paladin rotations are new and simple (no Consecration for ret, no mana management); tune them in game.
-- The "Level 60" preset target uses NPC id 213336 (a SoD id, display only) in `sim/encounters/default_presets.go`.
-- BWL encounter mechanics were copied from SoD and are unverified (comments in `sim/encounters/blackwing_lair.go`).
+- ~~The "Level 60" preset target uses NPC id 213336~~ and ~~BWL encounter mechanics copied from SoD~~: done 2026-09-24 (Part CB).
 - The disabled feral tank and healing priest rotations use spell ids from a later expansion (48xxx), not SoD.
-- `tools/database/atlasloot.go` still reads the AtlasLootClassic_SoD repository (a data source only).
-- Comments in core mentioning SoD behaviour (rollovers, expertise, stat weights) were left; they describe mechanics
-  that have no confirmed classic value.
+- ~~`tools/database/atlasloot.go` reads the AtlasLootClassic_SoD repository; SoD comments in core~~ done 2026-09-24 (Part CB).
 
 ## Trinkets, status after CHANGES.md Part BJ (2026-09-23)
 

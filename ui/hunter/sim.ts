@@ -188,8 +188,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	},
 
 	raidSimPresets: [
-		// Raid sim presets dont work very well with SoD specs between phases
-		// and we dont support raid sim atm so just comment this out
+		// Raid sim isn't supported yet, so the preset is commented out.
 		// {
 		// 	spec: Spec.SpecHunter,
 		// 	tooltip: 'Beast Mastery Hunter',

@@ -35,7 +35,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatExpertise,
 		// Spell
 		Stat.StatMP5,
 	],
@@ -56,7 +55,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatExpertise,
 		// Spell
 		Stat.StatMP5,
 	],
@@ -76,7 +74,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatMeleeHit]: 26.59,
 				[Stat.StatMeleeCrit]: 28.68,
-				[Stat.StatExpertise]: 26.59,
 				[Stat.StatMana]: 0.03,
 				[Stat.StatFeralAttackPower]: 1,
 			},
@@ -143,32 +140,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	autoRotation: player => {
 		return Presets.DefaultAPL.rotation.rotation!;
 	},
-
-	// simpleRotation: (player: Player<Spec.SpecFeralDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
-	// 	const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-	// 	const preroarDuration = Math.min(simple.preroarDuration, 33.0);
-	// 	const preRoar = APLPrepullAction.fromJsonString(
-	// 		`{"action":{"activateAura":{"auraId":{"spellId":407988}}},"doAtValue":{"const":{"val":"-${(34.0 - preroarDuration).toFixed(2)}s"}}}`,
-	// 	);
-	// 	const preTF = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":5217,"rank":1}}},"doAtValue":{"const":{"val":"-3s"}}}`);
-	// 	const doRotation = APLAction.fromJsonString(
-	// 		`{"catOptimalRotationAction":{"maxWaitTime":${simple.maxWaitTime.toFixed(2)},"minCombosForRip":${simple.minCombosForRip.toFixed(0)},"maintainFaerieFire":${simple.maintainFaerieFire},"useShredTrick":${simple.useShredTrick}}}`,
-	// 	);
-
-	// 	prepullActions.push(...([preroarDuration > 0 ? preRoar : null, simple.precastTigersFury ? preTF : null].filter(a => a) as Array<APLPrepullAction>));
-
-	// 	actions.push(...([doRotation].filter(a => a) as Array<APLAction>));
-
-	// 	return APLRotation.create({
-	// 		prepullActions: prepullActions,
-	// 		priorityList: actions.map(action =>
-	// 			APLListItem.create({
-	// 				action: action,
-	// 			}),
-	// 		),
-	// 	});
-	// },
 
 	raidSimPresets: [
 		{

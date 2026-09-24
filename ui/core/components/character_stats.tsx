@@ -536,7 +536,7 @@ export class CharacterStats extends Component {
 			} else if (stat === Stat.StatArmorPenetration) {
 				displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 			} else if (stat === Stat.StatExpertise) {
-				// It's just like crit and hit in SoD.
+				// Classic has no expertise; kept for completeness.
 				displayStr = `${rawValue}%`;
 			} else if (stat === Stat.StatDefense) {
 				displayStr = `${(Mechanics.MAX_CHARACTER_LEVEL * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;

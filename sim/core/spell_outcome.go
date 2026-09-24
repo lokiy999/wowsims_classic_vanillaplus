@@ -717,7 +717,7 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 }
 
 func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
-	// In SoD this works like crit or hit chance.
+	// Expertise doesn't exist in classic; nothing in the sim gives it, so this is always 0.
 	expertiseDodgeReduction := attackTable.Attacker.stats[stats.Expertise] / 100
 
 	*chance += max(0, attackTable.BaseDodgeChance-attackTable.Defender.PseudoStats.DodgeReduction-expertiseDodgeReduction)
@@ -734,7 +734,7 @@ func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *Atta
 }
 
 func (result *SpellResult) applyAttackTableParry(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
-	// In SoD this works like crit or hit chance.
+	// Expertise doesn't exist in classic; nothing in the sim gives it, so this is always 0.
 	expertiseParryReduction := attackTable.Attacker.stats[stats.Expertise] / 100
 
 	*chance += max(0, attackTable.BaseParryChance-expertiseParryReduction)

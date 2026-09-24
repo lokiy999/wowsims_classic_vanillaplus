@@ -3202,3 +3202,29 @@ Bestial Wrath, Evocation. Changed:
 - **Blood Fury**: 20 sec (was 15).
 - **Stoneform**: physical damage taken -20% for 15 sec (was +10% armor for 8 sec).
 Test averages: DPS warrior 924 -> 930, tank warrior 300 -> 302, hunter 482 -> 482 (Blood Fury on the orc runs).
+
+## Part CB — Last Season of Discovery leftovers removed (2026-09-24)
+
+Follow-up to Part BI. Scanned again for SoD spell ids (400000+), SoD item ids (200000+) and "SoD"/"S03"/"rune"
+wording in `sim/`, `ui/`, `proto/` and `tools/`. The APL and gear preset JSON files were already clean.
+
+- **Vaelastrasz (BWL encounter):** removed the commented-out SoD mechanics (Burning Adrenaline, Fire Nova, Flame
+  Breath, Cleave, about 200 lines). Essence of the Red now follows the server data (spell 23513): 500 mana, 50 energy
+  and 20 rage every second for **5 min** (was 4 min), cast **once** at the start of the fight (was every 4 min).
+- **"Level 60" target:** id 213336 was a SoD NPC. Now id 1 (not a real NPC, it's the generic level 63 target).
+  `assets/database/db.json`/`db.bin` regenerated; the only difference is this id.
+- **Expertise** (a SoD stat, nothing in the sim or item DB gives it): removed from the feral druid and protection
+  paladin stat lists and the feral EP default (26.59). The engine code stays (always 0) with a note.
+- **Dead SoD code removed:** the commented feral "simple rotation" (SoD pre-roar aura 407988), the commented
+  exclusive attack power buff ("exclusive AP buffs in SoD?"), the Titan's Grip TODO in `utils.ts`, the commented
+  SoD item-name filter in `gen_db/main.go`.
+- **Data tools:** `tools/database/atlasloot.go` now scrapes the classic AtlasLoot (Hoizame/AtlasLootClassic)
+  instead of the SoD fork, and `WowheadItem.getPhase()` no longer maps SoD patch versions to phases (Vanilla+
+  phases come from `item_phases.json` and `custom_items.json`). A full `gen_db` run gives an identical item list.
+- **Comments** that described SoD behaviour rewritten: dot rollover snapshots (used by Deadly Poison, Ignite and
+  pet stacks), expertise dodge/parry, +3 level crit suppression, pet world buffs, Windfury Totem charges, stat
+  weights, Slam threat, Lightforge Armor 6-piece proc chance, hunter raid presets.
+- Kept on purpose: `reserved` proto fields with their SoD comments (needed so old saved settings still load),
+  source links in comments that point to SoD test logs (`weaponprocs.go`, `emerald_dragon_whelp.go`) and the
+  upstream block value issue link in `sim/paladin/talents.go`. These don't change anything in the sim.
+- `go build`, `go test ./sim/...` (with and without `--tags=with_db`) and `tsc` pass; no golden results changed.

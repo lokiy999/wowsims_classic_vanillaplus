@@ -360,7 +360,7 @@ func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier
 }
 
 func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
-	// Rollovers in SoD don't seem to update anything
+	// A rollover keeps the earlier snapshot (stacking dots like Deadly Poison and Ignite use this).
 	if !isRollover {
 		dot.SnapshotBaseDamage = baseDamage * dot.Spell.BaseDamageMultiplierAdditive
 		if dot.BonusCoefficient > 0 {
@@ -521,7 +521,7 @@ func (dot *Dot) CalcSnapshotHealing(sim *Simulation, target *Unit, outcomeApplie
 }
 
 func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool) {
-	// Rollovers in SoD don't seem to update anything
+	// A rollover keeps the earlier snapshot (stacking dots like Deadly Poison and Ignite use this).
 	if !isRollover {
 		dot.SnapshotBaseDamage = baseHealing
 		if dot.BonusCoefficient > 0 {

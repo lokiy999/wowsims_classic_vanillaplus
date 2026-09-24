@@ -141,7 +141,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 	}
 
 	// Do half the iterations with a positive, and half with a negative value for better accuracy.
-	const defaultStatMod = 1.0 // lowered for SoD
+	const defaultStatMod = 1.0
 	statModsLow := make([]float64, stats.UnitStatsLen)
 	statModsHigh := make([]float64, stats.UnitStatsLen)
 

@@ -163,7 +163,7 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMeleeWhiteHit,
-				ProcChance: 0.06, //Unsure if this is the classic or SoD proc rate.
+				ProcChance: 0.06, // not in the server tooltip ("chance on melee attack"); 6% is the classic assumption
 				Handler:    handler,
 			})
 		},

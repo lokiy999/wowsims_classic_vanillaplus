@@ -97,61 +97,10 @@ func main() {
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
 
-	// Try to filter out items reworked in SoD. We do this by storing the max ID for each item name in the map.
-	// This works in most cases because items typically don't share names, however one example of items where this fails is:
-	// https://www.wowhead.com/classic/item=23206/mark-of-the-champion and https://www.wowhead.com/classic/item=23207/mark-of-the-champion
-	// In this case, we can check the icon to see if they're the same or not.
-	// Ultimately we want to get rid of any item with the same name and icon, but a lower ID than another entry
-	/* itemNameMap := make(map[string]string, len(wowheadDB.Items))
-	for id, item := range wowheadDB.Items {
-		if _, ok := database.ItemDenyList[item.ID]; ok {
-			continue
-		}
-
-		otherId, hasEntry := itemNameMap[item.Name]
-		if !hasEntry {
-			itemNameMap[item.Name] = id
-			continue
-		}
-
-		idInt, _ := strconv.Atoi(id)
-		otherIdInt, _ := strconv.Atoi(otherId)
-		if otherIdInt < idInt {
-			itemNameMap[item.Name] = id
-		}
-	} */
 	filteredWHDBItems := core.FilterMap(wowheadDB.Items, func(_ string, item database.WowheadItem) bool {
-		// Just filter out anything with ID > 100000 for now, that's all SoM or SoD.
-		// If Blizzard adds new items to Classic² this will need to use more refined logic again.
+		// Ids above 100000 are Season of Mastery/Discovery items. Vanilla+ custom items use lower ids.
 		return item.ID < 100000
 
-		/* id := itemNameMap[item.Name]
-
-		otherItem := wowheadDB.Items[id]
-
-		if _, ok := database.ItemAllowList[item.ID]; ok {
-			return true
-		}
-
-		if _, ok := database.ItemDenyList[item.ID]; ok {
-			return false
-		}
-
-		// Most new items follow this pattern:
-		// - Higher item ID (this is a given)
-		// - Same icon
-		// - If the items have a ClassMask they should match
-		// - Ilvl either the same or only slightly modified (use a 3 ilvl diff threshold)
-		// - Have a later game version
-		if otherItem.ID > item.ID &&
-			otherItem.Icon == item.Icon &&
-			(item.ClassMask == 0 || (otherItem.ClassMask&item.ClassMask) != 0) &&
-			math.Abs(float64(otherItem.Ilvl-item.Ilvl)) < 10 &&
-			otherItem.Version != item.Version {
-			return false
-		}
-
-		return true */
 	})
 
 	for _, response := range itemTooltips {

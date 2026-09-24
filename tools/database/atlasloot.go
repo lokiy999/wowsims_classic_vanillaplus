@@ -18,10 +18,10 @@ import (
 func ReadAtlasLootData(inputsDir string) *WowDatabase {
 	db := NewWowDatabase()
 
-	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Data/source.lua")
-	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_DungeonsAndRaids/data.lua")
-	readAtlasLootPVPData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_PvP/data.lua")
-	readAtlasLootFactionData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/HiKwonko/AtlasLootClassic_SoD/master/AtlasLootClassic_Factions/data.lua")
+	readAtlasLootSourceData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Data/source.lua")
+	readAtlasLootDungeonData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data.lua")
+	readAtlasLootPVPData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_PvP/data.lua")
+	readAtlasLootFactionData(db, proto.Expansion_ExpansionVanilla, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_Factions/data.lua")
 
 	readZoneData(db)
 	readFactionData(db, inputsDir)
@@ -80,7 +80,6 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
 	regex := regexp.MustCompile(`\r?\n`)
 	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
-	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
 
 	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {(.*?)items = {(.*?)@@@}@@@`)
 	mapIdRegexp := regexp.MustCompile(`MapID = (\d+),`)
@@ -197,7 +196,6 @@ func readAtlasLootPVPData(db *WowDatabase, expansion proto.Expansion, srcUrl str
 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
 	regex := regexp.MustCompile(`\r?\n`)
 	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
-	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
 
 	bgPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sMapID = (\d+),.*?items = {(.*?)@@@}@@@`)
 	repLevelPattern := regexp.MustCompile(`{ -- [\w]+Rep(Friendly|Honored|Revered|Exalted)@@@\s+name =(.*?@@@\s+},?@@@\s+},?)`)
@@ -277,7 +275,6 @@ func readAtlasLootFactionData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
 	regex := regexp.MustCompile(`\r?\n`)
 	srcTxt = regex.ReplaceAllString(srcTxt, "@@@")
-	srcTxt = strings.ReplaceAll(srcTxt, "Updated in SoD", "")
 
 	factionpattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sFactionID = (\d+),.*?items = {(.*?)@@@}@@@`)
 	repLevelPattern := regexp.MustCompile(`{ -- (Friendly|Honored|Revered|Exalted)[\d]?@@@\s+name =(.*?@@@\s+},?@@@\s+},?)`)

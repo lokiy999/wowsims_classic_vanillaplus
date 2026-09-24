@@ -10,7 +10,7 @@ func addLevel60(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        213336, // TODO:
+			Id:        1, // not a real NPC: a generic level 63 boss target
 			Name:      "Level 60",
 			Level:     63,
 			MobType:   proto.MobType_MobTypeUnknown,
