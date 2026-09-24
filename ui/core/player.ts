@@ -961,6 +961,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setDefaultHealingParams(hm: HealingModel) {
+		// The encounter only gets its targets after the sim is initialised (see enableHealing).
+		if (!this.sim.encounter.targets?.length) return;
 		const boss = this.sim.encounter.primaryTarget;
 		const dualWield = boss.dualWield;
 		if (hm.cadenceSeconds === 0) {
@@ -979,11 +981,15 @@ export class Player<SpecType extends Spec> {
 
 	enableHealing() {
 		this.healingEnabled = true;
-		const hm = this.getHealingModel();
-		if (hm.cadenceSeconds === 0 || hm.hps === 0) {
-			this.setDefaultHealingParams(hm);
-			this.setHealingModel(0, hm);
-		}
+		// Wait for the encounter's default target: it is set after the sim is initialised, and the defaults below are
+		// based on the boss (reading it earlier crashed the Holy Paladin and Feral Tank pages).
+		this.sim.waitForInit().then(() => {
+			const hm = this.getHealingModel();
+			if (hm.cadenceSeconds === 0 || hm.hps === 0) {
+				this.setDefaultHealingParams(hm);
+				this.setHealingModel(0, hm);
+			}
+		});
 	}
 
 	getHealingModel(): HealingModel {

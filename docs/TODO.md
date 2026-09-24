@@ -101,12 +101,9 @@ all the other data is done; do these as one batch then):
 
 All four heal pages work (Healing Priest, Restoration Shaman, Restoration Druid, Holy Paladin) with the server's heal
 values. Left for later, roughly in order:
-- **FIRST: the Holy Paladin page is blank on the live site** (checked 2026-09-24 after the restart). The browser
-  console shows "TypeError: Cannot read properties of undefined (reading '0')" from
-  `bundle/ui/holy_paladin/index.html-*.entry.js` (its first run as a page; it was never launched before). The sim
-  code itself works (tests and check sims pass). Check `ui/holy_paladin/sim.ts`/`presets.ts`/`index.ts` for an
-  undefined lookup, then also open Healing Priest, Restoration Shaman, Restoration Druid and Feral Tank, which were
-  not checked in the browser yet.
+- **Gear slots are empty on first load on every page** (checked 2026-09-24 in a fresh browser, also on the older Shadow
+  Priest page, so not new): the preset gear sets don't show up in the gear slots and the stats show no gear. Check
+  whether the preset item ids are missing from `assets/database/db.json` or the default gear isn't applied.
 - **Healer gear presets**: every healer page uses a placeholder set from a DPS caster page (shadow priest, elemental,
   balance). Make real healing sets (+healing gear) once the item list is checked.
 - **Healing rotations** (low priority like all rotations): fixed priorities on one target dummy, so there is no

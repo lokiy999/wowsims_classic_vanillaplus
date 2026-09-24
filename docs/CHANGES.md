@@ -3355,3 +3355,16 @@ instead of 120); the lookups detect this.
 - Check sims (placeholder gear, no talents, 5 min, one target dummy): Holy priest ~311 HPS, Disc ~213, Healing Wave
   ~318, Chain Heal ~348, druid ~261, Holy Light ~320, Flash of Light ~276. New golden results for the four healer tests.
 - Open: see "Healers: done in Part CG, still open" in TODO.md.
+
+## Part CH — Fix the blank Holy Paladin / Feral Tank pages; start page links (2026-09-24)
+
+- **Blank pages**: `player.enableHealing()` (called by the Holy Paladin and Feral Tank pages) read the boss of the
+  encounter before the encounter had any targets (they are set after the sim is initialised), which threw
+  "Cannot read properties of undefined (reading '0')". `ui/core/player.ts` now waits for `sim.waitForInit()` before
+  setting the default healing model, and skips the defaults while there is no target.
+- **Start page** (`ui/index.html`, the list is written by hand there, not generated from `launched_sims.ts`): the new
+  pages had no links. Added Priest > Healing (Priest is now a dropdown with Shadow and Healing), Druid > Restoration,
+  Shaman > Restoration, Paladin > Holy; enabled the Balance and Feral Tank links (were `#`). All labels say
+  "Phase 1 - Alpha". Fixed the commented-out raid link (`/classicic/raid/`).
+- How to add a new page to the start page: copy an `<li>` block in `ui/index.html` inside the class dropdown and change
+  the link, icon and title; the page itself must also be in `ui/core/launched_sims.ts`.
