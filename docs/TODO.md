@@ -24,6 +24,11 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 5. **Scarlet Monastery sets**: are all pieces in the game?
 6. **`ASpiritA` world boss**: what name should it show?
 7. **Scratch files at the sim repo root**: keep or delete?
+8. **Mana Tide Totem**: it is not in your shaman talent tree. Can a shaman learn it as a normal spell (from a
+   trainer or a book)? If yes, the sim can let the shaman cast it.
+9. **Execute**: the server text converts extra rage into "$*10;F1" damage per point, which I can't read from the
+   data. The sim uses 15 per rage (classic). What does the tooltip say?
+10. **Trap tick timing**: Immolation Trap (21 sec) and Explosive Trap (10 sec): how often do they tick?
 
 ## Open items at a glance (updated 2026-09-24)
 
@@ -32,8 +37,7 @@ listed at the end of this overview so the older sections don't need rewriting.
 
 **Affects sim results**
 - Spell values: direct and periodic damage in the per-rank arrays now match the server (Part BO). Not compared yet:
-  spells without a `...BaseDamage` array (heals, shields, hunter traps such as Immolation Trap rank 5 at 966 over 21
-  sec vs 690 over 15, warrior and rogue abilities, pet spells). Pyroblast, Flame Shock, Insect Swarm and Arcane
+  heals, shields and pet spells (DoTs, missiles, hunter/rogue/warrior/paladin abilities done in Parts BP and BR). Pyroblast, Flame Shock, Insect Swarm and Arcane
   Missiles spell power coefficients are a guess (classic total spread over the new tick count); Arcane Missiles'
   +1% Arcane crit is one stack per cast (could be per missile).
 - Talents not modeled yet: per-class lists in the 2026-09-19/20 sections (rogue, hunter, warlock, mage, druid, shaman,
@@ -408,11 +412,10 @@ The fire totems are in the sim and match the server data at level 60; decide whe
 - Searing Totem rank 6: 40-54 Fire damage per attack, spell coefficient 0.083, 170 mana, lasts 55s.
 - Magma Totem rank 4 (level 56): 75 area Fire damage per pulse, coefficient 0.033, 650 mana.
 - Fire Nova Totem rank 5 (level 52): 413-459 area Fire damage, coefficient 0.143, 520 mana, 15s cooldown.
-- Call of Flame (+10%/rank damage) and Elemental Fury (crit damage) already apply; Improved Fire Totems (Fire Nova delay
-  -1s/-2s, Magma threat -50%/-100%) is not applied.
+- Call of Flame (+10%/rank damage) and Elemental Fury (crit damage) already apply; ~~Improved Fire Totems~~ done 2026-09-24 (Part BR).
 
 ## Raised 2026-09-23 — spell audit (CHANGES.md Part BG)
-- **The Black Book** (19337): the server tooltip says pet damage +100% and pet damage taken -100% for 30s; the sim gives
+- ~~**The Black Book**~~ done 2026-09-23 (Part BN). Old note: the server tooltip says pet damage +100% and pet damage taken -100% for 30s; the sim gives
   +100% pet armor instead of the damage reduction. Pet damage is right, so DPS is unaffected. The sim's 5 min cooldown is
   not in the server tooltip; confirm in game.
 
@@ -495,7 +498,7 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
 - **Presence of Might** (enchant 2583, item 19782): the server says "+10 to all Stats"; the sim gives Stamina +20,
   Defense +7, Block Value +15 (`tools/database/enchant_overrides.go`). Its label says Stamina +10.
 - **Enchant Shield - Law of Nature** (7603, item 228982) is a Season of Discovery enchant, not in the server data.
-- **Server spell values that differ from the sim** (found when the tooltips were corrected), e.g. Immolation Trap rank
+- ~~**Server spell values that differ from the sim**~~ done 2026-09-24 (Parts BO, BP, BR). Old note: e.g. Immolation Trap rank
   5: server 966 Fire over 21 sec, sim 690 over 15 sec (`sim/hunter/immolation_trap.go`); Arcane Shot 14286: server 212.
   The tooltips now show the server values; the sim numbers were not changed.
 - **Local spell names that differ from the server, left as they are:** 713 Summon Incubus (server: Turn Undead),
@@ -506,7 +509,7 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
 
 ## Raised 2026-09-23 — after the SoD removal (CHANGES.md Part BI)
 
-- **Flame Wrath** and **Quel'Serrar** are "Use:" effects on the server (Flame Wrath: fire shield + 210-250 fire ring;
+- ~~**Flame Wrath** and **Quel'Serrar**~~ done 2026-09-23 (Part BM, cooldowns from the tooltips). Old note: "Use:" effects on the server (Flame Wrath: fire shield + 210-250 fire ring;
   Quel'Serrar: +40 defense and +1400 armor for 20 sec) but the server data has no cooldown for them, so the sim keeps
   the classic chance-on-hit versions. Needs the cooldowns from the game.
 - The paladin rotations are new and simple (no Consecration for ret, no mana management); tune them in game.

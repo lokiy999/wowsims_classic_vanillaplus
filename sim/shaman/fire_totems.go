@@ -156,6 +156,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: shaman.callOfFlameMultiplier(),
+		ThreatMultiplier: 1 - 0.5*float64(shaman.Talents.ImprovedFireTotems), // Improved Fire Totems: -50%/rank threat
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -249,7 +250,8 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	manaCost := FireNovaTotemManaCost[rank]
 	level := FireNovaTotemLevel[rank]
 
-	duration := time.Second * 5
+	// Improved Fire Totems: the nova goes off 1/2 sec sooner.
+	duration := time.Second * time.Duration(5-shaman.Talents.ImprovedFireTotems)
 	attackInterval := duration
 
 	novaSpell := shaman.RegisterSpell(core.SpellConfig{
@@ -259,6 +261,7 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: shaman.callOfFlameMultiplier(),
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

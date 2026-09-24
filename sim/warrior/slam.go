@@ -9,7 +9,7 @@ import (
 func (warrior *Warrior) registerSlamSpell() {
 	requiredLevel := 54
 	spellID := int32(11605)
-	flatDamageBonus := 87.0
+	flatDamageBonus := 107.0 // server (Spell.csv 11605)
 
 	warrior.Slam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorSlam,

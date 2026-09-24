@@ -11,7 +11,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		25: 32,
 		40: 60,
 		50: 90,
-		60: core.TernaryFloat64(core.IncludeAQ, 150, 140),
+		60: core.TernaryFloat64(core.IncludeAQ, 170, 140), // server: 150% weapon damage plus 255 (170 x 1.5)
 	}[rogue.Level]
 
 	spellID := map[int32]int32{

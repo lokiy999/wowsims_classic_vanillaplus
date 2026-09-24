@@ -8,7 +8,7 @@ import (
 
 func (warrior *Warrior) registerThunderClapSpell() {
 	spellID := int32(11581)
-	baseDamage := 103.0
+	baseDamage := 134.0 // server (Spell.csv 11581)
 	attackSpeedReduction := int32(10)
 	stanceMask := BattleStance
 

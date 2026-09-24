@@ -10,9 +10,10 @@ import (
 
 func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
 	spellId := [4]int32{0, 13813, 14316, 14317}[rank]
-	dotDamage := [4]float64{0, 15, 24, 33}[rank]
-	minDamage := [4]float64{0, 104, 145, 208}[rank]
-	maxDamage := [4]float64{0, 135, 193, 265}[rank]
+	// Server: 143-173 + 150 over 10 sec, 207-255 + 200, 318-374 + 300 (tick interval assumed 2 sec).
+	dotDamage := [4]float64{0, 30, 40, 60}[rank]
+	minDamage := [4]float64{0, 143, 207, 318}[rank]
+	maxDamage := [4]float64{0, 173, 255, 374}[rank]
 	manaCost := [4]float64{0, 275, 395, 520}[rank]
 	level := [4]int{0, 34, 44, 54}[rank]
 
@@ -52,7 +53,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 				Label: "ExplosiveTrap" + hunter.Label + strconv.Itoa(rank),
 				Tag:   "ExplosiveTrap",
 			},
-			NumberOfTicks: 10,
+			NumberOfTicks: 5,
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

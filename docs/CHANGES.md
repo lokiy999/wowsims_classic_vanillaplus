@@ -3064,3 +3064,21 @@ Word: Pain, Devouring Plague, Mind Flay, Starshards and Raptor Strike already ma
 - **Arcane Missiles rank 8** is now available (the loop stopped at rank 7, a leftover "TODO AQ").
 - **Lightning Shield** also gives +5/10/15/20/30/40/50 spell damage (by rank) while active (server text).
 - Baselines updated: hunter, rogue, enhancement shaman, tank shaman, DPS warrior, tank warrior.
+
+## Part BR — Physical abilities from the server data, Improved Fire Totems (2026-09-24)
+
+Compared hunter, rogue, warrior and paladin abilities with `Spell.csv`. Already matching: Heroic Strike, Cleave, Mortal
+Strike, Bloodthirst (50% AP), Execute base 750, Hamstring, Aimed Shot, Multi-Shot, Wing Clip, Sinister Strike,
+Eviscerate, Garrote, Holy Shield, Hammer of Wrath. Changed to the server values:
+- **Arcane Shot** 19/32/49/88/115/172/212/275 (rank 8 was 183).
+- **Mongoose Bite** is weapon damage plus 10/15/25/35 (was a flat 25-115).
+- **Immolation Trap** 147/301/476/714/966 over 21 sec (was 105-690 over 7.5 sec); 7 ticks of 3 sec (tick interval
+  assumed).
+- **Explosive Trap** 143-173 / 207-255 / 318-374 plus 150/200/300 over 10 sec (5 ticks of 2 sec, assumed); was
+  104-265 plus 150-330 over 20 sec.
+- **Backstab** 150% weapon damage plus 255 (was 225), **Ambush** 250% plus 300 (was 290).
+- **Overpower** +50 (was 35), **Slam** +107 (was 87), **Thunder Clap** 134 (was 103).
+- **Rend** 72 over 18 sec / 192 over 24 / 270 over 27 / 360 over 30 (rank 7 was 147 over 21).
+- **Improved Fire Totems** now works: Fire Nova Totem goes off 1/2 sec sooner, Magma Totem threat -50%/-100%. Fire Nova
+  and Magma damage now cause threat (the spells had no threat multiplier, so 0).
+- Baseline updated: combat daggers rogue (Backstab). No other preset uses these abilities.

@@ -13,10 +13,11 @@ func (warrior *Warrior) registerRendSpell() {
 		damage  float64
 		spellID int32
 	}{
-		25: {spellID: 6547, damage: 9, ticks: 5},
-		40: {spellID: 11572, damage: 14, ticks: 7},
-		50: {spellID: 11573, damage: 18, ticks: 7},
-		60: {spellID: 11574, damage: 21, ticks: 7},
+		// server: 72 over 18 sec, 192 over 24, 270 over 27, 360 over 30 (3 sec ticks)
+		25: {spellID: 6547, damage: 12, ticks: 6},
+		40: {spellID: 11572, damage: 24, ticks: 8},
+		50: {spellID: 11573, damage: 30, ticks: 9},
+		60: {spellID: 11574, damage: 36, ticks: 10},
 	}[warrior.Level]
 
 	baseDamage := rend.damage

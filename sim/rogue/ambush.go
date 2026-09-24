@@ -11,7 +11,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		25: 28,
 		40: 50,
 		50: 92,
-		60: 116,
+		60: 120, // server: 250% weapon damage plus 300 (120 x 2.5)
 	}[rogue.Level]
 
 	spellID := map[int32]int32{

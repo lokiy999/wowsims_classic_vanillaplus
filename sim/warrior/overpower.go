@@ -7,7 +7,7 @@ import (
 )
 
 func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
-	bonusDamage := 35.0
+	bonusDamage := 50.0 // server (Spell.csv 11585)
 	spellID := int32(11585)
 
 	warrior.RegisterAura(core.Aura{
