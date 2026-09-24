@@ -35,11 +35,11 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     ("a chance", "up to 300"). If you know the numbers, they can go in.
 13. **More DBC tables**: if you can export `SpellCastTimes.csv` (and `SpellCooldowns`/`SpellCategory` if your
     tool has them) the same way as `Spell.csv`, I can check every cast time and cooldown against the sim too.
-14. **Cooldowns in Spell.csv**: column 20 looks like the cooldown (Mana Tide 600000 = 10 min). If so, the server
+14. ~~**Cooldowns in Spell.csv**~~ ANSWERED 2026-09-24: correct, applied (Part BZ).: column 20 looks like the cooldown (Mana Tide 600000 = 10 min). If so, the server
     changed e.g. **Fire Blast to 20 sec** (classic 8), **Pyroblast to 1 min** (classic none) and the **shocks to
     10 sec** (classic 6). Can you check Fire Blast / Pyroblast / Flame Shock cooldowns in your spellbook? If they
     match, I will apply every cooldown from that column.
-15. **Item list resync**: a full item pipeline run on the current dump (stats unchanged) would remove 349 items
+15. ~~**Item list resync**~~ ANSWERED 2026-09-24: follow the dump, never Naxx, rename ok; done (Part BY).: a full item pipeline run on the current dump (stats unchanged) would remove 349 items
     (mostly low-level crafted and dungeon gear, e.g. Rhahk'Zor's Hammer, Thornspike, Fine Leather Boots) and add 95
     (e.g. Headchopper, Rockfist, the Naxxramas T3 Dreadnaught/Redemption pieces), and rename the Cenarion set to
     "Cenarion Raiment". Do you want the sim to follow the dump (and keep or drop the Naxx items)? Until then the DB
@@ -75,9 +75,7 @@ listed at the end of this overview so the older sections don't need rewriting.
 - Scarlet Monastery set completeness (never answered).
 
 **Data / pipeline**
-- Item database vs the current `CSV's/` dump (checked 2026-09-24): no item stats differ, so the DB is current. The
-  pipeline lost the 172 renumberings (fixed: `parse_vplus.py` now keeps earlier ones). A full rerun would still change
-  inclusion and was not applied (question 15).
+- ~~Item database resync~~ done 2026-09-24 (Part BY).
 - Crafted items are all Phase 1 (deferred by the user).
 - Local spell names that differ from the server (list in the 2026-09-23 tooltip audit section).
 - "Level 60" target uses a SoD NPC id (display only); BWL encounter mechanics were copied from SoD, unverified.

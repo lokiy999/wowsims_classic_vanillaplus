@@ -562,6 +562,28 @@ def main():
 
     # Item phases are assigned by docs/gen_phases.py (location-based), applied in gen_db.
 
+    # Items that are not in the Wowhead base data got a full entry (name, type, ilvl, phase, ...) the first time they
+    # were added. Later runs see them in the DB already and would emit a stats-only override, which gen_db then drops
+    # (no ilvl). Keep the earlier full entry's fields; stats and tooltip still come fresh from the dump.
+    try:
+        import subprocess
+        prev = json.loads(subprocess.check_output(["git", "show", "HEAD:" + OUT]))["items"]
+    except Exception:
+        prev = []
+    prev_by_id = {e["id"]: e for e in prev}
+    n_kept_shape = 0
+    for e in out:
+        pe = prev_by_id.get(e["id"])
+        if pe is None:
+            continue
+        kept = False
+        for k, v in pe.items():
+            if k not in ("stats", "tooltip", "weaponDamageMin", "weaponDamageMax", "weaponSpeed") and k not in e:
+                e[k] = v
+                kept = True
+        n_kept_shape += kept
+    print(f"kept the full entry of {n_kept_shape} items not in the Wowhead data")
+
     json.dump({"items": out}, open(OUT, "w"), indent=1)
     renum_path = "assets/db_inputs/renumber.json"
     # Keep earlier renumberings. After the first run the DB already holds the server ids, so the name pass finds

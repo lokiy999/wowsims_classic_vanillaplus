@@ -62,7 +62,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			CD: core.Cooldown{
 				// DBC: Improved Mind Blast reduces the cooldown by 1s per rank.
 				Timer:    cdTimer,
-				Duration: time.Second*8 - time.Second*time.Duration(priest.Talents.ImprovedMindBlast),
+				Duration: time.Second*10 - time.Second*time.Duration(priest.Talents.ImprovedMindBlast), // server base 10 sec
 			},
 		},
 

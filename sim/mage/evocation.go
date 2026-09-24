@@ -9,7 +9,7 @@ import (
 func (mage *Mage) registerEvocationCD() {
 	actionID := core.ActionID{SpellID: 12051}
 	channelTime := time.Second * 8
-	cooldown := time.Minute * 8
+	cooldown := time.Minute * 10 // server (Spell.csv)
 
 	tickLength := time.Millisecond * 250
 	maxTicks := int32(channelTime / tickLength)

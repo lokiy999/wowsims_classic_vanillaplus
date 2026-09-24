@@ -18,7 +18,7 @@ func (paladin *Paladin) registerDivineFavor() {
 
 	cd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
-		Duration: time.Minute * 2,
+		Duration: time.Minute * 5, // server (Spell.csv)
 	}
 
 	aura := paladin.RegisterAura(core.Aura{

@@ -63,6 +63,11 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 				GCD:      core.GCDDefault,
 				CastTime: castTime,
 			},
+			// Server: 8 sec cooldown on every rank (Spell.csv); the ranks share it.
+			CD: core.Cooldown{
+				Timer:    mage.flamestrikeTimer(),
+				Duration: time.Second * 8,
+			},
 		},
 
 		BonusCritRating: float64(5 * int32(0) /*removed*/ * core.CritRatingPerCritChance),
@@ -97,4 +102,12 @@ func (mage *Mage) newFlamestrikeSpellConfig(rank int) core.SpellConfig {
 			spell.AOEDot().Apply(sim)
 		},
 	}
+}
+
+// All Flamestrike ranks share the 8 sec cooldown.
+func (mage *Mage) flamestrikeTimer() *core.Timer {
+	if mage.flamestrikeCD == nil {
+		mage.flamestrikeCD = mage.NewTimer()
+	}
+	return mage.flamestrikeCD
 }

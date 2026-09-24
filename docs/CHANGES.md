@@ -3153,3 +3153,40 @@ ids, so a rerun found nothing to renumber, wrote an empty `renumber.json`, and t
 (e.g. Arcanist Leggings 16796 next to the server id). It now merges the previous `renumber.json` (entries whose server
 id is still in the dump). With that, a full run keeps all 172. The run itself was not applied: see TODO question 15
 (inclusion changes and the Cenarion set name).
+
+## Part BY — Item database resync, no Naxx items (2026-09-24)
+
+The user approved following the current dump (TODO question 15): never any Naxx items, the Cenarion rename is fine,
+and Alchemists' Stone, Onyxia Scale Breastplate, Ashbringer and The Twin Blades of Azzinoth can go.
+
+A full pipeline run first wanted to drop 349 items, including the server's own items (the SM rework trinkets such
+as The Final Gaze and Mark of Bestial Fury, Everlasting Liver, the rank V scrolls, the Shen'dralar badges). Cause:
+items that are not in the Wowhead data got a full entry (name, type, ilvl 66, phase) the first time they were added;
+later runs see them in the DB and wrote stats-only overrides, which gen_db drops (no item level). Pipeline fixes:
+- `docs/parse_vplus.py` keeps every earlier override field of an item (from the committed `custom_items.json`),
+  with stats and tooltip fresh from the dump. It already kept the renumberings (Part BX).
+- `docs/gen_include.py`: new `NAXX_TABLE` rule: anything in a Naxxramas or Tier 3 loot table is never included,
+  even when a set table lists it (the T3 Dreadnaught/Redemption pieces got in that way). `USER_EXCLUDE_IDS` for the
+  six removed items (the Twin Blades and both Warglaives). The raid-source check is skipped for renumbered server
+  items (it read the classic item's Wowhead source: Cloak of Untold Secrets 21627 -> 26231). Four level-60 server
+  greens that no loot table lists (Vile Protector, Forcestone Buckler, Omega Orb, Explorers' League Commendation)
+  are kept by id.
+- `docs/gen_phases.py` keeps the committed phase when the new run has no information, and the tier phase for
+  renumbered tier pieces (Handguards of Might, Righteous Boots).
+
+Result: 17 items added (e.g. Headchopper, Rockfist, Sliverblade, Pit Fighter's Shield, Don Mauricio's Band of
+Domination, Moonshadow Stave, Boots of Ferocity), the 6 approved removed, nothing else changed, no Naxx item in the
+DB, no preset uses a removed item. The Cenarion pieces keep the name "Cenarion Armor" (the dump has no set name, so
+the committed one stays; the set bonus code uses that name).
+
+## Part BZ — Cooldowns from the server data (2026-09-24)
+
+Column 19/20 of `Spell.csv` hold the cooldown in ms (the user confirmed Fire Blast 20 sec, Pyroblast 1 min, shocks
+10 sec, which the sim already had). Dumped every spell's cooldown for all classes (no talents and max talents, via a
+throwaway test) and compared. Changed: Blast Wave 60 sec (was 45), Combustion 2 min (was 3), Arcane Power 5 min base
+(was 3; Improved Arcane Power still -1 min/rank), Evocation 10 min (was 8), Ice Barrier 60 sec (was 30), Flamestrike
+8 sec shared by all ranks (was none), Mind Blast 10 sec base (was 8), Divine Favor 5 min (was 2), Rapid Fire 5 min
+base (was 3), Whirling Axe 15 sec (was none), Tiger's Fury 10 sec (was 1), Conflagrate 15 sec (was 10), Amplify
+Curse 5 min (was 3), Lash of Pain 6 sec (was 12), Stoneform 5 min (was 3). Test averages: shadow priest 280 -> 257,
+warlock 806 -> 835. Not changed: stance cooldowns (1 sec in the sim, 0 in the data) and buffs like Shadowform. The
+rogue could not be dumped (the test character crashed); rogue cooldowns are unchecked.

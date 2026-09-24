@@ -43,7 +43,7 @@ func (druid *Druid) registerTigersFurySpell() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second,
+				Duration: time.Second * 10, // server (Spell.csv)
 			},
 		},
 

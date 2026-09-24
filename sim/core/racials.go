@@ -35,7 +35,7 @@ func applyRaceEffects(agent Agent) {
 			Cast: CastConfig{
 				CD: Cooldown{
 					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
+					Duration: time.Minute * 5 /* server (Spell.csv) */,
 				},
 			},
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {

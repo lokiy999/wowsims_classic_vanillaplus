@@ -33,7 +33,7 @@ func (mage *Mage) newIceBarrierSpellConfig(rank int, cdTimer *core.Timer) core.S
 	manaCost := IceBarrierManaCost[rank]
 	level := IceBarrierLevel[rank]
 
-	cooldown := time.Second * 30
+	cooldown := time.Second * 60 // server (Spell.csv)
 
 	mage.IceBarrierAuras[rank] = mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: spellID},

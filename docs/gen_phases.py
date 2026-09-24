@@ -56,16 +56,26 @@ def main():
         pit = pv.parse_item(_lines(body))
         meta[i] = (pit.get("setName"), 60)
 
+    # Committed phases, used when the new run has no information (no tier set, no loot table): a renumbered piece
+    # can lose the classic set name it was phased by (e.g. Handguards of Might 25002, phase 4).
+    try:
+        import subprocess
+        prev_phases = {int(k): v for k, v in json.loads(subprocess.check_output(
+            ["git", "show", "HEAD:assets/db_inputs/item_phases.json"], cwd=REPO)).items()}
+    except Exception:
+        prev_phases = {}
+
     phases = {}
     for iid, (sn, ilvl) in meta.items():
         server_id = renum.get(iid, iid)
-        if sn in TIER_SETS:
+        # A renumbered tier piece can lose its classic set name; keep its committed tier phase.
+        if sn in TIER_SETS or prev_phases.get(server_id) == TIER_PHASE:
             phases[server_id] = TIER_PHASE
             continue
         ph = sd.phase_from_tables(
             id_tables.get(iid, set()) | id_tables.get(server_id, set()))
         if ph is None:
-            phases[server_id] = 1
+            phases[server_id] = prev_phases.get(server_id, 1)
             continue
         if ph == 6 and ilvl < 60:
             continue  # old sub-60 SM item -> removed, not phased

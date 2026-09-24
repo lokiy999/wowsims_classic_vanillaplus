@@ -36,7 +36,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: time.Second * 15, // server (Spell.csv)
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

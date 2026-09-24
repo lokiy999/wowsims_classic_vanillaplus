@@ -191,6 +191,10 @@ func (hunter *Hunter) registerWhirlingAxe() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{GCD: core.GCDDefault},
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: time.Second * 15, // server (Spell.csv)
+			},
 		},
 
 		CritDamageBonus:  hunter.mortalShots(),

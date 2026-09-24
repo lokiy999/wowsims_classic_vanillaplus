@@ -378,7 +378,7 @@ func (mage *Mage) registerArcanePowerCD() {
 			CD: core.Cooldown{
 				Timer: mage.NewTimer(),
 				// DBC: Improved Arcane Power -60s cooldown per rank.
-				Duration: time.Second * time.Duration(180-60*mage.Talents.ImprovedArcanePower),
+				Duration: time.Second * time.Duration(300-60*mage.Talents.ImprovedArcanePower), // server base 5 min
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -438,7 +438,7 @@ func (mage *Mage) registerCombustionCD() {
 	actionID := core.ActionID{SpellID: 11129}
 	cd := core.Cooldown{
 		Timer:    mage.NewTimer(),
-		Duration: time.Minute * 3,
+		Duration: time.Minute * 2, // Combustion, server (Spell.csv)
 	}
 
 	var fireSpells []*core.Spell

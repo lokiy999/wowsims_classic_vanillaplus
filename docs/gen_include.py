@@ -35,13 +35,23 @@ RAID_ZONES = {3428, 3429, 3456}
 AV_REP_FACTIONS = {729, 730}  # Frostwolf Clan, Stormpike Guard
 AV_EXTRA_IDS = {19105, 19106, 19107, 19108, 19109}
 
+# Never include Naxxramas items (user rule, 2026-09-24): anything listed in a Naxxramas loot table or a Tier 3 set
+# table, even when another table (e.g. a set list) also lists it.
+NAXX_TABLE = re.compile(r'^(NAX|Naxxramas|T3)')
+
+# Removed by the user (2026-09-24): Alchemists' Stone, Onyxia Scale Breastplate, Ashbringer, The Twin Blades of
+# Azzinoth and its two Warglaives.
+USER_EXCLUDE_IDS = {13503, 15141, 13262, 18582, 18583, 18584}
+
 # Rule 3 hard exclusions that would otherwise pass Rule 1 (not craftable yet).
 FROST_RESIST_SETS = {"Icebane", "Glacial", "Polar", "Icy Scale"}
 
 # Non-equippable custom "Use:" items (rank V stat scrolls) that Rule 1b would
 # otherwise drop since they have no equip "type" -- see parse_vplus.py's
 # MANUAL_CONSUMABLE_ITEMS for the matching hand-added db entries.
-MANUAL_INCLUDE_IDS = {81010, 81011, 81012, 81013, 81014, 81015}
+MANUAL_INCLUDE_IDS = {81010, 81011, 81012, 81013, 81014, 81015,
+                      # level-60 server greens no loot table lists (Rule 1b needs blue+)
+                      26406, 26407, 26408, 26409}
 
 # Recipe items (crafting plans/patterns/schematics/etc.) are not equippable gear --
 # AtlasLoot Crafting tables list the recipe drop itself, which would otherwise pass
@@ -108,6 +118,11 @@ def main():
         tbls = tables_of(iid)
         return bool(tbls) and all(sd.IGNORED_TABLE.match(t) for t in tbls)
 
+    renum_targets = set(renum.values())
+
+    def naxx(iid):
+        return any(NAXX_TABLE.match(t) for t in tables_of(iid))
+
     def sm_old(iid, ilvl):
         live = [t for t in tables_of(iid) if not sd.IGNORED_TABLE.match(t)]
         return live and all(t.startswith(("SM", "Scarlet")) for t in live) and (ilvl or 0) < 60
@@ -120,7 +135,7 @@ def main():
     for iid, it in pristine.items():
         name = it.get("name", "")
         server_id = renum.get(iid, iid)
-        if _frost_resist(name) or _is_recipe(name) or sm_old(iid, it.get("ilvl")) or _alterac_valley(iid, it):
+        if _frost_resist(name) or _is_recipe(name) or sm_old(iid, it.get("ilvl")) or _alterac_valley(iid, it) or naxx(iid):
             continue
         if in_atlas(iid, name):
             included.add(server_id)
@@ -131,7 +146,7 @@ def main():
                 and (it.get("quality") or 0) >= 3
                 and it.get("type")
                 and not atlas_aqnaxx_only(iid)
-                and not _raid_sourced(it)):
+                and (iid in renum_targets or not _raid_sourced(it))):
             included.add(server_id)
             n_b += 1
 
@@ -144,7 +159,7 @@ def main():
         name = pit.get("name", "")
         # (sm_old only applies to pristine items -- the dump carries no item level,
         #  and a dump-only SM item is the server's new lvl-60 version.)
-        if not pit.get("type") or _frost_resist(name) or _is_recipe(name) or iid in AV_EXTRA_IDS:
+        if not pit.get("type") or _frost_resist(name) or _is_recipe(name) or iid in AV_EXTRA_IDS or naxx(iid):
             continue
         q = pit.get("quality")
         if in_atlas(iid, name):
@@ -167,7 +182,7 @@ def main():
             if not iid:
                 continue
             sid = renum.get(iid, iid)
-            if sid in included or atlas_aqnaxx_only(iid):
+            if sid in included or atlas_aqnaxx_only(iid) or naxx(iid):
                 continue
             pit_it = pristine.get(iid) or pristine.get(sid)
             if pit_it and (_raid_sourced(pit_it) or _alterac_valley(iid, pit_it) or _is_recipe(pit_it.get("name", ""))):
@@ -178,6 +193,7 @@ def main():
             n_preset += 1
 
     included |= MANUAL_INCLUDE_IDS
+    included -= USER_EXCLUDE_IDS
 
     json.dump(sorted(included), open(INCLUDED, "w"), indent=0)
     json.dump({str(k): v for k, v in sorted(add.items())}, open(ADD, "w"), indent=0)

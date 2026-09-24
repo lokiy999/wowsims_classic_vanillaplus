@@ -13,7 +13,7 @@ func (hunter *Hunter) registerRapidFire() {
 
 	actionID := core.ActionID{SpellID: 3045}
 	// +30% ranged speed for 20 sec, 3 min cooldown (confirmed in game); Stalking takes 1 min off per rank (DBC).
-	cooldown := time.Minute*3 - time.Minute*time.Duration(hunter.Talents.Stalking)
+	cooldown := time.Minute*5 - time.Minute*time.Duration(hunter.Talents.Stalking) // server base 5 min
 
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",

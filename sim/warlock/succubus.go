@@ -134,7 +134,7 @@ func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    wp.NewTimer(),
-				Duration: time.Second * (12 - time.Duration(3*int32(0) /*removed*/)),
+				Duration: time.Second * 6, // server (Spell.csv)
 			},
 		},
 

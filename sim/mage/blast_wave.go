@@ -38,7 +38,7 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 	level := BlastWaveLevel[rank]
 
 	spellCoeff := .129
-	cooldown := time.Second * 45
+	cooldown := time.Second * 60 // server (Spell.csv)
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_MageBlastWave,
