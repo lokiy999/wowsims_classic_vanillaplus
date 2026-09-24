@@ -148,7 +148,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.DemoralizingRoar != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(DemoralizingRoarAura(target, GetTristateValueInt32(debuffs.DemoralizingRoar, 0, 5)))
+		MakePermanent(DemoralizingRoarAura(target, GetTristateValueInt32(debuffs.DemoralizingRoar, 0, 2)))
 	}
 	if debuffs.DemoralizingShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(DemoralizingShoutAura(target, 0, GetTristateValueInt32(debuffs.DemoralizingShout, 0, 5)))
@@ -825,14 +825,14 @@ func ExposeWeaknessAura(target *Unit) *Aura {
 }
 
 func DemoralizingRoarAura(target *Unit, points int32) *Aura {
-	baseAPReduction := 138.0
+	baseAPReduction := 132.0 // server 9898
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "DemoralizingRoar-" + strconv.Itoa(int(points)),
 		ActionID: ActionID{SpellID: 9898},
 		Duration: time.Second * 30,
 	})
-	apReductionEffect(aura, math.Floor(baseAPReduction*(1+0.08*float64(points))))
+	apReductionEffect(aura, math.Floor(baseAPReduction*(1+0.2*float64(points)))) // Feral Aggression: +20%/rank (DBC 16858/16859)
 	return aura
 }
 

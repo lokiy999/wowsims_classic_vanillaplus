@@ -1,0 +1,213 @@
+character_stats_results: {
+ key: "TestFeralTank-Phase1-CharacterStats-Default"
+ value: {
+  final_stats: 403.535
+  final_stats: 332.695
+  final_stats: 588.225
+  final_stats: 218.845
+  final_stats: 298.54
+  final_stats: 72.94833
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 87.1
+  final_stats: 0
+  final_stats: 15.45471
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1678.677
+  final_stats: 1
+  final_stats: 31.53475
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4246.675
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7067.99
+  final_stats: 138.6
+  final_stats: 16
+  final_stats: 5.64
+  final_stats: 0
+  final_stats: 19.17475
+  final_stats: 5.64
+  final_stats: 0
+  final_stats: 9902.98575
+  final_stats: 40
+  final_stats: 68
+  final_stats: 68
+  final_stats: 78
+  final_stats: 68
+  final_stats: 1506
+  final_stats: 15
+  final_stats: 15
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestFeralTank-Phase1-StatWeights-Default"
+ value: {
+  weights: 0.02714
+  weights: 0.08568
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: -0.28404
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: -0.01806
+  weights: 0
+  weights: -0.19477
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-CenarionArmor"
+ value: {
+  dps: 310.08763
+  tps: 589.92674
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-Champion'sRefuge"
+ value: {
+  dps: 274.93991
+  tps: 516.42171
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-FeralheartRaiment"
+ value: {
+  dps: 299.52647
+  tps: 568.41349
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-FieldMarshal'sSanctuary"
+ value: {
+  dps: 294.04683
+  tps: 559.57909
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-LieutenantCommander'sRefuge"
+ value: {
+  dps: 274.93991
+  tps: 516.42171
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-StormrageRaiment"
+ value: {
+  dps: 230.67046
+  tps: 434.1751
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-TalonclawRegalia"
+ value: {
+  dps: 230.67046
+  tps: 434.22048
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-UrsocArmor"
+ value: {
+  dps: 276.75578
+  tps: 521.94657
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-AllItems-Warlord'sSanctuary"
+ value: {
+  dps: 294.04683
+  tps: 559.57909
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Average-Default"
+ value: {
+  dps: 373.17893
+  tps: 755.46982
+  dtps: 983.33619
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Settings-Tauren-placeholder-Default-default-FullBuffs-Consumes-LongMultiTarget"
+ value: {
+  tps: 30
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Settings-Tauren-placeholder-Default-default-FullBuffs-Consumes-LongSingleTarget"
+ value: {
+  tps: 1.5
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Settings-Tauren-placeholder-Default-default-FullBuffs-Consumes-ShortSingleTarget"
+ value: {
+  tps: 1.5
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Settings-Tauren-placeholder-Default-default-NoBuffs-Consumes-LongMultiTarget"
+ value: {
+  tps: 46.5893
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Settings-Tauren-placeholder-Default-default-NoBuffs-Consumes-LongSingleTarget"
+ value: {
+  tps: 2.3281
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-Settings-Tauren-placeholder-Default-default-NoBuffs-Consumes-ShortSingleTarget"
+ value: {
+  tps: 2.1825
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase1-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 423.65284
+  tps: 860.383
+  dtps: 914.90597
+ }
+}

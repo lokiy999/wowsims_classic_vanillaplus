@@ -44,6 +44,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     (e.g. Headchopper, Rockfist, the Naxxramas T3 Dreadnaught/Redemption pieces), and rename the Cenarion set to
     "Cenarion Raiment". Do you want the sim to follow the dump (and keep or drop the Naxx items)? Until then the DB
     stays as it is.
+16. **Feral Tank values not in the server data** (Part CF): how much does Swipe gain from attack power ("increased by
+    Attack Power", sim: none yet)? How much rage does Grizzly's Fury give when you are hit? Does Leader of the Pack
+    really double Dire Bear Form (armor from items +720% instead of +360%, health +40%, +360 attack power)? Compare
+    the character sheet armor with and without the talent. Enrage's armor loss (sim: classic 16% in Dire Bear Form).
 
 ## Talents not in the sim code (regenerated 2026-09-24, after Part CE)
 
@@ -67,8 +71,8 @@ Still open for a DPS sim:
   (cooldown and spell power coefficient; Cold Grip depends on it), Warlock Withering Shroud and Death and Decay
   (cooldown, AoE only).
 
-**PRIORITY: threat, tank and defensive talents to add or check later** (the user wants these done as one batch; the
-feral tank rotation is off, so bear talents wait for Bear Form):
+**LOW PRIORITY: threat, tank and defensive talents** (Lokiy 2026-09-24: rotations and threat calculations wait until
+all the other data is done; do these as one batch then):
 - Druid: Feral Instinct Bear Form threat +5/10/15%; Primal Tenacity and Improved Enrage (Enrage isn't in the sim);
   Custody of the Nature (crit immunity after being crit).
 - Warrior: Mocker (Taunt/Challenging Shout/Mocking Blow hit +6%), Improved Defensive Stance (absorb shield on stance
@@ -93,6 +97,19 @@ feral tank rotation is off, so bear talents wait for Bear Form):
 - **Warlock** (19 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
 - **Warrior** (12 of 60): Improved Charge, Improved Hamstring, Improved Rend, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
 
+## Plan from 2026-09-24: healers and feral tank
+
+Lokiy: healing spells go into the sim, with a heal page for every class that can heal (Priest, Shaman, Druid,
+Paladin); Feral Tank druid becomes accessible; every sim is marked Phase 1 / Alpha. Order: feral tank, healing
+priest, restoration shaman, restoration druid, holy paladin. Heal values come from the server's Spell.csv. Healing
+rotations stay simple (rotations are low priority).
+
+**Feral Tank (done in Part CF), still open:** Cat Form's passive (3025: +5% crit, -30% threat) is not in the sim
+(cat has no crit bonus, threat is 0.71); Leader of the Pack "doubles the effects of your Bear and Cat Forms" is only
+applied to Bear Form. Bear threat values (Maul 1.75, Demoralizing Roar 42) are classic guesses (low priority). The bear
+gear preset is the cat pre-raid set as a placeholder. Bash, Growl, Challenging Roar, Feral Charge and Barkskin are not
+in the sim.
+
 ## Open items at a glance (updated 2026-09-24)
 
 One list of everything still open; the details are in the dated sections below. Items finished on 2026-09-23 are
@@ -108,7 +125,8 @@ listed at the end of this overview so the older sections don't need rewriting.
   mechanic (freeze for Shatter/Frostbite/Deep Freeze, target health for Coup de Grace-style effects,
   Aftershock, Chain Reaction, Ice Shards, Withering Shroud, Death and Decay, Earthquake, Improved Rend stacks,
   Berserker's Blood). The per-class lists in the 2026-09-19/20 sections are partly stale.
-- Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
+- LOW PRIORITY (Lokiy 2026-09-24: rotations and threat need all other data first): paladin ret/prot rotations are
+  new and basic (written during the SoD removal); all rotations and threat values need tuning in game.
 - No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).
 - Talent presets are all empty (question 1 at the top; low priority, one of the last tasks).
 - Healing: priest healing spells are disabled; druid Nature's Swiftness, Tranquility, Bash, Frenzied Regeneration and

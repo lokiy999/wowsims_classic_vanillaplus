@@ -13,6 +13,7 @@ import {
 import { SavedTalents } from '../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
+import PlaceholderGear from './gear_sets/placeholder.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -23,9 +24,12 @@ import BlankGear from './gear_sets/blank.gear.json';
 ///////////////////////////////////////////////////////////////////////////
 
 export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+// Placeholder: the feral cat pre-raid set until a bear set is made.
+export const GearPlaceholder = PresetUtils.makePresetGear('Placeholder (cat pre-raid)', PlaceholderGear);
 
 export const GearPresets = {
   [Phase.Phase1]: [
+    GearPlaceholder,
     GearBlank,
   ],
   [Phase.Phase2]: [
@@ -42,7 +46,6 @@ export const DefaultGear = GearPresets[Phase.Phase1][0];
 export const DefaultRotation = DruidRotation.create({
 	maulRageThreshold: 25,
 	maintainDemoralizingRoar: true,
-	lacerateTime: 8.0,
 });
 
 export const DefaultAPL = PresetUtils.makePresetAPLRotation('Default', DefaultApl);

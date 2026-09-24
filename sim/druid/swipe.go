@@ -10,7 +10,8 @@ var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
 var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 20, 30, 40, 60, 90}
 var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 
-// Classic Swipe has no extra threat modifier (Bear Form's threat bonus is applied separately).
+// Server Swipe (9908): 90 damage "increased by Attack Power", 20 rage. The attack power part has no coefficient in
+// the server data, so it is not modeled yet (see TODO.md). No extra threat modifier (Bear Form's is applied separately).
 const SwipeThreatMultiplier = 1.0
 
 func (druid *Druid) registerSwipeBearSpell() {
@@ -18,7 +19,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 		25: 2,
 		40: 3,
 		50: 4,
-		60: 6,
+		60: 5,
 	}[druid.Level]
 
 	level := SwipeLevel[rank]
@@ -45,7 +46,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 		RequiredLevel: level,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - float64(druid.Talents.Ferocity),
+			Cost: rageCost,
 		},
 
 		Cast: core.CastConfig{

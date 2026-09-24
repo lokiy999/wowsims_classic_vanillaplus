@@ -69,6 +69,7 @@ type Druid struct {
 	Starfire             []*DruidSpell
 	SwipeBear            *DruidSpell
 	TigersFury           *DruidSpell
+	GrizzlysFury         *DruidSpell
 	Wrath                []*DruidSpell
 
 	BearForm    *DruidSpell
@@ -91,6 +92,7 @@ type Druid struct {
 	NaturesGraceProcAura     *core.Aura
 	PredatoryInstinctsAura   *core.Aura
 	TigersFuryAura           *core.Aura
+	GrizzlysFuryAura         *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 
@@ -121,10 +123,6 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.LeaderOfThePack = true
 	}
 }
-
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
@@ -175,32 +173,23 @@ func (druid *Druid) RegisterBalanceSpells() {
 // TODO: Classic feral
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerCatFormSpell()
-	// druid.registerBearFormSpell()
-	// druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
 	druid.registerRakeSpell()
 	druid.registerRipSpell()
 	druid.registerShredSpell()
 	druid.registerClawSpell()
-	// druid.registerSwipeBearSpell()
 	druid.registerTigersFurySpell()
 }
 
-// TODO: Classic feral tank
 func (druid *Druid) RegisterFeralTankSpells() {
-	// druid.registerBarkskinCD()
-	// druid.registerBerserkCD()
-	// druid.registerBearFormSpell()
-	// druid.registerDemoralizingRoarSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
-	// druid.registerSwipeBearSpell()
+	druid.registerBearFormSpell()
+	druid.registerDemoralizingRoarSpell()
+	druid.registerEnrageSpell()
+	druid.registerFrenziedRegenerationCD()
+	druid.registerGrizzlysFurySpell()
+	druid.registerMaulSpell()
+	druid.registerSwipeBearSpell()
+	druid.applyPrimalFury()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {

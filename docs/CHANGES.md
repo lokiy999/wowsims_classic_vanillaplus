@@ -3293,3 +3293,33 @@ the one talent), then the test files were deleted.
   for threat work to wait and be tracked as one batch).
 - No preset uses these talents (presets have no talents yet), so no golden results changed. `go test ./sim/...`
   (with and without `--tags=with_db`) and `tsc` pass.
+
+## Part CF — Every sim Phase 1 / Alpha; Feral Tank druid available (2026-09-24)
+
+Lokiy: "mark everything as Phase 1 - Alpha as nothing has been figured out yet", make Feral Tank accessible, rotations
+and threat are low priority.
+- **Launch status** (`ui/core/launched_sims.ts`): all 19 specs are Phase 1 / Alpha, so every page shows in the menu
+  (Balance, Feral Tank and the four healer pages were hidden before; some pages said Phase 2 or Launched). The raid
+  sim stays unlaunched. The healer pages are visible but their heal spells come in the next parts.
+- **Feral Tank druid** (`sim/druid/tank`, was `_tank` and not built; `sim/druid/bear.go`): rebuilt with the server's
+  values (Spell.csv). The old bear code was from a later expansion (Maul 48480, Lacerate, Mangle).
+  - Dire Bear Form (9634/9635): armor from items +360%, health +20%, attack power +180; Bear Form (5487/1178) below
+    level 40: +180%, +10%, +10%. Threat +30% (21178). Leader of the Pack doubles these (server text "Doubles the effects
+    of your Bear and Cat Forms"; to confirm in game). Bear paw: 2.5 speed, 54.8 base DPS (same as the cat claws).
+  - Maul (9881: +130 damage on the next swing, 15 rage), Swipe (9908: 90 damage, 20 rage; the rank table was out of
+    range at level 60), Demoralizing Roar (9898), Enrage (5229: 2 rage per sec for 10 sec, 1 min), Frenzied
+    Regeneration (22896: 10 rage per sec into 30 health per rage, 5 min), and the server spell **Grizzly's Fury**
+    (35721: +20% attack speed for 10 sec, 10 rage, 10 sec cooldown).
+  - Talents: Feral Instinct (bear threat +5%/rank, Grizzly's Fury +20%/rank duration), Heart of the Wild (Stamina
+    +3%/rank in Bear Form), Primal Fury (50%/rank for 5 rage on crits), Improved Enrage (10/20 rage at once), Primal
+    Tenacity (Enrage cooldown -10 sec/rank), Ferocity and Savage Fury on Maul and Swipe. Thick Hide, Predatory Strikes
+    and Sharpened Claws were already in.
+  - Page (`ui/feral_tank_druid`): removed the Lacerate/Expertise leftovers, new default rotation (Enrage below 40 rage,
+    Demoralizing Roar, Grizzly's Fury, Swipe above 50 rage, Maul above 25 rage), placeholder gear (the cat pre-raid set).
+  - Check sim (placeholder gear, no talents): 7068 armor, 9903 health, ~374 DPS; with Leader of the Pack, Thick Hide
+    and Heart of the Wild 11999 armor. New golden results `sim/druid/tank/TestFeralTank.results`.
+- **Demoralizing Roar debuff** (core, also the raid debuff option): server base 132 attack power (was 138), Feral
+  Aggression +20% per rank (was 8% per point of a 5-point scale). The "improved" option is now 2/2 Feral Aggression
+  (-184 attack power instead of -160).
+- **Heart of the Wild** in Cat Form: Strength +3% per rank (server text 15% at 5/5; the sim had 4% per rank).
+- Open questions for the game: TODO.md question 16 (Swipe attack power, Grizzly's Fury rage, Leader of the Pack).
