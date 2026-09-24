@@ -13,7 +13,7 @@ var SmiteSpellId = [SmiteRanks + 1]int32{0, 585, 591, 598, 984, 1004, 6060, 1093
 // CSV's/Spell.csv, same EffectBasePoints[1]+EffectDieSides[0] pattern validated
 // against the in-game Mind Blast rank 9 tooltip (sim/priest/mind_blast.go). Not
 // independently spot-checked in-game for Smite specifically - verify if in doubt.
-var SmiteBaseDamage = [SmiteRanks + 1][]float64{{0}, {13, 17}, {25, 31}, {54, 62}, {91, 105}, {150, 170}, {212, 240}, {287, 323}, {371, 415}}
+var SmiteBaseDamage = [SmiteRanks + 1][]float64{{0}, {13, 17}, {28, 34}, {58, 66}, {97, 111}, {158, 178}, {222, 250}, {298, 334}, {384, 428}}
 var SmiteSpellCoef = [SmiteRanks + 1]float64{0, 0.123, 0.271, 0.554, 0.714, 0.714, 0.714, 0.714, 0.714}
 var SmiteCastTime = [SmiteRanks + 1]int{0, 1500, 2000, 2500, 2500, 2500, 2500, 2500, 2500}
 var SmiteManaCost = [SmiteRanks + 1]float64{0, 20, 30, 60, 95, 140, 185, 230, 280}

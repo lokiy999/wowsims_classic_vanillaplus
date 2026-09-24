@@ -9,7 +9,7 @@ import (
 const ScorchRanks = 7
 
 var ScorchSpellId = [ScorchRanks + 1]int32{0, 2948, 8444, 8445, 8446, 10205, 10206, 10207}
-var ScorchBaseDamage = [ScorchRanks + 1][]float64{{0}, {55, 68}, {81, 98}, {105, 126}, {133, 159}, {168, 199}, {207, 247}, {237, 280}}
+var ScorchBaseDamage = [ScorchRanks + 1][]float64{{0}, {55, 68}, {81, 98}, {105, 126}, {139, 165}, {168, 199}, {207, 247}, {237, 280}}
 var ScorchManaCost = [ScorchRanks + 1]float64{0, 50, 65, 80, 100, 115, 135, 150}
 var ScorchLevel = [ScorchRanks + 1]int{0, 22, 28, 34, 40, 46, 52, 58}
 

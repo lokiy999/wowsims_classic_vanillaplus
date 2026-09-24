@@ -316,7 +316,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Blasts the target with Holy energy, causing 134 Holy damage to an enemy, or 134 healing to an ally. Heals twice amount on targets that have 20% or less health."
+          "Blasts the target with Holy energy, causing 134 to 150 Holy damage to an enemy, or 134 to 150 healing to an ally. Heals twice amount on targets that have 20% or less health."
         ]
       },
       {
@@ -934,7 +934,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Gives the Paladin a chance to deal additional Holy damage equal to 50% of normal weapon damage. Only one Seal can be active on the Paladin at any one time. Lasts 2 min. Unleashing this Seal's energy will judge an enemy, instantly causing $/2;20467s1 Holy damage, 143 if the target is stunned, incapacitated or disoriented."
+          "Gives the Paladin a chance to deal additional Holy damage equal to 50% of normal weapon damage. Only one Seal can be active on the Paladin at any one time. Lasts 2 min. Unleashing this Seal's energy will judge an enemy, instantly causing $/2;20467s1 Holy damage, 143 to 151 if the target is stunned, incapacitated or disoriented."
         ]
       },
       {

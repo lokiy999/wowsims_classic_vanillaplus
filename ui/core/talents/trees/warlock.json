@@ -942,7 +942,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Instantly blasts the target for 87 Shadow damage. If the target dies within $d of Shadowburn, and yields experience or honor, the caster gains a Soul Shard."
+          "Instantly blasts the target for 87 to 99 Shadow damage. If the target dies within 5 sec of Shadowburn, and yields experience or honor, the caster gains a Soul Shard."
         ]
       },
       {

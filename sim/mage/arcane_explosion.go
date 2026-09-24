@@ -7,7 +7,7 @@ import (
 const ArcaneExplosionRanks = 6
 
 var ArcaneExplosionSpellId = [ArcaneExplosionRanks + 1]int32{0, 1449, 8437, 8438, 8439, 10201, 10202}
-var ArcaneExplosionBaseDamage = [ArcaneExplosionRanks + 1][]float64{{0}, {34, 38}, {58, 65}, {101, 110}, {140, 153}, {190, 207}, {249, 270}}
+var ArcaneExplosionBaseDamage = [ArcaneExplosionRanks + 1][]float64{{0}, {34, 38}, {60, 66}, {101, 110}, {143, 155}, {190, 207}, {249, 270}}
 var ArcaneExplosionSpellCoeff = [ArcaneExplosionRanks + 1]float64{0, .111, .143, .143, .143, .143, .143}
 var ArcaneExplosionManaCost = [ArcaneExplosionRanks + 1]float64{0, 75, 120, 185, 250, 315, 390}
 var ArcaneExplosionLevel = [ArcaneExplosionRanks + 1]int{0, 14, 22, 30, 38, 46, 54}

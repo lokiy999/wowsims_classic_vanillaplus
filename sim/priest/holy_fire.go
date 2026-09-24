@@ -15,7 +15,7 @@ var HolyFireSpellId = [HolyFireRanks + 1]int32{0, 14914, 15262, 15263, 15264, 15
 // (die[0] is the direct-hit role regardless of which bp slot holds it per rank - rank 3
 // keeps its direct effect in slot 0 instead of slot 1 like every other rank, but die[0]
 // still pairs with it). Rank 8 (481-604) confirmed against the in-game tooltip.
-var HolyFireBaseDamage = [HolyFireRanks + 1][]float64{{0}, {108, 134}, {134, 166}, {179, 224}, {224, 282}, {278, 349}, {346, 435}, {416, 523}, {481, 604}}
+var HolyFireBaseDamage = [HolyFireRanks + 1][]float64{{0}, {114, 140}, {144, 176}, {191, 236}, {237, 295}, {293, 364}, {363, 452}, {435, 542}, {481, 604}}
 
 // CSV's/Spell.csv: (EffectBasePoints[dot]+1) * 5 ticks. Rank 8 (225) confirmed
 // against the in-game tooltip.

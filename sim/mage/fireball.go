@@ -10,7 +10,7 @@ import (
 const FireballRanks = 12
 
 var FireballSpellId = [FireballRanks + 1]int32{0, 133, 143, 145, 3140, 8400, 8401, 8402, 10148, 10149, 10150, 10151, 25306}
-var FireballBaseDamage = [FireballRanks + 1][]float64{{0}, {16, 25}, {34, 49}, {57, 77}, {89, 122}, {140, 189}, {207, 274}, {264, 345}, {328, 425}, {398, 512}, {488, 623}, {561, 715}, {596, 760}}
+var FireballBaseDamage = [FireballRanks + 1][]float64{{0}, {16, 25}, {34, 49}, {57, 77}, {89, 122}, {146, 194}, {207, 274}, {264, 345}, {328, 425}, {404, 518}, {488, 623}, {561, 715}, {596, 760}}
 var FireballDotDamage = [FireballRanks + 1]float64{0, 2, 3, 6, 12, 20, 28, 32, 40, 52, 60, 72, 76}
 var FireballSpellCoeff = [FireballRanks + 1]float64{0, .123, .271, .5, .793, 1, 1, 1, 1, 1, 1, 1, 1}
 var FireballCastTime = [FireballRanks + 1]int32{0, 1500, 2000, 2500, 3000, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500}

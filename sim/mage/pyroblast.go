@@ -10,8 +10,8 @@ import (
 const PyroblastRanks = 8
 
 var PyroblastSpellId = [PyroblastRanks + 1]int32{0, 11366, 12505, 12522, 12523, 12524, 12525, 12526, 18809}
-var PyroblastBaseDamage = [PyroblastRanks + 1][]float64{{0}, {148, 195}, {184, 241}, {270, 343}, {341, 431}, {427, 536}, {510, 639}, {625, 776}, {716, 890}}
-var PyroblastDotDamage = [PyroblastRanks + 1]float64{0, 56, 72, 96, 124, 156, 188, 228, 268}
+var PyroblastBaseDamage = [PyroblastRanks + 1][]float64{{0}, {138, 184}, {193, 249}, {270, 343}, {347, 437}, {427, 536}, {525, 653}, {625, 776}, {716, 890}}
+var PyroblastDotDamage = [PyroblastRanks + 1]float64{0, 84, 108, 144, 186, 234, 282, 342, 402}
 var PyroblastManaCost = [PyroblastRanks + 1]float64{0, 125, 150, 195, 240, 285, 335, 385, 440}
 var PyroblastLevel = [PyroblastRanks + 1]int{0, 20, 24, 30, 36, 42, 48, 54, 60}
 
@@ -34,8 +34,8 @@ func (mage *Mage) registerPyroblastSpell() {
 
 func (mage *Mage) newPyroblastSpellConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 
-	numTicks := int32(4)
-	tickLength := time.Second * 3
+	numTicks := int32(6) // server: DoT ticks every 2 sec for 12 sec
+	tickLength := time.Second * 2
 
 	spellId := PyroblastSpellId[rank]
 	baseDamageLow := PyroblastBaseDamage[rank][0]
@@ -45,7 +45,7 @@ func (mage *Mage) newPyroblastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 	level := PyroblastLevel[rank]
 
 	spellCoeff := 1.0
-	dotCoeff := .15
+	dotCoeff := .1 // .6 total like classic, spread over the 6 server ticks
 	castTime := time.Second * 6
 
 	actionID := core.ActionID{SpellID: spellId}

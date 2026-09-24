@@ -12,8 +12,10 @@ One list of everything still open; the details are in the dated sections below. 
 listed at the end of this overview so the older sections don't need rewriting.
 
 **Affects sim results**
-- Spell values that differ between the server (`Spell.csv`) and the sim numbers, e.g. Immolation Trap rank 5 (966 over
-  21 sec vs 690 over 15). The tooltips show the server values; a full per-class comparison of the sim numbers is not done.
+- Spell values: direct and periodic damage in the per-rank arrays now match the server (Part BO). Not compared yet:
+  spells without a `...BaseDamage` array (heals, shields, hunter traps such as Immolation Trap rank 5 at 966 over 21
+  sec vs 690 over 15, warrior and rogue abilities, pet spells). Pyroblast and Flame Shock DoT spell power
+  coefficients are a guess (classic total spread over the new tick count).
 - Talents not modeled yet: per-class lists in the 2026-09-19/20 sections (rogue, hunter, warlock, mage, druid, shaman,
   paladin, priest, warrior).
 - Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.

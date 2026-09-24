@@ -32,12 +32,19 @@ COL_DURIDX = 30        # DurationIndex          -> $d (via SpellDuration.csv)
 COL_BP = (76, 77, 78)  # EffectBasePoints[1..3] -> $s1/$s2/$s3 (abs value + 1)
 COL_AMP = (94, 95, 96)  # EffectAmplitude[1..3] -> $t1.. and feeds $o1..
 COL_TRIG = (109, 110, 111)  # EffectTriggerSpell[1..3] (context for $<spellId>.. refs)
+COL_DIE = (64, 65, 66)  # EffectDieSides[1..3]  -> $s shows "min to max" when > 1
+# The float columns (EffectRealPointsPerLevel etc., from col 70 on) were exported with the
+# decimal separator as a field separator, so "2.9" became two fields and every column from
+# there on moved right by one per such float. Columns before COL_SHIFT_FROM are never
+# shifted; later ones are shifted by (actual name column - COL_NAME).
+COL_SHIFT_FROM = 70
 
 FALLBACK_ICON = "inv_misc_questionmark"
 
 # $g male:female; / $l singular:plural; grammar switches -> keep the first option.
 GENDER_RE = re.compile(r"\$[glGL]\s*([^:;]*):[^;]*;")
 # $<spellId>?  $/<divisor>;?  <letter><index>?   e.g. $s1  $d  $/2;s1  $33807s1  $t1
+NUM_RE = re.compile(r"^-?(0x[0-9A-Fa-f]+|\d+(\.\d+)?)$")
 TOKEN_RE = re.compile(r"\$(\d+)?(?:/(\d+);)?([a-zA-Z])(\d)?")
 
 
@@ -58,17 +65,26 @@ def resolve_desc(text, sid, spells, durations):
     text = text.replace("$b", " ").replace("$B", " ")
 
     def repl(m):
-        ref, divisor, letter, idx = m.group(1), m.group(2), m.group(3).lower(), m.group(4)
+        ref, raw_letter, divisor, idx = m.group(1), m.group(3), m.group(2), m.group(4)
+        letter = raw_letter.lower()
         ctx = int(ref) if ref else sid
         sp = spells.get(ctx)
         i = (int(idx) - 1) if idx else 0
-        # Blizzard's $s = EffectBasePoints + 1 (min roll, DieSides assumed 1 here);
-        # display magnitude only, since the surrounding text carries the sign
-        # ("increases by" / "reduced by").
+        # Blizzard's $s = EffectBasePoints + 1 to EffectBasePoints + DieSides ("min to max"
+        # when DieSides > 1), $m = min, $M = max; display magnitude only, since the
+        # surrounding text carries the sign ("increases by" / "reduced by").
         val = None
         if sp:
             if letter in "sm" and 0 <= i < 3:
-                val = abs(sp["bp"][i] + 1)
+                lo = abs(sp["bp"][i] + 1)
+                die = sp.get("die", [1, 1, 1])[i]
+                hi = abs(sp["bp"][i] + die)
+                if raw_letter == "M":
+                    val = max(lo, hi) if die > 1 else lo
+                elif letter == "s" and die > 1 and not divisor:
+                    return f"{min(lo, hi)} to {max(lo, hi)}"
+                else:
+                    val = lo
             elif letter == "t" and 0 <= i < 3:
                 val = sp["amp"][i] / 1000
             elif letter == "o" and 0 <= i < 3:
@@ -129,16 +145,16 @@ def load_spell_csv(path):
         if not r or not r[0].isdigit():
             continue
         sid = int(r[0])
-        # A few rows in this dump are shifted right by one; detect via the name
-        # column holding junk (empty / "0" / a stray number) with a real name next.
+        # Rows with split float fields are shifted right (see COL_SHIFT_FROM); the name
+        # is the first non-numeric field from COL_NAME on.
         shift = 0
-        nm = r[COL_NAME] if len(r) > COL_NAME else ""
-        nxt = r[COL_NAME + 1] if len(r) > COL_NAME + 1 else ""
-        if (not nm or nm == "0" or (nm.isdigit() and any(c.isalpha() for c in nxt))) and nxt and nxt != "0":
-            shift = 1
+        for k in range(COL_NAME, min(len(r), COL_NAME + 6)):
+            if r[k] and not NUM_RE.match(r[k]):
+                shift = k - COL_NAME
+                break
 
         def col(idx, _r=r, _s=shift):
-            j = idx + _s
+            j = idx + (_s if idx >= COL_SHIFT_FROM else 0)
             return _r[j] if 0 <= j < len(_r) else ""
 
         names[sid] = col(COL_NAME)
@@ -148,6 +164,7 @@ def load_spell_csv(path):
         data[sid] = {
             "bp": [_int(col(c)) for c in COL_BP],
             "amp": [_int(col(c)) for c in COL_AMP],
+            "die": [_int(col(c)) for c in COL_DIE],
             "proc": _int(col(COL_PROC)),
             "stacks": _int(col(COL_STACKS)),
             "dur_idx": _int(col(COL_DURIDX)),

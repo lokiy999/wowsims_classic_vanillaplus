@@ -9,7 +9,7 @@ import (
 const FrostboltRanks = 11
 
 var FrostboltSpellId = [FrostboltRanks + 1]int32{0, 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304}
-var FrostboltBaseDamage = [FrostboltRanks + 1][]float64{{0, 0}, {20, 22}, {33, 38}, {54, 61}, {78, 87}, {132, 144}, {180, 197}, {231, 251}, {301, 326}, {353, 383}, {440, 475}, {515, 555}}
+var FrostboltBaseDamage = [FrostboltRanks + 1][]float64{{0, 0}, {18, 20}, {33, 38}, {54, 61}, {78, 87}, {132, 144}, {180, 197}, {235, 255}, {301, 326}, {363, 393}, {440, 475}, {515, 555}}
 var FrostboltSpellCoeff = [FrostboltRanks + 1]float64{0, .163, .269, .463, .706, .814, .814, .814, .814, .814, .814, .814}
 var FrostboltCastTime = [FrostboltRanks + 1]int32{0, 1500, 1800, 2200, 2600, 3000, 3000, 3000, 3000, 3000, 3000, 3000}
 var FrostboltManaCost = [FrostboltRanks + 1]float64{0, 25, 35, 50, 65, 100, 130, 160, 195, 225, 260, 290}

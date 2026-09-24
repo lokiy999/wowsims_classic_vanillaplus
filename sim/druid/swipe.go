@@ -7,7 +7,7 @@ import (
 const SwipeRanks = 5
 
 var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
-var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 18, 25, 36, 60, 83}
+var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 20, 30, 40, 60, 90}
 var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 
 // Classic Swipe has no extra threat modifier (Bear Form's threat bonus is applied separately).

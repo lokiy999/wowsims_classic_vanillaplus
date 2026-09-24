@@ -10,8 +10,8 @@ import (
 const FlameShockRanks = 6
 
 var FlameShockSpellId = [FlameShockRanks + 1]int32{0, 8050, 8052, 8053, 10447, 10448, 29228}
-var FlameShockBaseDamage = [FlameShockRanks + 1]float64{0, 25, 51, 95, 164, 245, 292}
-var FlameShockBaseDotDamage = [FlameShockRanks + 1]float64{0, 28, 48, 96, 168, 256, 320}
+var FlameShockBaseDamage = [FlameShockRanks + 1]float64{0, 29, 56, 108, 191, 274, 320}
+var FlameShockBaseDotDamage = [FlameShockRanks + 1]float64{0, 50, 75, 150, 250, 350, 450}
 var FlameShockBaseSpellCoef = [FlameShockRanks + 1]float64{0, .134, .198, .214, .214, .214, .214}
 var FlameShockDotSpellCoef = [FlameShockRanks + 1]float64{0, .063, .093, .1, .1, .1, .1}
 var FlameShockManaCost = [FlameShockRanks + 1]float64{0, 55, 95, 160, 250, 345, 410}
@@ -28,14 +28,14 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 }
 
 func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.SpellConfig {
-	numTicks := 4
+	numTicks := 5 // server: 15 sec DoT
 	tickDuration := time.Second * 3
 
 	spellId := FlameShockSpellId[rank]
 	baseDamage := FlameShockBaseDamage[rank]
 	baseDotDamage := FlameShockBaseDotDamage[rank] / float64(numTicks)
 	baseSpellCoeff := FlameShockBaseSpellCoef[rank]
-	dotSpellCoeff := FlameShockDotSpellCoef[rank]
+	dotSpellCoeff := FlameShockDotSpellCoef[rank] * 4 / float64(numTicks) // classic total, spread over the server ticks
 	manaCost := FlameShockManaCost[rank]
 	level := FlameShockLevel[rank]
 

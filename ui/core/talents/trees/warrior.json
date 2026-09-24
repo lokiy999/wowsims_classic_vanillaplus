@@ -1042,7 +1042,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Hurls a shield at the enemy, causing 69 damage, increased by Attack Power and knocks down for 2 sec. This ability causes a high amount of threat."
+          "Hurls a shield at the enemy, causing 69 to 79 damage, increased by Attack Power and knocks down for 2 sec. This ability causes a high amount of threat."
         ]
       },
       {

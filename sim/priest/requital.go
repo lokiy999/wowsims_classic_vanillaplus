@@ -12,7 +12,7 @@ import (
 const RequitalRanks = 4
 
 var RequitalSpellId = [RequitalRanks + 1]int32{0, 33808, 33809, 33810, 33811}
-var RequitalBaseDamage = [RequitalRanks + 1][]float64{{0}, {347, 371}, {491, 525}, {613, 657}, {739, 793}}
+var RequitalBaseDamage = [RequitalRanks + 1][]float64{{0}, {395, 419}, {539, 573}, {661, 705}, {739, 793}}
 var RequitalManaCost = [RequitalRanks + 1]float64{0, 150, 200, 260, 340}
 var RequitalLevel = [RequitalRanks + 1]int{0, 30, 40, 50, 60}
 

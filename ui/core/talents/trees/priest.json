@@ -282,7 +282,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Blasts an enemy with Light, instantly causing 173 Holy damage, 347 if the target is feared, stunned or incapacitated."
+          "Blasts an enemy with Light, instantly causing 173 Holy damage, 347 to 371 if the target is feared, stunned or incapacitated."
         ]
       },
       {
@@ -510,7 +510,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Causes an explosion of holy light around the caster, causing 28 Holy damage to all enemy targets within X yards and healing all party members within X yards for 52. These effects cause no threat."
+          "Causes an explosion of holy light around the caster, causing 28 to 32 Holy damage to all enemy targets within X yards and healing all party members within X yards for 52 to 60. These effects cause no threat."
         ]
       },
       {

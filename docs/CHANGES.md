@@ -2996,3 +2996,35 @@ The user sent in-game tooltips (with cooldowns) for the custom items. Values fro
 - **Enchant Shield - Law of Nature** (7603, SoD) removed.
 - `docs/TODO.md` has a new "Open items at a glance" overview at the top. Two stale lines in
   `docs/private-server-item-rules.md` fixed (gen_phases scope, custom set bonuses).
+
+## Part BO — Spell damage from the server data, tooltip ranges fixed (2026-09-24)
+
+The user sent in-game tooltips for Frostbolt (rank 10: 429 to 463, rank 11: 515 to 555, slow 7 sec) and Fireball
+(rank 11: 561 to 715 + 72 over 8 sec, rank 12: 596 to 760 + 76; 395 / 410 mana). All of them match `Spell.csv`, so
+the dump is reliable; the earlier "no range" readings were a parsing mistake:
+
+- **How `Spell.csv` is laid out**: float fields (EffectRealPointsPerLevel, from col 73) were exported with the decimal
+  point as a field separator, so "2.9" became two fields and every later column moved right by one. Columns before 70
+  (duration index, effect types, die sides at 64-66) never move; later ones (base points, aura types, amplitudes,
+  name, description) move by the number of split floats. `load_spell_csv` in `tools/gen_custom_spell_tooltips.py` now
+  finds the shift from the name column and applies it only from col 70 on; it also reads the die sides.
+- **Tooltips**: `$s` now shows "min to max" when the die sides are > 1, `$m` / `$M` are min / max, and `$d` resolves
+  for the rows that used to be shifted. Result: ranges are back (Shadow Bolt 455 to 507, Fire Blast 431 to 509,
+  Exorcism 505 to 563, ...), and ~150 spells that were skipped before (unresolved `$d`) now show the server text
+  (Frostbolt slow 7 sec, Flame Shock, Pyroblast, Hurricane, Seal of the Crusader, Ice Barrier, Berserking 10% to 30%).
+  Tooltips show the base values, like the game client does.
+- **Sim damage** now uses the server values at level 60: base points + die roll + points per level x (min(60, max
+  level) - spell level), rounded down like the server. This is what the classic sim numbers already were (e.g.
+  Frostbolt rank 10 440 to 475 = 429 to 463 + 11), so most spells didn't change. Changed:
+  - Real server changes: Wrath ranks 3-8 (rank 8 310 to 347, was 248 to 277), Blast Wave ranks 1-4 (lower),
+    Power Word: Requital ranks 1-3 (+48), Swipe ranks 1-3 and 5, Holy Fire ranks 1-7, Mind Blast all ranks, Smite
+    ranks 2-8, Moonfire rank 1 (7 to 9, DoT 16 over 12 sec).
+  - **Pyroblast** DoT ticks every 2 sec (6 ticks, 402 at rank 8, was 268 in 4 ticks). **Flame Shock** is 320 +
+    450 over 15 sec at rank 6 (was 292 + 320 over 12). Their spell power coefficients keep the classic total, spread
+    over the new tick count (not confirmed; see TODO).
+  - **Lightning Bolt rank 8** was 145 to 163 in the sim (a typo), now 291 to 325.
+  - Small level-scaling corrections (+2 to +10) on lower ranks of Fireball, Frostbolt, Fire Blast, Flamestrike,
+    Scorch, Arcane Explosion, Pyroblast, Earth Shock, Frost Shock, Chain Lightning, Lightning Bolt.
+- Moonfire: Power of Nature made the DoT last longer without adding damage (the total was divided by the longer tick
+  count); the extra ticks now add damage, as on the server.
+- Baselines updated: balance druid and shadow priest.

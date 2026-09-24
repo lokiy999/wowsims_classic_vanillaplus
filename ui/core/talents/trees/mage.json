@@ -470,7 +470,7 @@
           "colIdx": 2
         },
         "descriptions": [
-          "Hurls an immense fiery boulder that causes 120 Fire damage and an additional 14 Fire damage over $d."
+          "Hurls an immense fiery boulder that causes 120 to 166 Fire damage and an additional 84 Fire damage over 12 sec."
         ]
       },
       {
@@ -566,7 +566,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "A wave of flame radiates outward from the caster, damaging all enemies caught within the blast for 96 Fire damage and dazing them for 6 sec."
+          "A wave of flame radiates outward from the caster, damaging all enemies caught within the blast for 96 to 128 Fire damage and dazing them for 6 sec."
         ]
       },
       {
@@ -1136,7 +1136,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Instantly shields a friendly target, absorbing 548 damage. Lasts $d. While the shield holds, spells will not be interrupted."
+          "Instantly shields a friendly target, absorbing 548 damage. Lasts 1 min. While the shield holds, spells will not be interrupted."
         ]
       },
       {

@@ -142,7 +142,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Creates a violent storm in the target area causing 22 Nature damage to enemies every 1 sec, slowing their movement speed by 50% and silencing them. Lasts $d."
+          "Creates a violent storm in the target area causing 22 Nature damage to enemies every 1 sec, slowing their movement speed by 50% and silencing them. Lasts 10 sec."
         ]
       },
       {
