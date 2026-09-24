@@ -10,7 +10,7 @@ _As of 2026-09-19._
 
 Things only you can answer; everything else I keep working on. Newest at the bottom.
 
-1. **Talent builds.** Every spec's preset (and test) has an empty talent string, so the sim runs every class with no
+1. **Talent builds** (LOW PRIORITY: Lokiy 2026-09-24, one of the last tasks, do near the end). Every spec's preset (and test) has an empty talent string, so the sim runs every class with no
    talents: Bloodthirst, Mortal Strike, Stormstrike, Aimed Shot, Shadowform, Mind Flay, Vampiric Embrace, Inner Focus,
    Adrenaline Rush, Holy Shield, Shadowburn, Demonic Sacrifice, Amplify Curse, Elemental Mastery etc. are never cast,
    and passive talents do nothing. Send a talent string (the sim's talent calculator export) for each spec you want as
@@ -62,7 +62,7 @@ listed at the end of this overview so the older sections don't need rewriting.
   Berserker's Blood). The per-class lists in the 2026-09-19/20 sections are partly stale.
 - Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
 - No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).
-- Talent presets are all empty (question 1 at the top).
+- Talent presets are all empty (question 1 at the top; low priority, one of the last tasks).
 - Healing: priest healing spells are disabled; druid Nature's Swiftness, Tranquility, Bash, Frenzied Regeneration and
   Rebirth are not in the sim; the shaman casting Mana Tide Totem is not modeled.
 - Shaman totem and weapon imbue items (2026-09-20 sections).
@@ -98,7 +98,7 @@ Still open, the calculator confirmed the text but not the mechanics:
 - ~~Warrior **Enrage**:~~ DONE 2026-09-19 (see CHANGES.md Part AP follow-up 2). Old note: "1% melee damage per stack for 15s, up to 10 stacks" at rank 1. Code still uses a flat
   5%/rank with 12 swing-counting stacks. Waiting on rank 2+ text.
 - ~~Warrior **Tactical Mastery**:~~ DONE 2026-09-19. Old note: "retain an additional 10 Rage" at rank 1 (code 5/rank).
-- Mage **Mind Mastery**: also +20%/rank Arcane Intellect effect (buff pipeline, not done).
+- ~~Mage **Mind Mastery**: also +20%/rank Arcane Intellect effect~~ done (`sim/mage/mage.go`), confirmed 2026-09-24.
 - Not modeled: Shaman Armaments of Storm (5%/rank, up to 300 Nature, level scaled), Shamanism, Aftershock;
   Rogue Improved Sinister Strike proc, Coup de Grace, Gaining an Advantage, Brigandage; Hunter Find Weakness,
   Deadeye, Thrill of the Hunt; Warlock Defiler, Prolonged Misery, Demonic Embrace regen, Demonic Onslaught (pet crit, the DBC effect is 20% but the per-rank scaling is unclear); Druid Killer Instincts
@@ -214,8 +214,7 @@ Going through `sim/core/buffs.go` buff-by-buff with the user. Agreed so far:
 
 - **Done 2026-09-20 (CHANGES.md Part BC):** Devotion Aura 700 and +25%/point, Commanding Shout and Horn of Lordaeron removed,
   `IncludeAQ` on, faction gating dropped, Moonkin Aura +5% spell damage and healing, Trueshot Aura 50 melee AP.
-- **Still open from this list:** Libram of Truth (+55 to the Devotion Aura base before the talent multiplier,
-  (700+55) x 1.5 = 1132.5) as a toggle; needs the UI wording. Resistance totems for an outside shaman still have no picker
+- **Still open from this list:** ~~Libram of Truth toggle~~ done 2026-09-24 (Part CC). Resistance totems for an outside shaman still have no picker
   (Guardian Totems from a shaman in the sim works). Sanctity Aura and the resistance auras were done (CHANGES.md Part BC).
 - ~~Arcane Intellect~~ done 2026-09-20 (30/37/60/67 picker, CHANGES.md Part AS).
 - **When the buff list is finished, consolidate all of the above into one
@@ -502,8 +501,10 @@ equipping them does nothing beyond their stats. Effect text is from `VPlusItemDB
 **Utility only, fine to leave** (62): Abyss Shard, Alchemists' Stone, Ankh of Life, Arcane Infused Gem, Arena Grand Master, Barov Peasant Caller, Chronomirage, Dalaran Spellshackles, Darkmoon Card: Twisting Nether, Defender of the Timbermaw, Defiler's Talisman, Dimensional Ripper - Everlook, Dog Whip, Elementium Echo Modulator, Enamored Water Spirit, Gnomish Universal Remote, Gyrofreeze Ice Reflector, Heart of Noxxion, Hederine Shackles, Hook of the Master Angler, Hyper-Radiant Flame Reflector, Insignia of the Alliance, Insignia of the Gladiator, Insignia of the Horde, Insignia of the Unfettered, Insignia of the Unfettered Champion, Leyguard Charm, Lifestone, Major Recombobulator, Minor Recombobulator, Orb of Deception, Personal Harm Prevention Field Emitter, Piccolo of the Flaming Fire, Scarlet Hound Whistle, Scarlet Triage Kit, Still Eye of the Watcher, Talisman of Arathor, The Wall's Chime, Ultra-Flash Shadow Reflector, Ultrasafe Transporter: Gadgetzan, Vial of Elune's Light.
 
 Also: Shard of the Flame (17082) has no stats in the DB (server: 16 health per 5 sec, no DPS effect);
-Scrolls of Blinding Light (19343) is not in the server data. Royal Seal of Eldre'Thalas (18466) "+12 to all
-attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not in their DB stats.
+Scrolls of Blinding Light (19343) is not in the server data. ~~Royal Seal of Eldre'Thalas (18466) "+12 to all
+attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances"~~ done 2026-09-24 (Part CC, plus 201 other
+items with "Equip: +N All Resistances"). Still open: Onyx Egg "-1% damage taken" and the Royal Seal (18471/18472)
+"-2% spell cost" effects.
 
 ## Raised 2026-09-23 — tooltip/icon audit (CHANGES.md Part BH)
 
@@ -513,8 +514,7 @@ attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances" are not
   chance to steal 100-180 life), Thunderstrike (17223, server: 150-250 Nature to up to 3 targets), Masterwork
   Stormhammer (12794, server: 110-200 Nature to up to 3 targets), Ravager aura id 433801. Check each against
   `VPlusItemDB.lua`. ~~Also SoD ids still in use: Mangle debuff, Primal Blessing set proc~~ (fixed in Part BI, confirmed 2026-09-24).
-- **Presence of Might** (enchant 2583, item 19782): the server says "+10 to all Stats"; the sim gives Stamina +20,
-  Defense +7, Block Value +15 (`tools/database/enchant_overrides.go`). Its label says Stamina +10.
+- ~~**Presence of Might**: server "+10 to all Stats"~~ already +10 to all five stats in `enchant_overrides.go` (checked 2026-09-24).
 - **Enchant Shield - Law of Nature** (7603, item 228982) is a Season of Discovery enchant, not in the server data.
 - ~~**Server spell values that differ from the sim**~~ done 2026-09-24 (Parts BO, BP, BR). Old note: e.g. Immolation Trap rank
   5: server 966 Fire over 21 sec, sim 690 over 15 sec (`sim/hunter/immolation_trap.go`); Arcane Shot 14286: server 212.

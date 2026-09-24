@@ -414,7 +414,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	*/
 
 	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(DevotionAuraAura(&character.Unit, GetTristateValueInt32(raidBuffs.DevotionAura, 0, 2)))
+		MakePermanent(DevotionAuraAura(&character.Unit, GetTristateValueInt32(raidBuffs.DevotionAura, 0, 2), raidBuffs.LibramOfTruth))
 	}
 
 	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing {
@@ -639,14 +639,21 @@ func ApplyInspiration(character *Character, uptime float64) {
 	ApplyFixedUptimeAura(inspirationAura, uptime, time.Millisecond*2500, 1)
 }
 
-func DevotionAuraAura(unit *Unit, points int32) *Aura {
+// Libram of Truth adds 55 armor to the aura before the Improved Devotion Aura bonus: (700 + 55) x 1.5 at 2/2.
+const LibramOfTruthArmor = 55.0
+
+func DevotionAuraAura(unit *Unit, points int32, libramOfTruth bool) *Aura {
 	updateStats := BuffSpellValues[DevotionAura]
+	if libramOfTruth {
+		updateStats[stats.BonusArmor] += LibramOfTruthArmor
+	}
 	updateStats = updateStats.Multiply(1 + .25*float64(points))
 
 	return unit.RegisterAura(Aura{
-		Label:    "Devotion Aura",
-		ActionID: ActionID{SpellID: 10293},
-		Duration: NeverExpires,
+		Label:      "Devotion Aura",
+		ActionID:   ActionID{SpellID: 10293},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs, // so the armor shows in the sidebar stats, like Stoneskin
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, updateStats)
 		},

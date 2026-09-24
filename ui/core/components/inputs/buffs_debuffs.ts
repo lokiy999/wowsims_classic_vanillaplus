@@ -89,6 +89,11 @@ export const ArmorBuff = withLabel(
 	'Devotion Aura',
 );
 
+export const LibramOfTruth = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromItemId(22400),
+	fieldName: 'libramOfTruth',
+});
+
 export const PhysDamReductionBuff = withLabel(
 	makeTristateRaidBuffInput({
 		actionId: () => ActionId.fromSpellId(10408),
@@ -672,6 +677,11 @@ export const RAID_BUFFS_CONFIG = [
 	// Tank-related Buffs
 	{
 		config: ArmorBuff,
+		picker: IconPicker,
+		stats: [Stat.StatArmor],
+	},
+	{
+		config: LibramOfTruth,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},

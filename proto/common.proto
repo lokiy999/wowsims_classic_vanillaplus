@@ -690,6 +690,10 @@ message RaidBuffs {
 	// Extra damage of the Retribution Aura from a paladin in the raid: Righteous Armor 4-piece (+6). Set by the paladin's
 	// AddRaidBuffs, not chosen in the UI.
 	int32 retribution_aura_bonus_damage = 44;
+
+	// Libram of Truth (item 22400, server: +55 Devotion Aura armor, added before Improved Devotion Aura), picked in the UI
+	// for a paladin outside the sim.
+	bool libram_of_truth = 45;
 }
 
 // Buffs that affect a single party.

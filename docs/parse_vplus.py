@@ -162,9 +162,14 @@ def parse_item(lines):
         if m:
             stats[S[m.group(2) + "Res"]] += int(m.group(1))
             continue
-        m = re.match(r'^\+(\d+) All Resistances\.?$', ln)
+        m = re.match(r'^(?:Equip: )?\+(\d+) All Resistances\.?$', ln)
         if m:
             for k in ("ArcaneRes", "FireRes", "FrostRes", "NatureRes", "ShadowRes"):
+                stats[S[k]] += int(m.group(1))
+            continue
+        m = re.match(r'^Equip: \+(\d+) to all attributes\.?$', ln)
+        if m:  # e.g. Royal Seal of Eldre'Thalas (warrior)
+            for k in ("Strength", "Agility", "Stamina", "Intellect", "Spirit"):
                 stats[S[k]] += int(m.group(1))
             continue
         # ---- armor / block value ----

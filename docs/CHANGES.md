@@ -3228,3 +3228,23 @@ wording in `sim/`, `ui/`, `proto/` and `tools/`. The APL and gear preset JSON fi
   source links in comments that point to SoD test logs (`weaponprocs.go`, `emerald_dragon_whelp.go`) and the
   upstream block value issue link in `sim/paladin/talents.go`. These don't change anything in the sim.
 - `go build`, `go test ./sim/...` (with and without `--tags=with_db`) and `tsc` pass; no golden results changed.
+
+## Part CC — "All Resistances" / "all attributes" item stats, Libram of Truth, Devotion Aura in the sidebar (2026-09-24)
+
+- **Item stats:** `docs/parse_vplus.py` did not read two tooltip lines. `Equip: +N All Resistances.` (only the version
+  without "Equip:" was matched) and `Equip: +N to all attributes.` are now parsed. **204 items** gain their missing
+  resistances (e.g. Magebane Scion +10, Seal of the Archmagus +11, Blue Mottled and Pink Speckled Egg +10), and the
+  warrior Royal Seal of Eldre'Thalas (18466) gains +12 Strength/Agility/Stamina/Intellect/Spirit. Applied to
+  `assets/db_inputs/custom_items.json` as a stat-only patch (a fresh parser run also changes unrelated things that
+  later pipeline steps own, so it was not used as a whole). `gen_db` output: the same 3688 items, only these 204
+  have different stats.
+- **Libram of Truth** (22400, server: "Increases the armor from your Devotion Aura by 55"): new raid buff toggle next
+  to Devotion Aura (`RaidBuffs.libram_of_truth`, field 45). Adds 55 before the Improved Devotion Aura bonus:
+  700 / 755 without and with the libram, 1050 / 1132.5 at 2/2. No effect without Devotion Aura.
+- **Devotion Aura in the sidebar:** the aura worked in fights but its armor was not in the character stats (the aura
+  had no build phase). Now `BuildPhase: CharacterBuildPhaseBuffs`, like Stoneskin. Fight results are unchanged; the
+  CharacterStats golden results of 16 specs changed by exactly +1050 Bonus Armor (Devotion Aura 2/2 in `FullBuffs`).
+- Already done earlier, only the TODO was out of date: Presence of Might is +10 to all stats (`enchant_overrides.go`),
+  Mind Mastery adds +20% Arcane Intellect per rank (`sim/mage/mage.go`, see Part AR/line "Mind Mastery's Arcane
+  Intellect part").
+- `go test ./sim/...` (with and without `--tags=with_db`) and `tsc` pass.
