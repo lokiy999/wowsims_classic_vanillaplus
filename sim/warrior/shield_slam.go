@@ -10,8 +10,8 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 	// Shield Slam is no longer talent-gated in the custom tree; register it for all warriors.
 
 	spellID := int32(23925)
-	damageLow := 342.0
-	damageHigh := 358.0
+	damageLow := 394.0 // server (Spell.csv): 394 to 427
+	damageHigh := 427.0
 	threat := 254.0
 
 	apCoef := 0.15

@@ -22,8 +22,9 @@ func TestP1TankWarrior(t *testing.T) {
 
 			Talents:  P1Talents,
 			GearSet:  core.GetGearSet("../../../ui/tank_warrior/gear_sets", "p0.bis"),
-			Rotation: core.GetAplRotation("../../../ui/warrior/apls", "dps_reck"),
+			Rotation: core.GetAplRotation("../../../ui/tank_warrior/apls", "prot"),
 			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../../ui/warrior/apls", "dps_reck"),
 				core.GetAplRotation("../../../ui/warrior/apls", "dps_no_reck"),
 			},
 			Buffs:       core.FullBuffs,

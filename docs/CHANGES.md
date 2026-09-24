@@ -3049,3 +3049,18 @@ Word: Pain, Devouring Plague, Mind Flay, Starshards and Raptor Strike already ma
 - Not changed: Blizzard ranks 2-5 differ by 1 damage per tick (level scaling, 8 per cast). Lightning Shield's
   "+spell damage" part of the server text is not modeled.
 - Baselines updated: warlock (Life Tap).
+
+## Part BQ — Rotations cast the AQ ranks, tank warrior rotation, Lightning Shield (2026-09-24)
+
+- **Preset rotations used pre-AQ spell ids** while the sim registers the AQ ranks (`IncludeAQ` is true), so these
+  were never cast: Heroic Strike (11567 -> 25286), Battle Shout (11551 -> 25289), Eviscerate (11300 -> 31016),
+  Backstab (11281 -> 25300), Serpent Sting (13555 -> 25295), Strength of Earth Totem (10442 -> 25361), Grace of Air
+  Totem (10627 -> 25359). Fixed in the warrior, tank warrior, rogue, hunter, enhancement and tank shaman rotations.
+  Found by printing the APL "does not know spell" warnings during the tests. Test averages: DPS warrior 717 -> 924,
+  tank warrior 265 -> 300, combat daggers rogue 421 -> 681; hunter, enhancement and tank shaman up a little.
+- **Tank warrior "Protection" rotation** (new default): Battle Shout, Bloodrage under 50 rage, Shield Slam,
+  Revenge, Heroic Strike at 45+ rage, Sunder Armor. The DPS rotations stay as options; the test runs all three.
+- **Shield Slam** 394 to 427 (server), was 342 to 358.
+- **Arcane Missiles rank 8** is now available (the loop stopped at rank 7, a leftover "TODO AQ").
+- **Lightning Shield** also gives +5/10/15/20/30/40/50 spell damage (by rank) while active (server text).
+- Baselines updated: hunter, rogue, enhancement shaman, tank shaman, DPS warrior, tank warrior.

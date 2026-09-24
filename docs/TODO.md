@@ -6,7 +6,26 @@ came up, most concrete first.
 
 _As of 2026-09-19._
 
-## Open items at a glance (updated 2026-09-23)
+## Questions for Lokiy (collected 2026-09-24)
+
+Things only you can answer; everything else I keep working on. Newest at the bottom.
+
+1. **Talent builds.** Every spec's preset (and test) has an empty talent string, so the sim runs every class with no
+   talents: Bloodthirst, Mortal Strike, Stormstrike, Aimed Shot, Shadowform, Mind Flay, Vampiric Embrace, Inner Focus,
+   Adrenaline Rush, Holy Shield, Shadowburn, Demonic Sacrifice, Amplify Curse, Elemental Mastery etc. are never cast,
+   and passive talents do nothing. Send a talent string (the sim's talent calculator export) for each spec you want as
+   a preset, or tell me to draft builds from the custom trees myself.
+2. **Pyroblast / Flame Shock / Insect Swarm / Arcane Missiles spell power**: cast each on a dummy with and without
+   known +spell damage and send the tick numbers (combat log). The new tick counts use the classic total for now.
+3. **Arcane Missiles "energize"** (+1% Arcane crit for 20 sec, stacks 5): does one cast give one stack, or does every
+   missile give one?
+4. **Trinkets**: Arcanite Dragonling and Cannonball Runner (tooltip + what the pet does), Six Demon Bag (tooltip and
+   which effects it rolls), Orb of Chaotic Elements (how much it heals).
+5. **Scarlet Monastery sets**: are all pieces in the game?
+6. **`ASpiritA` world boss**: what name should it show?
+7. **Scratch files at the sim repo root**: keep or delete?
+
+## Open items at a glance (updated 2026-09-24)
 
 One list of everything still open; the details are in the dated sections below. Items finished on 2026-09-23 are
 listed at the end of this overview so the older sections don't need rewriting.
@@ -20,10 +39,8 @@ listed at the end of this overview so the older sections don't need rewriting.
 - Talents not modeled yet: per-class lists in the 2026-09-19/20 sections (rogue, hunter, warlock, mage, druid, shaman,
   paladin, priest, warrior).
 - Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
-- Tank warrior presets are DPS rotations (Bloodthirst, Whirlwind, Berserker Stance) and never cast Revenge or Shield
-  Slam; a real tank rotation is missing. The tests don't cover Revenge, Arcane Missiles or Insect Swarm (no preset
-  uses them).
-- Lightning Shield: server also gives +5 to +50 spell damage while active (by rank); not modeled.
+- No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).
+- Talent presets are all empty (question 1 at the top).
 - Healing: priest healing spells are disabled; druid Nature's Swiftness, Tranquility, Bash, Frenzied Regeneration and
   Rebirth are not in the sim; the shaman casting Mana Tide Totem is not modeled.
 - Shaman totem and weapon imbue items (2026-09-20 sections).

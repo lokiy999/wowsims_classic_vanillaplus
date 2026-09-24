@@ -34,8 +34,8 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 	mage.ArcaneMissiles = make([]*core.Spell, ArcaneMissilesRanks+1)
 	mage.ArcaneMissilesTickSpell = make([]*core.Spell, ArcaneMissilesRanks+1)
 
-	// TODO AQ <=
-	for rank := 1; rank < ArcaneMissilesRanks; rank++ {
+	// The server has the AQ books: rank 8 only with IncludeAQ.
+	for rank := 1; rank <= core.TernaryInt(core.IncludeAQ, ArcaneMissilesRanks, ArcaneMissilesRanks-1); rank++ {
 		config := mage.getArcaneMissilesSpellConfig(rank)
 
 		if config.RequiredLevel <= int(mage.Level) {

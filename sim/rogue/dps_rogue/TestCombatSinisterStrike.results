@@ -113,8 +113,8 @@ dps_results: {
 dps_results: {
  key: "TestCombatSinisterStrike-Phase5-AllItems-DarkmantleArmor"
  value: {
-  dps: 727.15168
-  tps: 516.27769
+  dps: 729.65891
+  tps: 518.05782
  }
 }
 dps_results: {
@@ -141,15 +141,15 @@ dps_results: {
 dps_results: {
  key: "TestCombatSinisterStrike-Phase5-AllItems-MarkoftheVeteran-26164"
  value: {
-  dps: 690.17619
-  tps: 490.0251
+  dps: 690.37
+  tps: 490.1627
  }
 }
 dps_results: {
  key: "TestCombatSinisterStrike-Phase5-AllItems-MarkoftheVeteran-26173"
  value: {
-  dps: 690.17619
-  tps: 490.0251
+  dps: 690.37
+  tps: 490.1627
  }
 }
 dps_results: {

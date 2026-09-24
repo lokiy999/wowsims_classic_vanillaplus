@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/stats"
 )
 
 const LightningShieldRanks = 7
@@ -96,6 +97,8 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 			}
 		},
 	})
+	// Server: Lightning Shield also increases spell damage by 5/10/15/20/30/40/50 (by rank) while active.
+	shaman.LightningShieldAuras[rank].AttachStatBuff(stats.SpellPower, []float64{0, 5, 10, 15, 20, 30, 40, 50}[rank])
 
 	shaman.LightningShield[rank] = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:  core.ActionID{SpellID: spellId},
