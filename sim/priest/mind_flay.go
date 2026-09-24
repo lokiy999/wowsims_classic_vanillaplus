@@ -17,7 +17,7 @@ var MindFlayTickSpellId = [MindFlayRanks + 1]int32{0, 16568, 7378, 17316, 17317,
 // Confirmed via CSV's/Spell.csv: EffectAmplitude=1000ms, DurationIndex=7 (5000ms),
 // consistently across all 6 ranks. Total damage = (EffectBasePoints+1) * 5 ticks.
 var MindFlayBaseDamage = [MindFlayRanks + 1]float64{0, 160, 275, 400, 550, 700, 900}
-var MindFlayManaCost = [MindFlayRanks + 1]float64{0, 45, 70, 100, 135, 165, 205}
+var MindFlayManaCost = [MindFlayRanks + 1]float64{0, 55, 90, 130, 175, 215, 260}
 var MindFlayLevel = [MindFlayRanks + 1]int{0, 20, 28, 36, 44, 52, 60}
 
 func (priest *Priest) registerMindFlay() {

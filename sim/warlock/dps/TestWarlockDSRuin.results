@@ -204,15 +204,15 @@ dps_results: {
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-NoBuffs-Consumes-LongMultiTarget"
  value: {
-  dps: 402.99316
-  tps: 1376.99222
+  dps: 392.61708
+  tps: 1374.76769
  }
 }
 dps_results: {
  key: "TestWarlockDSRuin-Phase1-Settings-Orc-prebis-DS/Ruin Warlock-rotation-NoBuffs-Consumes-LongSingleTarget"
  value: {
-  dps: 402.99316
-  tps: 387.27554
+  dps: 392.61708
+  tps: 385.05101
  }
 }
 dps_results: {

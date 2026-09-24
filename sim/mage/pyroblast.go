@@ -12,7 +12,7 @@ const PyroblastRanks = 8
 var PyroblastSpellId = [PyroblastRanks + 1]int32{0, 11366, 12505, 12522, 12523, 12524, 12525, 12526, 18809}
 var PyroblastBaseDamage = [PyroblastRanks + 1][]float64{{0}, {138, 184}, {193, 249}, {270, 343}, {347, 437}, {427, 536}, {525, 653}, {625, 776}, {716, 890}}
 var PyroblastDotDamage = [PyroblastRanks + 1]float64{0, 84, 108, 144, 186, 234, 282, 342, 402}
-var PyroblastManaCost = [PyroblastRanks + 1]float64{0, 125, 150, 195, 240, 285, 335, 385, 440}
+var PyroblastManaCost = [PyroblastRanks + 1]float64{0, 105, 150, 195, 240, 285, 335, 385, 440}
 var PyroblastLevel = [PyroblastRanks + 1]int{0, 20, 24, 30, 36, 42, 48, 54, 60}
 
 func (mage *Mage) registerPyroblastSpell() {

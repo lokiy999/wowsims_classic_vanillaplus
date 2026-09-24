@@ -3116,3 +3116,12 @@ of each class's `ApplyTalents`:
 - Hunter pet (level 60 rank): **Claw** 52-72 (was 43-59), **Bite** 98-120 (was 81-91), **Lightning Breath**
   122-140 (was 99-113), **Screech** 59-85 (was 26-46).
 - Voidwalker Torment is threat only. Baselines updated: hunter (478 -> 482), warlock (785 -> 806, Imp).
+
+## Part BU — Mana costs from the server data (2026-09-24)
+
+Compared every per-rank mana cost array in the sim with `Spell.csv` (column 32; it matched the in-game Fireball 395 /
+410). 17 files updated, e.g. Starfire rank 7 280 (was 340), Flamestrike rank 6 1200 (was 990), Blast Wave rank 4 430,
+Mind Flay rank 6 260 (was 205), Smite rank 8 240 (was 280), Earth Shock rank 7 380 (was 450), Flame Shock rank 6 340,
+Frost Shock rank 4 400, Lightning Bolt rank 10 260, Windfury Totem rank 3 500 (was 250), Raptor Strike rank 8 200 (was
+100), Mongoose Bite rank 4 150, Wing Clip rank 3 150, Imp Firebolt rank 7 105, Lash of Pain rank 6 330. Test averages:
+elemental 469 -> 479, enhancement 668 -> 660; tank shaman and warlock only in mana metrics.

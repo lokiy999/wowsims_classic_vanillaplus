@@ -10,7 +10,7 @@ const StarfireRanks = 7
 
 var StarfireSpellId = [StarfireRanks + 1]int32{0, 2912, 8949, 8950, 8951, 9875, 9876, 25298}
 var StarfireBaseDamage = [StarfireRanks + 1][]float64{{0}, {95, 115}, {146, 177}, {212, 253}, {293, 348}, {378, 445}, {451, 531}, {496, 584}}
-var StarfireManaCost = [StarfireRanks + 1]float64{0, 95, 135, 180, 230, 275, 315, 340}
+var StarfireManaCost = [StarfireRanks + 1]float64{0, 80, 100, 140, 180, 220, 260, 280}
 var StarfireLevel = [StarfireRanks + 1]int{0, 20, 26, 34, 42, 50, 58, 60}
 
 func (druid *Druid) registerStarfireSpell() {

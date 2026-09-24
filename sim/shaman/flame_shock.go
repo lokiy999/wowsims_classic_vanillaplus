@@ -14,7 +14,7 @@ var FlameShockBaseDamage = [FlameShockRanks + 1]float64{0, 29, 56, 108, 191, 274
 var FlameShockBaseDotDamage = [FlameShockRanks + 1]float64{0, 50, 75, 150, 250, 350, 450}
 var FlameShockBaseSpellCoef = [FlameShockRanks + 1]float64{0, .134, .198, .214, .214, .214, .214}
 var FlameShockDotSpellCoef = [FlameShockRanks + 1]float64{0, .063, .093, .1, .1, .1, .1}
-var FlameShockManaCost = [FlameShockRanks + 1]float64{0, 55, 95, 160, 250, 345, 410}
+var FlameShockManaCost = [FlameShockRanks + 1]float64{0, 45, 80, 135, 210, 295, 340}
 var FlameShockLevel = [FlameShockRanks + 1]int{0, 10, 18, 28, 40, 52, 60}
 
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {

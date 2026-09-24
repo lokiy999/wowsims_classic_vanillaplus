@@ -9,7 +9,7 @@ const EarthShockRanks = 7
 var EarthShockSpellId = [EarthShockRanks + 1]int32{0, 8042, 8044, 8045, 8046, 10412, 10413, 10414}
 var EarthShockBaseDamage = [EarthShockRanks + 1][]float64{{0}, {17, 19}, {35, 38}, {65, 69}, {125, 133}, {235, 249}, {371, 393}, {517, 545}}
 var EarthShockSpellCoef = [EarthShockRanks + 1]float64{0, .154, .212, .299, .386, .386, .386, .386}
-var EarthShockManaCost = [EarthShockRanks + 1]float64{0, 30, 50, 85, 145, 240, 345, 450}
+var EarthShockManaCost = [EarthShockRanks + 1]float64{0, 25, 40, 70, 125, 205, 300, 380}
 var EarthShockLevel = [EarthShockRanks + 1]int{0, 4, 8, 14, 24, 36, 48, 60}
 
 func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {

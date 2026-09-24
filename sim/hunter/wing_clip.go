@@ -7,7 +7,7 @@ import (
 func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 2974, 14267, 14268}[rank]
 	baseDamage := [4]float64{0, 5, 25, 50}[rank]
-	manaCost := [4]float64{0, 40, 60, 80}[rank]
+	manaCost := [4]float64{0, 50, 100, 150}[rank]
 	level := [4]int{0, 12, 38, 60}[rank]
 
 	return core.SpellConfig{

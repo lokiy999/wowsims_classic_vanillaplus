@@ -24,7 +24,7 @@ const WindfuryTotemRanks = 3
 var WindfuryTotemSpellId = [WindfuryTotemRanks + 1]int32{0, 8512, 10613, 10614}
 var WindfuryBuffAuraId = [WindfuryTotemRanks + 1]int32{0, 8514, 10607, 10611}
 var WindfuryTotemBonusDamage = [WindfuryTotemRanks + 1]float64{0, 122, 229, 315}
-var WindfuryTotemManaCost = [WindfuryTotemRanks + 1]float64{0, 115, 175, 250}
+var WindfuryTotemManaCost = [WindfuryTotemRanks + 1]float64{0, 230, 350, 500}
 var WindfuryTotemLevel = [WindfuryTotemRanks + 1]int{0, 32, 42, 52}
 
 func (shaman *Shaman) registerWindfuryTotemSpell() {
@@ -132,7 +132,7 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 const WindwallTotemRanks = 3
 
 var WindwallTotemSpellId = [WindwallTotemRanks + 1]int32{0, 15107, 15111, 15112}
-var WindwallTotemManaCost = [WindwallTotemRanks + 1]float64{0, 115, 170, 225}
+var WindwallTotemManaCost = [WindwallTotemRanks + 1]float64{0, 40, 60, 100}
 var WindwallTotemLevel = [WindwallTotemRanks + 1]int{0, 36, 46, 56}
 
 func (shaman *Shaman) registerWindwallTotemSpell() {

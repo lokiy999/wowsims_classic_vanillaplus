@@ -9,7 +9,7 @@ import (
 func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	spellId := [5]int32{0, 1495, 14269, 14270, 14271}[rank]
 	baseDamage := [5]float64{0, 10, 15, 25, 35}[rank] // server: weapon damage plus this
-	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
+	manaCost := [5]float64{0, 60, 90, 110, 150}[rank]
 	level := [5]int{0, 16, 30, 44, 58}[rank]
 
 	spellConfig := core.SpellConfig{

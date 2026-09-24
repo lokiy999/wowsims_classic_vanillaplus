@@ -10,7 +10,7 @@ const BlastWaveRanks = 5
 
 var BlastWaveSpellId = [BlastWaveRanks + 1]int32{0, 11113, 13018, 13019, 13020, 13021}
 var BlastWaveBaseDamage = [BlastWaveRanks + 1][]float64{{0}, {102, 134}, {162, 202}, {265, 317}, {354, 422}, {462, 544}}
-var BlastWaveManaCost = [BlastWaveRanks + 1]float64{0, 215, 270, 355, 450, 545}
+var BlastWaveManaCost = [BlastWaveRanks + 1]float64{0, 135, 215, 315, 430, 545}
 var BlastWaveLevel = [BlastWaveRanks + 1]int{0, 30, 36, 44, 52, 60}
 
 func (mage *Mage) registerBlastWaveSpell() {

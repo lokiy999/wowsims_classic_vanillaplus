@@ -14,7 +14,7 @@ var LightningShieldSpellId = [LightningShieldRanks + 1]int32{0, 324, 325, 905, 9
 var LightningShieldProcSpellId = [LightningShieldRanks + 1]int32{0, 26364, 26365, 26366, 26367, 26369, 26370, 26363}
 var LightningShieldBaseDamage = [LightningShieldRanks + 1]float64{0, 13, 29, 51, 80, 114, 154, 198}
 var LightningShieldSpellCoef = [LightningShieldRanks + 1]float64{0, .147, .227, .267, .267, .267, .267, .267}
-var LightningShieldManaCost = [LightningShieldRanks + 1]float64{0, 45, 80, 125, 180, 240, 305}
+var LightningShieldManaCost = [LightningShieldRanks + 1]float64{0, 45, 80, 120, 180, 240, 305}
 var LightningShieldLevel = [LightningShieldRanks + 1]int{0, 8, 16, 24, 32, 40, 48, 56}
 
 func (shaman *Shaman) registerLightningShieldSpell() {
