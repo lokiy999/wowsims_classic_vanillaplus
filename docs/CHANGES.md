@@ -3248,3 +3248,16 @@ wording in `sim/`, `ui/`, `proto/` and `tools/`. The APL and gear preset JSON fi
   Mind Mastery adds +20% Arcane Intellect per rank (`sim/mage/mage.go`, see Part AR/line "Mind Mastery's Arcane
   Intellect part").
 - `go test ./sim/...` (with and without `--tags=with_db`) and `tsc` pass.
+
+## Part CD — Maim and Survival Instincts; talent to-do list regenerated (2026-09-24)
+
+- **Warrior Maim** (DBC 33406-33408, effects 33491-33493): auto attacks (main and off hand) have a 10% chance to make
+  the target take 5% more damage from all sources, for 10/20/30 sec by rank (`sim/warrior/talents_extra.go`,
+  `applyMaim`). Test with the phase 1 fury setup: 753.1 -> 790.8 DPS with 3/3 (the debuff is up nearly all the time).
+  It's a debuff on the target, so there is no sidebar stat for it.
+- **Druid Survival Instincts** (DBC 33772-33776): chance to be critically hit by melee -1/2/3/4/6%
+  (`sim/druid/talents_server.go`). The health restored on your own crits is not modeled.
+- **TODO cleanup:** a generated "Talents not in the sim code" list replaces the stale per-class lists (about 70 talents
+  listed as missing were already implemented). Also confirmed as already done: Onyx Egg and Royal Seal cost effects,
+  the SoD weapon versions (Part BI), Improved Hunter's Mark (via the improved debuff option).
+- No preset uses these talents (presets have no talents yet), so no golden results changed. Tests pass.

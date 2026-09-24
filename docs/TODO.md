@@ -45,6 +45,33 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     "Cenarion Raiment". Do you want the sim to follow the dump (and keep or drop the Naxx items)? Until then the DB
     stays as it is.
 
+## Talents not in the sim code (generated 2026-09-24)
+
+Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). This replaces the per-class
+"not modeled" lists in the older dated sections below, which are stale: about 70 talents listed there were implemented
+later (Part BS and others). Regenerate with a grep of `Talents\.` against `proto/<class>.proto` when needed.
+
+Most of these are utility or PvP (stuns, fears, range, movement, stealth, pet utility, healing-only) and don't change a
+DPS or tank sim. The ones that could matter:
+- **Warlock Defiler**: -20% time between ticks, duration and GCD (DBC 34305). Needs per-spell tick changes.
+- **Paladin Divine Might**: Blessing of Might and Blessing of Kings +10/20% (DBC 20042/20045). Needs a way to say
+  which paladin casts the blessing (UI toggle like Libram of Truth, or from a paladin in the raid).
+- **Druid Feral Instinct**: Bear Form threat +5/10/15% (DBC 16947-16949). Bear Form is not in the sim (feral tank off).
+- **Hunter Improved Hunter's Mark**: covered by the "improved" Hunter's Mark debuff option (+20%/rank, 2/2 = +40%);
+  the hunter doesn't cast the mark itself, so the talent field itself stays unused.
+- Needs numbers: Shaman Armaments of Storm (25% chance, "up to 300", per hit or per imbue?), Shamanism (chance),
+  Bloodlust (cooldown), Hunter Thrill of the Hunt (chance).
+
+- **Druid** (19 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Primal Tenacity, Brutal Impact, Feral Charge, Leap, Feral Instinct, Untamed Heart, Natures Focus, Naturalist, Improved Enrage, Custody Of The Nature, Improved Rejuvenation, Tranquil Spirit, Swiftmend, Catharsis, Improved Regrowth
+- **Hunter** (20 of 60): Improved Mend Pet, Aspect Mastery, Improved Revive Pet, Intimidation, Bestial Swiftness, Survival Instincts, Team Play, Terrifying Roar, Improved Hunters Mark, Improved Concussive Shot, Vantage Point, Hawk Eye, Improved Distracting Shot, Scatter Shot, Deterrence, Improved Wing Clip, Trapper, Thrill Of The Hunt, Deep Freeze, Wyvern Sting
+- **Mage** (21 of 60): Flame Throwing, Impact, Blazing Speed, Chain Reaction, Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
+- **Paladin** (19 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Lights Mercy, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Seal Of Command, Eye For An Eye, Repentance
+- **Priest** (20 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Improved Prayer Of Healing, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
+- **Rogue** (20 of 60): Remorseless Attacks, Seek And Destroy, Death Mark, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
+- **Shaman** (21 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Aftershock, Improved Ghost Wolf, Bloodlust, Armaments Of Storm, Shamanism, Spiritwalking, Improved Healing Wave, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Healing Way, Meditation, Cleansing Wave
+- **Warlock** (21 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Inevitable Doom, Defiler, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
+- **Warrior** (12 of 60): Improved Charge, Improved Hamstring, Improved Rend, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
+
 ## Open items at a glance (updated 2026-09-24)
 
 One list of everything still open; the details are in the dated sections below. Items finished on 2026-09-23 are
@@ -503,12 +530,13 @@ equipping them does nothing beyond their stats. Effect text is from `VPlusItemDB
 Also: Shard of the Flame (17082) has no stats in the DB (server: 16 health per 5 sec, no DPS effect);
 Scrolls of Blinding Light (19343) is not in the server data. ~~Royal Seal of Eldre'Thalas (18466) "+12 to all
 attributes" and the Blue Mottled/Pink Speckled Egg "+10 All Resistances"~~ done 2026-09-24 (Part CC, plus 201 other
-items with "Equip: +N All Resistances"). Still open: Onyx Egg "-1% damage taken" and the Royal Seal (18471/18472)
-"-2% spell cost" effects.
+items with "Equip: +N All Resistances"). Onyx Egg "-1% damage taken" and the Royal Seal (18471/18472) "-2% spell cost" are already in
+`sim/common/item_effects/vplus_trinkets.go` (checked 2026-09-24).
 
 ## Raised 2026-09-23 — tooltip/icon audit (CHANGES.md Part BH)
 
-- **Weapons coded as their Season of Discovery versions**, not the server's (proc spell ids are SoD, and the effect
+- ~~**Weapons coded as their Season of Discovery versions**~~ fixed in Part BI (checked 2026-09-24: Thunderstrike,
+  Shadowstrike and Masterwork Stormhammer match the server tooltips). Old note: not the server's (proc spell ids are SoD, and the effect
   may be too): Flame Wrath (11809, server: Use: fire shield + 210-250 fire ring; sim: on-hit proc), Quel'Serrar
   (18348, server: +1% hit, Use: +40 defense/+1400 armor for 20s; sim: proc aura 463105), Shadowstrike (17074, server:
   chance to steal 100-180 life), Thunderstrike (17223, server: 150-250 Nature to up to 3 targets), Masterwork

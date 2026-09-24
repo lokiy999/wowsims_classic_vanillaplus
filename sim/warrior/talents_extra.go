@@ -1,6 +1,8 @@
 package warrior
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
@@ -37,4 +39,43 @@ func (warrior *Warrior) applyAuditTalents() {
 		warrior.AddStat(stats.Dodge, bonus*core.DodgeRatingPerDodgeChance)
 		warrior.AddStat(stats.MeleeCrit, bonus*core.CritRatingPerCritChance)
 	}
+
+	warrior.applyMaim()
+}
+
+// Maim (DBC 33406-33408): auto attacks have a 10% chance to make the target take 5% more damage from all sources,
+// for 10/20/30 sec by rank (effect spells 33491-33493).
+func (warrior *Warrior) applyMaim() {
+	rank := warrior.Talents.Maim
+	if rank <= 0 {
+		return
+	}
+	rank = min(rank, 3)
+	actionID := core.ActionID{SpellID: []int32{0, 33491, 33492, 33493}[rank]}
+	duration := time.Second * 10 * time.Duration(rank)
+
+	maimAuras := warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    "Maim",
+			ActionID: actionID,
+			Duration: duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.05
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.05
+			},
+		})
+	})
+
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:       "Maim Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		ProcChance: 0.10,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			maimAuras.Get(result.Target).Activate(sim)
+		},
+	})
 }
