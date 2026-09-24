@@ -2,13 +2,19 @@ import * as PresetUtils from '../core/preset_utils.js';
 import { BlessingOfKingsType, Consumes, Debuffs, Flask, Food, IndividualBuffs, PartyBuffs, RaidBuffs, TristateEffect, UnitReference } from '../core/proto/common.js';
 import { RestorationDruid_Options as RestorationDruidOptions } from '../core/proto/druid.js';
 import { SavedTalents } from '../core/proto/ui.js';
+import DefaultApl from './apls/default.apl.json';
 import BlankGear from './gear_sets/blank.gear.json';
+import PlaceholderGear from './gear_sets/placeholder.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const DefaultGear = PresetUtils.makePresetGear('Blank', BlankGear);
+export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+// Placeholder: the balance pre-raid set until a healing set is made.
+export const DefaultGear = PresetUtils.makePresetGear('Placeholder (balance pre-raid)', PlaceholderGear);
+
+export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Rejuvenation, Regrowth, Healing Touch', DefaultApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.

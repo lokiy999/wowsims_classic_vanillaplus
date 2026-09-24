@@ -97,6 +97,26 @@ all the other data is done; do these as one batch then):
 - **Warlock** (19 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
 - **Warrior** (12 of 60): Improved Charge, Improved Hamstring, Improved Rend, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
 
+## Healers: done in Part CG, still open (added 2026-09-24, do these next)
+
+All four heal pages work (Healing Priest, Restoration Shaman, Restoration Druid, Holy Paladin) with the server's heal
+values. Left for later, roughly in order:
+- **Healer gear presets**: every healer page uses a placeholder set from a DPS caster page (shadow priest, elemental,
+  balance). Make real healing sets (+healing gear) once the item list is checked.
+- **Healing rotations** (low priority like all rotations): fixed priorities on one target dummy, so there is no
+  overhealing and HPS is limited by mana. A healing model (damage taken by the tank / raid) would make HPS meaningful.
+- **Cast times**: taken from the server cast time index, mapped by comparing with known spells (16 = 1.5, 5 = 2.0,
+  20 = 2.5, 14 = 3.0, 22 = 3.5 sec; 19 assumed 2.5). Server Chain Heal uses index 22 (3.5 sec, classic 2.5) and 70%
+  per jump; Healing Touch ranks 1-8 are faster than classic. Confirm with a `SpellCastTimes.csv` export (question 13).
+- **Spell power coefficients** are the classic rule (cast time / 3.5, HoTs duration / 15). Guesses: Tranquility (server
+  heals every second), Swiftmend (also its mana cost, 16% of base mana), Prayer of Healing and Chain Heal splits.
+- **Not in the sim yet**: Holy Nova, Lightwell, Holy Link, Inspiration, Ancestral Healing, Earth Shield, Healing Stream
+  Totem as a healer spell choice, Lay on Hands as a heal, Blessing of Light, Improved/Lesser Heal, Cleansing Wave,
+  Holy Purge, Spirit of Redemption. Holy Shock (heal) has its own cooldown separate from the damage version.
+- **Paladin Illumination** ranks 2-4 still interpolated (question 11); Light's Mercy stack effect (20% per stack) is
+  from the tooltip wording.
+- Raid sim is still unlaunched (only the individual pages are Phase 1 / Alpha).
+
 ## Plan from 2026-09-24: healers and feral tank
 
 Lokiy: healing spells go into the sim, with a heal page for every class that can heal (Priest, Shaman, Druid,

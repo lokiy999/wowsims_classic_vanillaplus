@@ -28,7 +28,7 @@ func NewRestorationDruid(character *core.Character, options *proto.Player) *Rest
 	selfBuffs := druid.SelfBuffs{}
 
 	resto := &RestorationDruid{
-		Druid: druid.New(character, druid.Tree, selfBuffs, options.TalentsString),
+		Druid: druid.New(character, druid.Humanoid, selfBuffs, options.TalentsString),
 	}
 
 	resto.SelfBuffs.InnervateTarget = &proto.UnitReference{}
@@ -47,8 +47,19 @@ func (resto *RestorationDruid) GetDruid() *druid.Druid {
 	return resto.Druid
 }
 
+// Heals go to the first target dummy (the healing sim's stand-in for a raid member), or to the druid.
+func (resto *RestorationDruid) GetMainTarget() *core.Unit {
+	target := resto.Env.Raid.GetFirstTargetDummy()
+	if target == nil {
+		return &resto.Unit
+	}
+	return &target.Unit
+}
+
 func (resto *RestorationDruid) Initialize() {
+	resto.CurrentTarget = resto.GetMainTarget()
 	resto.Druid.Initialize()
+	resto.Druid.RegisterHealingSpells()
 }
 
 func (resto *RestorationDruid) Reset(sim *core.Simulation) {

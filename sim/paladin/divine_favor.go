@@ -11,7 +11,8 @@ func (paladin *Paladin) registerDivineFavor() {
 
 	var affectedSpells []*core.Spell
 	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PaladinHolyShock {
+		switch spell.SpellCode {
+		case SpellCode_PaladinHolyShock, SpellCode_PaladinHolyShockHeal, SpellCode_PaladinHolyLight, SpellCode_PaladinFlashOfLight:
 			affectedSpells = append(affectedSpells, spell)
 		}
 	})
@@ -43,6 +44,14 @@ func (paladin *Paladin) registerDivineFavor() {
 			aura.Deactivate(sim)
 			cd.Set(sim.CurrentTime + cd.Duration)
 			paladin.UpdateMajorCooldowns()
+		},
+		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			switch spell.SpellCode {
+			case SpellCode_PaladinHolyShockHeal, SpellCode_PaladinHolyLight, SpellCode_PaladinFlashOfLight:
+				aura.Deactivate(sim)
+				cd.Set(sim.CurrentTime + cd.Duration)
+				paladin.UpdateMajorCooldowns()
+			}
 		},
 	})
 

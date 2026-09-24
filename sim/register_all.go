@@ -7,22 +7,22 @@ import (
 	dpsrogue "github.com/wowsims/classic/sim/rogue/dps_rogue"
 	"github.com/wowsims/classic/sim/shaman/elemental"
 	"github.com/wowsims/classic/sim/shaman/enhancement"
+	restoShaman "github.com/wowsims/classic/sim/shaman/restoration"
 	"github.com/wowsims/classic/sim/shaman/tank"
 
 	"github.com/wowsims/classic/sim/druid/feral"
+	restoDruid "github.com/wowsims/classic/sim/druid/restoration"
 	feralTank "github.com/wowsims/classic/sim/druid/tank"
-	// restoDruid "github.com/wowsims/classic/sim/druid/restoration"
 	_ "github.com/wowsims/classic/sim/encounters"
 	"github.com/wowsims/classic/sim/hunter"
 	"github.com/wowsims/classic/sim/mage"
 
-	// holyPaladin "github.com/wowsims/classic/sim/paladin/holy"
+	holyPaladin "github.com/wowsims/classic/sim/paladin/holy"
 	"github.com/wowsims/classic/sim/paladin/protection"
 	// "github.com/wowsims/classic/sim/paladin/retribution"
-	// healingPriest "github.com/wowsims/classic/sim/priest/healing"
+	healingPriest "github.com/wowsims/classic/sim/priest/healing"
 	"github.com/wowsims/classic/sim/priest/shadow"
 
-	// restoShaman "github.com/wowsims/classic/sim/shaman/restoration"
 	dpsWarlock "github.com/wowsims/classic/sim/warlock/dps"
 	dpsWarrior "github.com/wowsims/classic/sim/warrior/dps_warrior"
 	tankWarrior "github.com/wowsims/classic/sim/warrior/tank_warrior"
@@ -39,19 +39,19 @@ func RegisterAll() {
 	balance.RegisterBalanceDruid()
 	feral.RegisterFeralDruid()
 	feralTank.RegisterFeralTankDruid()
-	// restoDruid.RegisterRestorationDruid()
+	restoDruid.RegisterRestorationDruid()
 	elemental.RegisterElementalShaman()
 	enhancement.RegisterEnhancementShaman()
 	tank.RegisterTankShaman()
-	// restoShaman.RegisterRestorationShaman()
+	restoShaman.RegisterRestorationShaman()
 	hunter.RegisterHunter()
 	mage.RegisterMage()
-	// healingPriest.RegisterHealingPriest()
+	healingPriest.RegisterHealingPriest()
 	shadow.RegisterShadowPriest()
 	dpsrogue.RegisterDpsRogue()
 	dpsWarrior.RegisterDpsWarrior()
 	tankWarrior.RegisterTankWarrior()
-	// holyPaladin.RegisterHolyPaladin()
+	holyPaladin.RegisterHolyPaladin()
 	protection.RegisterProtectionPaladin()
 	retribution.RegisterRetributionPaladin()
 	dpsWarlock.RegisterDpsWarlock()

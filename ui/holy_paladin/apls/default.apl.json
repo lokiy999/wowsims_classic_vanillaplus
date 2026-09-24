@@ -1,0 +1,7 @@
+{
+    "type": "TypeAPL",
+    "priorityList": [
+        {"action":{"autocastOtherCooldowns":{}}},
+        {"action":{"castSpell":{"spellId":{"spellId":25292}}}}
+    ]
+}

@@ -29,6 +29,9 @@ const (
 	SpellCode_PaladinCrusaderStrike
 	SpellCode_PaladinJudgementOfTheCrusader
 	SpellCode_PaladinJudgementOfFury
+	SpellCode_PaladinHolyLight
+	SpellCode_PaladinFlashOfLight
+	SpellCode_PaladinHolyShockHeal
 )
 
 type SealJudgeCode uint8
@@ -78,8 +81,11 @@ type Paladin struct {
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
-	sealOfFury          *core.Spell
-	crusaderStrike      *core.Spell
+
+	HolyLight      []*core.Spell
+	FlashOfLight   []*core.Spell
+	sealOfFury     *core.Spell
+	crusaderStrike *core.Spell
 }
 
 // Implemented by each Paladin spec.

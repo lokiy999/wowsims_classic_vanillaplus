@@ -480,7 +480,6 @@ func (shaman *Shaman) purificationHealingModifier() float64 {
 	return .02 * float64(shaman.Talents.Purification)
 }
 
-
 // Talents with DBC values not otherwise handled above.
 func (shaman *Shaman) applyShamanExtras() {
 	shaman.applyStaticField()
@@ -542,7 +541,7 @@ func (shaman *Shaman) applyShamanExtras() {
 		})
 	}
 
-	// Lightning Overlord: Lightning Bolt/Chain Lightning crits refund 10%/rank of base mana cost.
+	// Lightning Overlord: Lightning Bolt/Chain Lightning/Chain Heal crits refund 10%/rank of base mana cost.
 	if shaman.Talents.LightningOverlord > 0 {
 		refund := 0.10 * float64(shaman.Talents.LightningOverlord)
 		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 34286}) // Lightning Overlord mana restore
@@ -552,7 +551,12 @@ func (shaman *Shaman) applyShamanExtras() {
 				if !result.DidCrit() || spell.Cost == nil {
 					return
 				}
-				if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning {
+				if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning || spell.SpellCode == SpellCode_ShamanChainHeal {
+					shaman.AddMana(sim, spell.Cost.BaseCost*refund, manaMetrics)
+				}
+			},
+			OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidCrit() && spell.Cost != nil && spell.SpellCode == SpellCode_ShamanChainHeal {
 					shaman.AddMana(sim, spell.Cost.BaseCost*refund, manaMetrics)
 				}
 			},

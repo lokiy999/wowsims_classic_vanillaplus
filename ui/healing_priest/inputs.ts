@@ -26,5 +26,5 @@ export const SelfPowerInfusion = InputHelpers.makeSpecOptionsBooleanIconInput<Sp
 
 export const InnerFire = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecHealingPriest>({
 	fieldName: 'useInnerFire',
-	actionId: () => ActionId.fromSpellId(48168),
+	actionId: () => ActionId.fromSpellId(10952),
 });

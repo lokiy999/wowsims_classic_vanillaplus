@@ -70,7 +70,7 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.PurifyingLight > 0 {
 		// DBC: +50%/rank crit strike damage bonus for Holy spells (2 ranks).
 		priest.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagPriest) && spell.SpellSchool.Matches(core.SpellSchoolHoly) {
+			if spell.Flags.Matches(SpellFlagPriest) && spell.SpellSchool.Matches(core.SpellSchoolHoly) && !spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
 				spell.CritDamageBonus += 0.5 * float64(priest.Talents.PurifyingLight)
 			}
 		})
@@ -108,8 +108,8 @@ func (priest *Priest) applyForceOfWill() {
 	}
 
 	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagPriest) {
-			// DBC: +2% spell damage per rank, +1% spell crit per rank.
+		if spell.Flags.Matches(SpellFlagPriest) && !spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+			// DBC: +2% spell damage per rank, +1% spell crit per rank (offensive spells only).
 			spell.DamageMultiplierAdditive += 0.02 * float64(priest.Talents.ForceOfWill)
 			spell.BonusCritRating += 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
 		}

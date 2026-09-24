@@ -24,29 +24,9 @@ func RegisterRestorationShaman() {
 }
 
 func NewRestorationShaman(character *core.Character, options *proto.Player) *RestorationShaman {
-	restoShamOptions := options.GetRestorationShaman()
-
-	selfBuffs := shaman.SelfBuffs{
-		Shield: restoShamOptions.Options.Shield,
+	return &RestorationShaman{
+		Shaman: shaman.NewShaman(character, options.TalentsString),
 	}
-
-	totems := &proto.ShamanTotems{}
-	if restoShamOptions.Options.Totems != nil {
-		totems = restoShamOptions.Options.Totems
-	}
-
-	resto := &RestorationShaman{
-		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
-	}
-
-	if resto.HasMHWeapon() {
-		resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
-	}
-	if resto.HasOHWeapon() {
-		resto.ApplyEarthlivingImbueToItem(resto.GetOHWeapon())
-	}
-
-	return resto
 }
 
 type RestorationShaman struct {
@@ -60,29 +40,18 @@ func (resto *RestorationShaman) GetShaman() *shaman.Shaman {
 func (resto *RestorationShaman) Reset(sim *core.Simulation) {
 	resto.Shaman.Reset(sim)
 }
+
+// Heals go to the first target dummy (the healing sim's stand-in for a raid member), or to the shaman.
 func (resto *RestorationShaman) GetMainTarget() *core.Unit {
-	// TODO: make this just grab first player that isn't self.
 	target := resto.Env.Raid.GetFirstTargetDummy()
 	if target == nil {
 		return &resto.Unit
-	} else {
-		return &target.Unit
 	}
+	return &target.Unit
 }
 
 func (resto *RestorationShaman) Initialize() {
 	resto.CurrentTarget = resto.GetMainTarget()
-
-	// Has to be here because earthliving can cast hots and needs Env to be set to create the hots.
-	procMask := core.ProcMaskUnknown
-	if resto.HasMHWeapon() {
-		procMask |= core.ProcMaskMeleeMH
-	}
-	if resto.HasOHWeapon() {
-		procMask |= core.ProcMaskMeleeOH
-	}
-	resto.RegisterEarthlivingImbue(procMask)
-
 	resto.Shaman.Initialize()
 	resto.Shaman.RegisterHealingSpells()
 }

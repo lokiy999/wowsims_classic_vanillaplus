@@ -42,7 +42,7 @@ func (paladin *Paladin) ApplyTalents() {
 	// Holy Power: +2% Holy spell crit per rank.
 	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 2 * core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 
-	// Searing Light: +4% Holy damage per rank (-4% healing, not modeled).
+	// Searing Light: +4% Holy damage per rank (-4% healing: heals.go).
 	if paladin.Talents.SearingLight > 0 {
 		paladin.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1 + 0.04*float64(paladin.Talents.SearingLight)
 	}

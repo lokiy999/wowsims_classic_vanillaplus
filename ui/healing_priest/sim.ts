@@ -13,28 +13,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 	cssScheme: 'priest',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		'Talents that apply to, "friendly targets at or below 50% health" are not implemented.',
-		'Prayer of Mending always bounces the maximum number of times.',
+		'Alpha: heals use the server values, cast times are the classic ones. Healing is done on a target dummy, so there is no overhealing and the rotation is a simple fixed priority.',
+		'Holy Nova, Lightwell, Holy Link, Inspiration and other utility talents are not in the sim.',
 	],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5, Stat.StatArmor],
+	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5, Stat.StatArmor],
 	displayPseudoStats: [],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.GearBlank.gear,
+		gear: Presets.GearPlaceholder.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 2.73,
 			[Stat.StatSpirit]: 1.63,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.75,
-			[Stat.StatSpellHaste]: 0.28,
 			[Stat.StatMP5]: 2.05,
 		}),
 		// Default consumes settings.
@@ -75,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DISC, Presets.ROTATION_PRESET_HOLY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.GearBlank, Presets.GearBlank],
+		gear: [Presets.GearPlaceholder, Presets.GearBlank],
 	},
 
 	autoRotation: (player: Player<Spec.SpecHealingPriest>): APLRotation => {

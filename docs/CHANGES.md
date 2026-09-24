@@ -3323,3 +3323,35 @@ and threat are low priority.
   (-184 attack power instead of -160).
 - **Heart of the Wild** in Cat Form: Strength +3% per rank (server text 15% at 5/5; the sim had 4% per rank).
 - Open questions for the game: TODO.md question 16 (Swipe attack power, Grizzly's Fury rage, Leader of the Pack).
+
+## Part CG — Healing spells and the four heal pages (2026-09-24)
+
+Lokiy: "Healing spells can be added to the sim and each class that can heal can have a heal page". Heal values from the
+server's Spell.csv (heal range = EffectBasePoints+1 to +EffectDieSides, mana cost, level). Note for the data: some
+Spell.csv rows contain decimals written with a comma, which shifts the later columns by one (name at column 121
+instead of 120); the lookups detect this.
+- **Healing Priest** (`sim/priest/heals.go`, spec in `sim/priest/healing`): Heal, Greater Heal, Flash Heal, Renew,
+  Prayer of Healing (target's party), Power Word: Shield (absorb, Weakened Soul). Talents: Spiritual Healing +3%/rank,
+  Improved Healing -5%/rank mana, Improved Renew +5%/rank, Divine Fury -0.1 sec/rank, Improved Power Word: Shield
+  +10%/rank and -2 sec Weakened Soul, Improved Prayer of Healing -15%/rank mana; Holy Specialization, Mental Agility,
+  Inner Focus and Spiritual Guidance already applied. Force of Will and Purifying Light no longer touch heals (they are
+  damage talents). The old commented-out heal files from a later expansion were removed.
+- **Restoration Shaman** (`sim/shaman/heals.go`, spec in `sim/shaman/restoration`, was `_restoration`): Healing Wave,
+  Lesser Healing Wave, Chain Heal (server: 3.5 sec, 3 targets, 70% per jump). Server mana costs are higher than
+  classic (Healing Wave rank 10: 710). Talents: Purification +2%/rank, Healing Way (20%/rank chance, +3% per stack,
+  10 stacks), Improved Healing Wave -0.1 sec/rank; this server's Concussion, Convection, Call of Thunder, Lightning
+  Mastery and Lightning Overlord also cover Chain Heal. Tidal Focus, Tidal Mastery, Nature's Swiftness and Mana Tide
+  were already in.
+- **Restoration Druid** (`sim/druid/heals.go`, spec in `sim/druid/restoration`, was `_restoration`): Healing Touch
+  (server cast times: ranks 1-5 1.5 sec, 6 2.0, 7 2.5, 8 3.0, 9-11 3.5), Rejuvenation, Regrowth, Tranquility (server:
+  channeled, heals the party every second, 400 at rank 4), Swiftmend, Nature's Swiftness. Talents: Gift of Nature
+  +2%/rank healing done and taken, Improved Rejuvenation, Improved Regrowth, Tranquil Spirit, Naturalist, Moonglow on
+  heals, Power of Nature durations.
+- **Holy Paladin** (new `sim/paladin/holy`, `sim/paladin/heals.go`): Holy Light, Flash of Light, Holy Shock (heal).
+  Talents: Healing Light +4%/rank, Searing Light -4%/rank healing, Holy Power +2%/rank crit, Light's Mercy (Spark of
+  Light), Codex of the Silver Hand (Holy Light mana/cast time). Divine Favor and Illumination now include the heals.
+- Pages: new rotation presets (fixed priorities), placeholder gear (DPS caster sets), Alpha notes, removed Spell Haste
+  and leftover spell ids from a later expansion (Inner Fire icon).
+- Check sims (placeholder gear, no talents, 5 min, one target dummy): Holy priest ~311 HPS, Disc ~213, Healing Wave
+  ~318, Chain Heal ~348, druid ~261, Holy Light ~320, Flash of Light ~276. New golden results for the four healer tests.
+- Open: see "Healers: done in Part CG, still open" in TODO.md.

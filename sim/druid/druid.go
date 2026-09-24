@@ -28,6 +28,8 @@ const (
 	SpellCode_DruidShred
 	SpellCode_DruidStarfire
 	SpellCode_DruidWrath
+	SpellCode_DruidRejuvenation
+	SpellCode_DruidRegrowth
 )
 
 type Druid struct {
@@ -54,6 +56,7 @@ type Druid struct {
 	ForceOfNature        *DruidSpell
 	FrenziedRegeneration *DruidSpell
 	GiftOfTheWild        *DruidSpell
+	HealingTouch         []*DruidSpell
 	Hurricane            []*DruidSpell
 	Innervate            *DruidSpell
 	InsectSwarm          []*DruidSpell
@@ -62,12 +65,16 @@ type Druid struct {
 	MaulQueueSpell       *DruidSpell
 	Moonfire             []*DruidSpell
 	Rebirth              *DruidSpell
+	Regrowth             []*DruidSpell
+	Rejuvenation         []*DruidSpell
 	Rake                 *DruidSpell
 	Rip                  *DruidSpell
 	Shred                *DruidSpell
 	Claw                 *DruidSpell
 	Starfire             []*DruidSpell
 	SwipeBear            *DruidSpell
+	Swiftmend            *DruidSpell
+	Tranquility          *DruidSpell
 	TigersFury           *DruidSpell
 	GrizzlysFury         *DruidSpell
 	Wrath                []*DruidSpell

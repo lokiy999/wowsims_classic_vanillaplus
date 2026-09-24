@@ -125,69 +125,6 @@ func (druid *Druid) applyNaturesGrace() {
 	}))
 }
 
-// func (druid *Druid) registerNaturesSwiftnessCD() {
-// 	if !druid.Talents.NaturesSwiftness {
-// 		return
-// 	}
-// 	actionID := core.ActionID{SpellID: 17116}
-
-// 	var nsAura *core.Aura
-// 	nsSpell := druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
-// 		ActionID: actionID,
-// 		Flags:    core.SpellFlagNoOnCastComplete,
-// 		Cast: core.CastConfig{
-// 			CD: core.Cooldown{
-// 				Timer:    druid.NewTimer(),
-// 				Duration: time.Minute * 3,
-// 			},
-// 		},
-// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 			nsAura.Activate(sim)
-// 		},
-// 	})
-
-// 	nsAura = druid.RegisterAura(core.Aura{
-// 		Label:    "Natures Swiftness",
-// 		ActionID: actionID,
-// 		Duration: core.NeverExpires,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			if druid.Starfire != nil {
-// 				druid.Starfire.CastTimeMultiplier -= 1
-// 			}
-// 			if druid.Wrath != nil {
-// 				druid.Wrath.CastTimeMultiplier -= 1
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			if druid.Starfire != nil {
-// 				druid.Starfire.CastTimeMultiplier += 1
-// 			}
-// 			if druid.Wrath != nil {
-// 				druid.Wrath.CastTimeMultiplier += 1
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if !druid.Wrath.IsEqual(spell) && !druid.Starfire.IsEqual(spell) {
-// 				return
-// 			}
-
-// 			// Remove the buff and put skill on CD
-// 			aura.Deactivate(sim)
-// 			nsSpell.CD.Use(sim)
-// 			druid.UpdateMajorCooldowns()
-// 		},
-// 	})
-
-// 	druid.AddMajorCooldown(core.MajorCooldown{
-// 		Spell: nsSpell.Spell,
-// 		Type:  core.CooldownTypeDPS,
-// 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-// 			// Don't use NS unless we're casting a full-length starfire or wrath.
-// 			return !character.HasTemporarySpellCastSpeedIncrease()
-// 		},
-// 	})
-// }
-
 // TODO: Classic bear
 // func (druid *Druid) applyPrimalFury() {
 // 	if druid.Talents.PrimalFury == 0 {
@@ -519,9 +456,10 @@ func (druid *Druid) applyRestoExtras() {
 	if druid.Talents.Animism > 0 {
 		druid.AddStatDependency(stats.Spirit, stats.SpellPower, 0.10*float64(druid.Talents.Animism))
 	}
-	// Gift of Nature: +2%/rank Nature damage.
+	// Gift of Nature: +2%/rank Nature damage and healing taken (the healing done part is in heals.go).
 	if druid.Talents.GiftOfNature > 0 {
 		druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.02*float64(druid.Talents.GiftOfNature)
+		druid.PseudoStats.HealingTakenMultiplier *= 1 + 0.02*float64(druid.Talents.GiftOfNature)
 	}
 	// Dreamstate: regenerates 1%/rank of total mana every 10 seconds.
 	if druid.Talents.Dreamstate > 0 {

@@ -1,0 +1,252 @@
+character_stats_results: {
+ key: "TestHealingPriest-Phase1-CharacterStats-Default"
+ value: {
+  final_stats: 223.905
+  final_stats: 228.965
+  final_stats: 354.2
+  final_stats: 465.52
+  final_stats: 347.875
+  final_stats: 266.17333
+  final_stats: 0
+  final_stats: 0
+  final_stats: 40
+  final_stats: 0
+  final_stats: 0
+  final_stats: 280
+  final_stats: 94.1
+  final_stats: 1
+  final_stats: 20.62074
+  final_stats: 0
+  final_stats: 0
+  final_stats: 821.5955
+  final_stats: 0
+  final_stats: 16
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 8078.8
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2361.93
+  final_stats: 110
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 3
+  final_stats: 5
+  final_stats: 0
+  final_stats: 5311.95
+  final_stats: 32
+  final_stats: 60
+  final_stats: 60
+  final_stats: 60
+  final_stats: 80
+  final_stats: 1506
+  final_stats: 0
+  final_stats: 30
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestHealingPriest-Phase1-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-Champion'sInvestiture"
+ value: {
+  tps: 9.03734
+  hps: 343.28916
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-Confessor'sRaiment"
+ value: {
+  tps: 9.03734
+  hps: 337.31103
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-FieldMarshal'sRaiment"
+ value: {
+  tps: 9.03734
+  hps: 359.69049
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-IronweaveBattlesuit"
+ value: {
+  tps: 9.03734
+  hps: 311.63901
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-LieutenantCommander'sInvestiture"
+ value: {
+  tps: 9.03734
+  hps: 343.28916
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-VestmentsofProphecy"
+ value: {
+  tps: 9.03734
+  hps: 390.41971
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-VestmentsofTranscendence"
+ value: {
+  tps: 9.03734
+  hps: 390.54109
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-Warlord'sRaiment"
+ value: {
+  tps: 9.03734
+  hps: 359.69049
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Average-Default"
+ value: {
+  tps: 9.02048
+  hps: 311.03834
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-disc-FullBuffs-Consumes-LongMultiTarget"
+ value: {
+  tps: 180.74683
+  hps: 210.82485
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-disc-FullBuffs-Consumes-LongSingleTarget"
+ value: {
+  tps: 9.03734
+  hps: 210.82485
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-disc-FullBuffs-Consumes-ShortSingleTarget"
+ value: {
+  tps: 15.18376
+  hps: 490.45918
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-disc-NoBuffs-Consumes-LongMultiTarget"
+ value: {
+  tps: 180.74683
+  hps: 123.59488
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-disc-NoBuffs-Consumes-LongSingleTarget"
+ value: {
+  tps: 9.03734
+  hps: 123.59488
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-disc-NoBuffs-Consumes-ShortSingleTarget"
+ value: {
+  tps: 15.18376
+  hps: 298.39018
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-holy-FullBuffs-Consumes-LongMultiTarget"
+ value: {
+  tps: 180.74683
+  hps: 307.49383
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-holy-FullBuffs-Consumes-LongSingleTarget"
+ value: {
+  tps: 9.03734
+  hps: 307.49383
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-holy-FullBuffs-Consumes-ShortSingleTarget"
+ value: {
+  tps: 15.18376
+  hps: 671.00781
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-holy-NoBuffs-Consumes-LongMultiTarget"
+ value: {
+  tps: 180.74683
+  hps: 157.62639
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-holy-NoBuffs-Consumes-LongSingleTarget"
+ value: {
+  tps: 9.03734
+  hps: 157.62639
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-Settings-Undead-placeholder-Holy-holy-NoBuffs-Consumes-ShortSingleTarget"
+ value: {
+  tps: 15.18376
+  hps: 386.84754
+ }
+}
+dps_results: {
+ key: "TestHealingPriest-Phase1-SwitchInFrontOfTarget-Default"
+ value: {
+  tps: 9.03734
+  hps: 307.49383
+ }
+}

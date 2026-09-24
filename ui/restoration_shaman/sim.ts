@@ -12,11 +12,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	cssClass: 'restoration-shaman-sim-ui',
 	cssScheme: 'shaman',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: [
+		'Alpha: heals use the server values; cast times come from the server cast time index. Healing is done on a target dummy (no overhealing) with a fixed priority. Chain Heal only jumps to members of the target\'s party.',
+	],
 	warnings: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -27,7 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
@@ -41,7 +42,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 			[Stat.StatSpirit]: 0.05,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.67,
-			[Stat.StatSpellHaste]: 1.29,
 			[Stat.StatMP5]: 0.08,
 		}),
 		// Default consumes settings.
@@ -85,13 +85,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.RaidHealingTalents, Presets.TankHealingTalents],
-		rotations: [],
+		rotations: [Presets.ROTATION_PRESET_HEALING_WAVE, Presets.ROTATION_PRESET_CHAIN_HEAL],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.DefaultGear],
+		gear: [Presets.DefaultGear, Presets.GearBlank],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRestorationShaman>): APLRotation => {
-		return APLRotation.create();
+		return Presets.ROTATION_PRESET_HEALING_WAVE.rotation.rotation!;
 	},
 
 	raidSimPresets: [

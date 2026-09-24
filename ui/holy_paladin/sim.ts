@@ -12,14 +12,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	cssClass: 'holy-paladin-sim-ui',
 	cssScheme: 'paladin',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: [
+		'Alpha: heals use the server values. Healing is done on a target dummy (no overhealing) with a fixed priority. Holy Shock (heal) has its own cooldown from the damage version.',
+	],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	displayPseudoStats: [],
 
 	modifyDisplayStats: (player: Player<Spec.SpecHolyPaladin>) => {
@@ -38,7 +40,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			[Stat.StatSpirit]: 0.34,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.69,
-			[Stat.StatSpellHaste]: 0.77,
 			[Stat.StatMP5]: 0.0,
 		}),
 		// Default consumes settings.
@@ -94,13 +95,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
-		rotations: [],
+		rotations: [Presets.ROTATION_PRESET_HOLY_LIGHT, Presets.ROTATION_PRESET_FLASH_OF_LIGHT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.DefaultGear],
+		gear: [Presets.DefaultGear, Presets.GearBlank],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecHolyPaladin>): APLRotation => {
-		return APLRotation.create();
+		return Presets.ROTATION_PRESET_HOLY_LIGHT.rotation.rotation!;
 	},
 
 	raidSimPresets: [

@@ -31,7 +31,7 @@ func (paladin *Paladin) applyMorale() {
 	}))
 }
 
-// Illumination: crits from Holy Shock, Exorcism, Holy Wrath and Hammer of Wrath return part of the spell's base mana
+// Illumination: crits from Flash of Light, Holy Light, Holy Shock, Exorcism, Holy Wrath and Hammer of Wrath return part of the spell's base mana
 // cost. Rank 1 says 20%, rank 5 says 50%; the server tooltips for ranks 2-4 repeat the rank 5 text, so the middle
 // ranks are interpolated.
 func (paladin *Paladin) applyIllumination() {
@@ -49,6 +49,15 @@ func (paladin *Paladin) applyIllumination() {
 			}
 			switch spell.SpellCode {
 			case SpellCode_PaladinHolyShock, SpellCode_PaladinExorcism, SpellCode_PaladinHolyWrath, SpellCode_PaladinHammerOfWrath:
+				paladin.AddMana(sim, pct*spell.DefaultCast.Cost, metrics)
+			}
+		},
+		OnHealDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() {
+				return
+			}
+			switch spell.SpellCode {
+			case SpellCode_PaladinHolyShockHeal, SpellCode_PaladinHolyLight, SpellCode_PaladinFlashOfLight:
 				paladin.AddMana(sim, pct*spell.DefaultCast.Cost, metrics)
 			}
 		},
