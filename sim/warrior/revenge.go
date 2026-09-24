@@ -9,13 +9,13 @@ import (
 const RevengeRanks = 6
 
 var RevengeSpellId = [RevengeRanks + 1]int32{0, 6572, 6574, 7379, 11600, 11601, 25288}
-var RevengeBaseDamage = [RevengeRanks + 1][]float64{{0, 0}, {12, 14}, {18, 22}, {25, 31}, {43, 53}, {64, 78}, {81, 99}}
+// Server: 50% of (normalized weapon damage + this flat bonus).
+var RevengeBaseDamage = [RevengeRanks + 1]float64{0, 10, 20, 36, 50, 80, 120}
 var RevengeLevel = [RevengeRanks + 1]int{0, 14, 24, 34, 44, 54, 60}
 
 func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 	actionID := core.ActionID{SpellID: core.TernaryInt32(core.IncludeAQ, 25288, 11601)}
-	basedamageLow := core.TernaryFloat64(core.IncludeAQ, 81, 64)
-	basedamageHigh := core.TernaryFloat64(core.IncludeAQ, 99, 78)
+	flatBonus := core.TernaryFloat64(core.IncludeAQ, RevengeBaseDamage[6], RevengeBaseDamage[5])
 	revengeLevel := core.TernaryFloat64(core.IncludeAQ, 60.0, 54.0)
 
 	warrior.revengeProcAura = warrior.RegisterAura(core.Aura{
@@ -71,7 +71,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(basedamageLow, basedamageHigh)
+			baseDamage := 0.5 * (flatBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {

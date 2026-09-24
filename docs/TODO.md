@@ -14,11 +14,16 @@ listed at the end of this overview so the older sections don't need rewriting.
 **Affects sim results**
 - Spell values: direct and periodic damage in the per-rank arrays now match the server (Part BO). Not compared yet:
   spells without a `...BaseDamage` array (heals, shields, hunter traps such as Immolation Trap rank 5 at 966 over 21
-  sec vs 690 over 15, warrior and rogue abilities, pet spells). Pyroblast and Flame Shock DoT spell power
-  coefficients are a guess (classic total spread over the new tick count).
+  sec vs 690 over 15, warrior and rogue abilities, pet spells). Pyroblast, Flame Shock, Insect Swarm and Arcane
+  Missiles spell power coefficients are a guess (classic total spread over the new tick count); Arcane Missiles'
+  +1% Arcane crit is one stack per cast (could be per missile).
 - Talents not modeled yet: per-class lists in the 2026-09-19/20 sections (rogue, hunter, warlock, mage, druid, shaman,
   paladin, priest, warrior).
 - Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
+- Tank warrior presets are DPS rotations (Bloodthirst, Whirlwind, Berserker Stance) and never cast Revenge or Shield
+  Slam; a real tank rotation is missing. The tests don't cover Revenge, Arcane Missiles or Insect Swarm (no preset
+  uses them).
+- Lightning Shield: server also gives +5 to +50 spell damage while active (by rank); not modeled.
 - Healing: priest healing spells are disabled; druid Nature's Swiftness, Tranquility, Bash, Frenzied Regeneration and
   Rebirth are not in the sim; the shaman casting Mana Tide Totem is not modeled.
 - Shaman totem and weapon imbue items (2026-09-20 sections).

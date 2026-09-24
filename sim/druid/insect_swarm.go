@@ -11,7 +11,7 @@ import (
 const InsectSwarmRanks = 5
 
 var InsectSwarmSpellId = [InsectSwarmRanks + 1]int32{0, 5570, 24974, 24975, 24976, 24977}
-var InsectSwarmBaseDamage = [InsectSwarmRanks + 1]float64{0, 66, 138, 174, 264, 324}
+var InsectSwarmBaseDamage = [InsectSwarmRanks + 1]float64{0, 80, 160, 240, 320, 400} // server: over 16 sec
 var InsectSwarmManaCost = [InsectSwarmRanks + 1]float64{0, 45, 85, 100, 140, 160}
 var InsectSwarmLevel = [InsectSwarmRanks + 1]int{0, 20, 30, 40, 50, 60}
 
@@ -25,13 +25,15 @@ func (druid *Druid) registerInsectSwarmSpell() {
 		level := InsectSwarmLevel[rank]
 		if int32(level) <= druid.Level {
 			// Power of Nature (DBC 33736/33737): +25%/50% duration of Insect Swarm.
-			numTicks := int32(math.Round(6 * (1 + 0.25*float64(druid.Talents.PowerOfNature))))
+			// Server: 8 ticks every 2 sec (16 sec). Power of Nature adds ticks (and their damage).
+			baseTicks := 8.0
+			numTicks := int32(math.Round(baseTicks * (1 + 0.25*float64(druid.Talents.PowerOfNature))))
 			tickLength := time.Second * 2
 
 			spellID := InsectSwarmSpellId[rank]
-			baseDamage := InsectSwarmBaseDamage[rank] / float64(numTicks)
+			baseDamage := InsectSwarmBaseDamage[rank] / baseTicks
 			manaCost := InsectSwarmManaCost[rank]
-			spellCoef := .158
+			spellCoef := .158 * 6 / baseTicks // classic total, spread over the server ticks
 
 			druid.InsectSwarm[rank] = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 				SpellCode:   SpellCode_DruidInsectSwarm,

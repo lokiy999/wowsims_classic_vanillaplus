@@ -10,7 +10,7 @@ const LifeTapRanks = 6
 
 var LifeTapSpellId = [LifeTapRanks + 1]int32{0, 1454, 1455, 1456, 11687, 11688, 11689}
 
-var LifeTapBaseDamage = [LifeTapRanks + 1]float64{0, 30, 75, 140, 220, 310, 424}
+var LifeTapBaseDamage = [LifeTapRanks + 1]float64{0, 40, 110, 210, 330, 460, 704} // server, at level 60
 
 func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 	spellId := LifeTapSpellId[rank]

@@ -3028,3 +3028,24 @@ the dump is reliable; the earlier "no range" readings were a parsing mistake:
 - Moonfire: Power of Nature made the DoT last longer without adding damage (the total was divided by the longer tick
   count); the extra ticks now add damage, as on the server.
 - Baselines updated: balance druid and shadow priest.
+
+## Part BP — More spells from the server data (2026-09-24)
+
+Second pass of the Part BO comparison, for the per-rank arrays with other names (DoTs, missiles, utility). Shadow
+Word: Pain, Devouring Plague, Mind Flay, Starshards and Raptor Strike already matched. Changed:
+
+- **Insect Swarm**: a damage over time spell on the server, 80/160/240/320/400 Nature damage over 16 sec (8 ticks,
+  every 2 sec); was 66-324 over 12 sec. Power of Nature adds ticks with damage (same fix as Moonfire). The spell power
+  coefficient keeps the classic total (not confirmed).
+- **Life Tap**: 40/110/210/330/460/704 (rank 6 converts 700, plus level scaling); was 30-424.
+- **Revenge**: server "50% weapon damage plus 60" (rank 6): 50% of (normalized main-hand damage + 120), instead of a
+  flat 81-99. Rank 5: 50% of (weapon + 80).
+- **Arcane Missiles**: 10 missiles, one every 0.5 sec, over 5 sec on every rank (classic: 3/4/5 missiles, one per
+  sec). Per missile 12/18/28/42/58/76/96/115; the spell power coefficient per missile keeps the classic total. New
+  server effect: each cast gives +1% Arcane spell crit for 20 sec, stacking to 5 ("Arcane Missiles Energize", one
+  stack per cast; per missile would be much stronger, not confirmed).
+- Checked in the browser: Arcane Missiles rank 7 fires 10 missiles per cast, the Energize buff stacks; Revenge hits for
+  about 50% of (weapon + 120).
+- Not changed: Blizzard ranks 2-5 differ by 1 damage per tick (level scaling, 8 per cast). Lightning Shield's
+  "+spell damage" part of the server text is not modeled.
+- Baselines updated: warlock (Life Tap).
