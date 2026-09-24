@@ -49,14 +49,14 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		25: 16,
 		40: 26,
 		50: 35,
-		60: 43,
+		60: 52,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 22,
 		40: 36,
 		50: 49,
-		60: 59,
+		60: 72,
 	}[hp.Owner.Level]
 
 	spellID := map[int32]int32{
@@ -100,14 +100,14 @@ func (hp *HunterPet) newBite() *core.Spell {
 		25: 31,
 		40: 49,
 		50: 66,
-		60: 81,
+		60: 98,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 37,
 		40: 59,
 		50: 80,
-		60: 91,
+		60: 120,
 	}[hp.Owner.Level]
 
 	spellID := map[int32]int32{
@@ -155,14 +155,14 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		25: 36,
 		40: 36,
 		50: 78,
-		60: 99,
+		60: 122,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 41,
 		40: 41,
 		50: 91,
-		60: 113,
+		60: 140,
 	}[hp.Owner.Level]
 
 	spellID := map[int32]int32{
@@ -206,14 +206,14 @@ func (hp *HunterPet) newScreech() *core.Spell {
 		25: 12,
 		40: 12,
 		50: 19,
-		60: 26,
+		60: 59,
 	}[hp.Owner.Level]
 
 	baseDamageMax := map[int32]float64{
 		25: 16,
 		40: 16,
 		50: 25,
-		60: 46,
+		60: 85,
 	}[hp.Owner.Level]
 
 	spellID := map[int32]int32{

@@ -3108,3 +3108,11 @@ of each class's `ApplyTalents`:
   **Moonkin Form only gives Moonkin Aura with the Moonkin Aura talent** (it was given by the form alone).
 - Checked with a temporary talent string on the SM/Ruin warlock test: Prolonged Misery 3/3 + Demonic Onslaught 5/5
   took the average from 785 to 870 DPS. Baseline updated: balance druid (no Moonkin Aura without the talent).
+
+## Part BT — Pet abilities from the server data (2026-09-24)
+
+- **Imp Firebolt** ranks 1-7 at level 60: 9-11, 18-21, 30-34, 46-52, 66-74, 90-100, 107-119 (rank 7 was 85-96).
+- **Succubus Lash of Pain**: 100/130/180/220/260/300 (rank 6 was 99).
+- Hunter pet (level 60 rank): **Claw** 52-72 (was 43-59), **Bite** 98-120 (was 81-91), **Lightning Breath**
+  122-140 (was 99-113), **Screech** 59-85 (was 26-46).
+- Voidwalker Torment is threat only. Baselines updated: hunter (478 -> 482), warlock (785 -> 806, Imp).

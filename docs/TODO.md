@@ -41,7 +41,7 @@ listed at the end of this overview so the older sections don't need rewriting.
 
 **Affects sim results**
 - Spell values: direct and periodic damage in the per-rank arrays now match the server (Part BO). Not compared yet:
-  heals, shields and pet spells (DoTs, missiles, hunter/rogue/warrior/paladin abilities done in Parts BP and BR). Pyroblast, Flame Shock, Insect Swarm and Arcane
+  heals and shields (not in the sim). DoTs, missiles, abilities and pet spells done in Parts BP, BR and BT. Pyroblast, Flame Shock, Insect Swarm and Arcane
   Missiles spell power coefficients are a guess (classic total spread over the new tick count); Arcane Missiles'
   +1% Arcane crit is one stack per cast (could be per missile).
 - Talents not modeled yet: the damage/threat/mana ones with clear numbers were done in Part BS. Left: utility and

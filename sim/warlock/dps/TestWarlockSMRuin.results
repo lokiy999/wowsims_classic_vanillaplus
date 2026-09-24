@@ -53,17 +53,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.32878
+  weights: 0.34125
   weights: 0
-  weights: 0.36676
-  weights: 0
-  weights: 0
+  weights: 0.36639
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.81577
+  weights: 0
+  weights: 0
+  weights: 5.85426
   weights: 1.57787
   weights: 0
   weights: 0
@@ -99,133 +99,133 @@ stat_weights_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-Champion'sDreadgear"
  value: {
-  dps: 788.69063
+  dps: 810.12177
   tps: 668.48977
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-DeathmistRaiment"
  value: {
-  dps: 795.57865
+  dps: 816.93657
   tps: 674.9138
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-Demoniac'sThreads"
  value: {
-  dps: 795.98594
+  dps: 817.61871
   tps: 678.08917
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-FelheartRaiment"
  value: {
-  dps: 856.37996
+  dps: 877.76896
   tps: 730.57628
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-FieldMarshal'sThreads"
  value: {
-  dps: 817.03531
+  dps: 838.48168
   tps: 697.36949
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-Hazza'rah'sCharmofDestruction-19957"
  value: {
-  dps: 779.5054
+  dps: 801.44165
   tps: 661.74237
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 695.10589
+  dps: 717.22558
   tps: 575.12324
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-LieutenantCommander'sDreadgear"
  value: {
-  dps: 788.69063
+  dps: 810.12177
   tps: 668.48977
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-NemesisRaiment"
  value: {
-  dps: 834.12407
+  dps: 855.46103
   tps: 672.60146
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-TheBlackBook-19337"
  value: {
-  dps: 794.69506
+  dps: 818.71329
   tps: 660.01262
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-Warlord'sThreads"
  value: {
-  dps: 817.03531
+  dps: 838.48168
   tps: 697.36949
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Average-Default"
  value: {
-  dps: 785.3385
+  dps: 806.47485
   tps: 666.1674
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-FullBuffs-Consumes-LongMultiTarget"
  value: {
-  dps: 781.27079
+  dps: 803.20704
   tps: 1522.36444
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-FullBuffs-Consumes-LongSingleTarget"
  value: {
-  dps: 781.27079
+  dps: 803.20704
   tps: 663.56721
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-FullBuffs-Consumes-ShortSingleTarget"
  value: {
-  dps: 788.92243
+  dps: 813.54876
   tps: 653.84703
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-NoBuffs-Consumes-LongMultiTarget"
  value: {
-  dps: 388.40433
+  dps: 402.99316
   tps: 1376.99222
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-NoBuffs-Consumes-LongSingleTarget"
  value: {
-  dps: 388.40433
+  dps: 402.99316
   tps: 387.27554
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-Settings-Orc-prebis-SM/Ruin Warlock-rotation-NoBuffs-Consumes-ShortSingleTarget"
  value: {
-  dps: 394.76891
+  dps: 411.78481
   tps: 382.54324
  }
 }
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 781.27079
+  dps: 803.20704
   tps: 663.56721
  }
 }
