@@ -98,6 +98,10 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// Improved Sanctity Aura (3/5%) and Improved Defensive Auras (25/50%) improve the paladin's auras for the raid.
 	raidBuffs.SanctityAuraBonus = max(raidBuffs.SanctityAuraBonus, []int32{0, 3, 5}[paladin.Talents.ImprovedSanctityAura])
+	// Sanctity Aura is a talent on the server.
+	if paladin.Talents.SanctityAura {
+		raidBuffs.SanctityAura = true
+	}
 	raidBuffs.ResistanceAuraBonus = max(raidBuffs.ResistanceAuraBonus, []int32{0, 25, 50}[paladin.Talents.ImprovedDefensiveAuras])
 
 	paladin.applyImprovedRetributionAura(raidBuffs)

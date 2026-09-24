@@ -111,7 +111,7 @@ func (wp *WarlockPet) registerImpFireboltSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Millisecond * 1000,
-				CastTime: time.Millisecond * (2000 - time.Duration(500*int32(0) /*removed*/)),
+				CastTime: time.Millisecond * (2000 - time.Duration(500*wp.owner.Talents.DemonicPower)), // Demonic Power: -0.5 sec/rank
 			},
 			// Adding an artificial CD to account for real delay in imp casts in-game
 			CD: core.Cooldown{

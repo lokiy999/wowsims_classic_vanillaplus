@@ -8,6 +8,7 @@ import (
 )
 
 func (druid *Druid) ApplyTalents() {
+	druid.applyServerTalents()
 	// Balance
 	druid.registerMoonkinFormSpell()
 	druid.applyOmenOfClarity()

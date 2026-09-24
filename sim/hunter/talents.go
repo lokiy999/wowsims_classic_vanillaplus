@@ -9,6 +9,7 @@ import (
 )
 
 func (hunter *Hunter) ApplyTalents() {
+	hunter.applyServerTalents()
 	if hunter.pet != nil {
 		hunter.applyFrenzy()
 		hunter.registerBestialWrathCD()

@@ -10,6 +10,7 @@ import (
 )
 
 func (warlock *Warlock) ApplyTalents() {
+	warlock.applyServerTalents()
 	warlock.applyWeaponImbue()
 
 	// Affliction

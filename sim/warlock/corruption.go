@@ -26,6 +26,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		ticks = int32(time.Duration(ticks) * tickLength / (time.Second * 2))
 		tickLength = time.Second * 2
 	}
+	ticks += warlock.prolongedMiseryTicks(tickLength)
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},

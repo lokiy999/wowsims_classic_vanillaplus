@@ -111,7 +111,7 @@ func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 	}
 
 	spellCoeff := [7]float64{0, .429, .429, .429, .429, .429, .429}[rank]
-	baseDamage := [7]float64{0, 33, 44, 60, 73, 87, 99}[rank] * (1 + .10*float64(int32(0) /*removed*/))
+	baseDamage := [7]float64{0, 33, 44, 60, 73, 87, 99}[rank] * (1 + .15*float64(wp.owner.Talents.ImprovedSuccubus)) // Improved Succubus: +15%/rank
 	spellId := [7]int32{0, 7814, 7815, 7816, 11778, 11779, 11780}[rank]
 	manaCost := [7]float64{0, 65, 80, 105, 125, 145, 160}[rank]
 	level := [7]int{0, 20, 28, 36, 44, 52, 60}[rank]
@@ -141,6 +141,7 @@ func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 		DamageMultiplier: wp.AutoAttacks.MHConfig().DamageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
+		BonusCritRating:  30 * float64(wp.owner.Talents.DemonicPower) * core.SpellCritRatingPerCritChance, // Demonic Power: +30%/rank
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

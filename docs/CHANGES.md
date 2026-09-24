@@ -3082,3 +3082,29 @@ Eviscerate, Garrote, Holy Shield, Hammer of Wrath. Changed to the server values:
 - **Improved Fire Totems** now works: Fire Nova Totem goes off 1/2 sec sooner, Magma Totem threat -50%/-100%. Fire Nova
   and Magma damage now cause threat (the spells had no threat multiplier, so 0).
 - Baseline updated: combat daggers rogue (Backstab). No other preset uses these abilities.
+
+## Part BS — Server talents with no classic counterpart (2026-09-24)
+
+A scan of every talent in `ui/core/talents/trees/*.json` against the sim code found ~200 talents the sim never reads.
+Most are utility or PvP (stuns, fears, movement, range, dispels, healing). Implemented the ones that change damage,
+threat, mana or tank survival, from the server text; new `sim/<class>/talents_server.go` files, called at the start
+of each class's `ApplyTalents`:
+- Warrior **Blade Mail**: when struck by a melee attack, deals 0.5%/rank of your armor to the attacker.
+- Paladin **The Revenant** (-2%/rank crit taken), **Morale** (melee hits 4%/rank chance for 125 mana),
+  **Illumination** (crits from Holy Shock, Exorcism, Holy Wrath, Hammer of Wrath return 20% to 50% of the base mana
+  cost; ranks 2-4 interpolated because their server text repeats rank 5), **Sanctity Aura** (turns on the raid buff).
+- Hunter **Trueshot Aura** (turns on the raid buff), **Thick Hide** (pet armor +15%/rank).
+- Rogue **Bitter Experience** (+1% dodge and +0.2 resistances per level per rank), **Steadfast Determination**
+  (+5% Stamina/rank), **Sleight of Hand** (-2%/rank crit taken).
+- Mage **Thermal Expansion** (mana equal to your level every 2 sec), **Brilliance Aura** (1% of max mana every 5 sec,
+  own mana only), **Fire Warding** (+10 Fire resistance/rank).
+- Shaman **Rockhide** (damage taken -2%/rank), **Primal Endurance** (+2% health/rank), **Nature's Grace**
+  (threat -10%/rank), **Nature's Guardian** (-2%/rank crit taken).
+- Warlock **Prolonged Misery** (Corruption, Curse of Agony and Immolate +2 sec/rank, as extra ticks), **Demonic
+  Onslaught** (pet melee and spell crit +4%/rank), **Destructive Reach** (Destruction spell threat -10%/rank),
+  **Improved Succubus** (Lash of Pain +15%/rank) and **Demonic Power** (Imp Firebolt -0.5 sec/rank, Lash of Pain crit
+  +30%/rank), both wired into the "/*removed*/" placeholders in `imp.go` / `succubus.go`.
+- Druid **Subtlety** (threat -10%/rank), **Swiftbloom** (cast speed +20%; the GCD part is not modeled), and
+  **Moonkin Form only gives Moonkin Aura with the Moonkin Aura talent** (it was given by the form alone).
+- Checked with a temporary talent string on the SM/Ruin warlock test: Prolonged Misery 3/3 + Demonic Onslaught 5/5
+  took the average from 785 to 870 DPS. Baseline updated: balance druid (no Moonkin Aura without the talent).

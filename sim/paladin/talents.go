@@ -10,6 +10,7 @@ import (
 )
 
 func (paladin *Paladin) ApplyTalents() {
+	paladin.applyServerTalents()
 	// Precision: +1% melee & spell hit per rank.
 	paladin.AddStat(stats.MeleeHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
 	paladin.AddStat(stats.SpellHit, float64(paladin.Talents.Precision)*core.SpellHitRatingPerHitChance)

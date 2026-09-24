@@ -29,6 +29,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 9. **Execute**: the server text converts extra rage into "$*10;F1" damage per point, which I can't read from the
    data. The sim uses 15 per rage (classic). What does the tooltip say?
 10. **Trap tick timing**: Immolation Trap (21 sec) and Explosive Trap (10 sec): how often do they tick?
+11. **Illumination** (paladin): the tooltips for ranks 2-4 show the rank 5 text. What % of the mana cost do ranks
+    2, 3 and 4 return? (The sim uses 27.5 / 35 / 42.5%.)
+12. **Hunter Thrill of the Hunt**, **Shaman Armaments of Storm / Shamanism**: the server text has no proc chance
+    ("a chance", "up to 300"). If you know the numbers, they can go in.
 
 ## Open items at a glance (updated 2026-09-24)
 
@@ -40,8 +44,11 @@ listed at the end of this overview so the older sections don't need rewriting.
   heals, shields and pet spells (DoTs, missiles, hunter/rogue/warrior/paladin abilities done in Parts BP and BR). Pyroblast, Flame Shock, Insect Swarm and Arcane
   Missiles spell power coefficients are a guess (classic total spread over the new tick count); Arcane Missiles'
   +1% Arcane crit is one stack per cast (could be per missile).
-- Talents not modeled yet: per-class lists in the 2026-09-19/20 sections (rogue, hunter, warlock, mage, druid, shaman,
-  paladin, priest, warrior).
+- Talents not modeled yet: the damage/threat/mana ones with clear numbers were done in Part BS. Left: utility and
+  PvP talents (stuns, fears, movement, range), healing talents (no healing spells in the sim), and ones needing a new
+  mechanic (freeze for Shatter/Frostbite/Deep Freeze, target health for Coup de Grace-style effects, Defiler's GCD,
+  Aftershock, Chain Reaction, Ice Shards, Withering Shroud, Death and Decay, Earthquake, Maim, Improved Rend stacks,
+  Berserker's Blood). The per-class lists in the 2026-09-19/20 sections are partly stale.
 - Paladin ret/prot rotations are new and basic (written during the SoD removal); tune in game.
 - No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).
 - Talent presets are all empty (question 1 at the top).
@@ -57,7 +64,11 @@ listed at the end of this overview so the older sections don't need rewriting.
 - Scarlet Monastery set completeness (never answered).
 
 **Data / pipeline**
-- The item database is older than the current `CSV's/` dump (2026-09-18 section).
+- Item database vs the current `CSV's/` dump (checked 2026-09-24): a full pipeline run changes **no item stats** (all
+  3162 items in both are identical), so the DB is current. It would change inclusion (515 mostly low-level crafted and
+  dungeon items out, 115 in) and loses all 172 renumberings to server ids (`renumber.json` becomes empty, `parse_vplus.py`
+  now matches "0 by name"), which would move e.g. the Tier 1 belts/bracers back to classic ids and break presets. Not
+  applied; `parse_vplus.py` name matching needs fixing first.
 - Crafted items are all Phase 1 (deferred by the user).
 - Local spell names that differ from the server (list in the 2026-09-23 tooltip audit section).
 - "Level 60" target uses a SoD NPC id (display only); BWL encounter mechanics were copied from SoD, unverified.

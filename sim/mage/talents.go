@@ -9,6 +9,7 @@ import (
 )
 
 func (mage *Mage) ApplyTalents() {
+	mage.applyServerTalents()
 	mage.applyArcaneTalents()
 	mage.applyFireTalents()
 	mage.applyFrostTalents()

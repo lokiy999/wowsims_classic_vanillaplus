@@ -56,7 +56,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				Label: "Immolate-" + warlock.Label + strconv.Itoa(rank),
 			},
 
-			NumberOfTicks:    5,
+			NumberOfTicks:    5 + warlock.prolongedMiseryTicks(time.Second*3),
 			TickLength:       time.Second * 3,
 			BonusCoefficient: dotCoeff,
 

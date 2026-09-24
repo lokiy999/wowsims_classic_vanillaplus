@@ -112,7 +112,8 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 
 	// TODO: These should really be aura attached to the actual forms
-	if druid.InForm(Moonkin) {
+	// Moonkin Aura is its own talent on the server.
+	if druid.InForm(Moonkin) && druid.Talents.MoonkinAura {
 		raidBuffs.MoonkinAura = true
 	}
 

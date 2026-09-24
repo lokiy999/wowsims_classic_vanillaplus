@@ -190,22 +190,22 @@ dps_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 65.44904
-  tps: 186.30302
+  dps: 62.33242
+  tps: 183.18639
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 65.44904
-  tps: 71.49174
+  dps: 62.33242
+  tps: 68.37512
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 73.69692
-  tps: 73.69692
+  dps: 70.18754
+  tps: 70.18754
  }
 }
 dps_results: {
@@ -232,22 +232,22 @@ dps_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 64.69496
-  tps: 185.54894
+  dps: 61.61425
+  tps: 182.46823
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 64.69496
-  tps: 70.73766
+  dps: 61.61425
+  tps: 67.65695
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-Tauren-p0.bis-Default-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 73.23557
-  tps: 73.23557
+  dps: 69.74816
+  tps: 69.74816
  }
 }
 dps_results: {

@@ -10,6 +10,7 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
+	shaman.applyServerTalents()
 	// Elemental Talents
 	shaman.applyConcussion()
 	shaman.applyCallOfThunder()

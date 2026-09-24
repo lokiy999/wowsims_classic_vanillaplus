@@ -10,8 +10,8 @@ import (
 const CurseOfAgonyRanks = 6
 
 func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
-	numTicks := int32(12)
 	tickLength := time.Second * 2
+	numTicks := int32(12) + warlock.prolongedMiseryTicks(tickLength)
 
 	spellId := [CurseOfAgonyRanks + 1]int32{0, 980, 1014, 6217, 11711, 11712, 11713}[rank]
 	spellCoeff := [CurseOfAgonyRanks + 1]float64{0, .046, .077, .083, .083, .083, .083}[rank]

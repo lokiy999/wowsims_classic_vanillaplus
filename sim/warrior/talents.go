@@ -14,6 +14,7 @@ func (warrior *Warrior) ToughnessArmorMultiplier() float64 {
 }
 
 func (warrior *Warrior) ApplyTalents() {
+	warrior.applyServerTalents()
 	warrior.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(warrior.Talents.Cruelty))
 	warrior.ApplyEquipScaling(stats.Armor, warrior.ToughnessArmorMultiplier())
 	// DBC: Anticipation reduces the chance to be critically hit by 1%/rank.

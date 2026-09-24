@@ -9,6 +9,7 @@ import (
 )
 
 func (rogue *Rogue) ApplyTalents() {
+	rogue.applyServerTalents()
 	rogue.applyRuthlessness()
 	rogue.applyAuditTalents()
 	// Physical Prowess: +50%/100% Strength (confirmed in game); the Sprint and Evasion cooldown part is in evasion.go.

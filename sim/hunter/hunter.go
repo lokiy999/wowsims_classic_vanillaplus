@@ -130,7 +130,10 @@ func (hunter *Hunter) GetHunter() *Hunter {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// Trueshot Aura is applied by the core raid buff (100 ranged / 50 melee AP); adding it here as well counted it twice.
+	// Trueshot Aura (talent): turn on the core raid buff (100 ranged / 50 melee AP) so it is counted once.
+	if hunter.Talents.TrueshotAura {
+		raidBuffs.TrueshotAura = true
+	}
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
