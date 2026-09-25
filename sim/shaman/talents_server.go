@@ -19,4 +19,7 @@ func (shaman *Shaman) applyServerTalents() {
 
 	// Nature's Guardian: -2% chance to be critically hit per rank.
 	shaman.PseudoStats.ReducedCritTakenChance += 0.02 * float64(shaman.Talents.NaturesGuardian)
+
+	// Meditation: 10% of mana regeneration per rank continues while casting.
+	shaman.PseudoStats.SpiritRegenRateCasting += 0.1 * float64(shaman.Talents.Meditation)
 }

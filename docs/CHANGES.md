@@ -3468,3 +3468,15 @@ Also checked in this round:
   Gouge, Riposte, Blade Flurry, Adrenaline Rush, Cold Blood, Preparation, Premeditation all match. **Evasion** lasts
   10 sec on the server (was 15; still +50% dodge, 5 min cooldown). Spell 14278 is "Ghostly Trick" (60 sec cooldown) on
   the server, but Ghostly Strike is not in the server tree and stays disabled.
+
+## Part CM — Improved Rend, shaman Meditation; talent to-do list regenerated (2026-09-25)
+
+- **Improved Rend** (warrior, server tree): Rend stacks up to 2 / 3 times (rank 1 / 2); each stack adds the full tick
+  damage and a new stack refreshes the duration. Checked with a throwaway sim that casts only Rend: 3 stacks tick for
+  3 x 36 every 3 sec (about 10,800 over 300 sec). Without the talent Rend works as before.
+- **Meditation** (shaman): 10% of mana regeneration per rank continues while casting (the priest version was already in).
+- The "Talents not in the sim code" list in `docs/TODO.md` was stale: the healing talents done in Part CG (Improved
+  Rejuvenation / Regrowth, Naturalist, Tranquil Spirit, Improved Healing Wave, Healing Way, Improved Prayer of Healing,
+  Light's Mercy) were still listed. Regenerated from the code.
+- The TODO item "gear slots are empty on first load" is the `START_WITH_EMPTY_PRESETS` testing switch (Part AT), not a
+  bug; noted there.

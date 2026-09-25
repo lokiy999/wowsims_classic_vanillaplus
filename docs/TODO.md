@@ -52,7 +52,7 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 18. **Trueshot Aura ranks** (Part CL): the talent gives rank 1 (100 ranged / 50 melee attack power); Spell.csv also
     has ranks 2 (150/75) and 3 (200/100). Can hunters train ranks 2-3 on the server? The sim now uses rank 3.
 
-## Talents not in the sim code (regenerated 2026-09-24, after Part CE)
+## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 
 Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). This replaces the per-class
 "not modeled" lists in the older dated sections below, which are stale: about 70 talents listed there were implemented
@@ -90,15 +90,15 @@ all the other data is done; do these as one batch then):
 - To check in game: Slam flat threat 140, Rockbiter Weapon threat, Shen'dralar Badge of Deterrence and threat-reducing
   trinket effects (Fetish of the Sand Reaver, Grace of Earth, Two-Faced Medallion use effects).
 
-- **Druid** (18 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Primal Tenacity, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Naturalist, Improved Enrage, Custody Of The Nature, Improved Rejuvenation, Tranquil Spirit, Swiftmend, Catharsis, Improved Regrowth
+- **Druid** (11 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Custody Of The Nature, Catharsis
 - **Hunter** (20 of 60): Improved Mend Pet, Aspect Mastery, Improved Revive Pet, Intimidation, Bestial Swiftness, Survival Instincts, Team Play, Terrifying Roar, Improved Hunters Mark, Improved Concussive Shot, Vantage Point, Hawk Eye, Improved Distracting Shot, Scatter Shot, Deterrence, Improved Wing Clip, Trapper, Thrill Of The Hunt, Deep Freeze, Wyvern Sting
 - **Mage** (21 of 60): Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Flame Throwing, Impact, Blazing Speed, Chain Reaction, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
-- **Paladin** (18 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Lights Mercy, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
-- **Priest** (20 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Improved Prayer Of Healing, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
+- **Paladin** (17 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
+- **Priest** (19 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
 - **Rogue** (19 of 60): Remorseless Attacks, Seek And Destroy, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
-- **Shaman** (21 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Aftershock, Improved Ghost Wolf, Bloodlust, Armaments Of Storm, Shamanism, Spiritwalking, Improved Healing Wave, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Healing Way, Meditation, Cleansing Wave
+- **Shaman** (18 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Aftershock, Improved Ghost Wolf, Bloodlust, Armaments Of Storm, Shamanism, Spiritwalking, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Cleansing Wave
 - **Warlock** (19 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
-- **Warrior** (12 of 60): Improved Charge, Improved Hamstring, Improved Rend, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
+- **Warrior** (11 of 60): Improved Charge, Improved Hamstring, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
 
 ## Healers: done in Part CG, still open (added 2026-09-24, do these next)
 

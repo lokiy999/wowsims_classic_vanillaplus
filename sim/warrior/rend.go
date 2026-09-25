@@ -22,7 +22,10 @@ func (warrior *Warrior) registerRendSpell() {
 
 	baseDamage := rend.damage
 
-	damageMultiplier := warrior.bleedDamageMultiplier() // Two-Handed Weapon Specialization bleed bonus (Improved Rend stacking is not modeled yet)
+	damageMultiplier := warrior.bleedDamageMultiplier() // Two-Handed Weapon Specialization bleed bonus
+
+	// Improved Rend (server tree): Rend stacks up to 2 / 3 times; each stack adds the full tick damage.
+	maxStacks := 1 + warrior.Talents.ImprovedRend
 
 	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorRend,
@@ -46,13 +49,14 @@ func (warrior *Warrior) registerRendSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Rend",
-				Tag:   "Rend",
+				Label:     "Rend",
+				Tag:       "Rend",
+				MaxStacks: maxStacks,
 			},
 			NumberOfTicks: rend.ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, baseDamage, isRollover)
+				dot.Snapshot(target, baseDamage*float64(max(dot.GetStacks(), 1)), isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -62,7 +66,16 @@ func (warrior *Warrior) registerRendSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				dot := spell.Dot(target)
+				if maxStacks == 1 {
+					dot.Apply(sim)
+				} else {
+					dot.ApplyOrRefresh(sim)
+					if dot.GetStacks() < dot.MaxStacks {
+						dot.AddStack(sim)
+					}
+					dot.TakeSnapshot(sim, false)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
