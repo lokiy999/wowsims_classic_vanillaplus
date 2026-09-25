@@ -861,6 +861,13 @@ message Target {
 
 	// Custom Target AI parameters
 	repeated TargetInput target_inputs = 14;
+
+	// Spell damage the enemy casts at its current target every spell_damage_interval seconds (0 disables it), e.g. a
+	// Shadow Bolt. Damage is spell_damage_min to spell_damage_min * (1 + spell_damage_spread), reduced by resistances.
+	double spell_damage_interval = 15;
+	double spell_damage_min = 16;
+	double spell_damage_spread = 17;
+	SpellSchool spell_damage_school = 18;
 }
 
 message Encounter {

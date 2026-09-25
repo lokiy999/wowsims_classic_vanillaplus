@@ -13,6 +13,19 @@ type healthBar struct {
 	currentHealth float64
 
 	DamageTakenHealthMetrics *ResourceMetrics
+
+	// Death delay (paladin Stoicism): a killing blow starts a window in which all damage and healing is held back,
+	// then applied at once; the unit only dies if its health is still 0 after that.
+	deathDelay        time.Duration
+	deathDelayActive  bool
+	deathDelayNet     float64
+	deathDelayMetrics *ResourceMetrics
+}
+
+// SetDeathDelay defers death by the given duration after a killing blow (see healthBar.deathDelay).
+func (unit *Unit) SetDeathDelay(delay time.Duration, actionID ActionID) {
+	unit.healthBar.deathDelay = delay
+	unit.healthBar.deathDelayMetrics = unit.NewHealthMetrics(actionID)
 }
 
 func (unit *Unit) EnableHealthBar() {
@@ -31,6 +44,8 @@ func (hb *healthBar) reset(_ *Simulation) {
 		return
 	}
 	hb.currentHealth = hb.MaxHealth()
+	hb.deathDelayActive = false
+	hb.deathDelayNet = 0
 }
 
 func (hb *healthBar) MaxHealth() float64 {
@@ -48,6 +63,10 @@ func (hb *healthBar) CurrentHealthPercent() float64 {
 func (hb *healthBar) GainHealth(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to gain negative health!")
+	}
+	if hb.deathDelayActive {
+		hb.deathDelayNet += amount
+		return
 	}
 
 	oldHealth := hb.currentHealth
@@ -114,32 +133,60 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Damage > 0 {
-				aura.Unit.RemoveHealth(sim, result.Damage)
-
-				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-					aura.Unit.Metrics.Died = true
-					if sim.Log != nil {
-						character.Log(sim, "Dead")
-					}
-				}
+				character.takeDamageForDeathTracking(sim, result.Damage)
 			}
 		},
 		OnPeriodicDamageTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Damage > 0 {
-				aura.Unit.RemoveHealth(sim, result.Damage)
-
-				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-					aura.Unit.Metrics.Died = true
-					if sim.Log != nil {
-						character.Log(sim, "Dead")
-					}
-				}
+				character.takeDamageForDeathTracking(sim, result.Damage)
 			}
 		},
 	})
 
 	if healingModel.Hps != 0 {
 		character.applyHealingModel(healingModel)
+	}
+}
+
+func (character *Character) takeDamageForDeathTracking(sim *Simulation, damage float64) {
+	unit := &character.Unit
+	hb := &unit.healthBar
+	if hb.deathDelayActive {
+		hb.deathDelayNet -= damage
+		return
+	}
+	if hb.deathDelay > 0 && damage >= hb.currentHealth && !unit.Metrics.Died {
+		hb.deathDelayActive = true
+		hb.deathDelayNet = -damage
+		if sim.Log != nil {
+			character.Log(sim, "Killing blow of %0.1f deferred for %s", damage, hb.deathDelay)
+		}
+		StartDelayedAction(sim, DelayedActionOptions{
+			DoAt: sim.CurrentTime + hb.deathDelay,
+			OnAction: func(sim *Simulation) {
+				hb.deathDelayActive = false
+				net := hb.deathDelayNet
+				hb.deathDelayNet = 0
+				if net < 0 {
+					unit.RemoveHealth(sim, -net)
+				} else if net > 0 {
+					hb.GainHealth(sim, net, hb.deathDelayMetrics)
+				}
+				character.checkDeath(sim)
+			},
+		})
+		return
+	}
+	unit.RemoveHealth(sim, damage)
+	character.checkDeath(sim)
+}
+
+func (character *Character) checkDeath(sim *Simulation) {
+	if character.CurrentHealth() <= 0 && !character.Metrics.Died {
+		character.Metrics.Died = true
+		if sim.Log != nil {
+			character.Log(sim, "Dead")
+		}
 	}
 }
 

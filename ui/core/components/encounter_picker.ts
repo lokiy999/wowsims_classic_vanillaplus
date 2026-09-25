@@ -236,6 +236,10 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 	private readonly parryHastePicker: Input<null, boolean>;
 	private readonly spellSchoolPicker: Input<null, number>;
 	private readonly damageSpreadPicker: Input<null, number>;
+	private readonly spellDamageIntervalPicker: Input<null, number>;
+	private readonly spellDamageMinPicker: Input<null, number>;
+	private readonly spellDamageSpreadPicker: Input<null, number>;
+	private readonly spellDamageSchoolPicker: Input<null, number>;
 	private readonly targetInputPickers: ListPicker<Encounter, TargetInput>;
 
 	private getTarget(): TargetProto {
@@ -485,6 +489,63 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 				encounter.targetsChangeEmitter.emit(eventID);
 			},
 		});
+		this.spellDamageIntervalPicker = new NumberPicker(section3, null, {
+			id: 'target-picker-spell-damage-interval',
+			label: 'Spell Interval',
+			labelTooltip: 'Time in seconds between damaging spells this enemy casts at its current target (e.g. a Shadow Bolt at the tank). Set to 0 to disable.',
+			float: true,
+			changedEvent: () => encounter.targetsChangeEmitter,
+			getValue: () => this.getTarget().spellDamageInterval,
+			setValue: (eventID: EventID, _: null, newValue: number) => {
+				this.getTarget().spellDamageInterval = newValue;
+				encounter.targetsChangeEmitter.emit(eventID);
+			},
+		});
+		this.spellDamageMinPicker = new NumberPicker(section3, null, {
+			id: 'target-picker-spell-damage-min',
+			label: 'Spell Min Damage',
+			labelTooltip: 'Lowest damage roll of that spell before resistances.',
+			changedEvent: () => encounter.targetsChangeEmitter,
+			getValue: () => this.getTarget().spellDamageMin,
+			setValue: (eventID: EventID, _: null, newValue: number) => {
+				this.getTarget().spellDamageMin = newValue;
+				encounter.targetsChangeEmitter.emit(eventID);
+			},
+			enableWhen: () => this.getTarget().spellDamageInterval > 0,
+		});
+		this.spellDamageSpreadPicker = new NumberPicker(section3, null, {
+			id: 'target-picker-spell-damage-spread',
+			label: 'Spell Damage Spread',
+			labelTooltip: 'Fractional spread between the minimum and maximum spell damage (0.2 = up to 20% above the minimum).',
+			float: true,
+			changedEvent: () => encounter.targetsChangeEmitter,
+			getValue: () => this.getTarget().spellDamageSpread,
+			setValue: (eventID: EventID, _: null, newValue: number) => {
+				this.getTarget().spellDamageSpread = newValue;
+				encounter.targetsChangeEmitter.emit(eventID);
+			},
+			enableWhen: () => this.getTarget().spellDamageInterval > 0,
+		});
+		this.spellDamageSchoolPicker = new EnumPicker<null>(section3, null, {
+			id: 'target-picker-spell-damage-school',
+			label: 'Spell Damage School',
+			labelTooltip: 'School of that spell.',
+			values: [
+				{ name: 'Shadow', value: SpellSchool.SpellSchoolShadow },
+				{ name: 'Fire', value: SpellSchool.SpellSchoolFire },
+				{ name: 'Frost', value: SpellSchool.SpellSchoolFrost },
+				{ name: 'Nature', value: SpellSchool.SpellSchoolNature },
+				{ name: 'Arcane', value: SpellSchool.SpellSchoolArcane },
+				{ name: 'Holy', value: SpellSchool.SpellSchoolHoly },
+			],
+			changedEvent: () => encounter.targetsChangeEmitter,
+			getValue: () => this.getTarget().spellDamageSchool || SpellSchool.SpellSchoolShadow,
+			setValue: (eventID: EventID, _: null, newValue: number) => {
+				this.getTarget().spellDamageSchool = newValue;
+				encounter.targetsChangeEmitter.emit(eventID);
+			},
+			enableWhen: () => this.getTarget().spellDamageInterval > 0,
+		});
 
 		this.init();
 	}
@@ -505,6 +566,10 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			parryHaste: this.parryHastePicker.getInputValue(),
 			spellSchool: this.spellSchoolPicker.getInputValue(),
 			damageSpread: this.damageSpreadPicker.getInputValue(),
+			spellDamageInterval: this.spellDamageIntervalPicker.getInputValue(),
+			spellDamageMin: this.spellDamageMinPicker.getInputValue(),
+			spellDamageSpread: this.spellDamageSpreadPicker.getInputValue(),
+			spellDamageSchool: this.spellDamageSchoolPicker.getInputValue(),
 			stats: this.statPickers
 				.map(picker => picker.getInputValue())
 				.map((statValue, i) => new Stats().withStat(ALL_TARGET_STATS[i].stat, statValue))
@@ -528,6 +593,10 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.parryHastePicker.setInputValue(newValue.parryHaste);
 		this.spellSchoolPicker.setInputValue(newValue.spellSchool);
 		this.damageSpreadPicker.setInputValue(newValue.damageSpread);
+		this.spellDamageIntervalPicker.setInputValue(newValue.spellDamageInterval);
+		this.spellDamageMinPicker.setInputValue(newValue.spellDamageMin);
+		this.spellDamageSpreadPicker.setInputValue(newValue.spellDamageSpread);
+		this.spellDamageSchoolPicker.setInputValue(newValue.spellDamageSchool || SpellSchool.SpellSchoolShadow);
 		ALL_TARGET_STATS.forEach((statData, i) => this.statPickers[i].setInputValue(newValue.stats[statData.stat]));
 		this.targetInputPickers.setInputValue(newValue.targetInputs);
 	}

@@ -1,6 +1,8 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/stats"
 )
@@ -19,6 +21,8 @@ func (paladin *Paladin) applyServerTalents() {
 
 	paladin.applyMorale()
 	paladin.applyEyeForAnEye()
+	paladin.applySecondWind()
+	paladin.applyStoicism()
 	paladin.applyIllumination()
 }
 
@@ -102,4 +106,32 @@ func (paladin *Paladin) applyEyeForAnEye() {
 			}
 		},
 	}))
+}
+
+// Second Wind (34032-34036): restores mana equal to 4% per rank of the healing received (the tank healing model in
+// the settings provides incoming heals).
+func (paladin *Paladin) applySecondWind() {
+	if paladin.Talents.SecondWind == 0 {
+		return
+	}
+	fraction := 0.04 * float64(paladin.Talents.SecondWind)
+	metrics := paladin.NewManaMetrics(core.ActionID{SpellID: []int32{0, 34032, 34033, 34034, 34035, 34036}[paladin.Talents.SecondWind]})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label: "Second Wind",
+		OnHealTaken: func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			if result.Damage > 0 {
+				paladin.AddMana(sim, fraction*result.Damage, metrics)
+			}
+		},
+	}))
+}
+
+// Stoicism (35741): a killing blow is deferred with all other damage and healing for 3 sec; the paladin only dies if
+// its health is still 0 after that (chance of death with the healing model).
+func (paladin *Paladin) applyStoicism() {
+	if !paladin.Talents.Stoicism {
+		return
+	}
+	paladin.SetDeathDelay(time.Second*3, core.ActionID{SpellID: 35741})
 }

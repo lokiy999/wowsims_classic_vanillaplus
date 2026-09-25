@@ -52,7 +52,7 @@ func (paladin *Paladin) registerHolyShield() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1.2,
-			BonusCoefficient: 0.05,
+			BonusCoefficient: 0.1, // Lokiy 2026-09-25 (assumed): 1.0 total spread over the 10 blocks
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// Spell damage from Holy Shield can crit, but does not miss.

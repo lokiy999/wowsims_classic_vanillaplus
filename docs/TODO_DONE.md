@@ -19,6 +19,8 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-25 (Part DL): boss spell damage target option; core death delay; paladin Second Wind, Stoicism,
+  Holy Shield coefficient 0.1 per block (assumed by Lokiy).
 - Done on 2026-09-25 (Part DK): paladin Eye for an Eye damage (threat still in the threat batch).
 - Done on 2026-09-25 (Part DJ): paladin Seal of Light and Seal of Wisdom (passive healing / mana cost effects,
   judgements), Divine Grace (seal part).

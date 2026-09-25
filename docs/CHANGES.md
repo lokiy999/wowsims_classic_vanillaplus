@@ -3870,3 +3870,31 @@ Lokiy 2026-09-25: tank damage and healing effects can go in now; threat stays fo
 Limitation: no encounter in the sim casts damaging spells at the player (the bosses only melee; Vaelastrasz's Essence of
 the Red is a resource buff), so Eye for an Eye and Shield of Faith (Part DH) never trigger yet. They start working once
 boss spell damage is modeled (TODO).
+
+## Part DL — Boss spell damage; paladin Second Wind, Stoicism, Holy Shield coefficient (2026-09-25)
+
+**Boss spell damage (new target option).** Four new fields on the target (`proto/common.proto` Target 15-18, encounter
+settings "Spell Interval", "Spell Min Damage", "Spell Damage Spread", "Spell Damage School"): the enemy casts a
+damaging spell at its current target every N seconds (0 = off, the default, so nothing changes for existing
+presets). Damage is min to min x (1 + spread), a magic spell (hit / resist rolls, resistances apply). The spell shows
+as Shadow Bolt / Fireball / Frostbolt / Lightning Bolt / Arcane Missile / Smite by school (name and icon only).
+`sim/core/target_ai.go` (`registerPeriodicSpellDamage`), `ui/core/components/encounter_picker.ts`. This makes effects
+that react to spell damage taken work: Eye for an Eye (Part DK), Shield of Faith (Part DH), resistances, Petrified Scarab.
+
+**Death delay (core).** `Unit.SetDeathDelay`: a killing blow starts a window in which all damage and healing is held
+back and then applied at once; the unit only dies if its health is still 0 afterwards (`sim/core/health.go`, used by
+the chance-of-death tracking with the healing model).
+
+**Paladin** (`sim/paladin/talents_server.go`, `holy_shield.go`):
+- **Second Wind** (34032-34036): mana equal to 4% per rank of the healing received (from the tank healing model; the
+  model's heals count in full, overhealing included).
+- **Stoicism** (35741): death delayed by 3 sec with the core death delay above.
+- **Holy Shield**: spell damage coefficient 0.1 per block (Lokiy 2026-09-25, assumed: 1.0 total over the 10 blocks;
+  was 0.05).
+Threat of all three is not tuned (threat batch).
+
+Throwaway sim (not committed; naked paladin, boss 250 base melee every 2 sec plus a 400-480 Shadow Bolt every 3 sec):
+damage taken per second 84 -> 204 with the boss spell; Eye for an Eye 2/2 dealt about 3,400 damage and Second Wind
+5/5 returned about 18,600 mana per 5 min fight (330 healing per second model); with a 190 healing per second model the
+chance of death went from 83% to 76% with Stoicism. Holy Shield could not be checked there (no shield equipped).
+No test baseline moved (presets have no talents and no boss spell).

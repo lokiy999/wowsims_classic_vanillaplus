@@ -35,6 +35,9 @@ func (target *Target) initialize(config *proto.Target) {
 			}
 			target.EnableAutoAttacks(target, aaOptions)
 		}
+		if config.SpellDamageInterval > 0 && config.SpellDamageMin > 0 {
+			target.registerPeriodicSpellDamage(config)
+		}
 	}
 
 	if target.AI != nil {
@@ -145,3 +148,53 @@ func AddPresetEncounter(name string, targetPaths []string) {
 		Targets: targetProtos,
 	})
 }
+
+// Spell ids used only for the name and icon of the periodic boss spell, by school.
+var bossSpellIDs = map[proto.SpellSchool]int32{
+	proto.SpellSchool_SpellSchoolArcane: 25345, // Arcane Missile
+	proto.SpellSchool_SpellSchoolFire:   25306, // Fireball
+	proto.SpellSchool_SpellSchoolFrost:  25304, // Frostbolt
+	proto.SpellSchool_SpellSchoolHoly:   10934, // Smite
+	proto.SpellSchool_SpellSchoolNature: 15208, // Lightning Bolt
+	proto.SpellSchool_SpellSchoolShadow: 25307, // Shadow Bolt
+}
+
+// registerPeriodicSpellDamage makes the target cast a damaging spell at its current target every
+// SpellDamageInterval seconds (target options in the encounter settings). It lets effects that react to spell damage
+// taken (resistances, Eye for an Eye, Shield of Faith, ...) matter in a tank sim.
+func (target *Target) registerPeriodicSpellDamage(config *proto.Target) {
+	school := config.SpellDamageSchool
+	if school == proto.SpellSchool_SpellSchoolPhysical {
+		school = proto.SpellSchool_SpellSchoolShadow
+	}
+	minDamage := config.SpellDamageMin
+	maxDamage := minDamage * (1 + config.SpellDamageSpread)
+	interval := DurationFromSeconds(config.SpellDamageInterval)
+
+	spell := target.RegisterSpell(SpellConfig{
+		ActionID:    ActionID{SpellID: bossSpellIDs[school]},
+		SpellSchool: SpellSchoolFromProto(school),
+		DefenseType: DefenseTypeMagic,
+		ProcMask:    ProcMaskSpellDamage,
+		Flags:       SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
+			spell.CalcAndDealDamage(sim, unit, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHit)
+		},
+	})
+
+	target.RegisterResetEffect(func(sim *Simulation) {
+		StartPeriodicAction(sim, PeriodicActionOptions{
+			Period: interval,
+			OnAction: func(sim *Simulation) {
+				if target.CurrentTarget != nil {
+					spell.Cast(sim, target.CurrentTarget)
+				}
+			},
+		})
+	})
+}
+
