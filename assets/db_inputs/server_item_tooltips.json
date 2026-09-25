@@ -1,0 +1,1017 @@
+{
+ "10305": {
+  "icon": "",
+  "name": "Scroll of Protection IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Protection IV</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the target's Armor by 240 for 30 min.</div>"
+ },
+ "10306": {
+  "icon": "",
+  "name": "Scroll of Spirit IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Spirit IV</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the target's Spirit by 15 for 30 min.</div>"
+ },
+ "10307": {
+  "icon": "",
+  "name": "Scroll of Stamina IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Stamina IV</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the target's Stamina by 15 for 30 min.</div>"
+ },
+ "10308": {
+  "icon": "",
+  "name": "Scroll of Intellect IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Intellect IV</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the target's Intellect by 15 for 30 min.</div>"
+ },
+ "10309": {
+  "icon": "",
+  "name": "Scroll of Agility IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Agility IV</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the target's Agility by 15 for 30 min.</div>"
+ },
+ "10310": {
+  "icon": "",
+  "name": "Scroll of Strength IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Strength IV</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the target's Strength by 15 for 30 min.</div>"
+ },
+ "10507": {
+  "icon": "",
+  "name": "Solid Dynamite",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Solid Dynamite</div><div style=\"color:#9d9d9d\">Requires Engineering (175)</div><div style=\"color:#1eff00\">Use: Inflicts 213 to 287 Fire damage in a 5 yard radius.</div>"
+ },
+ "10513": {
+  "icon": "",
+  "name": "Mithril Gyro-Shot",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Mithril Gyro-Shot</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 15 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 44</div>"
+ },
+ "10546": {
+  "icon": "",
+  "name": "Deadly Scope",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Deadly Scope</div><div style=\"color:#9d9d9d\">Requires Level 30</div><div style=\"color:#1eff00\">Use: Attaches a permanent scope to a bow or gun that increases its damage by 5.</div>"
+ },
+ "10548": {
+  "icon": "",
+  "name": "Sniper Scope",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Sniper Scope</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Attaches a permanent scope to a bow or gun that increases its damage by 7.</div>"
+ },
+ "10646": {
+  "icon": "",
+  "name": "Goblin Sapper Charge",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Goblin Sapper Charge</div><div style=\"color:#9d9d9d\">Requires Engineering (205)</div><div style=\"color:#1eff00\">Use: Explodes when triggered dealing 450 to 750 Fire damage to everyone and everything nearby.</div>"
+ },
+ "10922": {
+  "icon": "",
+  "name": "Wound Poison IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Wound Poison IV</div><div style=\"color:#9d9d9d\">Classes: Rogue</div><div style=\"color:#9d9d9d\">Requires Level 56</div><div style=\"color:#1eff00\">Use: Coats a weapon with poison that lasts for 30 minutes.\nEach strike has a 30% chance of poisoning the enemy, reducing all healing effects used on them by 140 for 15 sec.  Stacks up to 5 times on a single target.  105 charges.</div>"
+ },
+ "11081": {
+  "icon": "",
+  "name": "Formula: Enchant Shield - Lesser Protection",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Formula: Enchant Shield - Lesser Protection</div><div style=\"color:#9d9d9d\">Requires Enchanting (115)</div><div style=\"color:#ffffff\">Already known</div><div style=\"color:#1eff00\">Use: Teaches you how to permanently enchant a shield with +30 armor.</div>"
+ },
+ "11168": {
+  "icon": "",
+  "name": "Formula: Enchant Shield - Lesser Block",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Formula: Enchant Shield - Lesser Block</div><div style=\"color:#9d9d9d\">Requires Enchanting (195)</div><div style=\"color:#ffffff\">Already known</div><div style=\"color:#1eff00\">Use: Teaches you how to permanently enchant a shield to grant +2% blocking.</div>"
+ },
+ "11202": {
+  "icon": "",
+  "name": "Formula: Enchant Shield - Stamina",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Formula: Enchant Shield - Stamina</div><div style=\"color:#9d9d9d\">Requires Enchanting (210)</div><div style=\"color:#ffffff\">Already known</div><div style=\"color:#1eff00\">Use: Teaches you how to permanently enchant a shield to grant +5 Stamina.</div>"
+ },
+ "11224": {
+  "icon": "",
+  "name": "Formula: Enchant Shield - Frost Resistance",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Formula: Enchant Shield - Frost Resistance</div><div style=\"color:#9d9d9d\">Requires Enchanting (235)</div><div style=\"color:#ffffff\">Already known</div><div style=\"color:#1eff00\">Use: Teaches you how to permanently enchant a shield to grant 8 frost resistance.</div>"
+ },
+ "11284": {
+  "icon": "",
+  "name": "Accurate Slugs",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Accurate Slugs</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 13 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 40</div>"
+ },
+ "11285": {
+  "icon": "",
+  "name": "Jagged Arrow",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Jagged Arrow</div><div style=\"color:#ffffff\">Projectile, Arrow</div><div style=\"color:#ffffff\">Adds 13 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 40</div>"
+ },
+ "11564": {
+  "icon": "inv_misc_gem_ruby_02",
+  "name": "Crystal Ward",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Crystal Ward</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases the target's Armor by 300 for 30 min.</div>"
+ },
+ "11566": {
+  "icon": "inv_misc_gem_opal_01",
+  "name": "Crystal Charge",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Crystal Charge</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Inflicts 483 to 617 fire damage to targets in a 3 yard radius.</div>"
+ },
+ "11622": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Rumination",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Rumination</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 200 mana to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11630": {
+  "icon": "inv_ammo_bullet_02",
+  "name": "Rockshard Pellets",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Rockshard Pellets</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 20.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 47</div>"
+ },
+ "11642": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Constitution",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Constitution</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 100 hit points to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11643": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Tenacity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Tenacity</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 1% Crit suppression to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11644": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Resilience",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Resilience</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 20 fire resistance to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11645": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Voracity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Voracity</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 8 strength to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11646": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Voracity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Voracity</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 8 stamina to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11647": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Voracity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Voracity</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 8 agility to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11648": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Voracity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Voracity</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 8 intellect to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11649": {
+  "icon": "inv_misc_gem_03",
+  "name": "Lesser Arcanum of Voracity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Lesser Arcanum of Voracity</div><div style=\"color:#ffffff\">Quest Item</div><div style=\"color:#1eff00\">Use: Permanently adds 8 spirit to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "11951": {
+  "icon": "inv_misc_food_55",
+  "name": "Whipper Root Tuber",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Whipper Root Tuber</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Restores 900 to 1399 health.</div>"
+ },
+ "11952": {
+  "icon": "inv_misc_food_45",
+  "name": "Night Dragon's Breath",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Night Dragon's Breath</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Restores 700 to 1099 mana and 700 to 1099 health.</div>"
+ },
+ "12217": {
+  "icon": "",
+  "name": "Dragonbreath Chili",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Dragonbreath Chili</div><div style=\"color:#9d9d9d\">Requires Level 35</div><div style=\"color:#1eff00\">Use: Occasionally belch flame at enemies struck in melee for the next 10 min.</div>"
+ },
+ "12404": {
+  "icon": "",
+  "name": "Dense Sharpening Stone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Dense Sharpening Stone</div><div style=\"color:#9d9d9d\">Requires Level 35</div><div style=\"color:#1eff00\">Use: Increase sharp weapon damage by 8 for 30 minutes.</div>"
+ },
+ "12450": {
+  "icon": "inv_misc_monsterscales_17",
+  "name": "Juju Flurry",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Flurry</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases the target's attack and casting speed by 5% for 20 sec.</div>"
+ },
+ "12451": {
+  "icon": "inv_misc_monsterscales_11",
+  "name": "Juju Power",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Power</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases the target's Strength by 30 for 30 min.</div>"
+ },
+ "12455": {
+  "icon": "inv_misc_monsterscales_15",
+  "name": "Juju Ember",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Ember</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases Fire resistance by 20 for 10 min.</div>"
+ },
+ "12457": {
+  "icon": "inv_misc_monsterscales_09",
+  "name": "Juju Chill",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Chill</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increase Frost resistance by 20 for 10 min.</div>"
+ },
+ "12458": {
+  "icon": "inv_misc_monsterscales_13",
+  "name": "Juju Guile",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Guile</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases the target's Intellect by 30 for 30 min.</div>"
+ },
+ "12459": {
+  "icon": "inv_misc_monsterscales_17",
+  "name": "Juju Escape",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Escape</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases your chance to dodge by 8% for 10 sec.</div>"
+ },
+ "12460": {
+  "icon": "inv_misc_monsterscales_07",
+  "name": "Juju Might",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Juju Might</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Increases attack power by 100 for 5 min.</div>"
+ },
+ "12643": {
+  "icon": "",
+  "name": "Dense Weightstone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Dense Weightstone</div><div style=\"color:#9d9d9d\">Requires Level 35</div><div style=\"color:#1eff00\">Use: Increase the damage of a blunt weapon by 8 for 30 minutes.</div>"
+ },
+ "12654": {
+  "icon": "ability_hunter_criticalshot",
+  "name": "Doomshot",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Doomshot</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Projectile, Arrow</div><div style=\"color:#ffffff\">Adds 22 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 54</div>"
+ },
+ "12662": {
+  "icon": "",
+  "name": "Demonic Rune",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Demonic Rune</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Restores 900 to 1500 mana at the cost of 600 to 1000 life.</div>"
+ },
+ "12820": {
+  "icon": "",
+  "name": "Winterfall Firewater",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Winterfall Firewater</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Increases your attack power by 35 and size for 20 min.</div>"
+ },
+ "13180": {
+  "icon": "",
+  "name": "Stratholme Holy Water",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Stratholme Holy Water</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Inflicts 666 to 791 damage to Undead and Demons in a 10 yard radius.</div><div style=\"color:#9d9d9d\">\"Just 1 calorie.\"</div>"
+ },
+ "13377": {
+  "icon": "inv_ammo_bullet_02",
+  "name": "Miniature Cannon Balls",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Miniature Cannon Balls</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 23 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 56</div>"
+ },
+ "13442": {
+  "icon": "",
+  "name": "Mighty Rage Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mighty Rage Potion</div><div style=\"color:#9d9d9d\">Classes: Warrior</div><div style=\"color:#9d9d9d\">Requires Level 46</div><div style=\"color:#1eff00\">Use: Increases Rage by 50 to 80 and increases Strength by 50 for 20 sec.</div>"
+ },
+ "13443": {
+  "icon": "",
+  "name": "Superior Mana Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Superior Mana Potion</div><div style=\"color:#9d9d9d\">Requires Level 41</div><div style=\"color:#1eff00\">Use: Restores 900 to 1500 mana.</div>"
+ },
+ "13444": {
+  "icon": "",
+  "name": "Major Mana Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Major Mana Potion</div><div style=\"color:#9d9d9d\">Requires Level 49</div><div style=\"color:#1eff00\">Use: Restores 1350 to 2250 mana.</div>"
+ },
+ "13445": {
+  "icon": "",
+  "name": "Elixir of Superior Defense",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Superior Defense</div><div style=\"color:#9d9d9d\">Requires Level 43</div><div style=\"color:#1eff00\">Use: Increases armor by 450 for 1 hour.</div>"
+ },
+ "13446": {
+  "icon": "",
+  "name": "Major Healing Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Major Healing Potion</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Restores 1050 to 1750 health.</div>"
+ },
+ "13447": {
+  "icon": "",
+  "name": "Elixir of the Sages",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of the Sages</div><div style=\"color:#9d9d9d\">Requires Level 44</div><div style=\"color:#1eff00\">Use: Increases Intellect and Spirit by 20 for 1 hour.</div>"
+ },
+ "13452": {
+  "icon": "",
+  "name": "Elixir of the Mongoose",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of the Mongoose</div><div style=\"color:#9d9d9d\">Requires Level 46</div><div style=\"color:#1eff00\">Use: Increases Agility by 25 and chance to get a critical hit by 2% for 1 hour.</div>"
+ },
+ "13453": {
+  "icon": "",
+  "name": "Elixir of Brute Force",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Brute Force</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Increases Strength and Stamina by 15 for 1 hour.</div>"
+ },
+ "13454": {
+  "icon": "",
+  "name": "Greater Arcane Elixir",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Arcane Elixir</div><div style=\"color:#9d9d9d\">Requires Level 47</div><div style=\"color:#1eff00\">Use: Increases spell damage by up to 35 for 1 hour.</div>"
+ },
+ "13455": {
+  "icon": "",
+  "name": "Greater Stoneshield Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Stoneshield Potion</div><div style=\"color:#9d9d9d\">Requires Level 46</div><div style=\"color:#1eff00\">Use: Increases armor by 2000 for 2 min.</div>"
+ },
+ "13456": {
+  "icon": "",
+  "name": "Greater Frost Protection Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Frost Protection Potion</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Absorbs 1950 to 3250 frost damage.  Lasts 1 hour.</div>"
+ },
+ "13457": {
+  "icon": "",
+  "name": "Greater Fire Protection Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Fire Protection Potion</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Absorbs 1950 to 3250 fire damage.  Lasts 1 hour.</div>"
+ },
+ "13458": {
+  "icon": "",
+  "name": "Greater Nature Protection Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Nature Protection Potion</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Absorbs 1950 to 3250 nature damage.  Lasts 1 hour.</div>"
+ },
+ "13459": {
+  "icon": "",
+  "name": "Greater Shadow Protection Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Shadow Protection Potion</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Absorbs 1950 to 3250 shadow damage.  Lasts 1 hour.</div>"
+ },
+ "13460": {
+  "icon": "",
+  "name": "Greater Holy Protection Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Holy Protection Potion</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Absorbs 1950 to 3250 holy damage.  Lasts 1 hour.</div>"
+ },
+ "13461": {
+  "icon": "",
+  "name": "Greater Arcane Protection Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Arcane Protection Potion</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Absorbs 1950 to 3250 arcane damage.  Lasts 1 hour.</div>"
+ },
+ "13510": {
+  "icon": "",
+  "name": "Flask of the Titans",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Flask of the Titans</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the player's Stamina by 100 for 2 hrs.  You can only have the effect of one flask at a time.  This effect persists through death.</div>"
+ },
+ "13511": {
+  "icon": "",
+  "name": "Flask of Distilled Wisdom",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Flask of Distilled Wisdom</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the player's Intellect by 100 for 2 hrs.  You can only have the effect of one flask at a time.  This effect persists through death.</div>"
+ },
+ "13512": {
+  "icon": "",
+  "name": "Flask of Supreme Power",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Flask of Supreme Power</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases damage done by magical spells and effects by up to 100 for 2 hrs.  You can only have the effect of one flask at a time.  This effect persists through death.</div>"
+ },
+ "13513": {
+  "icon": "",
+  "name": "Flask of Chromatic Resistance",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Flask of Chromatic Resistance</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases your resistance to all schools of magic by 50 for 2 hrs.  You can only have the effect of one flask at a time.  This effect persists through death and stacks with all other resistance spells and items.</div>"
+ },
+ "13810": {
+  "icon": "",
+  "name": "Blessed Sunfruit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Blessed Sunfruit</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#9d9d9d\">Requires Argent Dawn - Revered</div><div style=\"color:#1eff00\">Use: Restores 1933 health over 27 sec.  Must remain seated while eating. Also increases your Strength by 15 for 10 min.</div>"
+ },
+ "13813": {
+  "icon": "",
+  "name": "Blessed Sunfruit Juice",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Blessed Sunfruit Juice</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#9d9d9d\">Requires Argent Dawn - Revered</div><div style=\"color:#1eff00\">Use: Restores 4410 mana over 30 sec.  Must remain seated while drinking. Also increases your Spirit by 15 for 10 min.</div>"
+ },
+ "13851": {
+  "icon": "",
+  "name": "Hot Wolf Ribs",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Hot Wolf Ribs</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Restores 874 health over 27 sec.  Must remain seated while eating.  If you spend at least 10 seconds eating you will become well fed and gain 8 Stamina and Spirit for 15 min.</div>"
+ },
+ "13928": {
+  "icon": "",
+  "name": "Grilled Squid",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Grilled Squid</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Restores 1252 health over 27 sec.   Must remain seated while eating.   If you eat for 10 seconds will also increase your Agility by 20 for 10 min.</div>"
+ },
+ "13931": {
+  "icon": "",
+  "name": "Nightfin Soup",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Nightfin Soup</div><div style=\"color:#9d9d9d\">Requires Level 35</div><div style=\"color:#1eff00\">Use: Restores 874 health over 27 sec.   Must remain seated while eating.   Also restores 15 Mana every 5 seconds for 10 min.</div>"
+ },
+ "1477": {
+  "icon": "",
+  "name": "Scroll of Agility II",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Agility II</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Increases the target's Agility by 9 for 30 min.</div>"
+ },
+ "14894": {
+  "icon": "",
+  "name": "Lily Root",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Lily Root</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique (5)</div><div style=\"color:#1eff00\">Use: Restores 525 to 675 mana and health.</div>"
+ },
+ "15564": {
+  "icon": "",
+  "name": "Rugged Armor Kit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Rugged Armor Kit</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Permanently increase the armor value of an item worn on the chest, legs, hands or feet by 40.  Only usable on items level 35 and above.</div>"
+ },
+ "15993": {
+  "icon": "",
+  "name": "Thorium Grenade",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Thorium Grenade</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Inflicts 300 to 500 Fire damage and stuns targets for 3 sec in a 3 yard radius.  Any damage will break the effect.</div>"
+ },
+ "15997": {
+  "icon": "",
+  "name": "Thorium Shells",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Thorium Shells</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 17.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 52</div>"
+ },
+ "16040": {
+  "icon": "",
+  "name": "Arcane Bomb",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Arcane Bomb</div><div style=\"color:#9d9d9d\">Requires Engineering (300)</div><div style=\"color:#1eff00\">Use: Drains 675 to 1125 mana from those in the blast radius and does 50% of the mana drained in damage to the target.  Also Silences targets in the blast for 5 sec.</div>"
+ },
+ "16217": {
+  "icon": "",
+  "name": "Formula: Enchant Shield - Greater Stamina",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Formula: Enchant Shield - Greater Stamina</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Enchanting (265)</div><div style=\"color:#ffffff\">Already known</div><div style=\"color:#1eff00\">Use: Teaches you how to permanently enchant a shield to grant +7 Stamina.</div>"
+ },
+ "16222": {
+  "icon": "",
+  "name": "Formula: Enchant Shield - Superior Spirit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Formula: Enchant Shield - Superior Spirit</div><div style=\"color:#9d9d9d\">Requires Enchanting (280)</div><div style=\"color:#ffffff\">Already known</div><div style=\"color:#1eff00\">Use: Teaches you how to permanently enchant a shield to grant +9 Spirit.</div>"
+ },
+ "1710": {
+  "icon": "",
+  "name": "Greater Healing Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Healing Potion</div><div style=\"color:#9d9d9d\">Requires Level 21</div><div style=\"color:#1eff00\">Use: Restores 455 to 585 health.</div>"
+ },
+ "17708": {
+  "icon": "",
+  "name": "Elixir of Frost Power",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Frost Power</div><div style=\"color:#9d9d9d\">Requires Level 28</div><div style=\"color:#1eff00\">Use: Increases spell frost damage by up to 15 for 30 min.</div>"
+ },
+ "18042": {
+  "icon": "",
+  "name": "Thorium Headed Arrow",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Thorium Headed Arrow</div><div style=\"color:#ffffff\">Projectile, Arrow</div><div style=\"color:#ffffff\">Adds 17.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 52</div>"
+ },
+ "18045": {
+  "icon": "",
+  "name": "Tender Wolf Steak",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Tender Wolf Steak</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Restores 1392 health over 30 sec.  Must remain seated while eating.  If you spend at least 10 seconds eating you will become well fed and gain 12 Stamina and Spirit for 15 min.</div>"
+ },
+ "18251": {
+  "icon": "inv_misc_armorkit_05",
+  "name": "Core Armor Kit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Core Armor Kit</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Permanently increase the defense value of an item worn on the chest, legs, hands or feet by 5.  Only usable on items level 45 and above.</div>"
+ },
+ "18253": {
+  "icon": "inv_potion_47",
+  "name": "Major Rejuvenation Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Major Rejuvenation Potion</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Restores 1740 to 2060 mana and health.</div>"
+ },
+ "18254": {
+  "icon": "",
+  "name": "Runn Tum Tuber Surprise",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Runn Tum Tuber Surprise</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Restores 1933 health over 27 sec.   Must remain seated while eating.   Also increases your Intellect by 20 for 10 min.</div>"
+ },
+ "18262": {
+  "icon": "inv_stone_02",
+  "name": "Elemental Sharpening Stone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Elemental Sharpening Stone</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increase critical chance on a melee weapon by 2% for 30 minutes.</div>"
+ },
+ "18269": {
+  "icon": "inv_drink_03",
+  "name": "Gordok Green Grog",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Gordok Green Grog</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique (10)</div><div style=\"color:#1eff00\">Use: Increases Stamina by 20 for 15 min and gets you drunk to boot.  Green means it's good!</div>"
+ },
+ "18283": {
+  "icon": "inv_misc_spyglass_02",
+  "name": "Biznicks 247x128 Accurascope",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Biznicks 247x128 Accurascope</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Attaches a permanent scope to a bow or gun that increases its chance to hit by 3%.</div>"
+ },
+ "18284": {
+  "icon": "inv_drink_05",
+  "name": "Kreeg's Stout Beatdown",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Kreeg's Stout Beatdown</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique (10)</div><div style=\"color:#1eff00\">Use: Increases Spirit by 35, but decreases Intelligence by 5 for 15 min.  Smoooooth.</div>"
+ },
+ "18329": {
+  "icon": "",
+  "name": "Arcanum of Rapidity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Arcanum of Rapidity</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Permanently adds 2% haste to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "18330": {
+  "icon": "",
+  "name": "Arcanum of Focus",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Arcanum of Focus</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Permanently adds +10 to your Healing and Damage from spells to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "18331": {
+  "icon": "",
+  "name": "Arcanum of Protection",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Arcanum of Protection</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Permanently adds 1% dodge to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "18641": {
+  "icon": "",
+  "name": "Dense Dynamite",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Dense Dynamite</div><div style=\"color:#9d9d9d\">Requires Engineering (250)</div><div style=\"color:#1eff00\">Use: Inflicts 340 to 460 Fire damage in a 5 yard radius.</div>"
+ },
+ "18714": {
+  "icon": "inv_misc_quiver_03",
+  "name": "Ancient Sinew Wrapped Lamina",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#a335ee\">Ancient Sinew Wrapped Lamina</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#ffffff\">24 Slot Quiver</div><div style=\"color:#9d9d9d\">Classes: Hunter</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Equip: Increases ranged attack speed by 15%.</div>"
+ },
+ "19316": {
+  "icon": "",
+  "name": "Ice Threaded Arrow",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Ice Threaded Arrow</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Projectile, Arrow</div><div style=\"color:#ffffff\">Adds 16.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 51</div>"
+ },
+ "19317": {
+  "icon": "",
+  "name": "Ice Threaded Bullet",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Ice Threaded Bullet</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 16.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 51</div>"
+ },
+ "19782": {
+  "icon": "spell_holy_sealofwrath",
+  "name": "Presence of Might",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Presence of Might</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Warrior</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 10 to all Stats to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19783": {
+  "icon": "spell_holy_prayerofhealing",
+  "name": "Syncretist's Sigil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Syncretist's Sigil</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Paladin</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 10 Stamina and increases Healing and Holy damage by up to 20 to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19784": {
+  "icon": "spell_shadow_scourgebuild",
+  "name": "Death's Embrace",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Death's Embrace</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Rogue</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 30 Attack Power and 1% Dodge to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19785": {
+  "icon": "spell_nature_forceofnature",
+  "name": "Falcon's Call",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Falcon's Call</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Hunter</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 10 Stamina and 30 Attack Power to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19786": {
+  "icon": "spell_nature_purge",
+  "name": "Vodouisant's Vigilant Embrace",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Vodouisant's Vigilant Embrace</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Shaman</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 10 Stamina and increased critical strike chances by 1% to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19787": {
+  "icon": "spell_shadow_detectlesserinvisibility",
+  "name": "Presence of Sight",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Presence of Sight</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Mage</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 15 Intellect and 1% chance to hit with spells to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19788": {
+  "icon": "spell_shadow_impphaseshift",
+  "name": "Hoodoo Hex",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Hoodoo Hex</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Warlock</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 15 Stamina and 1% chance to hit with spells to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19789": {
+  "icon": "spell_holy_holyprotection",
+  "name": "Prophetic Aura",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Prophetic Aura</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Priest</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 15 Stamina and increases healing by up to 25 to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "19790": {
+  "icon": "spell_nature_reincarnation",
+  "name": "Animist's Caress",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Animist's Caress</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Classes: Druid</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Permanently adds 10 to all Stats to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "20004": {
+  "icon": "",
+  "name": "Major Troll's Blood Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Major Troll's Blood Potion</div><div style=\"color:#9d9d9d\">Requires Level 53</div><div style=\"color:#1eff00\">Use: Regenerate 40 health every 5 sec for 1 hour.</div>"
+ },
+ "20007": {
+  "icon": "",
+  "name": "Mageblood Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mageblood Potion</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Regenerate 20 mana per 5 sec for 1 hour.</div>"
+ },
+ "20076": {
+  "icon": "inv_jewelry_ring_46",
+  "name": "Zandalar Signet of Mojo",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Zandalar Signet of Mojo</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Permanently adds to a shoulder slot item increased damage and healing done by magical spells and effects up to 18.</div>"
+ },
+ "20077": {
+  "icon": "inv_misc_armorkit_08",
+  "name": "Zandalar Signet of Might",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Zandalar Signet of Might</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Permanently adds 30 attack power to a shoulder slot item.</div>"
+ },
+ "20078": {
+  "icon": "spell_holy_powerwordshield",
+  "name": "Zandalar Signet of Serenity",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Zandalar Signet of Serenity</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#1eff00\">Use: Permanently adds to a shoulder slot item increased healing done by spells and effects up to 33.</div>"
+ },
+ "20079": {
+  "icon": "",
+  "name": "Spirit of Zanza",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Spirit of Zanza</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 55</div><div style=\"color:#1eff00\">Use: Increases the player's Spirit by 50 and Stamina by 50 for 2 hrs.  You can only have the effect of one Zanza potion at a time.</div><div style=\"color:#9d9d9d\">\"Blessed with the mojo of Zanza!\"</div>"
+ },
+ "20452": {
+  "icon": "",
+  "name": "Smoked Desert Dumplings",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Smoked Desert Dumplings</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: Restores 2148 health over 30 sec.  Must remain seated while eating.  If you spend at least 10 seconds eating you will become well fed and gain 20 Strength for 15 min.</div>"
+ },
+ "20709": {
+  "icon": "",
+  "name": "Rumsey Rum Light",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Rumsey Rum Light</div><div style=\"color:#1eff00\">Use: Increases Stamina by 5 for 15 min and gets you drunk to boot!</div>"
+ },
+ "20744": {
+  "icon": "",
+  "name": "Minor Wizard Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Minor Wizard Oil</div><div style=\"color:#9d9d9d\">Requires Level 5</div><div style=\"color:#1eff00\">Use: While applied to target weapon it increases spell damage by up to 8.  Lasts for 30 minutes.</div>"
+ },
+ "20745": {
+  "icon": "",
+  "name": "Minor Mana Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Minor Mana Oil</div><div style=\"color:#9d9d9d\">Requires Level 20</div><div style=\"color:#1eff00\">Use: While applied to target weapon it restores 4 mana to the caster every 5 seconds.  Lasts for 30 minutes.</div>"
+ },
+ "20746": {
+  "icon": "",
+  "name": "Lesser Wizard Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Lesser Wizard Oil</div><div style=\"color:#9d9d9d\">Requires Level 30</div><div style=\"color:#1eff00\">Use: While applied to target weapon it increases spell damage by up to 16.  Lasts for 30 minutes.</div>"
+ },
+ "20747": {
+  "icon": "",
+  "name": "Lesser Mana Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Lesser Mana Oil</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: While applied to target weapon it restores 8 mana to the caster every 5 seconds.  Lasts for 30 minutes.</div>"
+ },
+ "20748": {
+  "icon": "",
+  "name": "Brilliant Mana Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Brilliant Mana Oil</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: While applied to target weapon it restores 12 mana to the caster every 5 seconds and increases the effect of healing spells by up to 25.  Lasts for 30 minutes.</div>"
+ },
+ "20749": {
+  "icon": "",
+  "name": "Brilliant Wizard Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Brilliant Wizard Oil</div><div style=\"color:#9d9d9d\">Requires Level 45</div><div style=\"color:#1eff00\">Use: While applied to target weapon it increases spell damage by up to 25 and increases Spell Critical chance by 1% .  Lasts for 30 minutes.</div>"
+ },
+ "20750": {
+  "icon": "",
+  "name": "Wizard Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Wizard Oil</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: While applied to target weapon it increases spell damage by up to 24.  Lasts for 30 minutes.</div>"
+ },
+ "21023": {
+  "icon": "",
+  "name": "Dirge's Kickin' Chimaerok Chops",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Dirge's Kickin' Chimaerok Chops</div><div style=\"color:#9d9d9d\">Requires Level 55</div><div style=\"color:#1eff00\">Use: Restores 2550 health over 30 sec.  Must remain seated while eating.  If you spend at least 10 seconds eating you will become well fed and gain 25 Stamina for 15 min.</div>"
+ },
+ "21072": {
+  "icon": "",
+  "name": "Smoked Sagefish",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Smoked Sagefish</div><div style=\"color:#9d9d9d\">Requires Level 10</div><div style=\"color:#1eff00\">Use: Restores 378 health and 567 mana over 21 sec.  Must remain seated while eating.  If you spend at least 10 seconds eating you will become well fed and gain 5 Mana every 5 seconds for 15 min.</div>"
+ },
+ "21114": {
+  "icon": "",
+  "name": "Rumsey Rum Dark",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Rumsey Rum Dark</div><div style=\"color:#1eff00\">Use: Increases Stamina by 10 for 15 min and gets you drunk to boot!</div>"
+ },
+ "21151": {
+  "icon": "",
+  "name": "Rumsey Rum Black Label",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Rumsey Rum Black Label</div><div style=\"color:#1eff00\">Use: Increases Stamina by 15 for 15 min and gets you drunk to boot!</div>"
+ },
+ "21217": {
+  "icon": "",
+  "name": "Sagefish Delight",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Sagefish Delight</div><div style=\"color:#9d9d9d\">Requires Level 30</div><div style=\"color:#1eff00\">Use: Restores 840 health and 1260 mana over 21 sec.  Must remain seated while eating.  If you spend at least 10 seconds eating you will become well fed and gain 10 Mana every 5 seconds for 15 min.</div>"
+ },
+ "21546": {
+  "icon": "",
+  "name": "Elixir of Greater Firepower",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Greater Firepower</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Increases spell fire damage by up to 40 for 30 min.</div>"
+ },
+ "22589": {
+  "icon": "inv_staff_medivh",
+  "name": "Atiesh, Greatstaff of the Guardian",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ff8000\">Atiesh, Greatstaff of the Guardian</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Two-Hand, Staff</div><div style=\"color:#ffffff\">130 - 243 Damage, Speed 2.90</div><div style=\"color:#ffffff\">(64.3 damage per second)</div><div style=\"color:#ffffff\">+31 Stamina</div><div style=\"color:#ffffff\">+32 Intellect</div><div style=\"color:#ffffff\">+24 Spirit</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Equip: Improves your chance to hit with spells by 2%.</div><div style=\"color:#1eff00\">Equip: Increases damage and healing done by magical spells and effects by up to 150.</div><div style=\"color:#1eff00\">Equip: Increases the spell critical chance of all party members within 30 yards by 2%.</div><div style=\"color:#1eff00\">Use: Creates a portal, teleporting group members that use it to Karazhan.</div>"
+ },
+ "22630": {
+  "icon": "inv_staff_medivh",
+  "name": "Atiesh, Greatstaff of the Guardian",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ff8000\">Atiesh, Greatstaff of the Guardian</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Two-Hand, Staff</div><div style=\"color:#ffffff\">130 - 243 Damage, Speed 2.90</div><div style=\"color:#ffffff\">(64.3 damage per second)</div><div style=\"color:#ffffff\">+30 Stamina</div><div style=\"color:#ffffff\">+29 Intellect</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Equip: Improves your chance to get a critical strike with spells by 2%.</div><div style=\"color:#1eff00\">Equip: Increases damage and healing done by magical spells and effects by up to 150.</div><div style=\"color:#1eff00\">Equip: Increases damage and healing done by magical spells and effects of all party members within 30 yards by up to 33.</div><div style=\"color:#1eff00\">Use: Creates a portal, teleporting group members that use it to Karazhan.</div>"
+ },
+ "22635": {
+  "icon": "spell_nature_spiritarmor",
+  "name": "Savage Guard",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#0070dd\">Savage Guard</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 55</div><div style=\"color:#1eff00\">Use: Permanently adds 20 nature resistance to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div>"
+ },
+ "2289": {
+  "icon": "",
+  "name": "Scroll of Strength II",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Strength II</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Increases the target's Strength by 9 for 30 min.</div>"
+ },
+ "2304": {
+  "icon": "",
+  "name": "Light Armor Kit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Light Armor Kit</div><div style=\"color:#1eff00\">Use: Permanently increase the armor value of an item worn on the chest, legs, hands or feet by 8.</div>"
+ },
+ "23122": {
+  "icon": "",
+  "name": "Consecrated Sharpening Stone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Consecrated Sharpening Stone</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: While applied to target weapon it increases attack power against undead by 100. Lasts for 1 hour.</div>"
+ },
+ "23123": {
+  "icon": "",
+  "name": "Blessed Wizard Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Blessed Wizard Oil</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: While applied to target weapon it increases spell damage against undead by up to 60. Lasts for 1 hour.</div>"
+ },
+ "2313": {
+  "icon": "",
+  "name": "Medium Armor Kit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Medium Armor Kit</div><div style=\"color:#9d9d9d\">Requires Level 5</div><div style=\"color:#1eff00\">Use: Permanently increase the armor value of an item worn on the chest, legs, hands or feet by 16.</div>"
+ },
+ "2458": {
+  "icon": "",
+  "name": "Elixir of Minor Fortitude",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Minor Fortitude</div><div style=\"color:#9d9d9d\">Requires Level 2</div><div style=\"color:#1eff00\">Use: Increases the player's maximum health by 50 for 1 hour.</div>"
+ },
+ "26430": {
+  "icon": "inv_potion_13",
+  "name": "Tears of Teremus",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Tears of Teremus</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Imbibe the Tears of Teremus, increasing spell damage and healing by up to 120 for 30 min.</div>"
+ },
+ "2662": {
+  "icon": "inv_misc_quiver_06",
+  "name": "Ribbly's Quiver",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Ribbly's Quiver</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#ffffff\">18 Slot Quiver</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Equip: Increases ranged attack speed by 14%.</div>"
+ },
+ "3012": {
+  "icon": "",
+  "name": "Scroll of Agility",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Agility</div><div style=\"color:#9d9d9d\">Requires Level 10</div><div style=\"color:#1eff00\">Use: Increases the target's Agility by 5 for 30 min.</div>"
+ },
+ "3030": {
+  "icon": "",
+  "name": "Razor Arrow",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Razor Arrow</div><div style=\"color:#ffffff\">Projectile, Arrow</div><div style=\"color:#ffffff\">Adds 7.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 25</div>"
+ },
+ "3033": {
+  "icon": "",
+  "name": "Solid Shot",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Solid Shot</div><div style=\"color:#ffffff\">Projectile, Bullet</div><div style=\"color:#ffffff\">Adds 7.5 damage per second</div><div style=\"color:#9d9d9d\">Requires Level 25</div>"
+ },
+ "3382": {
+  "icon": "",
+  "name": "Weak Troll's Blood Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Weak Troll's Blood Potion</div><div style=\"color:#1eff00\">Use: Regenerate 5 health every 5 sec for 1 hour.</div>"
+ },
+ "3388": {
+  "icon": "",
+  "name": "Strong Troll's Blood Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Strong Troll's Blood Potion</div><div style=\"color:#9d9d9d\">Requires Level 15</div><div style=\"color:#1eff00\">Use: Regenerate 10 health every 5 sec for 1 hour.</div>"
+ },
+ "3389": {
+  "icon": "",
+  "name": "Elixir of Defense",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Defense</div><div style=\"color:#9d9d9d\">Requires Level 16</div><div style=\"color:#1eff00\">Use: Increases armor by 150 for 1 hour.</div>"
+ },
+ "3390": {
+  "icon": "",
+  "name": "Elixir of Lesser Agility",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Lesser Agility</div><div style=\"color:#9d9d9d\">Requires Level 18</div><div style=\"color:#1eff00\">Use: Increases Agility by 8 for 1 hour.</div>"
+ },
+ "3391": {
+  "icon": "",
+  "name": "Elixir of Ogre's Strength",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Ogre's Strength</div><div style=\"color:#9d9d9d\">Requires Level 20</div><div style=\"color:#1eff00\">Use: Increases Strength by 8 for 1 hour.</div>"
+ },
+ "34323": {
+  "icon": "inv_potion_24",
+  "name": "Flask of Indomitable Might",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Flask of Indomitable Might</div><div style=\"color:#9d9d9d\">Requires Level 50</div><div style=\"color:#1eff00\">Use: Increases the player's Attack Power by 150 for 2 hrs.  You can only have the effect of one flask at a time.  This effect persists through death.</div>"
+ },
+ "3573": {
+  "icon": "",
+  "name": "Hunting Quiver",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Hunting Quiver</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#ffffff\">12 Slot Quiver</div><div style=\"color:#1eff00\">Equip: Increases ranged attack speed by 10%.</div>"
+ },
+ "3605": {
+  "icon": "",
+  "name": "Quiver of the Night Watch",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Quiver of the Night Watch</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#ffffff\">14 Slot Quiver</div><div style=\"color:#1eff00\">Equip: Increases ranged attack speed by 11%.</div>"
+ },
+ "3824": {
+  "icon": "",
+  "name": "Shadow Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Shadow Oil</div><div style=\"color:#9d9d9d\">Requires Level 24</div><div style=\"color:#1eff00\">Use: When applied to a melee weapon it gives a 15% chance of casting Shadowbolt III at the opponent when it hits.  Lasts 30 minutes.</div>"
+ },
+ "3825": {
+  "icon": "",
+  "name": "Elixir of Fortitude",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Fortitude</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Increases the player's maximum health by 220 for 1 hour.</div>"
+ },
+ "3826": {
+  "icon": "inv_potion_79",
+  "name": "Mighty Troll's Blood Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mighty Troll's Blood Potion</div><div style=\"color:#9d9d9d\">Requires Level 26</div><div style=\"color:#1eff00\">Use: Regenerate 20 health every 5 sec for 1 hour.</div>"
+ },
+ "3827": {
+  "icon": "",
+  "name": "Mana Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mana Potion</div><div style=\"color:#9d9d9d\">Requires Level 22</div><div style=\"color:#1eff00\">Use: Restores 455 to 585 mana.</div>"
+ },
+ "3829": {
+  "icon": "",
+  "name": "Frost Oil",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Frost Oil</div><div style=\"color:#9d9d9d\">Requires Level 30</div><div style=\"color:#1eff00\">Use: When applied to a melee weapon it gives a 10% chance of casting Frostbolt at the opponent when it hits.  Lasts 30 minutes.</div>"
+ },
+ "3928": {
+  "icon": "",
+  "name": "Superior Healing Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Superior Healing Potion</div><div style=\"color:#9d9d9d\">Requires Level 35</div><div style=\"color:#1eff00\">Use: Restores 700 to 900 health.</div>"
+ },
+ "4265": {
+  "icon": "",
+  "name": "Heavy Armor Kit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Heavy Armor Kit</div><div style=\"color:#9d9d9d\">Requires Level 20</div><div style=\"color:#1eff00\">Use: Permanently increase the armor value of an item worn on the chest, legs, hands or feet by 24.  Only usable on items level 15 and above.</div>"
+ },
+ "4395": {
+  "icon": "",
+  "name": "Goblin Land Mine",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Goblin Land Mine</div><div style=\"color:#9d9d9d\">Requires Engineering (195)</div><div style=\"color:#1eff00\">Use: Places the Goblin Land Mine on the ground.  It will explode for 588 to 700 fire damage the next time a hostile creature passes near it.  The mine has a duration of 10 min.</div>"
+ },
+ "4405": {
+  "icon": "",
+  "name": "Crude Scope",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Crude Scope</div><div style=\"color:#9d9d9d\">Requires Level 5</div><div style=\"color:#1eff00\">Use: Attaches a permanent scope to a bow or gun that increases its damage by 1.</div>"
+ },
+ "4406": {
+  "icon": "",
+  "name": "Standard Scope",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Standard Scope</div><div style=\"color:#9d9d9d\">Requires Level 10</div><div style=\"color:#1eff00\">Use: Attaches a permanent scope to a bow or gun that increases its damage by 2.</div>"
+ },
+ "4407": {
+  "icon": "",
+  "name": "Accurate Scope",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Accurate Scope</div><div style=\"color:#9d9d9d\">Requires Level 20</div><div style=\"color:#1eff00\">Use: Attaches a permanent scope to a bow or gun that increases its damage by 3.</div>"
+ },
+ "4425": {
+  "icon": "",
+  "name": "Scroll of Agility III",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Agility III</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Increases the target's Agility by 13 for 30 min.</div>"
+ },
+ "4426": {
+  "icon": "",
+  "name": "Scroll of Strength III",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Strength III</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Increases the target's Strength by 13 for 30 min.</div>"
+ },
+ "4623": {
+  "icon": "",
+  "name": "Lesser Stoneshield Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Lesser Stoneshield Potion</div><div style=\"color:#9d9d9d\">Requires Level 33</div><div style=\"color:#1eff00\">Use: Increases armor by 1000 for 2 min.</div>"
+ },
+ "5206": {
+  "icon": "",
+  "name": "Bogling Root",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Bogling Root</div><div style=\"color:#1eff00\">Use: Increases physical damage by 1 for 10 min.</div>"
+ },
+ "5342": {
+  "icon": "",
+  "name": "Raptor Punch",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Raptor Punch</div><div style=\"color:#1eff00\">Use: Increases your Intellect by 4 and decreases your Stamina by 5 for 5 min.</div>"
+ },
+ "5509": {
+  "icon": "",
+  "name": "Healthstone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Healthstone</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 24</div><div style=\"color:#1eff00\">Use: Instantly restores 500 life.</div>"
+ },
+ "5510": {
+  "icon": "",
+  "name": "Greater Healthstone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Healthstone</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 36</div><div style=\"color:#1eff00\">Use: Instantly restores 800 life.</div>"
+ },
+ "5513": {
+  "icon": "",
+  "name": "Mana Jade",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mana Jade</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 38</div><div style=\"color:#1eff00\">Use: Restores 550 to 650 mana.</div>"
+ },
+ "5514": {
+  "icon": "",
+  "name": "Mana Agate",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mana Agate</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 23</div><div style=\"color:#1eff00\">Use: Restores 375 to 425 mana.</div>"
+ },
+ "5631": {
+  "icon": "",
+  "name": "Rage Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Rage Potion</div><div style=\"color:#9d9d9d\">Classes: Warrior</div><div style=\"color:#9d9d9d\">Requires Level 4</div><div style=\"color:#1eff00\">Use: Increases Rage by 30 to 60.</div>"
+ },
+ "5633": {
+  "icon": "",
+  "name": "Great Rage Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Great Rage Potion</div><div style=\"color:#9d9d9d\">Classes: Warrior</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Increases Rage by 50 to 80.</div>"
+ },
+ "5997": {
+  "icon": "",
+  "name": "Elixir of Minor Defense",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Minor Defense</div><div style=\"color:#1eff00\">Use: Increases armor by 50 for 1 hour.</div>"
+ },
+ "6149": {
+  "icon": "",
+  "name": "Greater Mana Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Greater Mana Potion</div><div style=\"color:#9d9d9d\">Requires Level 31</div><div style=\"color:#1eff00\">Use: Restores 700 to 900 mana.</div>"
+ },
+ "6373": {
+  "icon": "",
+  "name": "Elixir of Firepower",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Firepower</div><div style=\"color:#9d9d9d\">Requires Level 18</div><div style=\"color:#1eff00\">Use: Increases spell fire damage by up to 10 for 30 min.</div>"
+ },
+ "7371": {
+  "icon": "",
+  "name": "Heavy Quiver",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Heavy Quiver</div><div style=\"color:#ffffff\">16 Slot Quiver</div><div style=\"color:#9d9d9d\">Requires Level 30</div><div style=\"color:#1eff00\">Equip: Increases ranged attack speed by 12%.</div>"
+ },
+ "7676": {
+  "icon": "",
+  "name": "Thistle Tea",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Thistle Tea</div><div style=\"color:#9d9d9d\">Classes: Rogue</div><div style=\"color:#9d9d9d\">Requires Level 5</div><div style=\"color:#1eff00\">Use: Instantly restores 100 energy.</div>"
+ },
+ "7964": {
+  "icon": "",
+  "name": "Solid Sharpening Stone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Solid Sharpening Stone</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Increase sharp weapon damage by 6 for 30 minutes.</div>"
+ },
+ "7965": {
+  "icon": "",
+  "name": "Solid Weightstone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Solid Weightstone</div><div style=\"color:#9d9d9d\">Requires Level 25</div><div style=\"color:#1eff00\">Use: Increase the damage of a blunt weapon by 6 for 30 minutes.</div>"
+ },
+ "8007": {
+  "icon": "",
+  "name": "Mana Citrine",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mana Citrine</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Restores 775 to 925 mana.</div>"
+ },
+ "8008": {
+  "icon": "",
+  "name": "Mana Ruby",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Mana Ruby</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 58</div><div style=\"color:#1eff00\">Use: Restores 1000 to 1200 mana.</div>"
+ },
+ "8173": {
+  "icon": "",
+  "name": "Thick Armor Kit",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Thick Armor Kit</div><div style=\"color:#9d9d9d\">Requires Level 30</div><div style=\"color:#1eff00\">Use: Permanently increase the armor value of an item worn on the chest, legs, hands or feet by 32.  Only usable on items level 25 and above.</div>"
+ },
+ "8217": {
+  "icon": "",
+  "name": "Quickdraw Quiver",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">Quickdraw Quiver</div><div style=\"color:#ffffff\">18 Slot Quiver</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Equip: Increases ranged attack speed by 13%.</div>"
+ },
+ "8410": {
+  "icon": "",
+  "name": "R.O.I.D.S.",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">R.O.I.D.S.</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Increases Strength by 30 when consumed. Effect lasts for 60 minutes.</div><div style=\"color:#9d9d9d\">\"Robust Operational Imbue Derived From Snickerfang\"</div>"
+ },
+ "8411": {
+  "icon": "inv_drink_12",
+  "name": "Lung Juice Cocktail",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Lung Juice Cocktail</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Increases Stamina by 30 when consumed. Effect lasts for 60 minutes.</div><div style=\"color:#9d9d9d\">\"100% Grade A Lung Juice - Freshly Squeezed\"</div>"
+ },
+ "8412": {
+  "icon": "",
+  "name": "Ground Scorpok Assay",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Ground Scorpok Assay</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Increases Agility by 30 when consumed. Effect lasts for 60 minutes.</div>"
+ },
+ "8423": {
+  "icon": "",
+  "name": "Cerebral Cortex Compound",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Cerebral Cortex Compound</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Increases Intellect by 30 when consumed. Effect lasts for 60 minutes.</div><div style=\"color:#9d9d9d\">\"Best Served Chilled\"</div>"
+ },
+ "8424": {
+  "icon": "inv_misc_food_30",
+  "name": "Gizzard Gum",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Gizzard Gum</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Increases Spirit by 30 when consumed. Effect lasts for 60 minutes.</div><div style=\"color:#9d9d9d\">\"Strawberry Flavor\"</div>"
+ },
+ "8928": {
+  "icon": "",
+  "name": "Instant Poison VI",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Instant Poison VI</div><div style=\"color:#9d9d9d\">Classes: Rogue</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#1eff00\">Use: Coats a weapon with poison that lasts for 30 minutes.\nEach strike has a 20% chance of poisoning the enemy which instantly inflicts 140 to 176 Nature damage.  115 charges.</div>"
+ },
+ "8949": {
+  "icon": "",
+  "name": "Elixir of Agility",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Agility</div><div style=\"color:#9d9d9d\">Requires Level 27</div><div style=\"color:#1eff00\">Use: Increases Agility by 15 for 1 hour.</div>"
+ },
+ "8951": {
+  "icon": "",
+  "name": "Elixir of Greater Defense",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Greater Defense</div><div style=\"color:#9d9d9d\">Requires Level 29</div><div style=\"color:#1eff00\">Use: Increases armor by 250 for 1 hour.</div>"
+ },
+ "8956": {
+  "icon": "",
+  "name": "Oil of Immolation",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Oil of Immolation</div><div style=\"color:#9d9d9d\">Requires Level 31</div><div style=\"color:#1eff00\">Use: Does 50 fire damage to any enemies within a 5 yard radius around the caster every 3 seconds for 15 sec</div>"
+ },
+ "8985": {
+  "icon": "",
+  "name": "Deadly Poison IV",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Deadly Poison IV</div><div style=\"color:#9d9d9d\">Classes: Rogue</div><div style=\"color:#9d9d9d\">Requires Level 54</div><div style=\"color:#1eff00\">Use: Coats a weapon with poison that lasts for 30 minutes.\nEach strike has a 30% chance of poisoning the enemy for 100 Nature damage over 10 sec.  Stacks up to 5 times on a single target.  105 charges.</div>"
+ },
+ "9036": {
+  "icon": "",
+  "name": "Magic Resistance Potion",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Magic Resistance Potion</div><div style=\"color:#9d9d9d\">Requires Level 32</div><div style=\"color:#1eff00\">Use: Increases your resistance to all schools of magic by 50 for 6 min.</div>"
+ },
+ "9088": {
+  "icon": "",
+  "name": "Gift of Arthas",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Gift of Arthas</div><div style=\"color:#9d9d9d\">Requires Level 38</div><div style=\"color:#1eff00\">Use: Increases resistance to shadow by 10.  If an enemy strikes the imbiber, the attacker has a 30% chance of being inflicted with disease that increases their damage taken by 14 for 3 min.  Lasts for 30 min.</div>"
+ },
+ "9155": {
+  "icon": "",
+  "name": "Arcane Elixir",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Arcane Elixir</div><div style=\"color:#9d9d9d\">Requires Level 37</div><div style=\"color:#1eff00\">Use: Increases spell damage by up to 20 for 30 min.</div>"
+ },
+ "9179": {
+  "icon": "",
+  "name": "Elixir of Greater Intellect",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Greater Intellect</div><div style=\"color:#9d9d9d\">Requires Level 37</div><div style=\"color:#1eff00\">Use: Increases Intellect by 25 for 1 hour.</div>"
+ },
+ "9187": {
+  "icon": "",
+  "name": "Elixir of Greater Agility",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Greater Agility</div><div style=\"color:#9d9d9d\">Requires Level 38</div><div style=\"color:#1eff00\">Use: Increases Agility by 25 for 1 hour.</div>"
+ },
+ "9206": {
+  "icon": "",
+  "name": "Elixir of Giants",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Giants</div><div style=\"color:#9d9d9d\">Requires Level 38</div><div style=\"color:#1eff00\">Use: Increases your Strength by 25 for 1 hour.</div>"
+ },
+ "9224": {
+  "icon": "",
+  "name": "Elixir of Demonslaying",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Demonslaying</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Increases attack power by 265 against demons.  Lasts 5 min.</div>"
+ },
+ "9264": {
+  "icon": "",
+  "name": "Elixir of Shadow Power",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Shadow Power</div><div style=\"color:#9d9d9d\">Requires Level 40</div><div style=\"color:#1eff00\">Use: Increases spell shadow damage by up to 40 for 30 min.</div>"
+ },
+ "9421": {
+  "icon": "",
+  "name": "Major Healthstone",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Major Healthstone</div><div style=\"color:#ffffff\">Conjured Item</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#9d9d9d\">Requires Level 48</div><div style=\"color:#1eff00\">Use: Instantly restores 1200 life.</div>"
+ },
+ "954": {
+  "icon": "",
+  "name": "Scroll of Strength",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Strength</div><div style=\"color:#9d9d9d\">Requires Level 10</div><div style=\"color:#1eff00\">Use: Increases the target's Strength by 5 for 30 min.</div>"
+ }
+}

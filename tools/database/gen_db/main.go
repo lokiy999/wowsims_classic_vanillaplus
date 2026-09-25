@@ -359,6 +359,22 @@ func main() {
 	db.MergeSpellIcons(database.SpellIconoverrides)
 	db.MergeItemIcons(database.ItemIconoverrides)
 
+	// Non-gear items (consumables, enchant items, ...) with their in-game tooltip from the server dump
+	// (tools/gen_server_item_tooltips.py) instead of Wowhead's.
+	for id, server := range readServerItemTooltips(fmt.Sprintf("%s/server_item_tooltips.json", inputsDir)) {
+		if _, ok := db.ItemIcons[id]; !ok {
+			if wh, ok := itemTooltips[id]; ok && wh.GetName() != "" && wh.GetIcon() != "" {
+				db.AddItemIcon(id, itemTooltips)
+			} else if server.Icon != "" {
+				// Server item Wowhead does not know (e.g. Tears of Teremus).
+				db.ItemIcons[id] = &proto.IconData{Id: id, Name: server.Name, Icon: server.Icon}
+			} else {
+				continue
+			}
+		}
+		db.ItemIcons[id].Tooltip = server.Tooltip
+	}
+
 	atlasDBProto := atlaslootDB.ToUIProto()
 	db.MergeZones(atlasDBProto.Zones)
 	db.MergeNpcs(atlasDBProto.Npcs)
@@ -934,4 +950,29 @@ func readSpellIdList(path string) []int32 {
 		}
 	}
 	return ids
+}
+
+type serverItemTooltip struct {
+	Name    string `json:"name"`
+	Icon    string `json:"icon"`
+	Tooltip string `json:"tooltip"`
+}
+
+// readServerItemTooltips reads {"itemId": {name, icon, tooltip}}. A missing file gives none.
+func readServerItemTooltips(path string) map[int32]serverItemTooltip {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	var raw map[string]serverItemTooltip
+	if err := json.Unmarshal(data, &raw); err != nil {
+		panic(fmt.Sprintf("%s: %v", path, err))
+	}
+	out := make(map[int32]serverItemTooltip, len(raw))
+	for k, v := range raw {
+		if id, err := strconv.Atoi(k); err == nil {
+			out[int32(id)] = v
+		}
+	}
+	return out
 }

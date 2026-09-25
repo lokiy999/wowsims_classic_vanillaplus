@@ -48,6 +48,8 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     Attack Power", sim: none yet)? How much rage does Grizzly's Fury give when you are hit? Does Leader of the Pack
     really double Dire Bear Form (armor from items +720% instead of +360%, health +40%, +360 attack power)? Compare
     the character sheet armor with and without the talent. Enrage's armor loss (sim: classic 16% in Dire Bear Form).
+17. **Flask of Indomitable Might icon** (Part CK): which icon does item 34323 have in game? Wowhead and AtlasLoot
+    do not know it; the sim shows `inv_potion_24` as a placeholder.
 
 ## Talents not in the sim code (regenerated 2026-09-24, after Part CE)
 
