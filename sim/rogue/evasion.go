@@ -11,7 +11,7 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 	rogue.EvasionAura = rogue.RegisterAura(core.Aura{
 		Label:    "Evasion",
 		ActionID: core.ActionID{SpellID: 5277},
-		Duration: time.Second * 15,
+		Duration: time.Second * 10, // server (Spell.csv 5277)
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Dodge, 50*core.DodgeRatingPerDodgeChance)
 		},

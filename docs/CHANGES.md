@@ -3448,7 +3448,7 @@ Checked the common raid buffs/debuffs and world buffs against `Spell.csv` (base 
 | Warchief's Blessing (16609) | +300 health, +10 MP5, +15% melee speed | +300 health, +30 MP5, +5% attack (melee and ranged) and casting speed |
 | Sayge's Dark Fortune of Damage (23768) | +10% | +5% |
 
-Part (hunter audit) had set Trueshot to 100 / 50 from "DBC 20906"; those are the rank 1 values (19506, the talent).
+The earlier hunter audit set Trueshot to 100 / 50 from "DBC 20906"; those are the rank 1 values (19506, the talent).
 Rank 3 has 200 / 100. The raid buff uses rank 3 (TODO question 18: can hunters train ranks 2-3?).
 
 Unchanged, matching the server: Battle Shout 232, Blessing of Might 185, Blessing of Wisdom 33, Blessing of Kings
@@ -3459,3 +3459,12 @@ Stormstrike (server: +10% Nature damage taken for 10 sec, no charges; sim +20%, 
 the Stormstrike talent is not in the server tree, so the sim never uses it.
 
 Every golden test result moved (these buffs are in every test raid); mage DPS about +3-4% from 10 Scorch stacks.
+
+Also checked in this round:
+- **Consumables:** every elixir, flask, food, alcohol, oil, stone and Juju in the UI against the in-game text in
+  `VPlusItemDB.lua`: all already match (e.g. Brilliant Wizard Oil 25 spell damage + 1% crit, Juju Might 100 attack
+  power, Juju Flurry 5%, Grilled Squid 20 Agility, Nightfin Soup 15 MP5). No change.
+- **Rogue cooldowns** (not covered by Part BZ, the dump test crashed for the rogue): Kick, Vanish, Sprint, Feint,
+  Gouge, Riposte, Blade Flurry, Adrenaline Rush, Cold Blood, Preparation, Premeditation all match. **Evasion** lasts
+  10 sec on the server (was 15; still +50% dodge, 5 min cooldown). Spell 14278 is "Ghostly Trick" (60 sec cooldown) on
+  the server, but Ghostly Strike is not in the server tree and stays disabled.
