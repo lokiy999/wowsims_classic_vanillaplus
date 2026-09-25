@@ -2,12 +2,20 @@ package paladin
 
 import (
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/stats"
 )
 
 // Talents from the server's custom trees (text from ui/core/talents/trees/paladin.json).
 func (paladin *Paladin) applyServerTalents() {
 	// The Revenant: reduces the chance you are critically hit by 2% per rank.
 	paladin.PseudoStats.ReducedCritTakenChance += 0.02 * float64(paladin.Talents.TheRevenant)
+
+	// Shield of Faith: all spell damage taken -5% per rank (-15% at 3/3).
+	if paladin.Talents.ShieldOfFaith > 0 {
+		for school := stats.SchoolIndexArcane; school < stats.SchoolLen; school++ {
+			paladin.PseudoStats.SchoolDamageTakenMultiplier[school] *= 1 - 0.05*float64(paladin.Talents.ShieldOfFaith)
+		}
+	}
 
 	paladin.applyMorale()
 	paladin.applyIllumination()

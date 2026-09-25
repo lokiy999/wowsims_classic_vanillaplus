@@ -3817,3 +3817,16 @@ Favor (5 min), Crusader Strike (8 sec, Consecrated Arms +5% attack speed for 15 
 This closes the Part AY TODO items "Consecration and Exorcism not compared" and "lower Judgement of Command ranks".
 
 Test averages: retribution 421.7 -> 425.4 (+0.9%), protection 385.4 -> 388.5 (+0.8%).
+
+## Part DH — Paladin talents checked against the server text (2026-09-25)
+
+Went through every paladin talent against its server tooltip and spell data. Nearly all were already right (Improved
+Seal of Righteousness, Divine Strength/Intellect, Holy Power, Divine Concentration, Improved Purifying, Holy Grasp,
+Searing/Healing Light, Toughness, Shield Specialization, Redoubt, Precision, Unbreakability, weapon
+specializations, Improved Righteous Fury +10%/rank, Morale, Improved Judgement, Conviction, Improved Seal of the
+Crusader, Deflection, The Revenant, Crusade, Improved Retribution Aura, Benediction, Sanctity Aura and Improved
+Sanctity Aura, Vengeance, Blessed Strikes, Codex of the Silver Hand, Inevitable Justice). Changed:
+- **Reckoning** (20177-20182, 34022-34026): 4% chance per rank for an extra attack when hit by an attack or spell,
+  20% per rank on a critical hit ("five times higher"). The sim only procced on melee/ranged crits.
+- **Shield of Faith** (not in the sim before): all spell damage taken -5% per rank.
+No test baseline moved (tests have no talents).

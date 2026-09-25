@@ -132,7 +132,7 @@ all the other data is done; do these as one batch then):
 - Warrior: Mocker (Taunt/Challenging Shout/Mocking Blow hit +6%), Improved Defensive Stance (absorb shield on stance
   swap), Concussion Blow and Shield Toss ("high amount of threat": the threat value and Shield Toss attack power
   coefficient are unknown), Piercing Howl threat, Blood Craze, Berserker's Blood (needs the player's health).
-- Paladin: Shield of Faith (-15% spell damage taken), Guardian's Favor (Salvation/Sanctuary +20%), Second Wind,
+- Paladin: Guardian's Favor (Salvation/Sanctuary +20%), Second Wind,
   Stoicism, Eye for an Eye, Improved Concentration Aura.
 - Warlock: Damned Vanguard (demon threat +30%, damage taken -30%).
 - Hunter: Intimidation threat, Improved Distracting Shot, Deterrence, pet Survival Instincts and Bestial Swiftness.
@@ -144,7 +144,7 @@ all the other data is done; do these as one batch then):
 - **Druid** (11 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Custody Of The Nature, Catharsis
 - **Hunter** (20 of 60): Improved Mend Pet, Aspect Mastery, Improved Revive Pet, Intimidation, Bestial Swiftness, Survival Instincts, Team Play, Terrifying Roar, Improved Hunters Mark, Improved Concussive Shot, Vantage Point, Hawk Eye, Improved Distracting Shot, Scatter Shot, Deterrence, Improved Wing Clip, Trapper, Thrill Of The Hunt, Deep Freeze, Wyvern Sting
 - **Mage** (21 of 60): Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Flame Throwing, Impact, Blazing Speed, Chain Reaction, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
-- **Paladin** (17 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
+- **Paladin** (16 of 60): Aura Mastery, Spiritual Focus, Inner Light, Divine Grace, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
 - **Priest** (19 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
 - **Rogue** (19 of 60): Remorseless Attacks, Seek And Destroy, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
 - **Shaman** (15 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Improved Ghost Wolf, Shamanism, Spiritwalking, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Cleansing Wave

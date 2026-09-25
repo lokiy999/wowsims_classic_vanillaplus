@@ -131,22 +131,25 @@ func (paladin *Paladin) applyRedoubt() {
 }
 
 func (paladin *Paladin) applyReckoning() {
-
 	if paladin.Talents.Reckoning == 0 {
 		return
 	}
 
+	// Server (Spell.csv 20177-20182, 34022-34026): 4% chance per rank when hit by an attack or spell, 20% per rank
+	// (five times higher) on a critical hit.
 	procID := core.ActionID{SpellID: 20178} // Reckoning Proc ID
-	procChance := 0.2 * float64(paladin.Talents.Reckoning)
-
+	hitChance := 0.04 * float64(paladin.Talents.Reckoning)
+	critChance := 0.2 * float64(paladin.Talents.Reckoning)
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "Reckoning Crit Trigger",
-		Callback:   core.CallbackOnSpellHitTaken,
-		Outcome:    core.OutcomeCrit,
-		ProcMask:   core.ProcMaskMeleeOrRanged,
-		ProcChance: procChance,
+		Name:     "Reckoning Trigger",
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMeleeOrRanged | core.ProcMaskSpellDamage,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+			chance := core.TernaryFloat64(result.DidCrit(), critChance, hitChance)
+			if sim.RandomFloat("Reckoning") < chance {
+				paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+			}
 		},
 	})
 }
