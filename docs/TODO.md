@@ -223,9 +223,8 @@ Still open, the calculator confirmed the text but not the mechanics:
 
 - Warrior audit round 2 (CHANGES.md Part BB), still open and needs the game: Maim (10% on auto attacks per the DBC, +5%
   damage taken, duration unknown, all three ranks look identical); Improved Rend (stack behaviour: damage per stack,
-  duration); ~~Deep Wounds stacks~~ done (Part CR); Shield Block (question 24); Berserker's Blood (needs current health, 1-40% speed); Improved Berserker Stance GCD reduction
-  (0.25s/rank); Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute rage-to-damage ratio (sim 15).
-- ~~Para Bellum~~ checked 2026-09-25 (Part CQ): shared cooldowns were never touched; the stance swap no longer is.
+  duration); ~~Deep Wounds stacks~~ done (Part CR); Shield Block (question 24); Berserker's Blood (needs current health, 1-40% speed); ~~Improved Berserker Stance GCD reduction~~ done (Part CS); Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute rage-to-damage ratio (sim 15).
+- ~~Para Bellum~~ fixed 2026-09-25 (Parts CQ, CS): every warrior ability, not the stance swap or shared cooldowns.
 
 ## Raised 2026-09-19 — rogue talents (CHANGES.md Part AN)
 

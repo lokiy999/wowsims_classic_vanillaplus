@@ -1,6 +1,7 @@
 package warrior
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/classic/sim/common/guardians"
@@ -147,6 +148,12 @@ func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig
 	}
 
 	ws.Spell = warrior.Unit.RegisterSpell(config)
+
+	// Para Bellum: -4% per rank on the cooldown of every warrior ability (items and racials are not registered here).
+	// Not the stance swap: its 1 sec cooldown is the sim's stance-dance limit, not an ability cooldown.
+	if pb := warrior.Talents.ParaBellum; pb > 0 && ws.CD.Timer != nil && ws.CD.Duration > 0 && !slices.Contains(StanceCodes, ws.SpellCode) {
+		ws.CD.Duration = time.Duration(float64(ws.CD.Duration) * (1 - 0.04*float64(pb)))
+	}
 
 	if stanceMask.Matches(BattleStance) {
 		warrior.BattleStanceSpells = append(warrior.BattleStanceSpells, ws)

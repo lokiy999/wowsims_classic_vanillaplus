@@ -2,7 +2,6 @@ package warrior
 
 import (
 	"fmt"
-	"slices"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -440,15 +439,7 @@ func (warrior *Warrior) applyArmsExtras() {
 			}
 		})
 	}
-	if warrior.Talents.ParaBellum > 0 {
-		factor := 1 - 0.04*float64(warrior.Talents.ParaBellum)
-		warrior.OnSpellRegistered(func(spell *core.Spell) {
-			// Not the stance swap: its 1 sec cooldown is the sim's stance-dance limit, not an ability cooldown.
-			if spell.CD.Timer != nil && spell.CD.Duration > 0 && spell.SpellCode != SpellCode_WarriorNone && !slices.Contains(StanceCodes, spell.SpellCode) {
-				spell.CD.Duration = time.Duration(float64(spell.CD.Duration) * factor)
-			}
-		})
-	}
+	// Para Bellum (-4%/rank ability cooldowns) is applied in Warrior.RegisterSpell, so it covers every warrior ability.
 	// Slamcraft: +10%/rank Shield Slam crit (Slam cast time reduction is in slam.go).
 	if warrior.Talents.Slamcraft > 0 {
 		crit := 10 * float64(warrior.Talents.Slamcraft) * core.CritRatingPerCritChance

@@ -3553,3 +3553,14 @@ Checked every DB item for an AQ20 / AQ40 / Naxx source: only two had one.
   every stack ticked out fully.
 - Shield Block has two server spells: 2565 (50% block, 10 sec, 20 sec cooldown, 1 block) and 12169 (75%, 5 sec,
   5 sec cooldown). The sim uses 12169's values (TODO question 24).
+
+## Part CS — Improved Berserker Stance GCD; Para Bellum on every warrior ability (2026-09-25)
+
+- **Improved Berserker Stance**: the GCD part (-0.25 sec per rank) is in: while in Berserker Stance every warrior
+  ability's GCD is shorter (1.0 sec at 2/2, the sim's minimum). Throwaway sim spamming Hamstring for 12 sec with
+  100 starting rage: 9 casts at 0/2, 13 at 2/2.
+- **Para Bellum** only touched spells with a warrior spell code, which skipped Berserker Rage, Bloodrage, Pummel,
+  Recklessness, Shield Block, Shield Wall, Sweeping Strikes, Thunder Clap and two talent spells. It is now applied in
+  `Warrior.RegisterSpell`, so it covers every warrior ability (not items, racials or the stance swap). Bloodrage over
+  300 sec: 6 casts at 0/5, 7 at 5/5 (48 sec cooldown).
+- Part CQ's note that Para Bellum was fine is corrected by this. Maim already uses 10/20/30 sec (TODO note was stale).

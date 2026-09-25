@@ -123,6 +123,33 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 }
 
 func (warrior *Warrior) registerBerserkerStanceAura() {
+	// Improved Berserker Stance: -0.25 sec per rank on the GCD of warrior abilities while in the stance (the cast
+	// code keeps the 1 sec minimum). Base GCDs are remembered so the values can't drift.
+	gcdCut := time.Millisecond * 250 * time.Duration(warrior.Talents.ImprovedBerserkerStance)
+	var baseGCDs map[*core.Spell]time.Duration
+	setGCDs := func(inStance bool) {
+		if gcdCut == 0 {
+			return
+		}
+		if baseGCDs == nil {
+			baseGCDs = make(map[*core.Spell]time.Duration)
+			for _, list := range [][]*WarriorSpell{warrior.BattleStanceSpells, warrior.DefensiveStanceSpells, warrior.BerserkerStanceSpells} {
+				for _, ws := range list {
+					if ws.DefaultCast.GCD > 0 {
+						baseGCDs[ws.Spell] = ws.DefaultCast.GCD
+					}
+				}
+			}
+		}
+		for spell, gcd := range baseGCDs {
+			if inStance {
+				spell.DefaultCast.GCD = gcd - gcdCut
+			} else {
+				spell.DefaultCast.GCD = gcd
+			}
+		}
+	}
+
 	warrior.BerserkerStanceAura = warrior.RegisterAura(core.Aura{
 		Label:    "Berserker Stance",
 		ActionID: core.ActionID{SpellID: 2458},
@@ -133,14 +160,16 @@ func (warrior *Warrior) registerBerserkerStanceAura() {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier *= 0.8
 			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.1
 			ee.Aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, core.CritRatingPerCritChance*3)
-			// DBC: Improved Berserker Stance +5%/rank attack speed (the GCD reduction is not modeled).
+			// DBC: Improved Berserker Stance +5%/rank attack speed and -0.25 sec/rank GCD.
 			warrior.MultiplyMeleeSpeed(sim, 1+0.05*float64(warrior.Talents.ImprovedBerserkerStance))
+			setGCDs(true)
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= 0.8
 			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.1
 			ee.Aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, -core.CritRatingPerCritChance*3)
 			warrior.MultiplyMeleeSpeed(sim, 1/(1+0.05*float64(warrior.Talents.ImprovedBerserkerStance)))
+			setGCDs(false)
 		},
 	})
 }
