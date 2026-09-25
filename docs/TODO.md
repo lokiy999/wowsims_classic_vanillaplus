@@ -104,9 +104,9 @@ all the other data is done; do these as one batch then):
 
 All four heal pages work (Healing Priest, Restoration Shaman, Restoration Druid, Holy Paladin) with the server's heal
 values. Left for later, roughly in order:
-- **Gear slots are empty on first load on every page** (checked 2026-09-24 in a fresh browser, also on the older Shadow
-  Priest page, so not new): the preset gear sets don't show up in the gear slots and the stats show no gear. Check
-  whether the preset item ids are missing from `assets/database/db.json` or the default gear isn't applied.
+- ~~**Gear slots are empty on first load**~~ Not a bug (checked 2026-09-25): that is the testing switch
+  `START_WITH_EMPTY_PRESETS = true` in `ui/core/individual_sim_ui.ts` (Part AT). The preset files are fine (every
+  Pre-BiS item and enchant is in the DB). Set it to `false` when the presets should come back.
 - **Healer gear presets**: every healer page uses a placeholder set from a DPS caster page (shadow priest, elemental,
   balance). Make real healing sets (+healing gear) once the item list is checked.
 - **Healing rotations** (low priority like all rotations): fixed priorities on one target dummy, so there is no
