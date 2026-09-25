@@ -3768,3 +3768,15 @@ active" at the top raised the test DPS from 474 to 503. Not changed (rotations a
 Still without numbers: Shamanism and Thrill of the Hunt (the chance is not in the spell data, probably a
 procs-per-minute value from a table that is not exported), Ice Shards (cast time index 8, mana cost and spell power
 coefficient unknown).
+
+## Part DE — Warlock talents: Fel Pact, Feeding Demons (2026-09-25)
+
+Both are in `sim/warlock/talents_server.go`, with numbers from `Spell.csv`:
+- **Fel Pact** (33952-33956): the demon's critical hits with spells or abilities have an 8% chance per rank
+  (33957-33961, 40% at 5/5) to give the warlock 15% of total mana over 15 sec (33962: 1% every sec; a new proc
+  restarts it). The warlock-heals-demon half (33963) does nothing in a DPS sim.
+- **Feeding Demons** (33969-33970): the warlock's spell critical strikes have a 50% chance per rank to restore
+  6 x level mana (360 at 60) to the active demon (33971).
+Throwaway sim (SM/Ruin preset gear, succubus, 1000 iterations): Fel Pact gave about 1,300 mana and Feeding Demons
+about 2,800 pet mana per fight; DPS 836 -> 837 (this setup rarely runs out of mana). No test baseline moved (the test
+presets have no talents).
