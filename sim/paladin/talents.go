@@ -1,7 +1,6 @@
 package paladin
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -174,9 +173,9 @@ func (paladin *Paladin) applyVengeance() {
 	}
 
 	// Vengeance: crit gives 20% chance per rank to gain a stack of +2% damage dealt,
-	// stacking up to 10 times, lasting 15 sec.
+	// stacking up to 10 times, lasting 15 sec. Stacks add up (+20% at 10 stacks, server spell 20050).
 	procChance := 0.2 * float64(paladin.Talents.Vengeance)
-	const perStack = 1.02
+	const perStack = 0.02
 
 	procAura := paladin.RegisterAura(core.Aura{
 		Label:     "Vengeance Proc",
@@ -184,7 +183,7 @@ func (paladin *Paladin) applyVengeance() {
 		Duration:  time.Second * 15,
 		MaxStacks: 10,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mult := math.Pow(perStack, float64(newStacks-oldStacks))
+			mult := (1 + perStack*float64(newStacks)) / (1 + perStack*float64(oldStacks))
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= mult
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= mult
 		},

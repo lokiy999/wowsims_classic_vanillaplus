@@ -3385,3 +3385,12 @@ instead of 120); the lookups detect this.
   for heals and damage; "Increases healing done" items are Healing Power (242 items) and only count for heals; damage-only
   bonuses are Spell Damage (none in the item db, only consumables/enchants). Mapping is in
   `tools/database/wowhead_tooltips.go` (spellPowerRegex / spellHealingRegex).
+
+## Part CB — Results tooltips from the server data; Vengeance stacks add up (2026-09-25)
+
+- The results tables (damage, casts, buffs) and the timeline used Wowhead's live tooltips (classic/SoD text, e.g. Vengeance
+  showed the SoD "15% for 8 sec" version). `ActionId.setBackgroundAndHref` now attaches the local tooltip (server data)
+  whenever one exists and keeps the Wowhead link only as a fallback. Checked in the browser: all result icons use
+  local tooltips.
+- **Vengeance**: stacks add up (+2% per stack, +20% at 10 stacks, server spell 20050) instead of multiplying
+  (+21.9%).

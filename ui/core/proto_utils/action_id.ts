@@ -217,6 +217,9 @@ export class ActionId {
 	setBackgroundAndHref(elem: HTMLAnchorElement) {
 		this.setBackground(elem);
 		this.setWowheadHref(elem);
+		// Prefer the local (server-data) tooltip where one exists, e.g. in the results tables; otherwise the Wowhead
+		// link stays and shows Wowhead's live (classic/SoD) tooltip.
+		this.trySetLocalTooltip(elem);
 	}
 
 	// If the local DB has a tooltip for this spell (e.g. a custom/rebalanced value),
