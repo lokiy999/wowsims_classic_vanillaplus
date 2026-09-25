@@ -77,8 +77,12 @@ func (druid *Druid) GetDynamicPredStrikeStats() stats.Stats {
 func (druid *Druid) registerCatFormSpell() {
 	actionID := core.ActionID{SpellID: 768}
 
+	// Cat Form (Passive) 3025: critical strike chance +5%, threat -29% (the 0.71 below).
+	// Leader of the Pack (17007) doubles the form effects; applied to the crit like the Bear Form values.
+	lotp := core.TernaryFloat64(druid.Talents.LeaderOfThePack, 2, 1)
 	statBonus := druid.GetFormShiftStats().Add(stats.Stats{
 		stats.AttackPower: float64(druid.Level) * 2,
+		stats.MeleeCrit:   lotp * 5 * core.CritRatingPerCritChance,
 	})
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 1)

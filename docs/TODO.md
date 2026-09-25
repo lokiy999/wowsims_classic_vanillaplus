@@ -87,6 +87,9 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     20 Nature damage every 3 sec ... for 30 sec") and Ragehammer ("Use: Instantly generates 80 rage and increases damage
     done by 10 and attack speed by 5% for 15 sec") are Use effects on the server, the sim still has them as on-hit
     procs. Eskhandar's Left Claw now "causes 55 to 95 damage" (the sim: a bleed). Cooldowns of those Use effects?
+31. **Leader of the Pack and Cat Form** (Part CZ): the talent "doubles the effects of your Bear and Cat Forms". The
+    sim now doubles Cat Form's +5% crit to +10%, but keeps its threat at -29% (not -58%). Is that how it works on
+    the server? (Bear Form: armor, health and attack power are all doubled.)
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 
@@ -166,9 +169,8 @@ Paladin); Feral Tank druid becomes accessible; every sim is marked Phase 1 / Alp
 priest, restoration shaman, restoration druid, holy paladin. Heal values come from the server's Spell.csv. Healing
 rotations stay simple (rotations are low priority).
 
-**Feral Tank (done in Part CF), still open:** Cat Form's passive (3025: +5% crit, -30% threat) is not in the sim
-(cat has no crit bonus, threat is 0.71); Leader of the Pack "doubles the effects of your Bear and Cat Forms" is only
-applied to Bear Form. Bear threat values (Maul 1.75, Demoralizing Roar 42) are classic guesses (low priority). The bear
+**Feral Tank (done in Part CF), still open:** ~~Cat Form's passive (3025: +5% crit) is not in the sim~~ done in
+Part CZ (doubled by Leader of the Pack, question 31). Bear threat values (Maul 1.75, Demoralizing Roar 42) are classic guesses (low priority). The bear
 gear preset is the cat pre-raid set as a placeholder. Bash, Growl, Challenging Roar, Feral Charge and Barkskin are not
 in the sim.
 

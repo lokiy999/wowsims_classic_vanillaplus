@@ -3676,3 +3676,13 @@ skipped. Changed to the server values:
   Gauntlets 5 Arcane thorns (3), Essence of the Pure Flame 18 Fire (13), Skullflame Shield steals 66 life (35).
 Not changed, TODO question 30: Seeping Willow and Ragehammer are "Use:" effects on the server (the sim has on-hit
 procs), Eskhandar's Left Claw deals 55-95 direct damage (the sim has a bleed).
+
+## Part CZ — Cat Form's +5% critical strike chance (2026-09-25)
+
+Cat Form (768) has the passive 3025 on the server: critical strike chance +5% (aura 52, base points 4) and threat
+-29% (aura 10, base points -30). The sim already had the threat (x0.71) but not the crit; it is now part of the Cat
+Form stat bonus. Leader of the Pack (17007, "doubles the effects of your Bear and Cat Forms") doubles it to +10%,
+the same way the sim already doubles the Bear Form values (TODO question 31). The raid-wide Leader of the Pack aura
+(24932, +3% melee and ranged crit) already matched.
+
+Feral cat DPS about +4.5% (baseline updated). The "Feral Tank" TODO note is updated.
