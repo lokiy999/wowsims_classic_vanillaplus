@@ -122,8 +122,8 @@ Still open for a DPS sim:
 - **Wand Specialization** (mage, priest): wands aren't used by any rotation.
 - Done in Part DD: Armaments of Storm, Bloodlust, Aftershock. Needs numbers: Shaman Shamanism (chance), Hunter
   Thrill of the Hunt (chance), Mage Ice Shards
-  (cooldown and spell power coefficient; Cold Grip depends on it), Warlock Withering Shroud and Death and Decay
-  (cooldown, AoE only).
+  (cooldown and spell power coefficient; Cold Grip depends on it). Warlock Withering Shroud (5 yd around the
+  warlock) and Death and Decay (20 yd around the warlock) do nothing at range, so they are left out (Part DF).
 
 **LOW PRIORITY: threat, tank and defensive talents** (Lokiy 2026-09-24: rotations and threat calculations wait until
 all the other data is done; do these as one batch then):

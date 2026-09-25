@@ -3782,3 +3782,14 @@ about 2,800 pet mana per fight; DPS 836 -> 837 (this setup rarely runs out of ma
 presets have no talents).
 - **Herald of Woe** (33931, 33932, 34006): Death Coil and Amplify Curse cooldowns -20% per rank (-60% at 3/3).
   Death and Decay is not in the sim.
+
+## Part DF — Shaman weapon imbues checked; Rockbiter gaps filled (2026-09-25)
+
+Compared the imbue spells in `Spell.csv` with the sim: Windfury proc attack power (60/140/300/400), Flametongue spell
+damage (12-77), Rockbiter Strength and healing, and Frostbrand threat -10% all match. Some rows of these spells have
+an empty text column that shifts the later columns; reading them with the name-column shift filled the gaps the sim
+had marked unknown: Rockbiter rank 2 Strength 30 (was 0) and healing for ranks 2, 3 and 6 (15, 22, 78; was 0). Only
+matters below level 60.
+
+Not added (TODO note): Withering Shroud reaches 5 yards and Death and Decay 20 yards around the warlock (Spell.csv
+radius indexes 8 and 9), so they do nothing for a ranged warlock.

@@ -12,8 +12,8 @@ const RockbiterWeaponRanks = 7
 
 var RockbiterWeaponEnchantId = [RockbiterWeaponRanks + 1]int32{0, 29, 6, 1, 503, 1663, 683, 1664}
 // Server data: Rockbiter Weapon gives Strength and healing, not attack power.
-var RockbiterWeaponBonusStrength = [RockbiterWeaponRanks + 1]float64{0, 15, 0, 40, 60, 110, 200, 280}
-var RockbiterWeaponBonusHealing = [RockbiterWeaponRanks + 1]float64{0, 7, 0, 0, 33, 51, 0, 100} // rank 6 (level 50) unknown
+var RockbiterWeaponBonusStrength = [RockbiterWeaponRanks + 1]float64{0, 15, 30, 40, 60, 110, 200, 280}
+var RockbiterWeaponBonusHealing = [RockbiterWeaponRanks + 1]float64{0, 7, 15, 22, 33, 51, 78, 100} // Spell.csv 34118-34124
 var RockbiterWeaponBonusTPS = [RockbiterWeaponRanks + 1]float64{0, 6, 10, 16, 27, 41, 55, 72}
 var RockbiterWeaponLevel = [RockbiterWeaponRanks + 1]int32{0, 1, 8, 16, 24, 34, 44, 54}
 
