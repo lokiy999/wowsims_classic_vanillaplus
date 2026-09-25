@@ -194,6 +194,8 @@ def main():
 
     included |= MANUAL_INCLUDE_IDS
     included -= USER_EXCLUDE_IDS
+    # add_items only lists items that end up included (the user-excluded ones used to stay in it).
+    add = {k: v for k, v in add.items() if k in included}
 
     json.dump(sorted(included), open(INCLUDED, "w"), indent=0)
     json.dump({str(k): v for k, v in sorted(add.items())}, open(ADD, "w"), indent=0)

@@ -3510,8 +3510,24 @@ Mark of the Veteran's crit and Sawtooth Talisman's flat 250 were added in code b
 do not count twice (Sawtooth keeps its 5% in code). New equip effects for "ignore N% of armor": The Sawblade 15%,
 Blackwood Hacker 10%, Dark Iron Sunderer 15%. 18 items changed, nothing added or removed.
 
-Only `parse_vplus.py` + gen_db were rerun: a full `/tmp/pipe.sh` run dropped Ring of Swarming Thought (21707) from the
-include list and reshuffled `add_items.json`, so the item selection files were kept as committed (TODO).
+Only `parse_vplus.py` + gen_db were rerun (the item selection was kept as committed; see Part CP for the one item
+that turned out to be wrong in it).
 
 Not modeled yet (TODO questions 21-22): weapon "Chance on hit" procs without code and without a known proc rate, and
 Rivenspike's server text (ignores 5% armor) versus the sim's classic armor-reduction proc.
+
+## Part CP — Ring of Swarming Thought removed (AQ40); Kurinnaxx world boss vs AQ20 (2026-09-25)
+
+AQ20, AQ40 and Naxx are not on the server; the world boss Kurinnaxx is, and his loot stays. In AtlasLoot these are
+separate tables (`WBWBKurinnaxx` = world boss, `AQ20Kurinnaxx` = raid boss): `IGNORED_TABLE` in `docs/serverdata.py`
+drops only the raid tables, so an item that the world boss also drops stays (Thick Silithid Chestguard, Gauntlets of
+the Immovable, Fetish of Chitinous Spikes, Toughened Silithid Hide Gloves). Items shared with other live tables
+(Kazzak, blacksmithing, Scourge-invasion bosses that also drop in dungeons) stay for the same reason.
+
+Checked every DB item for an AQ20 / AQ40 / Naxx source: only two had one.
+- **Ring of Swarming Thought** (21707, Skeram, AQ40) is in no AtlasLoot table, so the table rule never saw it; the
+  raid-source rule drops it on a fresh run, but the committed include list still had it, and Part CO had kept that
+  list. Removed (DB 3688 -> 3687 items; no preset used it).
+- **Cloak of Untold Secrets** (26231) is the server's renumbered version of 21627 (new stats); its only known source
+  is classic's AQ40 one. Kept for now, TODO question 23.
+`docs/gen_include.py` no longer writes the user-excluded items into `add_items.json` (they never reached the DB).

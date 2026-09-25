@@ -65,9 +65,14 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 22. **Rivenspike** (Part CO): the server text is "Equip: Your attacks ignore 5% of your enemies' Armor", the sim still
     has the classic proc (reduce target armor, 2 per minute). Is there still a proc on the server, or only the 5%?
 
-- **Item pipeline rerun is not stable** (found 2026-09-25, Part CO): a full `/tmp/pipe.sh` run drops Ring of Swarming
-  Thought (21707) from `included_items.json` and rewrites `add_items.json`. For stat-only changes rerun only
-  `docs/parse_vplus.py` and gen_db. Find out why before the next full resync.
+- ~~**Item pipeline rerun is not stable**~~ Checked 2026-09-25 (Part CP): the full rerun was right. It drops Ring
+  of Swarming Thought (21707, Skeram, AQ40, in no AtlasLoot table, caught by the raid-source rule); the committed
+  list still had it and is fixed now. `add_items.json` changing between runs is expected (it lists items new
+  relative to the committed DB).
+23. **Cloak of Untold Secrets** (26231, the server's renumbered 21627): classic drops it from Fankriss in AQ40; the
+    server gave it a new id and new stats (+20 Stamina, +20 Shadow Resistance) and it is in no AtlasLoot table. Where
+    does it drop on the server? It stays in the sim for now (renumbered server items skip the raid-source check,
+    Part BY).
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 
