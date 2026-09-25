@@ -17,7 +17,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssScheme: 'druid',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
-		"The Enchant Gloves - Minor Haste enchant doesn't have its EP of 16.50 show up properly",
+		"The Enchant Gloves - Lesser Haste enchant doesn't have its EP of 16.50 show up properly",
 	],
 	warnings: [],
 

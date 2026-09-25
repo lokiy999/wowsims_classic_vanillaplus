@@ -114,12 +114,12 @@ character_stats_results: {
   final_stats: 107.1
   final_stats: 0
   final_stats: 19.00327
-  final_stats: 4
+  final_stats: 6
   final_stats: 0
   final_stats: 2204.224
   final_stats: 5
   final_stats: 39.92297
-  final_stats: 5
+  final_stats: 6
   final_stats: 0
   final_stats: 0
   final_stats: 5414.5
@@ -246,16 +246,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase3-StatWeights-Default"
  value: {
-  weights: 0.38334
-  weights: 0.37161
+  weights: 0.38751
+  weights: 0.35531
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.0736
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.07373
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +259,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.1584
-  weights: 6.75592
-  weights: 4.77673
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.16013
+  weights: 6.64757
+  weights: 4.99415
   weights: 0
   weights: 0
   weights: 0
@@ -771,8 +771,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-Augur'sRegalia"
  value: {
-  dps: 549.25581
-  tps: 551.88164
+  dps: 550.65544
+  tps: 553.92637
  }
 }
 dps_results: {
@@ -827,8 +827,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-Average-Default"
  value: {
-  dps: 590.87356
-  tps: 595.28975
+  dps: 596.12244
+  tps: 600.48759
  }
 }
 dps_results: {
@@ -1002,7 +1002,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 466.17692
-  tps: 471.2191
+  dps: 469.54966
+  tps: 474.37135
  }
 }

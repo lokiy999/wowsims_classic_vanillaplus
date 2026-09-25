@@ -3898,3 +3898,11 @@ damage taken per second 84 -> 204 with the boss spell; Eye for an Eye 2/2 dealt 
 5/5 returned about 18,600 mana per 5 min fight (330 healing per second model); with a 190 healing per second model the
 chance of death went from 83% to 76% with Stoicism. Holy Shield could not be checked there (no shield equipped).
 No test baseline moved (presets have no talents and no boss spell).
+
+## Part DM — Enchant Gloves: Lesser Haste 2% (2026-09-25)
+
+Enchant 931 / spell 13948 (classic "Minor Haste", +1% attack speed) is "Lesser Haste" on the server: its effect spell
+13928 gives +2% melee, +2% ranged and +2% casting speed (auras 138 / 140 / 65, value 2). `tools/database/enchant_overrides.go`
+now has MeleeHaste 2 and SpellHaste 2 with the server name; database regenerated (this also added the missing Judgement
+of Light ranks 1-3 and Judgement of Wisdom ranks 1-2 tooltips from Part DJ). Enhancement baseline +0.9% (the only
+preset with this enchant).
