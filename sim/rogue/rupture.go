@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -40,14 +41,14 @@ func (rogue *Rogue) registerRupture() {
 			return rogue.ComboPoints() > 0
 		},
 
-DamageMultiplier: 1 + 0.10*float64(rogue.Talents.Bloodthirsty), // Vanilla+ calculator: +10%/rank
+		DamageMultiplier: 1 + 0.10*float64(rogue.Talents.Bloodthirsty), // Vanilla+ calculator: +10%/rank
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Rupture",
 			},
-			NumberOfTicks: 0, // Set dynamically
+			NumberOfTicks: 0,                                                                                     // Set dynamically
 			TickLength:    time.Duration(float64(time.Second*2) * (1 - 0.1*float64(rogue.Talents.Bloodthirsty))), // Bloodthirsty: -10%/rank
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -96,7 +97,13 @@ func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
 }
 
 func (rogue *Rogue) RuptureTicks(comboPoints int32) int32 {
-	return 3 + comboPoints
+	// Server: 8/10/12/14/16 sec (2 sec ticks); Exhaustion: +25% duration per rank, as extra ticks.
+	return int32(math.Round(float64(3+comboPoints) * rogue.exhaustionMultiplier()))
+}
+
+// Exhaustion (server tree): Slice and Dice, Rupture and Expose Armor last 25% longer per rank.
+func (rogue *Rogue) exhaustionMultiplier() float64 {
+	return 1 + 0.25*float64(rogue.Talents.Exhaustion)
 }
 
 func (rogue *Rogue) RuptureDuration(comboPoints int32) time.Duration {

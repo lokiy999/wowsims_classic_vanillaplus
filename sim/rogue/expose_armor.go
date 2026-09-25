@@ -75,6 +75,8 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				eaAura.ExclusiveEffects[0].Priority = arpen
+				// Server: 9/12/15/18/21 sec by combo points (Spell.csv 11198), longer with Exhaustion.
+				eaAura.Duration = time.Duration(float64(time.Second*time.Duration(6+3*rogue.ComboPoints())) * rogue.exhaustionMultiplier())
 				eaAura.Activate(sim)
 				rogue.SpendComboPoints(sim, spell)
 			} else {

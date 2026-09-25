@@ -3532,3 +3532,14 @@ Checked every DB item for an AQ20 / AQ40 / Naxx source: only two had one.
   drops from Master Elemental Shaper Krixix in BWL, so it stays; its source was classic's Fankriss (AQ40) and is now
   BWL / Krixix (`MANUAL_SOURCES` in `docs/gen_sources.py`; the AtlasLoot copy's Krixix table ends at 26230).
 `docs/gen_include.py` no longer writes the user-excluded items into `add_items.json` (they never reached the DB).
+
+## Part CQ — Rogue Exhaustion and Expose Armor duration, Connivery, Para Bellum (2026-09-25)
+
+- **Expose Armor** (rogue): lasted a flat 30 sec; the server scales it with combo points, 9/12/15/18/21 sec
+  (Spell.csv 11198 tooltip). The raid debuff option stays permanent.
+- **Exhaustion** now also lengthens Rupture (+25% per rank as extra 2 sec ticks, e.g. 5 points: 8 -> 10 / 12 ticks)
+  and Expose Armor, not only Slice and Dice.
+- **Connivery** (+2%/rank damage from behind) is off when the player's "in front of target" option is set.
+- **Para Bellum** (-4%/rank ability cooldowns) no longer shortens the 1 sec stance-swap cooldown; it never touched
+  shared cooldowns (checked).
+- TODO overview refreshed (healing, spell values and talents entries were stale).

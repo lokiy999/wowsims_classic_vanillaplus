@@ -70,8 +70,8 @@ rogue.applyMurder()
 		})
 	}
 
-	// Connivery (DBC): +2%/rank damage from all attacks from behind (assumed always true vs a raid boss).
-	if rogue.Talents.Connivery > 0 {
+	// Connivery (DBC): +2%/rank damage from all attacks from behind; off when the "in front of target" option is set.
+	if rogue.Talents.Connivery > 0 && !rogue.PseudoStats.InFrontOfTarget {
 		mult := 0.02 * float64(rogue.Talents.Connivery)
 		rogue.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) {

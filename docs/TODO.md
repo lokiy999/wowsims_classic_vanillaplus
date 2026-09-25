@@ -155,27 +155,28 @@ applied to Bear Form. Bear threat values (Maul 1.75, Demoralizing Roar 42) are c
 gear preset is the cat pre-raid set as a placeholder. Bash, Growl, Challenging Roar, Feral Charge and Barkskin are not
 in the sim.
 
-## Open items at a glance (updated 2026-09-24)
+## Open items at a glance (updated 2026-09-25)
 
 One list of everything still open; the details are in the dated sections below. Items finished on 2026-09-23 are
 listed at the end of this overview so the older sections don't need rewriting.
 
 **Affects sim results**
-- Spell values: direct and periodic damage in the per-rank arrays now match the server (Part BO). Not compared yet:
-  heals and shields (not in the sim). DoTs, missiles, abilities and pet spells done in Parts BP, BR and BT. Pyroblast, Flame Shock, Insect Swarm and Arcane
+- Spell values: direct and periodic damage in the per-rank arrays now match the server (Part BO); heals in Part CG;
+  raid buffs, debuffs, world buffs (Part CL); physical and pet abilities checked (Part CN). DoTs, missiles, abilities and pet spells done in Parts BP, BR and BT. Pyroblast, Flame Shock, Insect Swarm and Arcane
   Missiles spell power coefficients are a guess (classic total spread over the new tick count); Arcane Missiles'
   +1% Arcane crit is one stack per cast (could be per missile).
 - Talents not modeled yet: the damage/threat/mana ones with clear numbers were done in Part BS. Left: utility and
   PvP talents (stuns, fears, movement, range), healing talents (no healing spells in the sim), and ones needing a new
-  mechanic (freeze for Shatter/Frostbite/Deep Freeze, target health for Coup de Grace-style effects,
-  Aftershock, Chain Reaction, Ice Shards, Withering Shroud, Death and Decay, Earthquake, Improved Rend stacks,
-  Berserker's Blood). The per-class lists in the 2026-09-19/20 sections are partly stale.
+  mechanic (freeze for Shatter/Frostbite/Deep Freeze, Aftershock, Chain Reaction, Ice Shards, Withering Shroud,
+  Death and Decay, Earthquake, Berserker's Blood). Improved Rend done (Part CM). The current per-class list is
+  "Talents not in the sim code" below (regenerated 2026-09-25); the 2026-09-19/20 sections are partly stale.
 - LOW PRIORITY (Lokiy 2026-09-24: rotations and threat need all other data first): paladin ret/prot rotations are
   new and basic (written during the SoD removal); all rotations and threat values need tuning in game.
 - No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).
 - Talent presets are all empty (question 1 at the top; low priority, one of the last tasks).
-- Healing: priest healing spells are disabled; druid Nature's Swiftness, Tranquility, Bash, Frenzied Regeneration and
-  Rebirth are not in the sim; the shaman casting Mana Tide Totem is not modeled.
+- Healing: done in Part CG (priest, shaman, druid incl. Nature's Swiftness and Tranquility, paladin); Mana Tide
+  Totem is in (Part BS follow-up). Not in the sim: Rebirth, Bash (no effect on a sim). Open healer items are in the
+  "Healers" section below.
 - Shaman totem and weapon imbue items (2026-09-20 sections).
 - Consumables the user chose to skip (Part P): still absent if ever wanted.
 
@@ -222,8 +223,7 @@ Still open, the calculator confirmed the text but not the mechanics:
   duration); Deep Wounds duration and stacks (sim: 4 ticks of 3s, no stacks); Shield Block cooldown (DBC 20s on rank 1,
   5s on rank 2, sim 5s); Berserker's Blood (needs current health, 1-40% speed); Improved Berserker Stance GCD reduction
   (0.25s/rank); Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute rage-to-damage ratio (sim 15).
-- Para Bellum applies to every warrior spell with a cooldown and a spell code; verify it
-  does not wrongly shorten stance-change or shared-cooldown timers.
+- ~~Para Bellum~~ checked 2026-09-25 (Part CQ): shared cooldowns were never touched; the stance swap no longer is.
 
 ## Raised 2026-09-19 — rogue talents (CHANGES.md Part AN)
 
@@ -231,8 +231,8 @@ Still open, the calculator confirmed the text but not the mechanics:
   damage below 20% health), Bloodthirsty (Garrote/Rupture +10%/rank damage, shorter ticks),
   Exhaustion, Combat Rush, Brigandage, Gaining an Advantage, Dazing Bolts, Survivor,
   Physical Prowess, Improved Kidney Shot, Remorseless Attacks, Weapon Expertise values.
-- Connivery is applied to all melee damage; DBC says attacks from behind only.
-- Rogue audit round 2 (CHANGES.md Part BA) open: Exhaustion on Rupture and Expose Armor (Slice and Dice is done),
+- ~~Connivery is applied to all melee damage~~ done 2026-09-25 (Part CQ): off with the "in front of target" option.
+- Rogue audit round 2 (CHANGES.md Part BA) open: ~~Exhaustion on Rupture and Expose Armor~~ done (Part CQ),
   Remorseless Attacks (needs kills), Improved Kidney Shot (no Kidney Shot in the sim), Survivor, Sprint (Physical Prowess
   cooldown part, Improved Sprint), Thistle Tea cooldown not in the DBC, Brigandage damage may need a coefficient check.
 
