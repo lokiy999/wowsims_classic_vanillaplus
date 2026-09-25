@@ -3424,5 +3424,5 @@ non-gear items the UI and sim show (potions, flasks, elixirs, oils, mana gems, D
 items) into `assets/db_inputs/server_item_tooltips.json`; gen_db puts it on those item icons. Tears of Teremus
 (26430) and Flask of Indomitable Might (34323) are server items Wowhead does not know: they had a broken icon and
 a Wowhead link; now name and tooltip come from the dump, the icon from AtlasLoot (Teremus) or a placeholder
-(`inv_potion_24` for the flask, TODO question). Checked in the browser on the mage and warrior pages: no spell or
+(the flask's `INV_Potion_21` from the user's in-game AtlasLoot, `ICON_OVERRIDES`). Every AtlasLoot file in `CSV's/` is now searched for icons (used only when Wowhead has none). Checked in the browser on the mage and warrior pages: no spell or
 item tooltip goes to Wowhead any more.
