@@ -351,6 +351,11 @@ func main() {
 		}
 	}
 
+	// Non-talent spells with local tooltips from the server data (tools/gen_server_spell_tooltips.py).
+	for _, spellId := range readSpellIdList(fmt.Sprintf("%s/server_spell_ids.txt", inputsDir)) {
+		db.AddSpellIcon(spellId, spellTooltips)
+	}
+
 	db.MergeSpellIcons(database.SpellIconoverrides)
 	db.MergeItemIcons(database.ItemIconoverrides)
 
@@ -913,4 +918,20 @@ func GetClassAllowList(item *proto.UIItem) []proto.Class {
 	}
 
 	return item.ClassAllowlist
+}
+
+// readSpellIdList reads one spell id per line; '#' starts a comment. A missing file gives no ids.
+func readSpellIdList(path string) []int32 {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	var ids []int32
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(strings.SplitN(line, "#", 2)[0])
+		if id, err := strconv.Atoi(line); err == nil && id > 0 {
+			ids = append(ids, int32(id))
+		}
+	}
+	return ids
 }

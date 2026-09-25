@@ -184,6 +184,7 @@ export class SimLog {
 		actionId.setBackground(iconElem as HTMLAnchorElement);
 		actionId.setWowheadHref(actionAnchor as HTMLAnchorElement);
 		actionId.setWowheadDataset(actionAnchor as HTMLAnchorElement, { useBuffAura: isAura });
+		actionId.trySetLocalTooltip(actionAnchor as HTMLAnchorElement);
 		return actionAnchor;
 	}
 

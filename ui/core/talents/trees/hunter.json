@@ -336,11 +336,11 @@
           "colIdx": 2
         },
         "descriptions": [
-          "Gives your pet a 20% chance to gain a 30% attack speed increase for next X attacks or for 15 sec after dealing a critical strike.",
-          "Gives your pet a 40% chance to gain a 30% attack speed increase for next X attacks or for 15 sec after dealing a critical strike.",
-          "Gives your pet a 60% chance to gain a 30% attack speed increase for next X attacks or for 15 sec after dealing a critical strike.",
-          "Gives your pet a 80% chance to gain a 30% attack speed increase for next X attacks or for 15 sec after dealing a critical strike.",
-          "Gives your pet a 100% chance to gain a 30% attack speed increase for next X attacks or for 15 sec after dealing a critical strike."
+          "Gives your pet a 20% chance to gain a 30% attack speed increase for next 5 attacks or for 15 sec after dealing a critical strike.",
+          "Gives your pet a 40% chance to gain a 30% attack speed increase for next 5 attacks or for 15 sec after dealing a critical strike.",
+          "Gives your pet a 60% chance to gain a 30% attack speed increase for next 5 attacks or for 15 sec after dealing a critical strike.",
+          "Gives your pet a 80% chance to gain a 30% attack speed increase for next 5 attacks or for 15 sec after dealing a critical strike.",
+          "Gives your pet a 100% chance to gain a 30% attack speed increase for next 5 attacks or for 15 sec after dealing a critical strike."
         ]
       },
       {
@@ -752,7 +752,7 @@
           "colIdx": 1
         },
         "descriptions": [
-          "Increases the ranged attack power of party members within X yds by 100 and melee attack power by 50."
+          "Increases the ranged attack power of party members within 45 yds by 100 and melee attack power by 50."
         ]
       }
     ]

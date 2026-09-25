@@ -530,7 +530,9 @@ class TalentPicker<TalentsProto> extends Component {
 					this.rootElem.dataset.disableWowheadTouchTooltip = 'true';
 					this.updateLocalTooltip(actionId.name || String(this.config.fieldName), Math.max(1, newPoints));
 				} else {
-					actionId.setWowheadHref(this.rootElem as HTMLAnchorElement);
+					actionId.trySetLocalTooltip(this.rootElem).then(hasLocal => {
+						if (!hasLocal) actionId.setWowheadHref(this.rootElem as HTMLAnchorElement);
+					});
 				}
 			});
 	}

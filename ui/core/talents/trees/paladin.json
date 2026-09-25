@@ -494,9 +494,9 @@
           "colIdx": 2
         },
         "descriptions": [
-          "When struck in combat has a 20% chance to gain bonus 10% chance to block attacks for 15 sec seconds or X blocks. Critical hits grant this effect five times more often.",
-          "When struck in combat has a 20% chance to gain bonus 20% chance to block attacks for 15 sec seconds or X blocks. Critical hits grant this effect five times more often.",
-          "When struck in combat has a 20% chance to gain bonus 30% chance to block attacks for 15 sec seconds or X blocks. Critical hits grant this effect five times more often."
+          "When struck in combat has a 20% chance to gain bonus 10% chance to block attacks for 15 sec seconds or 5 blocks. Critical hits grant this effect five times more often.",
+          "When struck in combat has a 20% chance to gain bonus 20% chance to block attacks for 15 sec seconds or 5 blocks. Critical hits grant this effect five times more often.",
+          "When struck in combat has a 20% chance to gain bonus 30% chance to block attacks for 15 sec seconds or 5 blocks. Critical hits grant this effect five times more often."
         ]
       },
       {
@@ -674,7 +674,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Increases chance to block by 30% for 15 sec, and deals 45 Holy damage for each attack blocked while active. Damage caused by Holy Shield causes twice extra threat. Each block expends a charge. X charges."
+          "Increases chance to block by 30% for 15 sec, and deals 45 Holy damage for each attack blocked while active. Damage caused by Holy Shield causes twice extra threat. Each block expends a charge. 10 charges."
         ]
       },
       {
@@ -934,7 +934,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Gives the Paladin a chance to deal additional Holy damage equal to 50% of normal weapon damage. Only one Seal can be active on the Paladin at any one time. Lasts 2 min. Unleashing this Seal's energy will judge an enemy, instantly causing $/2;20467s1 Holy damage, 143 to 151 if the target is stunned, incapacitated or disoriented."
+          "Gives the Paladin a chance to deal additional Holy damage equal to 50% of normal weapon damage. Only one Seal can be active on the Paladin at any one time. Lasts 2 min. Unleashing this Seal's energy will judge an enemy, instantly causing 71 Holy damage, 143 to 151 if the target is stunned, incapacitated or disoriented."
         ]
       },
       {
@@ -1040,7 +1040,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Increases Holy damage done by party members within X yards by 10%. Players may only have one Aura on them per Paladin at any one time."
+          "Increases Holy damage done by party members within 30 yards by 10%. Players may only have one Aura on them per Paladin at any one time."
         ]
       },
       {

@@ -210,7 +210,8 @@ export class ActionId {
 			? ActionId.makeItemTooltipData(this.itemId, params)
 			: ActionId.makeSpellTooltipData(this.spellIdTooltipOverride || this.spellId, params)
 		).then(url => {
-			if (elem) elem.dataset.wowhead = url;
+			// A local (server-data) tooltip was attached meanwhile -> keep Wowhead's off this element.
+			if (elem && elem.dataset.disableWowheadTouchTooltip !== 'true') elem.dataset.wowhead = url;
 		});
 	}
 
@@ -234,9 +235,12 @@ export class ActionId {
 			return true;
 		}
 		if (!this.spellId) return false;
+		const spellId = this.spellIdTooltipOverride || this.spellId;
+		await Database.get();
+		if (!Database.hasLocalSpellTooltip(spellId)) return false;
 		let data: IconData;
 		try {
-			data = await Database.getSpellIconData(this.spellIdTooltipOverride || this.spellId);
+			data = await Database.getSpellIconData(spellId);
 		} catch {
 			return false;
 		}
@@ -245,7 +249,16 @@ export class ActionId {
 		return true;
 	}
 
+	// Local tooltip with the given HTML (e.g. an enchant's server-data description).
+	static setLocalTooltip(elem: HTMLElement, content: string) {
+		ActionId.attachLocalTippy(elem, content);
+	}
+
 	private attachLocalTippy(elem: HTMLElement, content: string) {
+		ActionId.attachLocalTippy(elem, content);
+	}
+
+	private static attachLocalTippy(elem: HTMLElement, content: string) {
 		elem.removeAttribute('href');
 		elem.removeAttribute('data-wowhead');
 		elem.dataset.disableWowheadTouchTooltip = 'true';

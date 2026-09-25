@@ -71,6 +71,8 @@ export class Database {
 	private readonly presetTargets = new Map<string, PresetTarget>();
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
 	private readonly spellIcons: Record<number, Promise<IconData>> = {};
+	// Spells whose tooltip comes with the DB (server data); others are fetched from Wowhead.
+	private readonly localSpellTooltipIds = new Set<number>();
 	// Synchronous mirror of itemIcons, for cheap local-tooltip lookups below. Covers
 	// items that aren't in `items` at all (e.g. enchant reagent items excluded from
 	// the equippable-gear allowlist) but still carry a local ItemIconoverrides tooltip.
@@ -83,6 +85,9 @@ export class Database {
 	static hasLocalItemTooltip(itemId: number): boolean {
 		if (Database.instance?.items.get(itemId)?.tooltip) return true;
 		return !!Database.instance?.itemIconsSync.get(itemId)?.tooltip;
+	}
+	static hasLocalSpellTooltip(spellId: number): boolean {
+		return !!Database.instance?.localSpellTooltipIds.has(spellId);
 	}
 	static localItemTooltip(itemId: number): string {
 		const itemTooltip = Database.instance?.items.get(itemId)?.tooltip;
@@ -133,7 +138,10 @@ export class Database {
 			this.itemIcons[data.id] = Promise.resolve(data);
 			this.itemIconsSync.set(data.id, data);
 		});
-		db.spellIcons.forEach(data => (this.spellIcons[data.id] = Promise.resolve(data)));
+		db.spellIcons.forEach(data => {
+			this.spellIcons[data.id] = Promise.resolve(data);
+			if (data.tooltip) this.localSpellTooltipIds.add(data.id);
+		});
 	}
 
 	getAllItems(): Array<Item> {

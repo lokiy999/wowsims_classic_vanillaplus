@@ -354,7 +354,7 @@
           "colIdx": 1
         },
         "descriptions": [
-          "While in Moonkin Form, the Moonkin Aura increases spell damage and healing of all raid members within X yards by 5%."
+          "While in Moonkin Form, the Moonkin Aura increases spell damage and healing of all raid members within 20 yards by 5%."
         ]
       }
     ]
@@ -487,8 +487,8 @@
           "colIdx": 2
         },
         "descriptions": [
-          "Gives you a 50% chance to gain an additional $/10;16959s1 Rage anytime you get a critical strike while in Bear Form.",
-          "Gives you a 100% chance to gain an additional $/10;16959s1 Rage anytime you get a critical strike while in Bear Form."
+          "Gives you a 50% chance to gain an additional 5 Rage anytime you get a critical strike while in Bear Form.",
+          "Gives you a 100% chance to gain an additional 5 Rage anytime you get a critical strike while in Bear Form."
         ]
       },
       {
@@ -678,11 +678,11 @@
         ],
         "maxPoints": 5,
         "descriptions": [
-          "Increases all damage caused by 1%. In addition, your melee critical strikes will increase your attack speed by 5% for your next X attacks.",
-          "Increases all damage caused by 2%. In addition, your melee critical strikes will increase your attack speed by 10% for your next X attacks.",
-          "Increases all damage caused by 3%. In addition, your melee critical strikes will increase your attack speed by 15% for your next X attacks.",
-          "Increases all damage caused by 4%. In addition, your melee critical strikes will increase your attack speed by 20% for your next X attacks.",
-          "Increases all damage caused by 5%. In addition, your melee critical strikes will increase your attack speed by 25% for your next X attacks."
+          "Increases all damage caused by 1%. In addition, your melee critical strikes will increase your attack speed by 5% for your next 3 attacks.",
+          "Increases all damage caused by 2%. In addition, your melee critical strikes will increase your attack speed by 10% for your next 3 attacks.",
+          "Increases all damage caused by 3%. In addition, your melee critical strikes will increase your attack speed by 15% for your next 3 attacks.",
+          "Increases all damage caused by 4%. In addition, your melee critical strikes will increase your attack speed by 20% for your next 3 attacks.",
+          "Increases all damage caused by 5%. In addition, your melee critical strikes will increase your attack speed by 25% for your next 3 attacks."
         ]
       },
       {
@@ -718,7 +718,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Doubles the effects of your Bear and Cat Forms. Also, while in Cat or Bear Form, the Leader of the Pack increases ranged and melee critical chance of all raid members within X yards by 3%."
+          "Doubles the effects of your Bear and Cat Forms. Also, while in Cat or Bear Form, the Leader of the Pack increases ranged and melee critical chance of all raid members within 20 yards by 3%."
         ]
       }
     ]
@@ -779,8 +779,8 @@
         ],
         "maxPoints": 2,
         "descriptions": [
-          "You gain $/10;17057s1 Rage when you shapeshift into Bear Form or 40 Energy when you shapeshift into Cat Form. This effects can only occur once every 24 sec.",
-          "You gain $/10;17057s1 Rage when you shapeshift into Bear Form or 40 Energy when you shapeshift into Cat Form. This effects can only occur once every 12 sec."
+          "You gain 15 Rage when you shapeshift into Bear Form or 40 Energy when you shapeshift into Cat Form. This effects can only occur once every 24 sec.",
+          "You gain 15 Rage when you shapeshift into Bear Form or 40 Energy when you shapeshift into Cat Form. This effects can only occur once every 12 sec."
         ]
       },
       {
@@ -853,8 +853,8 @@
         ],
         "maxPoints": 2,
         "descriptions": [
-          "The Enrage ability now instantly generates $/10;17080s1 Rage.",
-          "The Enrage ability now instantly generates $/10;17081s1 Rage."
+          "The Enrage ability now instantly generates 10 Rage.",
+          "The Enrage ability now instantly generates 20 Rage."
         ]
       },
       {
@@ -902,9 +902,9 @@
         ],
         "maxPoints": 3,
         "descriptions": [
-          "After being struck by a critical hit, you become immune to critical strikes for next X attack or 3 sec. In addition, gives your spell effects additional 10% chance to resist dispel effects.",
-          "After being struck by a critical hit, you become immune to critical strikes for next X attack or 4 sec. In addition, gives your spell effects additional 20% chance to resist dispel effects.",
-          "After being struck by a critical hit, you become immune to critical strikes for next X attack or 5 sec. In addition, gives your spell effects additional 30% chance to resist dispel effects."
+          "After being struck by a critical hit, you become immune to critical strikes for next 1 attack or 3 sec. In addition, gives your spell effects additional 10% chance to resist dispel effects.",
+          "After being struck by a critical hit, you become immune to critical strikes for next 2 attack or 4 sec. In addition, gives your spell effects additional 20% chance to resist dispel effects.",
+          "After being struck by a critical hit, you become immune to critical strikes for next 3 attack or 5 sec. In addition, gives your spell effects additional 30% chance to resist dispel effects."
         ]
       },
       {

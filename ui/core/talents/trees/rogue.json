@@ -1102,9 +1102,9 @@
           "colIdx": 1
         },
         "descriptions": [
-          "Increases your chance to avoid area of effect spells by an additional 15%. While stealthed, this effect is doubled, and you regenerate $/10;34579S2% of your Health per second and gain extra $/5;34579s3 Energy per tick.",
-          "Increases your chance to avoid area of effect spells by an additional 30%. While stealthed, this effect is doubled, and you regenerate $/10;34580S2% of your Health per second and gain extra $/5;34580s3 Energy per tick.",
-          "Increases your chance to avoid area of effect spells by an additional 45%. While stealthed, this effect is doubled, and you regenerate $/10;34581S2% of your Health per second and gain extra $/5;34581s3 Energy per tick."
+          "Increases your chance to avoid area of effect spells by an additional 15%. While stealthed, this effect is doubled, and you regenerate 0% of your Health per second and gain extra 5 Energy per tick.",
+          "Increases your chance to avoid area of effect spells by an additional 30%. While stealthed, this effect is doubled, and you regenerate 1% of your Health per second and gain extra 10 Energy per tick.",
+          "Increases your chance to avoid area of effect spells by an additional 45%. While stealthed, this effect is doubled, and you regenerate 1% of your Health per second and gain extra 15 Energy per tick."
         ]
       },
       {

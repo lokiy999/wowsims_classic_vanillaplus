@@ -102,6 +102,8 @@ export class ItemRenderer extends Component {
 		this.nameElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
 		this.enchantElem.removeAttribute('href');
+		(this.enchantElem as unknown as { _tippy?: { destroy: () => void } })._tippy?.destroy();
+		delete this.enchantElem.dataset.disableWowheadTouchTooltip;
 		this.enchantElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = '';
@@ -132,19 +134,24 @@ export class ItemRenderer extends Component {
 			});
 
 		if (newItem.enchant) {
-			getEnchantDescription(newItem.enchant).then(description => {
+			const enchant = newItem.enchant;
+			getEnchantDescription(enchant).then(description => {
 				this.enchantElem.textContent = description;
+				// Tooltip from the server values (enchants/descriptions.json), not Wowhead's.
+				if (description) {
+					ActionId.setLocalTooltip(this.enchantElem, `<b class="whtt-name">${enchant.name}</b><br />${description}`);
+				}
 			});
-			// Make enchant text hover have a tooltip.
+			// Make enchant text hover have a tooltip (Wowhead, replaced by the local one above).
 			if (newItem.enchant.spellId) {
 				this.enchantElem.href = ActionId.makeSpellUrl(newItem.enchant.spellId);
 				ActionId.makeSpellTooltipData(newItem.enchant.spellId).then(url => {
-					this.enchantElem.dataset.wowhead = url;
+					if (this.enchantElem.dataset.disableWowheadTouchTooltip !== 'true') this.enchantElem.dataset.wowhead = url;
 				});
 			} else {
 				this.enchantElem.href = ActionId.makeItemUrl(newItem.enchant.itemId);
 				ActionId.makeItemTooltipData(newItem.enchant.itemId).then(url => {
-					this.enchantElem.dataset.wowhead = url;
+					if (this.enchantElem.dataset.disableWowheadTouchTooltip !== 'true') this.enchantElem.dataset.wowhead = url;
 				});
 			}
 			this.enchantElem.dataset.whtticon = 'false';

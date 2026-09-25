@@ -388,7 +388,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Generates 1% of total Mana every 5 sec to all party members within X yds."
+          "Generates 1% of total Mana every 5 sec to all party members within 30 yds."
         ]
       }
     ]
@@ -772,7 +772,7 @@
           "colIdx": 1
         },
         "descriptions": [
-          "When activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%. This effect lasts until you have caused X critical strikes with Fire spells."
+          "When activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%. This effect lasts until you have caused 3 critical strikes with Fire spells."
         ]
       }
     ]

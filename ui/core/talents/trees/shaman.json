@@ -428,7 +428,7 @@
           "colIdx": 2
         },
         "descriptions": [
-          "Regenerates 1% of your Health every 5 sec, increases your chance to block by 30% and allows you to block without a shield. Blocking also restores $/10;35757S1% of your Health. Lasts 10 min or X block."
+          "Regenerates 1% of your Health every 5 sec, increases your chance to block by 30% and allows you to block without a shield. Blocking also restores 1% of your Health. Lasts 10 min or 10 block."
         ]
       },
       {
@@ -564,11 +564,11 @@
           "colIdx": 1
         },
         "descriptions": [
-          "Increases your attack speed by 5% for your next X swings after dealing a critical strike.",
-          "Increases your attack speed by 10% for your next X swings after dealing a critical strike.",
-          "Increases your attack speed by 15% for your next X swings after dealing a critical strike.",
-          "Increases your attack speed by 20% for your next X swings after dealing a critical strike.",
-          "Increases your attack speed by 25% for your next X swings after dealing a critical strike."
+          "Increases your attack speed by 5% for your next 3 swings after dealing a critical strike.",
+          "Increases your attack speed by 10% for your next 3 swings after dealing a critical strike.",
+          "Increases your attack speed by 15% for your next 3 swings after dealing a critical strike.",
+          "Increases your attack speed by 20% for your next 3 swings after dealing a critical strike.",
+          "Increases your attack speed by 25% for your next 3 swings after dealing a critical strike."
         ]
       },
       {

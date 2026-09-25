@@ -123,8 +123,8 @@
         ],
         "maxPoints": 2,
         "descriptions": [
-          "After being struck by a critical hit, you become immune to critical strikes for next X attack or 3 sec.",
-          "After being struck by a critical hit, you become immune to critical strikes for next X attack or 4 sec."
+          "After being struck by a critical hit, you become immune to critical strikes for next 1 attack or 3 sec.",
+          "After being struck by a critical hit, you become immune to critical strikes for next 2 attack or 4 sec."
         ]
       },
       {
@@ -510,7 +510,7 @@
         ],
         "maxPoints": 1,
         "descriptions": [
-          "Causes an explosion of holy light around the caster, causing 28 to 32 Holy damage to all enemy targets within X yards and healing all party members within X yards for 52 to 60. These effects cause no threat."
+          "Causes an explosion of holy light around the caster, causing 28 to 32 Holy damage to all enemy targets within 10 yards and healing all party members within 10 yards for 52 to 60. These effects cause no threat."
         ]
       },
       {

@@ -33,6 +33,9 @@ COL_BP = (76, 77, 78)  # EffectBasePoints[1..3] -> $s1/$s2/$s3 (abs value + 1)
 COL_AMP = (94, 95, 96)  # EffectAmplitude[1..3] -> $t1.. and feeds $o1..
 COL_TRIG = (109, 110, 111)  # EffectTriggerSpell[1..3] (context for $<spellId>.. refs)
 COL_DIE = (64, 65, 66)  # EffectDieSides[1..3]  -> $s shows "min to max" when > 1
+COL_CHARGES = 26       # ProcCharges           -> $n
+COL_RADIUS = (88, 89, 90)  # EffectRadiusIndex[1..3] -> $a1.. (yards via SpellRadius.csv)
+COL_CHAIN = (100, 101, 102)  # EffectChainTarget[1..3] -> $x1..
 # The float columns (EffectRealPointsPerLevel etc., from col 70 on) were exported with the
 # decimal separator as a field separator, so "2.9" became two fields and every column from
 # there on moved right by one per such float. Columns before COL_SHIFT_FROM are never
@@ -45,7 +48,8 @@ FALLBACK_ICON = "inv_misc_questionmark"
 GENDER_RE = re.compile(r"\$[glGL]\s*([^:;]*):[^;]*;")
 # $<spellId>?  $/<divisor>;?  <letter><index>?   e.g. $s1  $d  $/2;s1  $33807s1  $t1
 NUM_RE = re.compile(r"^-?(0x[0-9A-Fa-f]+|\d+(\.\d+)?)$")
-TOKEN_RE = re.compile(r"\$(\d+)?(?:/(\d+);)?([a-zA-Z])(\d)?")
+# The divisor/multiplier may come before or after the spell id: $/10;29131o1, $*5;s1.
+TOKEN_RE = re.compile(r"\$(?:([/*])(\d+);)?(\d+)?(?:([/*])(\d+);)?([a-zA-Z])(\d)?")
 
 
 def fmt_duration(ms):
@@ -57,7 +61,7 @@ def fmt_duration(ms):
     return f"{sec:g} sec"
 
 
-def resolve_desc(text, sid, spells, durations):
+def resolve_desc(text, sid, spells, durations, radii=None):
     """Substitute Wowhead $ tokens using the reverse-engineered Spell.csv data."""
     if not text:
         return ""
@@ -65,7 +69,10 @@ def resolve_desc(text, sid, spells, durations):
     text = text.replace("$b", " ").replace("$B", " ")
 
     def repl(m):
-        ref, raw_letter, divisor, idx = m.group(1), m.group(3), m.group(2), m.group(4)
+        ref, raw_letter, idx = m.group(3), m.group(6), m.group(7)
+        op, opnum = (m.group(1), m.group(2)) if m.group(1) else (m.group(4), m.group(5))
+        divisor = opnum if op == "/" else None
+        multiplier = int(opnum) if op == "*" else None
         letter = raw_letter.lower()
         ctx = int(ref) if ref else sid
         sp = spells.get(ctx)
@@ -96,11 +103,19 @@ def resolve_desc(text, sid, spells, durations):
                 val = sp["proc"]
             elif letter == "u":
                 val = sp["stacks"]
+            elif letter == "n":
+                val = sp.get("charges") or None
+            elif letter == "x" and 0 <= i < 3:
+                val = sp.get("chain", [0, 0, 0])[i] or None
+            elif letter == "a" and 0 <= i < 3:
+                val = (radii or {}).get(sp.get("radius", [0, 0, 0])[i])
             elif letter == "d":
                 dur = durations.get(sp["dur_idx"])
                 return fmt_duration(dur[0]) if dur else m.group(0)
         if val is None:
             return "X"
+        if multiplier:
+            val = val * multiplier
         if divisor:
             d = int(divisor)
             val = val / d
@@ -169,8 +184,24 @@ def load_spell_csv(path):
             "stacks": _int(col(COL_STACKS)),
             "dur_idx": _int(col(COL_DURIDX)),
             "trig": [_int(col(c)) for c in COL_TRIG],
+            "charges": _int(col(COL_CHARGES)),
+            "radius": [_int(col(c)) for c in COL_RADIUS],
+            "chain": [_int(col(c)) for c in COL_CHAIN],
         }
     return names, icons, raw_descs, data
+
+
+def load_radii(path):
+    """SpellRadius.csv: index -> radius in yards."""
+    out = {}
+    if os.path.exists(path):
+        for r in csv.reader(open(path, encoding="utf-8")):
+            if r and r[0].isdigit():
+                try:
+                    out[int(r[0])] = float(r[1])
+                except ValueError:
+                    pass
+    return out
 
 
 def load_spell_icon_csv(path):
@@ -220,6 +251,7 @@ def main():
     csv_dir = os.path.join(args.repo, args.csv_dir)
     names, icon_ids, raw_descs, spell_data = load_spell_csv(os.path.join(csv_dir, "Spell.csv"))
     durations = load_durations(os.path.join(csv_dir, "SpellDuration.csv"))
+    radii = load_radii(os.path.join(csv_dir, "SpellRadius.csv"))
     icon_slugs = load_spell_icon_csv(os.path.join(csv_dir, "SpellIcon.csv"))
 
     def desc_for(sid):
@@ -227,7 +259,7 @@ def main():
         # Skip empty / truncated-row garbage (bare flag values like "0x3F007E").
         if not raw or raw == "0" or re.fullmatch(r"0x[0-9A-Fa-f]+", raw):
             return ""
-        return resolve_desc(raw, sid, spell_data, durations)
+        return resolve_desc(raw, sid, spell_data, durations, radii)
     tooltip_path = os.path.join(args.repo, "assets/db_inputs/wowhead_spell_tooltips.csv")
     record_path = os.path.join(args.repo, "tools/custom_talent_spell_ids.txt")
     have = existing_ids(tooltip_path)
