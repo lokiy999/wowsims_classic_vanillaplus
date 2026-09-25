@@ -226,21 +226,21 @@ dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Dwarf-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
   dps: 694.64989
-  tps: 672.52285
+  tps: 674.51725
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Dwarf-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
   dps: 539.7324
-  tps: 383.2047
+  tps: 383.30442
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Dwarf-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
   dps: 569.33723
-  tps: 409.77857
+  tps: 409.89962
  }
 }
 dps_results: {
@@ -268,21 +268,21 @@ dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
   dps: 707.54213
-  tps: 666.29067
+  tps: 668.24288
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
   dps: 553.1622
-  tps: 380.03599
+  tps: 380.13361
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
   dps: 585.90379
-  tps: 407.07252
+  tps: 407.17377
  }
 }
 dps_results: {

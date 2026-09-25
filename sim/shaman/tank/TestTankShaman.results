@@ -100,77 +100,77 @@ dps_results: {
  key: "TestTankShaman-Phase1-AllItems-CataclysmArmor"
  value: {
   dps: 315.74377
-  tps: 373.36951
+  tps: 373.48401
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
   dps: 266.21457
-  tps: 323.68572
+  tps: 323.82373
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheEarthfury"
  value: {
   dps: 246.92231
-  tps: 302.68401
+  tps: 302.81156
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheFiveThunders"
  value: {
   dps: 295.15463
-  tps: 350.74631
+  tps: 350.87379
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheStonefury"
  value: {
   dps: 272.31708
-  tps: 331.4328
+  tps: 331.54121
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheTenStorms"
  value: {
   dps: 271.54881
-  tps: 331.76922
+  tps: 331.89206
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
   dps: 279.91194
-  tps: 338.42133
+  tps: 338.55288
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Average-Default"
  value: {
   dps: 235.66956
-  tps: 288.64557
+  tps: 288.77612
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
   dps: 98.5845
-  tps: 228.80573
+  tps: 228.99432
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
   dps: 98.5845
-  tps: 142.08842
+  tps: 142.09785
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
   dps: 98.14215
-  tps: 143.91573
+  tps: 143.93448
  }
 }
 dps_results: {
@@ -198,21 +198,21 @@ dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
   dps: 103.06536
-  tps: 173.26367
+  tps: 173.70867
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
   dps: 103.06536
-  tps: 148.32142
+  tps: 148.34367
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
   dps: 107.51742
-  tps: 162.21861
+  tps: 162.23986
  }
 }
 dps_results: {
@@ -240,6 +240,6 @@ dps_results: {
  key: "TestTankShaman-Phase1-SwitchInFrontOfTarget-Default"
  value: {
   dps: 218.90509
-  tps: 272.91481
+  tps: 273.05091
  }
 }

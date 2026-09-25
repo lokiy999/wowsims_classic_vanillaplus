@@ -411,13 +411,13 @@ const JudgementAuraTag = "Judgement"
 func JudgementOfWisdomAura(target *Unit) *Aura {
 	actionID := ActionID{SpellID: 20355}
 
-	jowMana := 59.0
+	jowMana := 60.0 // server (Spell.csv 20353), 50% chance, 30 sec (20355)
 
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Judgement of Wisdom",
 		ActionID: actionID,
 		Tag:      JudgementAuraTag,
-		Duration: time.Second * 10,
+		Duration: time.Second * 30,
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			unit := spell.Unit
 			if !unit.HasManaBar() {
@@ -455,7 +455,7 @@ func JudgementOfLightAura(target *Unit) *Aura {
 		Label:    "Judgement of Light",
 		ActionID: actionID,
 		Tag:      JudgementAuraTag,
-		Duration: time.Second * 10,
+		Duration: time.Second * 30, // server (Spell.csv 20346)
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if !spell.ProcMask.Matches(ProcMaskMelee) || !result.Landed() {
 				return

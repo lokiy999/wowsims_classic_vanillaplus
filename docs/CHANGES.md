@@ -3843,3 +3843,7 @@ No test baseline moved (tests have no talents).
   (scaled by its spell power coefficient).
 Checked and matching: Libram of Hope (Seal costs -20), Libram of Truth (Devotion Aura +55 armor, Part CC), Sanctified
 Orb (5% crit for 1 min). No test baseline moved (no preset uses these).
+- **Judgement of Wisdom** (20353/20355): 60 mana per proc (was 59), 30 sec debuff (was 10). **Judgement of Light**
+  (20346): 30 sec. Retribution Aura (50 Holy damage, 10301), Blessing of Salvation (-20% threat) and Devotion Aura
+  (700) already matched. Test baselines: protection paladin +1.2% (mana), other mana users within 0.1%.
+

@@ -100,77 +100,77 @@ dps_results: {
  key: "TestFeralTank-Phase1-AllItems-CenarionArmor"
  value: {
   dps: 270.31903
-  tps: 510.67347
+  tps: 510.67878
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-Champion'sRefuge"
  value: {
   dps: 241.57725
-  tps: 456.72841
+  tps: 456.73328
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-FeralheartRaiment"
  value: {
   dps: 256.5359
-  tps: 482.88865
+  tps: 482.89352
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-FieldMarshal'sSanctuary"
  value: {
   dps: 260.83946
-  tps: 495.10037
+  tps: 495.10525
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-Haruspex'sGarb"
  value: {
   dps: 228.96199
-  tps: 431.0072
+  tps: 431.01196
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-LieutenantCommander'sRefuge"
  value: {
   dps: 241.57725
-  tps: 456.72841
+  tps: 456.73328
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-StormrageRaiment"
  value: {
   dps: 202.23107
-  tps: 378.14632
+  tps: 378.15011
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-TalonclawRegalia"
  value: {
   dps: 202.23107
-  tps: 378.18138
+  tps: 378.18658
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-UrsocArmor"
  value: {
   dps: 241.425
-  tps: 455.20859
+  tps: 455.21347
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-Warlord'sSanctuary"
  value: {
   dps: 260.83946
-  tps: 495.10037
+  tps: 495.10525
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-Average-Default"
  value: {
   dps: 334.88401
-  tps: 678.21833
+  tps: 678.22398
   dtps: 991.09735
  }
 }
@@ -214,7 +214,7 @@ dps_results: {
  key: "TestFeralTank-Phase1-SwitchInFrontOfTarget-Default"
  value: {
   dps: 377.0052
-  tps: 766.11728
+  tps: 766.12175
   dtps: 923.76419
  }
 }
