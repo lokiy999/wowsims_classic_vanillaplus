@@ -3861,3 +3861,12 @@ the melee procs):
   the proc rate is not in the spell data. The seal option dropdown (proto enum) does not list them.
 Throwaway holy paladin sim (placeholder gear, 500 iterations): 337.6 HPS -> 340.9 with Seal of Light kept up, 338.0 with
 Seal of Wisdom.
+
+## Part DK — Paladin Eye for an Eye (2026-09-25)
+
+Lokiy 2026-09-25: tank damage and healing effects can go in now; threat stays for the later threat batch.
+- **Eye for an Eye** (9799, 25988): every spell hit taken (proc flag 0x20000; classic: only spell crits, 30%) deals
+  5% / 10% of the damage taken to the caster as Holy damage (25997). `sim/paladin/talents_server.go`. Threat not tuned.
+Limitation: no encounter in the sim casts damaging spells at the player (the bosses only melee; Vaelastrasz's Essence of
+the Red is a resource buff), so Eye for an Eye and Shield of Faith (Part DH) never trigger yet. They start working once
+boss spell damage is modeled (TODO).

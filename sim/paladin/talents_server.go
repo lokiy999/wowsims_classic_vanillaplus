@@ -18,6 +18,7 @@ func (paladin *Paladin) applyServerTalents() {
 	}
 
 	paladin.applyMorale()
+	paladin.applyEyeForAnEye()
 	paladin.applyIllumination()
 }
 
@@ -67,6 +68,37 @@ func (paladin *Paladin) applyIllumination() {
 			switch spell.SpellCode {
 			case SpellCode_PaladinHolyShockHeal, SpellCode_PaladinHolyLight, SpellCode_PaladinFlashOfLight:
 				paladin.AddMana(sim, pct*spell.DefaultCast.Cost, metrics)
+			}
+		},
+	}))
+}
+
+// Eye for an Eye (server Spell.csv 9799, 25988): every spell hit against the paladin (proc flag 0x20000, not only
+// crits as in classic) deals 5% / 10% of the damage taken to the caster as Holy damage (25997). Its threat is not
+// tuned yet (threat is a later batch).
+func (paladin *Paladin) applyEyeForAnEye() {
+	if paladin.Talents.EyeForAnEye == 0 {
+		return
+	}
+	fraction := 0.05 * float64(paladin.Talents.EyeForAnEye)
+
+	procSpell := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 25997},
+		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+	})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    "Eye for an Eye",
+		ActionID: core.ActionID{SpellID: []int32{0, 9799, 25988}[paladin.Talents.EyeForAnEye]},
+		OnSpellHitTaken: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && result.Damage > 0 && spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+				procSpell.CalcAndDealDamage(sim, spell.Unit, fraction*result.Damage, procSpell.OutcomeMagicHit)
 			}
 		},
 	}))

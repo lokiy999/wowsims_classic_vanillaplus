@@ -107,13 +107,14 @@ judgement) are left out on purpose. Still open for a DPS sim:
   (needs the player's health).
 
 **LOW PRIORITY: threat, tank and defensive talents** (Lokiy 2026-09-24: rotations and threat calculations wait until
-all the other data is done; do these as one batch then):
+all the other data is done; do these as one batch then. Lokiy 2026-09-25: the damage and healing parts of tank talents
+can be added now; only threat waits):
 - Druid: Feral Instinct Bear Form threat +5/10/15%; Primal Tenacity and Improved Enrage (Enrage isn't in the sim);
   Custody of the Nature (crit immunity after being crit).
 - Warrior: Mocker (Taunt/Challenging Shout/Mocking Blow hit +6%), Improved Defensive Stance (absorb shield on stance
   swap), Concussion Blow and Shield Toss ("high amount of threat": the threat value and Shield Toss attack power
   coefficient are unknown), Piercing Howl threat, Blood Craze, Berserker's Blood (needs the player's health).
-- Paladin: Guardian's Favor Salvation part (Sanctuary part done in Part DI), Second Wind, Stoicism, Eye for an Eye, Improved
+- Paladin: Guardian's Favor Salvation part (Sanctuary part done in Part DI), Second Wind, Stoicism, Eye for an Eye threat (damage in Part DK), Improved
   Concentration Aura.
 - Warlock: Damned Vanguard (demon threat +30%, damage taken -30%).
 - Hunter: Intimidation threat, Improved Distracting Shot, Deterrence, pet Survival Instincts and Bestial Swiftness.
@@ -125,7 +126,7 @@ all the other data is done; do these as one batch then):
 - **Druid** (11 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Custody Of The Nature, Catharsis
 - **Hunter** (20 of 60): Improved Mend Pet, Aspect Mastery, Improved Revive Pet, Intimidation, Bestial Swiftness, Survival Instincts, Team Play, Terrifying Roar, Improved Hunters Mark, Improved Concussive Shot, Vantage Point, Hawk Eye, Improved Distracting Shot, Scatter Shot, Deterrence, Improved Wing Clip, Trapper, Thrill Of The Hunt, Deep Freeze, Wyvern Sting
 - **Mage** (21 of 60): Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Flame Throwing, Impact, Blazing Speed, Chain Reaction, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
-- **Paladin** (14 of 60): Aura Mastery, Spiritual Focus, Inner Light, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
+- **Paladin** (13 of 60): Aura Mastery, Spiritual Focus, Inner Light, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Repentance
 - **Priest** (19 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
 - **Rogue** (19 of 60): Remorseless Attacks, Seek And Destroy, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
 - **Shaman** (15 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Improved Ghost Wolf, Shamanism, Spiritwalking, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Cleansing Wave
@@ -165,6 +166,9 @@ the sim.
 ## Open items at a glance (updated 2026-09-25)
 
 **Affects sim results**
+- No encounter casts damaging spells at the player (bosses only melee), so effects that react to spell damage taken
+  never trigger: paladin Eye for an Eye (Part DK) and Shield of Faith (Part DH), spell resistances, Petrified Scarab.
+  Needs a boss spell damage model (e.g. a target option for periodic spell damage by school).
 - Pyroblast, Flame Shock, Insect Swarm and Arcane Missiles spell power coefficients are a guess (classic total spread
   over the new tick count); Arcane Missiles' +1% Arcane crit is one stack per cast.
 - LOW PRIORITY (Lokiy 2026-09-24: rotations and threat need all other data first): paladin ret/prot rotations are
@@ -223,7 +227,7 @@ the sim.
 
 **Paladin**
 - Not modeled: Seal of Light / Seal of Wisdom melee procs (proc rate unknown), Divine Grace's Blessing of Wisdom /
-  Light part, Light's Mercy (Flash of Light only on the heal page), Holy Purge, Eye for an Eye (10% of spell damage taken reflected), Repentance, Codex Holy
+  Light part, Light's Mercy (Flash of Light only on the heal page), Holy Purge, Repentance, Codex Holy
   Light cost/cast time, the Judgement of Fury forced attack. Illumination: question 11.
 - Seal of Command: the 1 sec internal cooldown is unverified (damage 50%, 12 procs per minute, 120 sec duration and
   top rank Judgement of Command 441-475 are confirmed).

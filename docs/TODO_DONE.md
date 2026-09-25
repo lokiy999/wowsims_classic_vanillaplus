@@ -19,6 +19,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-25 (Part DK): paladin Eye for an Eye damage (threat still in the threat batch).
 - Done on 2026-09-25 (Part DJ): paladin Seal of Light and Seal of Wisdom (passive healing / mana cost effects,
   judgements), Divine Grace (seal part).
 - Done on 2026-09-25 (Part DI follow-up): Judgement of Wisdom 60 mana and 30 sec, Judgement of Light 30 sec.
