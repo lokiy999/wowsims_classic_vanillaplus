@@ -5547,6 +5547,10 @@
 "zoneId": 2677,
 "npcId": 14020
 },
+"26231": {
+"zoneId": 2677,
+"otherName": "Master Elemental Shaper Krixix"
+},
 "26243": {
 "zoneId": 2159,
 "otherName": "Trash"

@@ -3528,6 +3528,7 @@ Checked every DB item for an AQ20 / AQ40 / Naxx source: only two had one.
 - **Ring of Swarming Thought** (21707, Skeram, AQ40) is in no AtlasLoot table, so the table rule never saw it; the
   raid-source rule drops it on a fresh run, but the committed include list still had it, and Part CO had kept that
   list. Removed (DB 3688 -> 3687 items; no preset used it).
-- **Cloak of Untold Secrets** (26231) is the server's renumbered version of 21627 (new stats); its only known source
-  is classic's AQ40 one. Kept for now, TODO question 23.
+- **Cloak of Untold Secrets** (26231) is the server's renumbered version of 21627 (new stats). The user confirmed it
+  drops from Master Elemental Shaper Krixix in BWL, so it stays; its source was classic's Fankriss (AQ40) and is now
+  BWL / Krixix (`MANUAL_SOURCES` in `docs/gen_sources.py`; the AtlasLoot copy's Krixix table ends at 26230).
 `docs/gen_include.py` no longer writes the user-excluded items into `add_items.json` (they never reached the DB).

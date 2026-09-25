@@ -69,10 +69,7 @@ Things only you can answer; everything else I keep working on. Newest at the bot
   of Swarming Thought (21707, Skeram, AQ40, in no AtlasLoot table, caught by the raid-source rule); the committed
   list still had it and is fixed now. `add_items.json` changing between runs is expected (it lists items new
   relative to the committed DB).
-23. **Cloak of Untold Secrets** (26231, the server's renumbered 21627): classic drops it from Fankriss in AQ40; the
-    server gave it a new id and new stats (+20 Stamina, +20 Shadow Resistance) and it is in no AtlasLoot table. Where
-    does it drop on the server? It stays in the sim for now (renumbered server items skip the raid-source check,
-    Part BY).
+23. ~~**Cloak of Untold Secrets**~~ ANSWERED 2026-09-25: drops from Krixix in BWL, keep it. Source set (Part CP).
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

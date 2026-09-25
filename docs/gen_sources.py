@@ -90,6 +90,12 @@ def zone_for_table(tname):
     return None, None
 
 
+# item id -> source, for items missing from the AtlasLoot copy (answers from the user).
+MANUAL_SOURCES = {
+    26231: {"zoneId": 2677, "otherName": "Master Elemental Shaper Krixix"},  # Cloak of Untold Secrets (2026-09-25)
+}
+
+
 def main():
     id_tables, _ = sd.atlasloot()
     renum = {}
@@ -180,6 +186,8 @@ def main():
         if npc:
             out[server_id] = {"zoneId": npc["zoneId"] or zid, "npcId": npc["id"]}
 
+    # Sources the AtlasLoot copy does not list, given by the user.
+    out.update(MANUAL_SOURCES)
     json.dump({str(k): v for k, v in sorted(out.items())}, open(OUT, "w"), indent=0)
     matched_npc = sum(1 for v in out.values() if "npcId" in v)
     print(f"wrote {OUT}: {len(out)} item sources ({matched_npc} matched a known NPC, "
