@@ -3480,3 +3480,15 @@ Also checked in this round:
   Light's Mercy) were still listed. Regenerated from the code.
 - The TODO item "gear slots are empty on first load" is the `START_WITH_EMPTY_PRESETS` testing switch (Part AT), not a
   bug; noted there.
+
+## Part CN — Hemorrhage debuff, Improved Succubus fix; physical and pet abilities checked (2026-09-25)
+
+- **Hemorrhage** (rogue talent, 17348): the debuff adds +25 Physical damage taken for 15 sec (was classic +7 for 30
+  charges). The server spell has no charge count, so the sim now keeps it for the full 15 sec (TODO question 19).
+- **Improved Succubus** was not applied since the "Pet abilities from server data" commit: the +15%/rank Lash of Pain
+  multiplier had ended up inside the line comment. Fixed. A search found no other line like it.
+- **Checked, already matching the server:** Heroic Strike 157, Cleave +50, Bloodthirst 50% attack power, Mortal
+  Strike +160, Execute 750, Overpower +50, Slam +107, Sinister Strike +68, Backstab 150% +255, Aimed Shot 600,
+  Multi-Shot 150, Arcane Shot 275, Raptor Strike 140, hunter pet Claw 52-72 and Bite, Imp Firebolt, Lash of Pain
+  100-300 with its 6 sec cooldown. Execute converts extra rage at 15 damage each; the server value is not in the
+  dump (TODO question 20).

@@ -17,7 +17,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 
 	var hemoAuras core.AuraArray
 	hemoAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-			return core.HemorrhageAura(target)
+		return core.HemorrhageAura(target)
 	})
 
 	rogue.Hemorrhage = rogue.RegisterSpell(core.SpellConfig{
@@ -56,7 +56,6 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 				if len(hemoAuras) > 0 {
 					hemoAura := hemoAuras.Get(target)
 					hemoAura.Activate(sim)
-					hemoAura.SetStacks(sim, 30)
 				}
 			} else {
 				spell.IssueRefund(sim)

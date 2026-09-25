@@ -564,30 +564,20 @@ func GiftOfArthasAura(target *Unit) *Aura {
 }
 
 func HemorrhageAura(target *Unit) *Aura {
-	debuffBonusDamage := 7.0
+	// Server (Spell.csv 17348): Physical damage taken +25 for 15 sec, no charge limit (classic: +7, 30 charges).
+	debuffBonusDamage := 25.0
 
 	spellID := int32(17348)
 
 	return target.GetOrRegisterAura(Aura{
-		Label:     "Hemorrhage",
-		ActionID:  ActionID{SpellID: spellID},
-		Duration:  time.Second * 15,
-		MaxStacks: 30,
+		Label:    "Hemorrhage",
+		ActionID: ActionID{SpellID: spellID},
+		Duration: time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += debuffBonusDamage
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= debuffBonusDamage
-		},
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.SpellSchool != SpellSchoolPhysical {
-				return
-			}
-			if !result.Landed() || result.Damage == 0 {
-				return
-			}
-			// TODO find out which abilities are actually affected
-			aura.RemoveStack(sim)
 		},
 	})
 }

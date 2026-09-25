@@ -51,6 +51,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 17. ~~**Flask of Indomitable Might icon**~~ ANSWERED 2026-09-25: INV_Potion_21 (user's in-game AtlasLoot), applied.
 18. **Trueshot Aura ranks** (Part CL): the talent gives rank 1 (100 ranged / 50 melee attack power); Spell.csv also
     has ranks 2 (150/75) and 3 (200/100). Can hunters train ranks 2-3 on the server? The sim now uses rank 3.
+19. **Hemorrhage charges** (Part CN): the server spell 17348 gives +25 Physical damage taken for 15 sec and has no
+    charge count (classic: 30 hits). Does the debuff really last the full 15 sec, or does it still end after N hits?
+20. **Execute extra rage** (Part CN): how much damage does each extra point of rage add? The tooltip value (`$f1`)
+    is not in the dump; the sim uses classic 15 per rage.
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 
