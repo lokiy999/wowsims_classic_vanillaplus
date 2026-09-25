@@ -3686,3 +3686,29 @@ the same way the sim already doubles the Bear Form values (TODO question 31). Th
 (24932, +3% melee and ranged crit) already matched.
 
 Feral cat DPS about +4.5% (baseline updated). The "Feral Tank" TODO note is updated.
+
+## Part DA — Self-buffs and cooldowns, second pass against the server data (2026-09-25)
+
+Dumped the stances, aspects, armors, forms, weapon imbues, shields and the big cooldowns from `Spell.csv` (effect
+base points, duration index, cooldown, cost) and compared them with the sim. Most were already right from Parts CA,
+CT and CU. Changed:
+
+| Spell | Sim before | Server (now) |
+|---|---|---|
+| Recklessness (1719) | +20% damage taken | +30% (the stale "50% crit, 12 sec" comment is replaced) |
+| Death Wish (12328) | 10 rage | 20 rage (cost 200 = rage x10; Part CW ran without talents so it was missed) |
+| Bestial Wrath (19574) | 18 sec, 2 min cooldown | 30 sec (duration index 2), 3 min cooldown |
+| Lightning Shield (324-10432) | 3 charges that were never used up; rank 7 cost 0 mana; casting it reset Earth Shock's cooldown (Season of Discovery leftover) | 5 charges, one used per proc; rank 7 costs 370 mana; no Earth Shock reset |
+| Flurry, warrior and shaman (12966-12970, 16257-16280) | lasted until the 3 charges were used | 3 charges, 8 sec (duration index 31) |
+| Druid Vengeance (16909-16913) | +20%/rank crit damage bonus for Wrath, Starfire, Moonfire | also +10%/rank for feral abilities (Shred, Claw, Rake, Ferocious Bite, Maul, Swipe) |
+
+Matching (no change): Berserker/Defensive/Battle Stance passives, Aspect of the Hawk 120, Mage Armor, Moonkin Form
+(20% of Intellect as spell damage) and Moonkin Aura (+5%), Lightning Shield spell damage 5-50, Arcane Power (20 sec,
+5 min), Combustion (2 min, +10% per stack), Power Infusion (15%, 30 sec), Adrenaline Rush (+30% attack speed, 3 min),
+Blade Flurry (no haste, 30 sec cooldown), Rapid Fire (20 sec confirmed in game), Innervate, Cold Blood, Bloodrage,
+Berserker Rage, warrior Enrage (10 stacks, 15 sec), paladin Vengeance, Seal of Command (2 min), Blessing of Might.
+Not modeled: Aspect of the Monkey also gives +5% melee crit on the server (hunters only melee in the sim when out of
+range, so not worth a setting). The spell export has no "percent of base mana" cost column, so costs like Bestial
+Wrath's (sim 12%) cannot be checked.
+
+No test baseline moved: the test presets have no talents, and no preset casts Lightning Shield rank 7.

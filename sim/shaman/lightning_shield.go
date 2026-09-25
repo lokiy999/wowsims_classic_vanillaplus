@@ -14,7 +14,7 @@ var LightningShieldSpellId = [LightningShieldRanks + 1]int32{0, 324, 325, 905, 9
 var LightningShieldProcSpellId = [LightningShieldRanks + 1]int32{0, 26364, 26365, 26366, 26367, 26369, 26370, 26363}
 var LightningShieldBaseDamage = [LightningShieldRanks + 1]float64{0, 13, 29, 51, 80, 114, 154, 198}
 var LightningShieldSpellCoef = [LightningShieldRanks + 1]float64{0, .147, .227, .267, .267, .267, .267, .267}
-var LightningShieldManaCost = [LightningShieldRanks + 1]float64{0, 45, 80, 120, 180, 240, 305}
+var LightningShieldManaCost = [LightningShieldRanks + 1]float64{0, 45, 80, 120, 180, 240, 305, 370}
 var LightningShieldLevel = [LightningShieldRanks + 1]int{0, 8, 16, 24, 32, 40, 48, 56}
 
 func (shaman *Shaman) registerLightningShieldSpell() {
@@ -41,8 +41,9 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 	manaCost := LightningShieldManaCost[rank]
 	level := LightningShieldLevel[rank]
 
-	baseCharges := int32(3)
-	maxCharges := int32(3)
+	// Server (Spell.csv 324-10432): 5 charges, 10 min.
+	baseCharges := int32(5)
+	maxCharges := int32(5)
 
 	shaman.LightningShieldProcs[rank] = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: procSpellId},
@@ -81,19 +82,11 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 				shaman.ActiveShield = nil
 			}
 		},
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if newStacks == aura.MaxStacks {
-				for _, spell := range shaman.EarthShock {
-					if spell != nil {
-						spell.CD.Reset()
-					}
-				}
-			}
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Landed() && icd.IsReady(sim) {
 				icd.Use(sim)
 				shaman.LightningShieldProcs[rank].Cast(sim, spell.Unit)
+				aura.RemoveStack(sim)
 			}
 		},
 	})

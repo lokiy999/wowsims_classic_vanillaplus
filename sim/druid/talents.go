@@ -316,7 +316,9 @@ func (druid *Druid) applyVengeance() {
 		return
 	}
 
+	// Server (Spell.csv 16909-16913): offensive spells +20% per rank, feral abilities +10% per rank.
 	critDamageBonus := 0.20 * float64(druid.Talents.Vengeance)
+	feralCritDamageBonus := 0.10 * float64(druid.Talents.Vengeance)
 
 	druid.RegisterAura(core.Aura{
 		Label: "Vengeance",
@@ -334,6 +336,13 @@ func (druid *Druid) applyVengeance() {
 
 			for _, spell := range affectedSpells {
 				spell.CritDamageBonus += critDamageBonus
+			}
+
+			feralSpells := []*DruidSpell{druid.Shred, druid.Claw, druid.Rake, druid.FerociousBite, druid.Maul, druid.SwipeBear}
+			for _, spell := range feralSpells {
+				if spell != nil {
+					spell.CritDamageBonus += feralCritDamageBonus
+				}
 			}
 		},
 	})

@@ -430,7 +430,7 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
 		ActionID:  core.ActionID{SpellID: spellID},
-		Duration:  core.NeverExpires,
+		Duration:  time.Second * 8, // server (Spell.csv 12966-12970 / 16257-16280): 3 charges, 8 sec
 		MaxStacks: 3,
 	})
 

@@ -90,6 +90,9 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 31. **Leader of the Pack and Cat Form** (Part CZ): the talent "doubles the effects of your Bear and Cat Forms". The
     sim now doubles Cat Form's +5% crit to +10%, but keeps its threat at -29% (not -58%). Is that how it works on
     the server? (Bear Form: armor, health and attack power are all doubled.)
+32. **Flurry and Lightning Shield timings** (Part DA): the server's Flurry buff lasts 8 sec (classic 15 sec) and
+    Lightning Shield has 5 charges (classic 3). The sim now uses the server values; a quick check in game would
+    confirm the 8 sec. Also: does Lightning Shield have a hidden cooldown between procs? The sim uses 3.5 sec.
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

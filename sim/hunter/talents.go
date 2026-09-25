@@ -194,7 +194,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 	hunter.BestialWrathPetAura = hunter.pet.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
-		Duration: time.Second * 18,
+		Duration: time.Second * 30, // server (Spell.csv 19574): 30 sec, 3 min cooldown
 	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.2) // DBC 19574: +20% damage
 
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
@@ -208,7 +208,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute * 2,
+				Duration: time.Minute * 3,
 			},
 		},
 
