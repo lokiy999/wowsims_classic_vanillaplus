@@ -3736,3 +3736,12 @@ has no effect for it, so it is not modeled (TODO question 33).
 Test averages: hunter 437 -> 445 (orc pet), warlock 824 -> 834 (orc pet), enhancement +0.4%, feral tank / prot
 paladin / tank shaman +0.2-0.3%, mage and elemental -0.1% (Troll Berserking now +5% casting speed for 20 sec instead
 of about +11% for 10 sec).
+
+## Part DC — Weapon enchant procs from the server data (2026-09-25)
+
+Checked the proc spells of the weapon enchants in `sim/common/enchant_effects.go` against `Spell.csv`:
+- **Fiery Weapon** (13897): 50 Fire damage (was 40).
+- **Lifestealing** (20004): 40-50 Shadow damage (was 30).
+- Crusader (20007: +100 Strength for 15 sec) already matched. Icy Chill (20005: -25% attack speed, -30% movement
+  for 5 sec) and Unholy Weapon (20006) only affect the target's damage, so they are not in the DPS sim.
+No preset uses these two enchants, so no test baseline moved.
