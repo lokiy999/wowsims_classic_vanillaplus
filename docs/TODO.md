@@ -49,6 +49,8 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     really double Dire Bear Form (armor from items +720% instead of +360%, health +40%, +360 attack power)? Compare
     the character sheet armor with and without the talent. Enrage's armor loss (sim: classic 16% in Dire Bear Form).
 17. ~~**Flask of Indomitable Might icon**~~ ANSWERED 2026-09-25: INV_Potion_21 (user's in-game AtlasLoot), applied.
+18. **Trueshot Aura ranks** (Part CL): the talent gives rank 1 (100 ranged / 50 melee attack power); Spell.csv also
+    has ranks 2 (150/75) and 3 (200/100). Can hunters train ranks 2-3 on the server? The sim now uses rank 3.
 
 ## Talents not in the sim code (regenerated 2026-09-24, after Part CE)
 

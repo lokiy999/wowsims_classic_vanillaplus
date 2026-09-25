@@ -3426,3 +3426,36 @@ items) into `assets/db_inputs/server_item_tooltips.json`; gen_db puts it on thos
 a Wowhead link; now name and tooltip come from the dump, the icon from AtlasLoot (Teremus) or a placeholder
 (the flask's `INV_Potion_21` from the user's in-game AtlasLoot, `ICON_OVERRIDES`). Every AtlasLoot file in `CSV's/` is now searched for icons (used only when Wowhead has none). Checked in the browser on the mage and warrior pages: no spell or
 item tooltip goes to Wowhead any more.
+
+## Part CL — Raid buffs, debuffs and world buffs from the server data (2026-09-25)
+
+Checked the common raid buffs/debuffs and world buffs against `Spell.csv` (base points of the max rank). Changed:
+
+| Effect | Sim before | Server (now) |
+|---|---|---|
+| Sunder Armor (11597) | 450 armor per stack | 500 |
+| Expose Armor (11198) | 1700 | 2500 (Improved Expose Armor still +25%/+50%) |
+| Curse of Recklessness (11717) | +90 attack power, -640 armor | +215 attack power, -640 armor |
+| Curse of the Elements / Shadow | -75 resistances, +10% damage | -80 resistances, +10% damage |
+| Faerie Fire / Faerie Fire (Feral) | 505 armor | 500 |
+| Demoralizing Shout ranks 1-5 | 45/56/76/111/146 | 35/55/70/105/140 |
+| Improved Scorch (Fire Vulnerability 22959) | 3% per stack, 5 stacks, 30 sec | 2% per stack, 10 stacks, 15 sec (talent text agrees) |
+| Winter's Chill (12579) | 2%, 5 stacks | 2%, 10 stacks |
+| Mark / Gift of the Wild (9885 / 21850) | 285 armor, 12 attributes, 20 resistances | 300 armor, 20 attributes, 20 resistances |
+| Trueshot Aura (20906, rank 3) | 100 ranged / 50 melee attack power | 200 / 100 |
+| Songflower Serenade (15366) | +15 attributes, +5% crit | +30 attributes, +2% crit |
+| Spirit of Zandalar (24425) | +15% stats | +10% |
+| Warchief's Blessing (16609) | +300 health, +10 MP5, +15% melee speed | +300 health, +30 MP5, +5% attack (melee and ranged) and casting speed |
+| Sayge's Dark Fortune of Damage (23768) | +10% | +5% |
+
+Part (hunter audit) had set Trueshot to 100 / 50 from "DBC 20906"; those are the rank 1 values (19506, the talent).
+Rank 3 has 200 / 100. The raid buff uses rank 3 (TODO question 18: can hunters train ranks 2-3?).
+
+Unchanged, matching the server: Battle Shout 232, Blessing of Might 185, Blessing of Wisdom 33, Blessing of Kings
+10%, Arcane Intellect 30, Power Word: Fortitude 54, Divine Spirit 40, Devotion Aura 700, Strength of Earth / Grace of
+Air 70, Mana Spring 25 MP5, Rallying Cry (+5% crit, +50 Spirit), Fengus' Ferocity +10% attack power, Slip'kik's
+Savvy +5%, Mol'dar's Moxie +5% health, Shadow Weaving (2% x 10), Improved Shadow Bolt 10%, Demoralizing Roar.
+Stormstrike (server: +10% Nature damage taken for 10 sec, no charges; sim +20%, 2 charges) is not changed because
+the Stormstrike talent is not in the server tree, so the sim never uses it.
+
+Every golden test result moved (these buffs are in every test raid); mage DPS about +3-4% from 10 Scorch stacks.

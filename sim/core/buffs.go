@@ -109,13 +109,13 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 	ManaSpring: {
 		stats.MP5: 25,
 	},
-	MarkOfTheWild: {
-		stats.BonusArmor:       285,
-		stats.Stamina:          12,
-		stats.Agility:          12,
-		stats.Strength:         12,
-		stats.Intellect:        12,
-		stats.Spirit:           12,
+	MarkOfTheWild: { // server (Spell.csv 9885 / 21850): 300 armor, 20 attributes, 20 resistances
+		stats.BonusArmor:       300,
+		stats.Stamina:          20,
+		stats.Agility:          20,
+		stats.Strength:         20,
+		stats.Intellect:        20,
+		stats.Spirit:           20,
 		stats.ArcaneResistance: 20,
 		stats.ShadowResistance: 20,
 		stats.NatureResistance: 20,
@@ -1528,9 +1528,10 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, bo
 }
 
 func TrueshotAura(unit *Unit) *Aura {
-	// DBC 20906: +100 ranged attack power, +50 melee attack power.
-	rangedAP := 100.0
-	meleeAP := 50.0
+	// Server rank 3 (Spell.csv 20906): +200 ranged attack power, +100 melee attack power.
+	// (Rank 1, 19506, from the talent: 100 / 50.)
+	rangedAP := 200.0
+	meleeAP := 100.0
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Trueshot Aura",
@@ -1746,11 +1747,12 @@ func ApplySpiritOfZandalar(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "ZandalarBuff",
 		Stats: []StatConfig{
-			{stats.Agility, 1.15, true},
-			{stats.Intellect, 1.15, true},
-			{stats.Spirit, 1.15, true},
-			{stats.Stamina, 1.15, true},
-			{stats.Strength, 1.15, true},
+			// Server (Spell.csv 24425): all stats +10%.
+			{stats.Agility, 1.10, true},
+			{stats.Intellect, 1.10, true},
+			{stats.Spirit, 1.10, true},
+			{stats.Stamina, 1.10, true},
+			{stats.Strength, 1.10, true},
 		},
 	})
 }
@@ -1765,14 +1767,15 @@ func ApplySongflowerSerenade(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "SongflowerSerenade",
 		Stats: []StatConfig{
-			{stats.Agility, 15, false},
-			{stats.Intellect, 15, false},
-			{stats.Spirit, 15, false},
-			{stats.Stamina, 15, false},
-			{stats.Strength, 15, false},
-			{stats.MeleeCrit, 5, false},
-			// TODO: {stats.RangedCrit, 5, false},
-			{stats.SpellCrit, 5, false},
+			// Server (Spell.csv 15366): all attributes +30, crit +2%.
+			{stats.Agility, 30, false},
+			{stats.Intellect, 30, false},
+			{stats.Spirit, 30, false},
+			{stats.Stamina, 30, false},
+			{stats.Strength, 30, false},
+			{stats.MeleeCrit, 2 * CritRatingPerCritChance, false},
+			// TODO: {stats.RangedCrit, 2, false},
+			{stats.SpellCrit, 2 * SpellCritRatingPerCritChance, false},
 		},
 	})
 }
@@ -1793,14 +1796,19 @@ func ApplyWarchiefsBlessing(unit *Unit, category string) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: category,
 		Stats: []StatConfig{
+			// Server (Spell.csv 16609): +300 health, +30 mana per 5 sec, attack and casting speed +5%.
 			{stats.Health, 300, false},
-			{stats.MP5, 10, false},
+			{stats.MP5, 30, false},
 		},
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.15
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.05
+			aura.Unit.PseudoStats.RangedSpeedMultiplier *= 1.05
+			aura.Unit.MultiplyCastSpeed(1.05)
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.15
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.05
+			aura.Unit.PseudoStats.RangedSpeedMultiplier /= 1.05
+			aura.Unit.MultiplyCastSpeed(1 / 1.05)
 		},
 	})
 }
@@ -1870,10 +1878,10 @@ func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) {
 		label = "Sayge's Dark Fortune of Damage"
 		spellID = 23768
 		config.ExtraOnGain = func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.10
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.05 // server (Spell.csv 23768): +5%
 		}
 		config.ExtraOnExpire = func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.10
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.05
 		}
 	case proto.SaygesFortune_SaygesAgility:
 		label = "Sayge's Dark Fortune of Agility"

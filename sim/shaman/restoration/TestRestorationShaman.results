@@ -1,47 +1,47 @@
 character_stats_results: {
  key: "TestRestorationShaman-Phase1-CharacterStats-Default"
  value: {
-  final_stats: 289.685
-  final_stats: 253
-  final_stats: 430.1
-  final_stats: 484.495
-  final_stats: 318.78
-  final_stats: 450.49833
+  final_stats: 310.97
+  final_stats: 275.88
+  final_stats: 445.28
+  final_stats: 497.31
+  final_stats: 338.8
+  final_stats: 454.77
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 153
   final_stats: 0
-  final_stats: 87.1
+  final_stats: 107.1
   final_stats: 0
-  final_stats: 25.48797
-  final_stats: 0
-  final_stats: 0
-  final_stats: 1333.607
-  final_stats: 0
-  final_stats: 27.5524
+  final_stats: 22.70454
   final_stats: 0
   final_stats: 0
+  final_stats: 1435.434
   final_stats: 0
-  final_stats: 8507.425
+  final_stats: 25.7147
   final_stats: 0
   final_stats: 0
-  final_stats: 3699
-  final_stats: 110
+  final_stats: 0
+  final_stats: 8699.65
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3768.76
+  final_stats: 220
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 14.5524
+  final_stats: 15.7147
   final_stats: 5
   final_stats: 0
-  final_stats: 5986.05
+  final_stats: 6145.44
   final_stats: 39
   final_stats: 87
   final_stats: 67
   final_stats: 67
   final_stats: 67
-  final_stats: 1506
+  final_stats: 1530
   final_stats: 0
   final_stats: 30
   final_stats: 0
@@ -99,78 +99,78 @@ stat_weights_results: {
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-CataclysmArmor"
  value: {
-  tps: 11.4928
-  hps: 307.88348
+  tps: 11.48477
+  hps: 336.46305
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
-  tps: 11.4963
-  hps: 312.30665
+  tps: 11.48727
+  hps: 337.87099
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheEarthfury"
  value: {
-  tps: 11.48239
-  hps: 357.26345
+  tps: 11.47836
+  hps: 386.2771
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheFiveThunders"
  value: {
-  tps: 11.48329
-  hps: 298.44381
+  tps: 11.47896
+  hps: 322.50937
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheStonefury"
  value: {
-  tps: 11.5277
-  hps: 336.31667
+  tps: 11.53734
+  hps: 365.50096
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheTenStorms"
  value: {
-  tps: 11.49049
-  hps: 332.90884
+  tps: 11.48296
+  hps: 359.89675
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  tps: 11.4928
-  hps: 325.74161
+  tps: 11.48477
+  hps: 353.00125
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Average-Default"
  value: {
-  tps: 11.48348
-  hps: 317.66182
+  tps: 11.4758
+  hps: 344.51065
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-FullBuffs-Consumes-LongMultiTarget"
  value: {
-  tps: 229.92596
-  hps: 314.6423
+  tps: 229.74541
+  hps: 339.19584
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-FullBuffs-Consumes-LongSingleTarget"
  value: {
-  tps: 11.4963
-  hps: 314.6423
+  tps: 11.48727
+  hps: 339.19584
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-FullBuffs-Consumes-ShortSingleTarget"
  value: {
-  tps: 27.47854
-  hps: 745.12593
+  tps: 27.4334
+  hps: 771.48414
  }
 }
 dps_results: {
@@ -197,7 +197,7 @@ dps_results: {
 dps_results: {
  key: "TestRestorationShaman-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  tps: 11.4963
-  hps: 314.6423
+  tps: 11.48727
+  hps: 339.19584
  }
 }

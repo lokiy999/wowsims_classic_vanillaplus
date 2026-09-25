@@ -1,47 +1,47 @@
 character_stats_results: {
  key: "TestFeralTank-Phase1-CharacterStats-Default"
  value: {
-  final_stats: 403.535
-  final_stats: 332.695
-  final_stats: 588.225
-  final_stats: 218.845
-  final_stats: 298.54
-  final_stats: 72.94833
+  final_stats: 419.87
+  final_stats: 352.11
+  final_stats: 596.53
+  final_stats: 243.21
+  final_stats: 319.44
+  final_stats: 81.07
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 87.1
+  final_stats: 107.1
   final_stats: 0
-  final_stats: 15.45471
+  final_stats: 12.86161
   final_stats: 0
   final_stats: 0
-  final_stats: 1678.677
+  final_stats: 1769.614
   final_stats: 1
-  final_stats: 31.53475
+  final_stats: 29.5055
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 4246.675
+  final_stats: 4612.15
   final_stats: 0
   final_stats: 0
-  final_stats: 7067.99
-  final_stats: 138.6
+  final_stats: 7130.82
+  final_stats: 248.6
   final_stats: 16
   final_stats: 5.64
   final_stats: 0
-  final_stats: 19.17475
+  final_stats: 20.1455
   final_stats: 5.64
   final_stats: 0
-  final_stats: 9902.98575
+  final_stats: 10012.8609
   final_stats: 40
   final_stats: 68
   final_stats: 68
   final_stats: 78
   final_stats: 68
-  final_stats: 1506
+  final_stats: 1530
   final_stats: 15
   final_stats: 15
   final_stats: 0
@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFeralTank-Phase1-StatWeights-Default"
  value: {
-  weights: 0.02714
-  weights: 0.08568
+  weights: 0.19583
+  weights: -0.3031
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.28404
+  weights: 0.07802
   weights: 0
   weights: 0
   weights: 0
@@ -76,9 +76,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.01806
+  weights: -0.01238
   weights: 0
-  weights: -0.19477
+  weights: -0.53558
   weights: 0
   weights: 0
   weights: 0
@@ -99,72 +99,72 @@ stat_weights_results: {
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-CenarionArmor"
  value: {
-  dps: 310.08763
-  tps: 589.92674
+  dps: 270.31903
+  tps: 510.67347
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-Champion'sRefuge"
  value: {
-  dps: 274.93991
-  tps: 516.42171
+  dps: 241.57725
+  tps: 456.72841
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-FeralheartRaiment"
  value: {
-  dps: 299.52647
-  tps: 568.41349
+  dps: 256.5359
+  tps: 482.88865
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-FieldMarshal'sSanctuary"
  value: {
-  dps: 294.04683
-  tps: 559.57909
+  dps: 260.83946
+  tps: 495.10037
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-LieutenantCommander'sRefuge"
  value: {
-  dps: 274.93991
-  tps: 516.42171
+  dps: 241.57725
+  tps: 456.72841
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-StormrageRaiment"
  value: {
-  dps: 230.67046
-  tps: 434.1751
+  dps: 202.23107
+  tps: 378.14632
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-TalonclawRegalia"
  value: {
-  dps: 230.67046
-  tps: 434.22048
+  dps: 202.23107
+  tps: 378.18138
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-UrsocArmor"
  value: {
-  dps: 276.75578
-  tps: 521.94657
+  dps: 241.425
+  tps: 455.20859
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-AllItems-Warlord'sSanctuary"
  value: {
-  dps: 294.04683
-  tps: 559.57909
+  dps: 260.83946
+  tps: 495.10037
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase1-Average-Default"
  value: {
-  dps: 373.17893
-  tps: 755.46982
-  dtps: 983.33619
+  dps: 335.66421
+  tps: 679.76024
+  dtps: 1007.21371
  }
 }
 dps_results: {
@@ -206,8 +206,8 @@ dps_results: {
 dps_results: {
  key: "TestFeralTank-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 423.65284
-  tps: 860.383
-  dtps: 914.90597
+  dps: 380.99366
+  tps: 775.61652
+  dtps: 937.84242
  }
 }

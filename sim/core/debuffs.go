@@ -64,7 +64,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		aura := ImprovedScorchAura(target)
 		SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 			Period:          time.Millisecond * 1500,
-			NumTicks:        5,
+			NumTicks:        10,
 			TickImmediately: true,
 			Priority:        ActionPriorityDOT, // High prio
 			OnAction: func(sim *Simulation) {
@@ -80,7 +80,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		aura := WintersChillAura(target)
 		SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 			Period:          time.Millisecond * 1500,
-			NumTicks:        5,
+			NumTicks:        10,
 			TickImmediately: true,
 			Priority:        ActionPriorityDOT, // High prio
 			OnAction: func(sim *Simulation) {
@@ -490,7 +490,7 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, mult float64, extraB
 }
 
 func CurseOfElementsAura(target *Unit) *Aura {
-	resistance := 75.0
+	resistance := 80.0 // server (Spell.csv 11722)
 	dmgMod := 1.1
 
 	aura := target.GetOrRegisterAura(Aura{
@@ -508,7 +508,7 @@ func CurseOfElementsAura(target *Unit) *Aura {
 }
 
 func CurseOfShadowAura(target *Unit) *Aura {
-	resistance := 75.0
+	resistance := 80.0 // server (Spell.csv 17937)
 	dmgMod := 1.1
 
 	aura := target.GetOrRegisterAura(Aura{
@@ -615,11 +615,11 @@ func ImprovedScorchAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Improved Scorch",
 		ActionID:  ActionID{SpellID: 12873},
-		Duration:  time.Second * 30,
-		MaxStacks: 5,
+		Duration:  time.Second * 15, // server Fire Vulnerability 22959: 2% per stack, 10 stacks, 15 sec
+		MaxStacks: 10,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1 + .03*float64(oldStacks)
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 + .03*float64(newStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] /= 1 + .02*float64(oldStacks)
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= 1 + .02*float64(newStacks)
 		},
 	})
 
@@ -633,7 +633,7 @@ func WintersChillAura(target *Unit) *Aura {
 		Label:     "Winter's Chill",
 		ActionID:  ActionID{SpellID: 28593},
 		Duration:  time.Second * 15,
-		MaxStacks: 5,
+		MaxStacks: 10, // server 12579: 2% per stack, 10 stacks
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
 			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexFrost] -= 0.02 * float64(oldStacks)
 			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexFrost] += 0.02 * float64(newStacks)
@@ -656,7 +656,7 @@ var majorArmorReductionEffectCategory = "MajorArmorReduction"
 var minorArmorReductionEffectCategory = "MinorArmorReduction"
 
 func SunderArmorAura(target *Unit) *Aura {
-	arpen := 450.0
+	arpen := 500.0 // server (Spell.csv 11597)
 
 	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
@@ -684,7 +684,7 @@ func SunderArmorAura(target *Unit) *Aura {
 
 func ExposeArmorAura(target *Unit, improvedEA int32) *Aura {
 	spellID := int32(11198)
-	arpen := 1700.0
+	arpen := 2500.0 // server (Spell.csv 11198)
 
 	arpen *= []float64{1, 1.25, 1.5}[improvedEA]
 
@@ -709,7 +709,7 @@ func ExposeArmorAura(target *Unit, improvedEA int32) *Aura {
 
 func CurseOfRecklessnessAura(target *Unit) *Aura {
 	arpen := float64(640)
-	ap := float64(90)
+	ap := float64(215) // server (Spell.csv 11717)
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Recklessness",
@@ -738,7 +738,7 @@ func FaerieFireFeralAura(target *Unit) *Aura {
 }
 
 func faerieFireAuraInternal(target *Unit, label string, spellID int32) *Aura {
-	arPen := float64(505)
+	arPen := float64(500) // server (Spell.csv 9907 / 17392)
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    label,
@@ -839,7 +839,7 @@ func DemoralizingRoarAura(target *Unit, points int32) *Aura {
 const DemoralizingShoutRanks = 5
 
 var DemoralizingShoutSpellId = [DemoralizingShoutRanks + 1]int32{0, 1160, 6190, 11554, 11555, 11556}
-var DemoralizingShoutBaseAP = [DemoralizingShoutRanks + 1]float64{0, 45, 56, 76, 111, 146}
+var DemoralizingShoutBaseAP = [DemoralizingShoutRanks + 1]float64{0, 35, 55, 70, 105, 140} // server (Spell.csv)
 var DemoralizingShoutLevel = [DemoralizingShoutRanks + 1]int{0, 14, 24, 34, 44, 54}
 
 func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32) *Aura {
