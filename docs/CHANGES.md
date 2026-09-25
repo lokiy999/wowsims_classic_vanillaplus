@@ -3793,3 +3793,27 @@ matters below level 60.
 
 Not added (TODO note): Withering Shroud reaches 5 yards and Death and Decay 20 yards around the warlock (Spell.csv
 radius indexes 8 and 9), so they do nothing for a ranged warlock.
+
+## Part DG — Paladin spells, full comparison with the server data (2026-09-25)
+
+Dumped every spell id used under `sim/paladin/` from `Spell.csv` (with the split-float column shift) and compared
+damage, cost, cooldown, duration and effects.
+
+Changed:
+| Spell | Sim before | Server (now) |
+|---|---|---|
+| Judgement of Righteousness ranks 1-8 (20187, 20280-20286) | 15, 25-27, 39-43, 57-63, 78-86, 102-112, 131-143, 162-178 | 18, 30-32, 47-51, 70-76, 94-102, 122-132, 157-169, 195-211 (per-level scaling unchanged, 4.1 at rank 8) |
+| Judgement of Command ranks 1-4 (20467, 20963-20965) | 93-101, 146-160, 204-224, 261-287 | 143-151, 198-212, 252-272, 327-353 (halved on a target that is not stunned, as before; rank 5 already matched) |
+| Seal of the Crusader ranks 1-6 (21082, 20162, 20305-20308) | +31/51/94/145/221/306 attack power, +40% attack speed with smaller hits (classic 1.12) | +26/39/65/104/143/182 melee attack power **and** the same amount of Holy damage (per-level scaling unchanged, 2.4 at rank 6); no attack speed change. Improved Seal of the Crusader scales both. |
+
+Also fixed: Seal of the Crusader's expiry added the Libram of Fervor attack power instead of removing it, so every
+reseal with that libram stacked another +48 attack power.
+
+Matching (no change): Consecration ranks 1-5 (8-48 per tick for 8 sec, costs), Exorcism ranks 1-6 (damage, cost,
+15 sec), Holy Wrath ranks 1-2 (60 sec), Hammer of Wrath ranks 1-3, Holy Shock costs and cooldown, Seal of
+Righteousness proc values, Seal of Command 50% weapon damage and rank 5 judgement, Seal of Fury 30%, Judgement
+of the Crusader 20-140, Holy Shield (30% block, 10 charges, 45/75/110, 10 sec cooldown), Divine Protection, Divine
+Favor (5 min), Crusader Strike (8 sec, Consecrated Arms +5% attack speed for 15 sec), Righteous Fury +30%.
+This closes the Part AY TODO items "Consecration and Exorcism not compared" and "lower Judgement of Command ranks".
+
+Test averages: retribution 421.7 -> 425.4 (+0.9%), protection 385.4 -> 388.5 (+0.8%).

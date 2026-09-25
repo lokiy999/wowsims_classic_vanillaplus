@@ -14,6 +14,8 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		bonus   float64
 	}
 
+	// Server (Spell.csv): each rank gives melee attack power and Holy damage by the same amount (plus the per-level
+	// scaling); unlike classic 1.12 there is no attack speed change.
 	var ranks = []struct {
 		level      int32
 		spellID    int32
@@ -23,12 +25,12 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		scale      float64
 		judge      judge
 	}{
-		{level: 6, spellID: 21082, manaCost: 25, scaleLevel: 12, ap: 31, scale: 0.7, judge: judge{spellID: 21183, bonus: 20}},
-		{level: 12, spellID: 20162, manaCost: 40, scaleLevel: 20, ap: 51, scale: 1.1, judge: judge{spellID: 20188, bonus: 30}},
-		{level: 22, spellID: 20305, manaCost: 65, scaleLevel: 30, ap: 94, scale: 1.7, judge: judge{spellID: 20300, bonus: 50}},
-		{level: 32, spellID: 20306, manaCost: 90, scaleLevel: 40, ap: 145, scale: 2, judge: judge{spellID: 20301, bonus: 80}},
-		{level: 42, spellID: 20307, manaCost: 125, scaleLevel: 50, ap: 221, scale: 2.2, judge: judge{spellID: 20302, bonus: 110}},
-		{level: 52, spellID: 20308, manaCost: 160, scaleLevel: 60, ap: 306, scale: 2.4, judge: judge{spellID: 20303, bonus: 140}},
+		{level: 6, spellID: 21082, manaCost: 25, scaleLevel: 12, ap: 26, scale: 0.7, judge: judge{spellID: 21183, bonus: 20}},
+		{level: 12, spellID: 20162, manaCost: 40, scaleLevel: 20, ap: 39, scale: 1.1, judge: judge{spellID: 20188, bonus: 30}},
+		{level: 22, spellID: 20305, manaCost: 65, scaleLevel: 30, ap: 65, scale: 1.7, judge: judge{spellID: 20300, bonus: 50}},
+		{level: 32, spellID: 20306, manaCost: 90, scaleLevel: 40, ap: 104, scale: 2, judge: judge{spellID: 20301, bonus: 80}},
+		{level: 42, spellID: 20307, manaCost: 125, scaleLevel: 50, ap: 143, scale: 2.2, judge: judge{spellID: 20302, bonus: 110}},
+		{level: 52, spellID: 20308, manaCost: 160, scaleLevel: 60, ap: 182, scale: 2.4, judge: judge{spellID: 20303, bonus: 140}},
 	}
 
 	improvedSotC := []float64{1, 1.05, 1.1, 1.15}[paladin.Talents.ImprovedSealOfTheCrusader]
@@ -70,14 +72,10 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			ActionID: core.ActionID{SpellID: rank.spellID},
 			Duration: time.Minute * 2, // server (Spell.csv): every seal lasts 2 min
 			OnGain: func(_ *core.Aura, sim *core.Simulation) {
-				paladin.MultiplyMeleeSpeed(sim, 1.4)
-				paladin.AutoAttacks.MHAuto().DamageMultiplier /= 1.4
-				paladin.AddStatDynamic(sim, stats.AttackPower, ap*improvedSotC+libramAp)
+				paladin.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: ap*improvedSotC + libramAp, stats.HolyPower: ap * improvedSotC})
 			},
 			OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-				paladin.MultiplyMeleeSpeed(sim, 1/1.4)
-				paladin.AutoAttacks.MHAuto().DamageMultiplier *= 1.4
-				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
+				paladin.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -(ap*improvedSotC + libramAp), stats.HolyPower: -ap * improvedSotC})
 			},
 		})
 

@@ -290,11 +290,11 @@ Still open, the calculator confirmed the text but not the mechanics:
   (5%/10% of spell damage taken reflected), Repentance, Codex Holy Light cost/cast time, the Judgement of Fury forced
   attack. Done: Divine Concentration, Improved Purifying, Holy Grasp, Blessed Strikes threat, Sanctity Aura talents,
   Seal of Fury, Improved Retribution Aura, Vengeance confirmed (CHANGES.md Parts BC and BE).
-- Seal of Command: the 1s internal cooldown is unverified (damage 50%, 12 procs per minute, 120s duration and top rank Judgement of Command 441-475 are confirmed; lower Judgement of Command ranks are still the old values).
+- Seal of Command: the 1s internal cooldown is unverified (damage 50%, 12 procs per minute, 120s duration and top rank Judgement of Command 441-475 are confirmed; lower ranks set from Spell.csv in Part DG).
 - Improved Lay on Hands cooldown checked: DBC is -15 min/rank, matches the code.
 - Paladin audit round 2 (CHANGES.md Part AY): Holy Shock, Hammer of Wrath, Righteous Fury, Redoubt and Holy Shield are
-  now confirmed. Still open: Consecration and Exorcism rank/damage not compared, Holy Wrath / Avenging Wrath / Divine Favor
-  cooldowns not in the DBC, Holy Shield coefficient, Holy Shock healing.
+  now confirmed. Consecration, Exorcism, Holy Wrath (60 sec) and Divine Favor (5 min) compared in Part DG. Still open:
+  Holy Shield coefficient, Holy Shock healing.
 
 ## Raised 2026-09-19 — shaman talents (CHANGES.md Part AK)
 
