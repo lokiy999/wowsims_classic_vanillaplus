@@ -52,7 +52,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 	ssAura := warrior.RegisterAura(core.Aura{
 		Label:     "Sweeping Strikes",
 		ActionID:  actionID,
-		Duration:  time.Second * 10,
+		Duration:  time.Second * 20, // server (Spell.csv 12292): 20 sec, no charge limit (classic: 10 sec, 5 hits)
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.SetStacks(sim, 5)
@@ -77,7 +77,6 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				spellToUse.SpellMetrics[target.UnitIndex].Casts--
 			}
 
-			aura.RemoveStack(sim)
 		},
 	})
 

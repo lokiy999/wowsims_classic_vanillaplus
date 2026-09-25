@@ -73,6 +73,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 24. **Shield Block** (Part CR): the server has 2565 (+50% block for 10 sec, 20 sec cooldown, blocks 1 attack) and 12169
     (+75% for 5 sec, 5 sec cooldown). Which one does a level 60 warrior cast (is 12169 a talent or a second rank)? The
     sim uses 75% / 5 sec / 5 sec.
+25. **Ignite** (Part CU): with 5/5 Ignite, does a 1000-damage Fire crit give 4 ticks of 100 (40% over 8 sec, what the
+    sim does now, from the server text), or 2 ticks of 400 (the old classic sim model)?
+26. **Demonic Sacrifice** (Part CU): the server buffs last 5 min (classic 30 min). Can the warlock resummon and
+    sacrifice again in a fight, or should long fights just lose the buff?
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

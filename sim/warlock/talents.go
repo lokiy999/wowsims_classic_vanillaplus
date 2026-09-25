@@ -160,7 +160,7 @@ func (warlock *Warlock) applyNightfall() {
 	shadowTranceAura := warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
-		Duration: time.Second * 10,
+		Duration: time.Second * 8, // server (Spell.csv)
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.ShadowBolt {
 				spell.CastTimeMultiplier -= 1
@@ -462,7 +462,7 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	impAura := warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Burning Wish",
 		ActionID: core.ActionID{SpellID: 18789},
-		Duration: 30 * time.Minute,
+		Duration: 5 * time.Minute, // server (Spell.csv): Demonic Sacrifice buffs last 5 min
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// DBC (18789): -30% threat only; the +15% Fire damage was retail.
@@ -478,7 +478,7 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	voidwalkerAura := warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Fel Stamina",
 		ActionID: core.ActionID{SpellID: 18790},
-		Duration: 30 * time.Minute,
+		Duration: 5 * time.Minute, // server (Spell.csv): Demonic Sacrifice buffs last 5 min
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			vwPa = core.NewPeriodicAction(sim, core.PeriodicActionOptions{
@@ -497,7 +497,7 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	succubusAura := warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Touch of Shadow",
 		ActionID: core.ActionID{SpellID: 18791},
-		Duration: 30 * time.Minute,
+		Duration: 5 * time.Minute, // server (Spell.csv): Demonic Sacrifice buffs last 5 min
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// DBC (18791): +5% damage.
 			warlock.PseudoStats.DamageDealtMultiplier *= 1.05
@@ -512,7 +512,7 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	felhunterAura := warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Fel Energy",
 		ActionID: core.ActionID{SpellID: 18792},
-		Duration: 30 * time.Minute,
+		Duration: 5 * time.Minute, // server (Spell.csv): Demonic Sacrifice buffs last 5 min
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			fhPa = core.NewPeriodicAction(sim, core.PeriodicActionOptions{

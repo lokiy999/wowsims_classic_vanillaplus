@@ -691,7 +691,7 @@ func (mage *Mage) applySpellTwisting() {
 		return mage.RegisterAura(core.Aura{
 			Label:    label,
 			ActionID: core.ActionID{SpellID: id},
-			Duration: time.Second * 15,
+			Duration: time.Second * 10, // server (Spell.csv): Spell Twisting
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, s := range targets() {
 					s.BonusCritRating += crit

@@ -17,7 +17,7 @@ func (warlock *Warlock) registerFelDominationCD() {
 	aura := warlock.RegisterAura(core.Aura{
 		ActionID: actionID,
 		Label:    "Fel Domination",
-		Duration: time.Second * 15,
+		Duration: time.Second * 10, // server (Spell.csv)
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SummonDemonSpells {
 				spell.DefaultCast.CastTime -= time.Millisecond * 5500

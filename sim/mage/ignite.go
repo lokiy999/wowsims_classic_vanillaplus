@@ -8,7 +8,8 @@ import (
 
 // If two spells proc Ignite at almost exactly the same time, the latter
 // overwrites the former.
-const IgniteTicks = 2
+// Server talent text: 8%/rank of the crit over 8 sec, i.e. 4 ticks of 2 sec (classic: 4 sec).
+const IgniteTicks = 4
 
 func (mage *Mage) applyIgnite() {
 	if mage.Talents.Ignite == 0 {
@@ -27,7 +28,8 @@ func (mage *Mage) applyIgnite() {
 				return
 			}
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() {
-				newIgniteDamage = result.Damage * 0.08 * float64(mage.Talents.Ignite)
+				// Per tick: the talent total spread over the ticks (upstream used the full total on each of 2 ticks).
+				newIgniteDamage = result.Damage * 0.08 * float64(mage.Talents.Ignite) / IgniteTicks
 				mage.Ignite.Cast(sim, result.Target)
 			}
 		},
@@ -69,7 +71,7 @@ func (mage *Mage) applyIgnite() {
 			Aura: core.Aura{
 				Label:     "Ignite",
 				MaxStacks: 5,
-				Duration:  time.Second * 4,
+				Duration:  time.Second * 2 * IgniteTicks,
 			},
 			NumberOfTicks: IgniteTicks,
 			TickLength:    time.Second * 2,

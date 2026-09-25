@@ -298,7 +298,7 @@ func (warlock *Warlock) registerAmplifyCurseSpell() {
 	warlock.AmplifyCurseAura = warlock.GetOrRegisterAura(core.Aura{
 		Label:    "Amplify Curse",
 		ActionID: actionID,
-		Duration: time.Second * 30,
+		Duration: time.Second * 10, // server (Spell.csv)
 	})
 
 	warlock.AmplifyCurse = warlock.GetOrRegisterSpell(core.SpellConfig{

@@ -3587,3 +3587,17 @@ options, talent-extended durations) were left. Fixed:
 Drain Soul's spell power coefficient keeps the classic total spread over the 10 ticks (a guess, like the other
 re-ticked DoTs). Test baselines: elemental shaman +18% (its rotation keeps Magma Totem up, which now lasts twice as
 long per cast), warlock +1% (Improved Shadow Bolt), others within 1-3%.
+
+## Part CU — Talent-driven aura durations (2026-09-25)
+
+Second half of the aura check (the max-talent run). Durations explained by talents were left (Power of Nature on
+Moonfire / Insect Swarm, Prolonged Misery, Improved Shadow Word: Pain, Improved Arcane Power, Inevitable Doom,
+Bloodthirsty on Garrote, Feral Instinct on Tiger's Fury, Improved Fire Totems). Fixed to the server values:
+- **Ignite**: server talent text is 8%/rank of the crit over 8 sec. The sim had 2 ticks over 4 sec, each tick dealing
+  the full 8%/rank (so 80% at 5/5, from upstream's "Classic version of ignite"). Now 4 ticks of 2 sec sharing the 40%
+  (10% of the crit per tick at 5/5), rolling as before. TODO question 25 to confirm in game.
+- **Sweeping Strikes**: 20 sec with no hit limit (was 10 sec / 5 hits).
+- Proc buffs: Nature's Grace 8 sec (was 15), Clearcasting from Omen of Clarity 20 sec (15), Nature Balancer and
+  Spell Twisting 10 sec (15), Shadow Trance 8 sec (10), Fel Domination 10 sec (15), Amplify Curse 10 sec (30),
+  Demonic Sacrifice buffs 5 min (30 min; a fight longer than 5 min now loses the buff).
+No test baseline changed (the presets have no talents).

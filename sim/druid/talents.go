@@ -70,7 +70,7 @@ func (druid *Druid) applyNaturesGrace() {
 	druid.NaturesGraceProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Natures Grace Proc",
 		ActionID:  core.ActionID{SpellID: 16886},
-		Duration:  time.Second * 15,
+		Duration:  time.Second * 8, // server (Spell.csv)
 		MaxStacks: 1,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(druid.DruidSpells, func(ds *DruidSpell) bool {
@@ -212,7 +212,7 @@ func (druid *Druid) applyOmenOfClarity() {
 	druid.ClearcastingAura = druid.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
 		ActionID: core.ActionID{SpellID: 16870},
-		Duration: time.Second * 15,
+		Duration: time.Second * 20, // server (Spell.csv)
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(druid.Spellbook, func(spell *core.Spell) bool { return spell.Flags.Matches(SpellFlagOmen) })
 		},
@@ -398,7 +398,7 @@ func (druid *Druid) applyBalanceExtras() {
 			return druid.RegisterAura(core.Aura{
 				Label:    label,
 				ActionID: core.ActionID{SpellID: id},
-				Duration: time.Second * 15,
+				Duration: time.Second * 10, // server (Spell.csv): Nature Balancer
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, s := range targets() {
 						s.BonusCritRating += critBonus
