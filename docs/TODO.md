@@ -77,6 +77,12 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     sim does now, from the server text), or 2 ticks of 400 (the old classic sim model)?
 26. **Demonic Sacrifice** (Part CU): the server buffs last 5 min (classic 30 min). Can the warlock resummon and
     sacrifice again in a fight, or should long fights just lose the buff?
+27. **Battlegear of Might 8** (Part CX): "Your Overpower, Revenge and Execute abilities increases the damage of your
+    next offensive ability by 8%." How long does that buff last (sim: 15 sec)? Is it used up by the next ability?
+28. **Gauntlets of Might (16863) and Arcanist Boots (16800)** (Part CX): the dump still has these classic pieces with
+    the old set bonuses, next to the renumbered pieces. Can players still get them, or should they leave the DB?
+29. **Set proc chances** (Part CX): Lightforge 6 / Soulforge 4 (+5% crit for 10 sec) and The Elements 6 (+100 attack
+    power, damage and healing) say "chance on offensive action" without a number; the sim uses 6% / 6% / 4%.
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

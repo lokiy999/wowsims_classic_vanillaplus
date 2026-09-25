@@ -293,6 +293,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Phase1-AllItems-Augur'sRegalia"
+ value: {
+  dps: 527.67043
+  tps: 531.58714
+ }
+}
+dps_results: {
  key: "TestEnhancement-Phase1-AllItems-CataclysmArmor"
  value: {
   dps: 583.74644
@@ -524,6 +531,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-Phase2-AllItems-Augur'sRegalia"
+ value: {
+  dps: 516.4607
+  tps: 520.37741
+ }
+}
+dps_results: {
  key: "TestEnhancement-Phase2-AllItems-CataclysmArmor"
  value: {
   dps: 572.80529
@@ -752,6 +766,13 @@ dps_results: {
  value: {
   dps: 461.48204
   tps: 466.97242
+ }
+}
+dps_results: {
+ key: "TestEnhancement-Phase3-AllItems-Augur'sRegalia"
+ value: {
+  dps: 544.11165
+  tps: 546.33675
  }
 }
 dps_results: {

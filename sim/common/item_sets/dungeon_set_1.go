@@ -12,10 +12,11 @@ import (
 var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Wildheart Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// +26 Attack Power,increases damage and healing done by magical spells and effects by up to 15.
 		4: func(agent core.Agent) {
@@ -54,10 +55,11 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -65,10 +67,11 @@ var ItemSetWildheartRaiment = core.NewItemSet(core.ItemSet{
 var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 	Name: "Beaststalker Armor",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// +40 Attack Power.
 		4: func(agent core.Agent) {
@@ -78,7 +81,7 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				stats.RangedAttackPower: 40,
 			})
 		},
-		// Your normal ranged attacks have a 4% chance of restoring 200 mana.
+		// Server: "Your attacks have a 5% chance of restoring 200 mana."
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 27785}
@@ -89,8 +92,8 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				Name:       "Hunter Armor Energize",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskWhiteHit,
-				ProcChance: 0.04,
+				ProcMask:   core.ProcMaskMeleeOrRanged,
+				ProcChance: 0.05,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					if c.HasManaBar() {
 						c.AddMana(sim, 200, manaMetrics)
@@ -98,10 +101,11 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -109,10 +113,11 @@ var ItemSetBeaststalkerArmor = core.NewItemSet(core.ItemSet{
 var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Magister's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
@@ -123,10 +128,11 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			// No implementation in sim
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -134,10 +140,11 @@ var ItemSetMagistersRegalia = core.NewItemSet(core.ItemSet{
 var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 	Name: "Lightforge Armor",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// +40 Attack Power
 		4: func(agent core.Agent) {
@@ -152,7 +159,8 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 27498}
 
-			procAura := c.NewTemporaryStatsAura("Crusader's Wrath", core.ActionID{SpellID: 27498}, stats.Stats{stats.SpellPower: 95}, time.Second*10)
+			// Server: "Chance on offensive action to increase your melee and spell critical strike chance for 5% for 10 sec."
+			procAura := c.NewTemporaryStatsAura("Crusader's Wrath", core.ActionID{SpellID: 27498}, stats.Stats{stats.MeleeCrit: 5 * core.CritRatingPerCritChance, stats.SpellCrit: 5 * core.SpellCritRatingPerCritChance}, time.Second*10)
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)
 			}
@@ -162,15 +170,16 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 				Name:       "Item - Crusader's Wrath Proc - Lightforge Armor",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMeleeWhiteHit,
+				ProcMask:   core.ProcMaskMelee | core.ProcMaskSpellDamage,
 				ProcChance: 0.06, // not in the server tooltip ("chance on melee attack"); 6% is the classic assumption
 				Handler:    handler,
 			})
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -178,24 +187,26 @@ var ItemSetLightforgeArmor = core.NewItemSet(core.ItemSet{
 var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 	Name: "Vestments of the Devout",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStat(stats.SpellPower, 23)
+			c.AddStat(stats.HealingPower, 44) // server: Increases healing done by spells and effects by up to 44.
 		},
 		// 6 pieces: When struck in combat has a chance of shielding the wearer in a protective shield which will absorb 350 damage.
 		6: func(agent core.Agent) {
 			//No use case in Classic Sim
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -203,10 +214,11 @@ var ItemSetVestmentsOfTheDevout = core.NewItemSet(core.ItemSet{
 var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 	Name: "Shadowcraft Armor",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// +40 Attack Power.
 		4: func(agent core.Agent) {
@@ -236,10 +248,11 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -247,10 +260,11 @@ var ItemSetShadowcraftArmor = core.NewItemSet(core.ItemSet{
 var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 	Name: "The Elements",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
@@ -265,7 +279,8 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 27774}
 
-			procAura := c.NewTemporaryStatsAura("The Furious Storm", core.ActionID{SpellID: 27774}, stats.Stats{stats.SpellPower: 95}, time.Second*10)
+			// Server: "Chance on offensive action to increase your melee attack power, damage and healing by up to 100 for 10 sec."
+			procAura := c.NewTemporaryStatsAura("The Furious Storm", core.ActionID{SpellID: 27774}, stats.Stats{stats.AttackPower: 100, stats.RangedAttackPower: 100, stats.SpellPower: 100}, time.Second*10)
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)
 			}
@@ -274,15 +289,16 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 				ActionID:   actionID,
 				Name:       "Item - The Furious Storm Proc",
 				Callback:   core.CallbackOnCastComplete,
-				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+				ProcMask:   core.ProcMaskMelee | core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.04,
 				Handler:    handler,
 			})
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -290,10 +306,11 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Dreadmist Raiment",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		4: func(agent core.Agent) {
@@ -304,10 +321,11 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			//No use case in Classic Sim
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })
@@ -315,10 +333,11 @@ var ItemSetDreadmistRaiment = core.NewItemSet(core.ItemSet{
 var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of Valor",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +200 Armor.
+		// +10 Resistances/+200 Armor. (server)
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.Armor, 200)
+			c.AddResistances(10)
 		},
 		// +40 Attack Power.
 		4: func(agent core.Agent) {
@@ -346,10 +365,11 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// +8 All Resistances.
+		// +10 Resistances/+200 Armor. (server)
 		8: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddResistances(8)
+			c.AddResistances(10)
+			c.AddStat(stats.Armor, 200)
 		},
 	},
 })

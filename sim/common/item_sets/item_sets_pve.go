@@ -1,10 +1,10 @@
 package item_sets
 
 import (
-	"time"
 	"github.com/wowsims/classic/sim/common/guardians"
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/stats"
+	"time"
 )
 
 ///////////////////////////////////////////////////////////////////////////
@@ -13,40 +13,42 @@ import (
 
 var ItemSetNecropileRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Necropile Raiment",
-	Bonuses: map[int32]core.ApplyEffect{
-		// +3 Defense.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// +10 Intellect.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.Intellect, 10)
 		},
-		// +5 Intellect.
+		// +15 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Intellect, 5)
+			character.AddStat(stats.Stamina, 15)
 		},
-		// +15 All Resistances.
+		// +20 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddResistances(15)
+			character.AddResistances(20)
 		},
-		// Increases damage and healing done by magical spells and effects by up to 23.
+		// Increases damage and healing done by magical spells and effects by up to 40.
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.SpellPower, 23)
+			character.AddStat(stats.SpellPower, 40)
 		},
 	},
 })
 
 var ItemSetIronweaveBattlesuit = core.NewItemSet(core.ItemSet{
 	Name: "Ironweave Battlesuit",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increases your chance to resist Silence and Interrupt effects by 10%.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Increases your chance to resist Silence and Interrupt effects by 10%. (nothing to model)
 		4: func(agent core.Agent) {
-			// Nothing to do
+			character := agent.GetCharacter()
+			_ = character
 		},
-		// +200 Armor.
+		// +10 Resistances/+200 Armor.
 		8: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			character.AddResistances(10)
 			character.AddStat(stats.Armor, 200)
 		},
 	},
@@ -54,29 +56,26 @@ var ItemSetIronweaveBattlesuit = core.NewItemSet(core.ItemSet{
 
 var ItemSetThePostmaster = core.NewItemSet(core.ItemSet{
 	Name: "The Postmaster",
-	Bonuses: map[int32]core.ApplyEffect{
-		// +50 Armor.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Restores 5 mana per 5 sec.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Armor, 50)
+			character.AddStat(stats.MP5, 5)
 		},
-		// +10 Fire Resistance.
-		// +10 Arcane Resistance.
+		// +15 Intellect.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.ArcaneResistance, 10)
-			character.AddStat(stats.FireResistance, 10)
+			character.AddStat(stats.Intellect, 15)
 		},
-		// Increases damage and healing done by magical spells and effects by up to 12.
+		// +15 Stamina.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.SpellPower, 12)
+			character.AddStat(stats.Stamina, 15)
 		},
-		// Increases run speed by 5%.
-		// +10 Intellect.
+		// Increases run speed by 25%. (movement, nothing to model)
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Intellect, 10)
+			_ = character
 		},
 	},
 })
@@ -87,27 +86,27 @@ var ItemSetThePostmaster = core.NewItemSet(core.ItemSet{
 
 var ItemSetCadaverousGarb = core.NewItemSet(core.ItemSet{
 	Name: "Cadaverous Garb",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increased Defense +3.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to hit by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Defense, 3)
+			character.AddStat(stats.MeleeHit, 1*core.MeleeHitRatingPerHitChance)
 		},
-		// +10 Attack Power.
+		// +15 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.AttackPower, 10)
-			character.AddStat(stats.RangedAttackPower, 10)
+			character.AddStat(stats.Stamina, 15)
 		},
-		// +15 All Resistances.
+		// +20 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddResistances(15)
+			character.AddResistances(20)
 		},
-		// Improves your chance to hit by 2%.
+		// +70 Attack Power.
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeHit, 2)
+			character.AddStat(stats.AttackPower, 70)
+			character.AddStat(stats.RangedAttackPower, 70)
 		},
 	},
 })
@@ -118,27 +117,27 @@ var ItemSetCadaverousGarb = core.NewItemSet(core.ItemSet{
 
 var ItemSetBloodmailRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Bloodmail Regalia",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increased Defense +3.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// +30 Attack Power.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Defense, 3)
+			character.AddStat(stats.AttackPower, 30)
+			character.AddStat(stats.RangedAttackPower, 30)
 		},
-		// +10 Attack Power.
+		// +20 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.AttackPower, 10)
-			character.AddStat(stats.RangedAttackPower, 10)
+			character.AddStat(stats.Stamina, 20)
 		},
-		// +15 All Resistances.
+		// +20 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddResistances(15)
+			character.AddResistances(20)
 		},
-		// Increases your chance to parry an attack by 1%.
+		// Improves your chance to get a critical strike by 2%.
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Parry, 1)
+			character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 		},
 	},
 })
@@ -149,26 +148,26 @@ var ItemSetBloodmailRegalia = core.NewItemSet(core.ItemSet{
 
 var ItemSetDeathboneGuardian = core.NewItemSet(core.ItemSet{
 	Name: "Deathbone Guardian",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increased Defense +3.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Increased Defense +5.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Defense, 3)
+			character.AddStat(stats.Defense, 5)
 		},
-		// +50 Armor.
+		// +15 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Armor, 50)
+			character.AddStat(stats.Stamina, 15)
 		},
-		// +15 All Resistances.
+		// +20 All Resistances.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddResistances(15)
+			character.AddResistances(20)
 		},
-		// Increases your chance to parry an attack by 1%
+		// Improves your chance to hit by 3%.
 		5: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Parry, 1)
+			character.AddStat(stats.MeleeHit, 3*core.MeleeHitRatingPerHitChance)
 		},
 	},
 })
@@ -214,28 +213,38 @@ var ItemSetDalRendsArms = core.NewItemSet(core.ItemSet{
 
 var ItemSetShardOfTheGods = core.NewItemSet(core.ItemSet{
 	Name: "Shard of the Gods",
-	Bonuses: map[int32]core.ApplyEffect{
-		// +10 All Resistances.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// +27 to all attributes.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddResistances(15)
+			character.AddStats(stats.Stats{stats.Strength: 27, stats.Agility: 27, stats.Stamina: 27, stats.Intellect: 27, stats.Spirit: 27})
 		},
 	},
 })
 
 var ItemSetSpiritOfEskhandar = core.NewItemSet(core.ItemSet{
 	Name: "Spirit of Eskhandar",
-	Bonuses: map[int32]core.ApplyEffect{
-		// 1% chance on a melee hit to call forth the spirit of Eskhandar to protect you in battle for 2 min.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Increases your chance to dodge an attack by 1%.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.Dodge, 1*core.DodgeRatingPerDodgeChance)
+		},
+		// Improves your chance to get a critical strike by 1%.
+		3: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
+		},
+		// 12% chance on a melee critical hit to call forth the spirit of Eskhandar to protect you in battle for 2 min. Can only occur once every 2 min.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:       "Call of Eskhandar Trigger",
 				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
+				Outcome:    core.OutcomeCrit,
 				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 1,
-				ICD:        time.Minute * 1,
+				ProcChance: 0.12,
+				ICD:        time.Minute * 2,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					for _, petAgent := range character.PetAgents {
 						if eskhandar, ok := petAgent.(*guardians.Eskhandar); ok {
@@ -265,11 +274,11 @@ var ItemSetMajorMojoInfusion = core.NewItemSet(core.ItemSet{
 
 var ItemSetOverlordsResolution = core.NewItemSet(core.ItemSet{
 	Name: "Overlord's Resolution",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increases our chance to dodge an attack by 1%
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Increased Defense +10.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Dodge, 1)
+			character.AddStat(stats.Defense, 10)
 		},
 	},
 })
@@ -339,16 +348,11 @@ var ItemSetTwinBladesofHakkari = core.NewItemSet(core.ItemSet{
 
 var ItemSetZanzilsConcentration = core.NewItemSet(core.ItemSet{
 	Name: "Zanzil's Concentration",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increases damage and healing done by magical spells and effects by up to 6.
-		// Improves your chance to hit with all spells and attacks by 1%.
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Increases damage and healing done by magical spells and effects by up to 18.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStats(stats.Stats{
-				stats.SpellPower: 6,
-				stats.SpellHit:   1 * core.SpellHitRatingPerHitChance,
-				stats.MeleeHit:   1 * core.MeleeHitRatingPerHitChance,
-			})
+			character.AddStat(stats.SpellPower, 18)
 		},
 	},
 })

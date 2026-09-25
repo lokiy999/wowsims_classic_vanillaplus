@@ -11,32 +11,32 @@ import (
 
 var ItemSetTheHighlandersIntent = core.NewItemSet(core.ItemSet{
 	Name: "The Highlander's Intent",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike with spells by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
-		// +1 Crit with Spells.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.SpellCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheDefilersIntent = core.NewItemSet(core.ItemSet{
 	Name: "The Defiler's Intent",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike with spells by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
-		// +1 Crit with Spells.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.SpellCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
@@ -47,68 +47,67 @@ var ItemSetTheDefilersIntent = core.NewItemSet(core.ItemSet{
 
 var ItemSetTheHighlandersPurpose = core.NewItemSet(core.ItemSet{
 	Name: "The Highlander's Purpose",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheHighlandersWill = core.NewItemSet(core.ItemSet{
 	Name: "The Highlander's Will",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike with spells by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
-		// +1 Crit with Spells.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.SpellCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheDefilersPurpose = core.NewItemSet(core.ItemSet{
 	Name: "The Defiler's Purpose",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheDefilersWill = core.NewItemSet(core.ItemSet{
 	Name: "The Defiler's Will",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike with spells by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
 		},
-		// +1 Crit with Spells.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.SpellCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
-
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Mail
@@ -116,48 +115,48 @@ var ItemSetTheDefilersWill = core.NewItemSet(core.ItemSet{
 
 var ItemSetTheHighlandersDetermination = core.NewItemSet(core.ItemSet{
 	Name: "The Highlander's Determination",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheDefilersFortitude = core.NewItemSet(core.ItemSet{
 	Name: "The Defiler's Fortitude",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheDefilersDetermination = core.NewItemSet(core.ItemSet{
 	Name: "The Defiler's Determination",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
@@ -168,48 +167,48 @@ var ItemSetTheDefilersDetermination = core.NewItemSet(core.ItemSet{
 
 var ItemSetTheHighlandersResolve = core.NewItemSet(core.ItemSet{
 	Name: "The Highlander's Resolve",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee.
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheHighlandersResolution = core.NewItemSet(core.ItemSet{
 	Name: "The Highlander's Resolution",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })
 
 var ItemSetTheDefilersResolution = core.NewItemSet(core.ItemSet{
 	Name: "The Defiler's Resolution",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Increase Stamina +5
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.Stamina, 5)
+			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
 		},
-		// +1 Crit with Melee
+		// +18 Stamina.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1)
+			character.AddStat(stats.Stamina, 18)
 		},
 	},
 })

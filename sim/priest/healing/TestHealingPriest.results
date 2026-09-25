@@ -146,6 +146,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestHealingPriest-Phase1-AllItems-VestmentsoftheVirtuous"
+ value: {
+  tps: 9.03734
+  hps: 406.65117
+ }
+}
+dps_results: {
  key: "TestHealingPriest-Phase1-AllItems-Warlord'sRaiment"
  value: {
   tps: 9.03734

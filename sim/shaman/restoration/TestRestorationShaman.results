@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestRestorationShaman-Phase1-AllItems-Augur'sRegalia"
+ value: {
+  tps: 11.48296
+  hps: 341.51985
+ }
+}
+dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-CataclysmArmor"
  value: {
   tps: 11.48477

@@ -3619,3 +3619,35 @@ Fixed: Rend 15 rage (was 10), Sinister Strike 40 energy (45), Garrote 65 energy 
 Ferocious Bite 40 (35), Rip 20 (30), Tiger's Fury 20 (30). Not changed: Hurricane ranks 1-2 are mapped to the wrong
 levels (only matters below level 60; rank 3 matches) and Freezing Trap (100 mana on the server, no effect on a DPS
 sim). Everything else matches (Drain Soul was fixed in Part CT). Test baseline: combat rogue +11% (Sinister Strike).
+
+## Part CX — Item set bonuses from the server data (2026-09-25)
+
+Took every set's bonus texts from the dump (130 sets with pieces in the DB) and compared them with the set code
+(numbers in the bonus code and its comments). Changed to the server text:
+- **Missing sets added** (`sim/common/item_sets/vplus_sets.go`): Augur's Regalia (5: +40 spell power), Chain of the
+  Scarlet Crusade (Defense, Shadow resistance/armor, +2% hit, +3% vs undead, +5% attack/casting speed), Defias Leather,
+  Embrace of the Viper, Haruspex's Garb (+3% Nature spell crit), The Gladiator, Soulforge Armor (2/6/8),
+  Vestments of the Virtuous (2/6/8).
+- **Dungeon set 1** (all 9): 2 and 8 pieces are both "+10 Resistances/+200 Armor" (was +200 armor / +8 resistances).
+  Vestments of the Devout 4: +44 healing (was +23 spell power). Lightforge 6: +5% melee and spell crit for 10 sec (was
+  +95 spell power); The Elements 6: +100 attack power, damage and healing for 10 sec (was +95 spell power), both on
+  any offensive action with the old proc chances (6% / 4%, not in the data). Beaststalker 6: 5% on any attack (was 4%
+  on ranged).
+- **Reworked Scholomance / dungeon sets**: Necropile Raiment (+10 Int / +15 Sta / +20 res / +40 spell power),
+  Cadaverous Garb (+1% hit / +15 Sta / +20 res / +70 AP), Bloodmail Regalia (+30 AP / +20 Sta / +20 res / +2% crit),
+  Deathbone Guardian (+5 Defense / +15 Sta / +20 res / +3% hit), The Postmaster (5 MP5 / +15 Int / +15 Sta), Ironweave
+  Battlesuit 8 (+10 res / +200 armor), Spirit of Eskhandar (+1% dodge, +1% crit, 12% on a melee crit once per 2 min),
+  Shard of the Gods (+27 all attributes), Overlord's Resolution (+10 Defense), Zanzil's Concentration (+18 spell power).
+- **Arathi Basin sets** (all 12 Defiler's / Highlander's): 2 = +1% crit (spell crit for Intent and Will), 3 = +18
+  Stamina (was +5 Stamina / crit).
+- **Crafted**: Black Dragon Mail 4 = +40 Fire Resistance, Bloodsoul Embrace 3 = +2% crit (no MP5 bonus), Imperial
+  Plate bonuses at 2/4/6, The Darksoul at 3, Volcanic Armor 10% proc.
+- **Battlegear of Might** had the classic list (3/5/8). The server pieces (25000-25007) have: 2 = 20% rage on damage
+  taken, 4 = Battle Shout +30 attack power, 6 = +20% crit damage of abilities, 8 = Overpower / Revenge / Execute make
+  the next offensive ability deal 8% more (15 sec assumed, TODO question 27). The one classic piece still in the DB,
+  Gauntlets of Might (16863), and Arcanist Boots (16800) still show the classic lists (question 28). Arcanist Regalia's
+  code already follows the new list.
+Not modeled (no data or no effect in the sim): Vestments of the Virtuous / Devout shield procs, movement, range,
+Blink, Psychic Scream and Frost Shock duration bonuses, The Fists of Fury (its items have no set name in the DB).
+Test baselines: the new sets add "AllItems" cases; Battlegear of Might +5% in its warrior case; stats of presets with
+dungeon-set pieces changed (resistances).

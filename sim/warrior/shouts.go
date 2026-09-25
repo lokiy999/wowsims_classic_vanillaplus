@@ -59,6 +59,10 @@ func (warrior *Warrior) registerBattleShout() {
 	if warrior.HasTrinketEquipped(MarkOfTheVeteranBattleShoutA) || warrior.HasTrinketEquipped(MarkOfTheVeteranBattleShoutB) {
 		bonusAP = 42
 	}
+	// Battlegear of Might (4) Set: Increases the attack power granted by Battle Shout by 30.
+	if warrior.HasSetBonus(ItemSetBattleGearOfMight, 4) {
+		bonusAP += 30
+	}
 
 	warrior.BattleShout = warrior.newShoutSpellConfig(core.ActionID{SpellID: actionId}, rank, warrior.NewPartyAuraArray(func(unit *core.Unit) *core.Aura {
 		return core.BattleShoutAura(unit, warrior.Talents.ImprovedCombatShouts, warrior.Talents.BoomingVoice, bonusAP) // TODO: verify Improved Combat Shouts +5% Battle Shout

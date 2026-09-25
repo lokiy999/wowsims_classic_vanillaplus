@@ -146,6 +146,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestHolyPaladin-Phase1-AllItems-SoulforgeArmor"
+ value: {
+  tps: 9.03734
+  hps: 316.6381
+ }
+}
+dps_results: {
  key: "TestHolyPaladin-Phase1-Average-Default"
  value: {
   tps: 9.02048

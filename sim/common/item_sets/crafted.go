@@ -12,21 +12,21 @@ import (
 var ItemSetBlackDragonMail = core.NewItemSet(core.ItemSet{
 	Name: "Black Dragon Mail",
 	ID:   489,
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
 		// Improves your chance to hit by 1%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeHit, 1)
+			character.AddStat(stats.MeleeHit, 1*core.MeleeHitRatingPerHitChance)
 		},
 		// Improves your chance to get a critical strike by 2%.
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 		},
-		// +10 Fire Resistance.
+		// +40 Fire Resistance.
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.FireResistance, 10)
+			character.AddStat(stats.FireResistance, 40)
 		},
 	},
 })
@@ -52,11 +52,11 @@ var ItemSetBlueDragonMail = core.NewItemSet(core.ItemSet{
 // https://www.wowhead.com/classic/item-set=443/bloodsoul-embrace
 var ItemSetBloodsoulEmbrace = core.NewItemSet(core.ItemSet{
 	Name: "Bloodsoul Embrace",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Restores 12 mana per 5 sec.
-		2: func(agent core.Agent) {
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
+		// Improves your chance to get a critical strike by 2%.
+		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MP5, 12)
+			character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 		},
 	},
 })
@@ -123,20 +123,20 @@ var ItemSetGreenDragonMail = core.NewItemSet(core.ItemSet{
 // https://www.wowhead.com/classic/item-set=321/imperial-plate
 var ItemSetImperialPlate = core.NewItemSet(core.ItemSet{
 	Name: "Imperial Plate",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
 		// +100 Armor.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.Armor, 100)
 		},
 		// +28 Attack Power.
-		3: func(agent core.Agent) {
+		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.AttackPower, 28)
 			character.AddStat(stats.RangedAttackPower, 28)
 		},
 		// +18 Stamina.
-		4: func(agent core.Agent) {
+		6: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.Stamina, 18)
 		},
@@ -235,9 +235,9 @@ var ItemSetStormshroudArmor = core.NewItemSet(core.ItemSet{
 // https://www.wowhead.com/classic/item-set=444/the-darksoul
 var ItemSetTheDarksoul = core.NewItemSet(core.ItemSet{
 	Name: "The Darksoul",
-	Bonuses: map[int32]core.ApplyEffect{
+	Bonuses: map[int32]core.ApplyEffect{ // server bonus texts (VPlusItemDB.lua)
 		// Increased Defense +20.
-		2: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			character.AddStat(stats.Defense, 20)
 		},
@@ -249,7 +249,7 @@ var ItemSetVolcanicArmor = core.NewItemSet(core.ItemSet{
 	Name: "Volcanic Armor",
 	ID:   141,
 	Bonuses: map[int32]core.ApplyEffect{
-		// 5% chance of dealing 15 to 25 Fire damage on a successful melee attack.
+		// 10% chance of dealing 15 to 25 Fire damage on a successful attack. (server)
 		3: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			procSpell := character.RegisterSpell(core.SpellConfig{
@@ -271,7 +271,7 @@ var ItemSetVolcanicArmor = core.NewItemSet(core.ItemSet{
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskMelee,
-				ProcChance: .05,
+				ProcChance: .10,
 				Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 					procSpell.Cast(sim, result.Target)
 				},

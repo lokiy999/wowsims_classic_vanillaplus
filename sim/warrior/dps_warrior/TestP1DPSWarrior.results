@@ -106,8 +106,8 @@ dps_results: {
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-BattlegearofMight"
  value: {
-  dps: 782.21231
-  tps: 703.12279
+  dps: 819.32145
+  tps: 734.26134
  }
 }
 dps_results: {

@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Phase4-AllItems-Augur'sRegalia"
+ value: {
+  dps: 452.39811
+  tps: 466.26249
+ }
+}
+dps_results: {
  key: "TestElemental-Phase4-AllItems-CataclysmArmor"
  value: {
   dps: 413.4623
