@@ -3610,3 +3610,12 @@ No test baseline changed (the presets have no talents).
   (a talent keyed on such a code silently does nothing): none left; the few that looked unset are set through a
   variable (Faerie Fire, priest heals, warrior stances). Illumination's mana refund reads `DefaultCast.Cost`, which
   core fills from the spell's base cost, so it works.
+
+## Part CW — Resource costs checked against the server data (2026-09-25)
+
+Throwaway test: base cost (mana, energy, rage; no talents) of every spell the sim registers for all 13 specs,
+compared with `Spell.csv` column 32 (rage is stored x10; spells that cost a percentage of base mana were skipped).
+Fixed: Rend 15 rage (was 10), Sinister Strike 40 energy (45), Garrote 65 energy (50; Dirty Deeds still -10/rank),
+Ferocious Bite 40 (35), Rip 20 (30), Tiger's Fury 20 (30). Not changed: Hurricane ranks 1-2 are mapped to the wrong
+levels (only matters below level 60; rank 3 matches) and Freezing Trap (100 mana on the server, no effect on a DPS
+sim). Everything else matches (Drain Soul was fixed in Part CT). Test baseline: combat rogue +11% (Sinister Strike).

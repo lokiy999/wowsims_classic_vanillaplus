@@ -35,7 +35,7 @@ func (warrior *Warrior) registerRendSpell() {
 		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10,
+			Cost:   15, // server (Spell.csv)
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

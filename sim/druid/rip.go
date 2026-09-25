@@ -66,7 +66,7 @@ func (druid *Druid) registerRipSpell() {
 }
 
 func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
-	energyCost := 30.0
+	energyCost := 20.0 // server (Spell.csv)
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_DruidRip,

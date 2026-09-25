@@ -75,7 +75,7 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   35,
+			Cost:   40, // server (Spell.csv)
 			Refund: 0,
 		},
 		Cast: core.CastConfig{

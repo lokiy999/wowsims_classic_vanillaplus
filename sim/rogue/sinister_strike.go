@@ -55,7 +55,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   45, // DBC: Improved Sinister Strike is an extra-hit proc, not a cost reduction
+			Cost:   40, // server (Spell.csv 11294); Improved Sinister Strike is an extra-hit proc, not a cost reduction
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

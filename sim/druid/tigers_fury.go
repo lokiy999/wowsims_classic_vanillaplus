@@ -40,7 +40,7 @@ func (druid *Druid) registerTigersFurySpell() {
 		Flags:    core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 30,
+			Cost: 20, // server (Spell.csv)
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

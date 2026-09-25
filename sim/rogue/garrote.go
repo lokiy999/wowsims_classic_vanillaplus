@@ -30,7 +30,7 @@ func (rogue *Rogue) registerGarrote() {
 		Flags:       SpellFlagBuilder | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   50.0 - 10*float64(rogue.Talents.DirtyDeeds),
+			Cost:   65.0 - 10*float64(rogue.Talents.DirtyDeeds), // server (Spell.csv)
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
