@@ -283,6 +283,7 @@ var SpellIconoverrides = []*proto.IconData{
 	{Id: 28308, Icon: "ability_warrior_decisivestrike"}, // Hateful Strike (Patchwerk)
 	{Id: 34534, Icon: "spell_nature_earthshock"},        // Echoes of Shock 3/4 (Cataclysm Armor 6pc)
 	{Id: 22840, Name: "Arcanum of Rapidity", Icon: "inv_misc_gem_02", Tooltip: `<table><tr><td><a class="whtt-name" href="/classic/spell=22840/arcanum-of-rapidity"><b class="whtt-name">Arcanum of Rapidity</b></a></td></tr></table><table><tr><td><span class="wowhead-tooltip-requirements">Requires Helms, Pants</span><div class="q">Permanently adds 2% haste to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.</div></td></tr></table>`},
+	{Id: 13948, Name: "Enchant Gloves - Lesser Haste", Icon: "spell_holy_greaterheal", Tooltip: `<table><tr><td><a class="whtt-name" href="/classic/spell=13948/enchant-gloves-lesser-haste"><b class="whtt-name">Enchant Gloves - Lesser Haste</b></a></td></tr></table><table><tr><td><span class="wowhead-tooltip-requirements">Requires Gloves</span><div class="q">Permanently enchant gloves to grant a 2% haste bonus.</div></td></tr></table>`}, // server 13928: melee, ranged and cast speed +2%
 }
 
 // Same corrections as SpellIconoverrides above, but keyed by the enchant's real

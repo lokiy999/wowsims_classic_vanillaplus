@@ -3906,3 +3906,7 @@ Enchant 931 / spell 13948 (classic "Minor Haste", +1% attack speed) is "Lesser H
 now has MeleeHaste 2 and SpellHaste 2 with the server name; database regenerated (this also added the missing Judgement
 of Light ranks 1-3 and Judgement of Wisdom ranks 1-2 tooltips from Part DJ). Enhancement baseline +0.9% (the only
 preset with this enchant).
+
+Tooltip: `SpellIconoverrides` in `tools/database/overrides.go` gets 13948 with the server name and text ("Permanently
+enchant gloves to grant a 2% haste bonus."); the Wowhead tooltip said +1% attack speed. Reagents are left out (not in
+the server data).
