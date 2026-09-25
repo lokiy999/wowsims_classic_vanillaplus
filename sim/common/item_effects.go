@@ -223,7 +223,7 @@ func init() {
 		return character.GetOrRegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 17352},
 			Label:    "Argent Avenger",
-			Duration: time.Second * 10,
+			Duration: time.Second * 20, // server
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 					character.PseudoStats.MobTypeAttackPower += 200
@@ -295,8 +295,8 @@ func init() {
 			Flags:       core.SpellFlagPureDot,
 
 			Dot: core.DotConfig{
-				NumberOfTicks: 5,
-				TickLength:    time.Second * 3,
+				NumberOfTicks: 10, // server: 30 every 2 sec for 20 sec
+				TickLength:    time.Second * 2,
 				Aura: core.Aura{
 					Label: "Siphon Health (Barovian Family Sword)",
 				},
@@ -629,7 +629,7 @@ func init() {
 					Label: "Blaze",
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 10, dot.OutcomeTick)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 15, dot.OutcomeTick) // server: 150 over 30 sec
 				},
 			},
 		})
@@ -641,7 +641,7 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(Bloodfist, "Bloodfist", 4, 16433, core.SpellSchoolPhysical, 20, 0, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=9511/bloodletter-scalpel
-	itemhelpers.CreateWeaponCoHProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 110, 40, /* server 110-150 */ 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=809/bloodrazor
 	itemhelpers.CreateWeaponProcSpell(Bloodrazor, "Bloodrazor", 1.0, func(character *core.Character) *core.Spell {
@@ -666,7 +666,7 @@ func init() {
 					Label: "Rend (Bloodrazor)",
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 12, dot.OutcomeTick)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 18, dot.OutcomeTick) // server: 180 over 30 sec
 				},
 			},
 		})
@@ -761,7 +761,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=10761/coldrage-dagger
 	// Chance on hit: Launches a bolt of frost at the enemy causing 20 to 30 Frost damage and slowing movement speed by 50% for 5 sec.
 	// 2.2 PPM from Armaments Discord
-	itemhelpers.CreateWeaponCoHProcDamage(ColdrageDagger, "Coldrage Dagger", 2.2, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(ColdrageDagger, "Coldrage Dagger", 2.2, 13439, core.SpellSchoolFrost, 40, 15, /* server 40-55 */ 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=13984/darrowspike
 	// Chance on hit: Blasts a target for 90 Frost damage.
@@ -905,7 +905,7 @@ func init() {
 				NumberOfTicks: 10,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 15, isRollover)
+					dot.Snapshot(target, 15, isRollover) // TODO server: 55 to 95 direct damage (docs/TODO.md)
 				},
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -945,7 +945,7 @@ func init() {
 				Label:    "Fang of the Crystal Spider",
 				Duration: time.Second * 10,
 			})
-			core.AtkSpeedReductionEffect(aura, 1.10)
+			core.AtkSpeedReductionEffect(aura, 1.20) // server: 20%
 			return aura
 		})
 
@@ -968,7 +968,7 @@ func init() {
 	core.NewItemEffect(Felstriker, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*5) // server: 5 sec
 		procMask := character.GetProcMaskForItem(Felstriker)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Felstriker Trigger",
@@ -1186,7 +1186,7 @@ func init() {
 			Flags:       core.SpellFlagPureDot | core.SpellFlagDisease,
 
 			Dot: core.DotConfig{
-				NumberOfTicks: 15,
+				NumberOfTicks: 20, // server: 35 every 2 sec for 40 sec
 				TickLength:    time.Second * 2,
 				Aura: core.Aura{
 					Label: "Weakening Disease",
@@ -1198,7 +1198,7 @@ func init() {
 					},
 				},
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 8, isRollover)
+					dot.Snapshot(target, 35, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -1223,7 +1223,7 @@ func init() {
 			aura := unit.GetOrRegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 16927},
 				Label:    "Chilled (Frostguard)",
-				Duration: time.Second * 5,
+				Duration: time.Second * 8, // server
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
@@ -1265,13 +1265,13 @@ func init() {
 			Flags:       core.SpellFlagDisease | core.SpellFlagPureDot,
 
 			Dot: core.DotConfig{
-				NumberOfTicks: 15,
-				TickLength:    time.Second * 3,
+				NumberOfTicks: 12, // server: 97 every 5 sec for 1 min
+				TickLength:    time.Second * 5,
 				Aura: core.Aura{
 					Label: "Creeping Mold",
 				},
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 55, isRollover)
+					dot.Snapshot(target, 97, isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -1366,7 +1366,7 @@ func init() {
 					Label: "Rend (Gutwrencher)",
 				},
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 8, isRollover)
+					dot.Snapshot(target, 24, isRollover) // server: 240 over 30 sec
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -1414,7 +1414,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=810/hammer-of-the-northern-wind
-	itemhelpers.CreateWeaponCoHProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 40, 15, /* server 40-55 */ 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=2243/hand-of-edward-the-odd
 	// Chance on hit: Next spell cast within 4 sec will cast instantly.
@@ -1422,7 +1422,7 @@ func init() {
 		return character.GetOrRegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 18803},
 			Label:    "Focus (Hand of Edward the Odd)",
-			Duration: time.Second * 4,
+			Duration: time.Second * 8, // server
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyCastSpeed(100000)
 			},
@@ -1506,7 +1506,7 @@ func init() {
 					},
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 7, dot.OutcomeTick)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 10, dot.OutcomeTick) // server: 10 every 3 sec
 				},
 			},
 		})
@@ -1757,7 +1757,7 @@ func init() {
 			return target.GetOrRegisterAura(core.Aura{
 				Label:    "Spell Vulnerability",
 				ActionID: core.ActionID{SpellID: 23605},
-				Duration: time.Second * 5,
+				Duration: time.Second * 8, // server
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexArcane] *= 1.15
 					aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexFire] *= 1.15
@@ -2681,14 +2681,14 @@ func init() {
 		procAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Aura of the Blue Dragon",
 			ActionID: actionID,
-			Duration: time.Second * 15,
+			Duration: time.Second * 20, // server: 3% chance, 20 sec
 		}).AttachAdditivePseudoStatBuff(&character.PseudoStats.SpiritRegenRateCasting, 1)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Aura of the Blue Dragon Trigger",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			ProcChance: .02,
+			ProcChance: .03,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procAura.Activate(sim)
 			},
@@ -2781,7 +2781,7 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 13, spell.OutcomeAlwaysHit)
+				spell.CalcAndDealDamage(sim, target, 18, spell.OutcomeAlwaysHit) // server
 			},
 		})
 
@@ -2956,8 +2956,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=19947/nat-pagles-broken-reel
 	core.NewSimpleStatOffensiveTrinketEffect(NatPaglesBrokenReel, stats.Stats{
 		stats.SpellHit: 10 * core.SpellHitRatingPerHitChance,
-		stats.MeleeHit: 10 * core.MeleeHitRatingPerHitChance,
-	}, time.Second*15, time.Second*90)
+		stats.SpellPenetration: 50, // server
+	}, time.Second*25, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=19812/rune-of-the-dawn
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
@@ -3072,7 +3072,7 @@ func init() {
 					Label: "Poison (Smolderweb's Eye)",
 				},
 				OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 20, isRollover)
+					dot.Snapshot(target, 50, isRollover) // server: 50 every 2 sec for 20 sec
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -3284,12 +3284,12 @@ func init() {
 			ActionID:  actionID,
 			Label:     "Restless Strength",
 			Duration:  duration,
-			MaxStacks: 20,
+			MaxStacks: 12, // server: +360 attack power, -30 per hit
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				character.PseudoStats.BonusPhysicalDamage += 2 * float64(newStacks-oldStacks)
+				character.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: 30 * float64(newStacks-oldStacks), stats.RangedAttackPower: 30 * float64(newStacks-oldStacks)})
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
@@ -3416,7 +3416,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=18326/razor-gauntlets
 	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
 	core.NewItemEffect(RazorGauntlets, func(agent core.Agent) {
-		thornsArcaneDamageEffect(agent, RazorGauntlets, "Razor Gauntlets", 3)
+		thornsArcaneDamageEffect(agent, RazorGauntlets, "Razor Gauntlets", 5) // server
 	})
 
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield
@@ -3439,7 +3439,7 @@ func init() {
 			BonusCoefficient: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, 35, spell.OutcomeAlwaysHit)
+				result := spell.CalcAndDealDamage(sim, target, 66, spell.OutcomeAlwaysHit) // server: 6% chance, 66 life
 				character.GainHealth(sim, result.Damage, healthMetrics)
 			},
 		})

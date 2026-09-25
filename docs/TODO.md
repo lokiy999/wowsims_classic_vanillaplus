@@ -83,6 +83,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     the old set bonuses, next to the renumbered pieces. Can players still get them, or should they leave the DB?
 29. **Set proc chances** (Part CX): Lightforge 6 / Soulforge 4 (+5% crit for 10 sec) and The Elements 6 (+100 attack
     power, damage and healing) say "chance on offensive action" without a number; the sim uses 6% / 6% / 4%.
+30. **Items whose effect type changed** (Part CY): Seeping Willow ("Use: Lowers all stats by 50, armor by 400 and deals
+    20 Nature damage every 3 sec ... for 30 sec") and Ragehammer ("Use: Instantly generates 80 rage and increases damage
+    done by 10 and attack speed by 5% for 15 sec") are Use effects on the server, the sim still has them as on-hit
+    procs. Eskhandar's Left Claw now "causes 55 to 95 damage" (the sim: a bleed). Cooldowns of those Use effects?
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

@@ -26,7 +26,7 @@ func init() {
 		damageAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Chaos Fire",
 			ActionID: core.ActionID{SpellID: 24389},
-			Duration: time.Minute * 1,
+			Duration: time.Minute * 2, // server: Fire Ruby's fire damage buff lasts 2 min
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddStatDynamic(sim, stats.FirePower, 100)
 			},
@@ -70,7 +70,7 @@ func init() {
 	core.NewItemEffect(HazzarahsCharmOfMagic, func(agent core.Agent) {
 		mage := agent.(MageAgent).GetMage()
 
-		duration := time.Second * 20
+		duration := time.Second * 30 // server: Hazzarah's Charm of Magic lasts 30 sec
 		affectedSpells := []*core.Spell{}
 
 		aura := mage.RegisterAura(core.Aura{

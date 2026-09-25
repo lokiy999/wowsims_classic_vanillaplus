@@ -120,8 +120,8 @@ dps_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-DevilsaurEye-19991"
  value: {
-  dps: 435.09345
-  tps: 265.15757
+  dps: 438.42551
+  tps: 268.7781
  }
 }
 dps_results: {

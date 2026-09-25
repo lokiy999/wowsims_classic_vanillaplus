@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestP1TankWarrior-Phase1-AllItems-Vindicator'sBattlegear"
  value: {
-  dps: 277.55608
-  tps: 277.15552
+  dps: 277.82197
+  tps: 277.6764
  }
 }
 dps_results: {

@@ -31,12 +31,12 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=23197/idol-of-the-moon
-	// Equip: Increases the damage of your Moonfire spell by up to 33.
+	// Equip: Increases the damage of your Moonfire spell by up to 17%. (server; classic was +33)
 	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_DruidMoonfire {
-				spell.BonusDamage += 33
+				spell.DamageMultiplierAdditive += 0.17 // server: Moonfire damage +17%
 			}
 		})
 	})

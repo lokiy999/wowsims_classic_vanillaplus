@@ -3654,3 +3654,25 @@ Not modeled (no data or no effect in the sim): Vestments of the Virtuous / Devou
 Blink, Psychic Scream and Frost Shock duration bonuses, The Fists of Fury (its items have no set name in the DB).
 Test baselines: the new sets add "AllItems" cases; Battlegear of Might +5% in its warrior case; stats of presets with
 dungeon-set pieces changed (resistances).
+
+## Part CY — Item effects checked against the server tooltips (2026-09-25)
+
+For every item with effect code, the numbers in its Use / Equip / Chance on hit lines of the dump were compared with
+the numbers in the effect code. False alarms (ranges written as base + spread, durations as ticks x length) were
+skipped. Changed to the server values:
+- Weapon procs: Bloodrazor bleed 180 over 30 sec (was 120), Gutwrencher 240 (80), Blazing Rapier 150 (100),
+  Hammer of the Northern Wind / Coldrage Dagger 40-55 Frost (20-30), Bloodletter Scalpel 110-150 (60-70), Hookfang
+  Shanker 10 per tick (7), Gravestone War Axe 97 every 5 sec for 1 min (55 every 3 sec), Frightskull Shaft 35 every
+  2 sec for 40 sec (8 every 2 sec for 30), Barovian Family Sword drain every 2 sec for 20 sec (every 3 sec for 15),
+  Felstriker 5 sec (3), Hand of Edward the Odd 8 sec (4), Argent Avenger 20 sec (10), Nightfall 8 sec (5), Frostguard
+  8 sec (5), Fang of the Crystal Spider 20% slow (10%).
+- Trinkets / use effects: Zandalari Hero Medallion +360 attack power, -30 per hit (was +40 damage, -2 per hit),
+  Devilsaur Eye +3% hit for 30 sec (2%, 20 sec), Grilek's Charm of Might 40 rage (30), Diamond Flask +60 Strength
+  (75), Hazzarah's Charm of Destruction +15% (10%), Hazzarah's Charm of Magic 30 sec (20), Fire Ruby 2 min (1 min),
+  Sanctified Orb +5% crit for 1 min (3%, 25 sec), Nat Pagle's Broken Reel +10% spell hit and +50 spell penetration for
+  25 sec (was +10% spell and melee hit, 15 sec), Smolderweb's Eye 50 per tick (20), Darkmoon Card: Blue Dragon 3% for
+  20 sec (2%, 15 sec).
+- Equip effects: Idol of the Moon +17% Moonfire damage (was +33 flat), the four PvP Multi-Shot gloves +5% (4%), Razor
+  Gauntlets 5 Arcane thorns (3), Essence of the Pure Flame 18 Fire (13), Skullflame Shield steals 66 life (35).
+Not changed, TODO question 30: Seeping Willow and Ragehammer are "Use:" effects on the server (the sim has on-hit
+procs), Eskhandar's Left Claw deals 55-95 direct damage (the sim has a bleed).

@@ -22,7 +22,7 @@ func init() {
 	core.NewItemEffect(DiamondFlask, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		buffAura := character.NewTemporaryStatsAura("Diamond Flask", core.ActionID{SpellID: 24427}, stats.Stats{stats.Strength: 75}, time.Second*60)
+		buffAura := character.NewTemporaryStatsAura("Diamond Flask", core.ActionID{SpellID: 24427}, stats.Stats{stats.Strength: 60}, time.Second*60) // server: +60 Strength
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24427},
@@ -81,7 +81,7 @@ func init() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				warrior.AddRage(sim, 30, rageMetrics)
+				warrior.AddRage(sim, 40, rageMetrics) // server
 			},
 		})
 

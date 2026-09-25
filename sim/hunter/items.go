@@ -62,43 +62,43 @@ func init() {
 		}))
 	})
 
-	// Equip: Increases the damage done by your Multi-Shot by 4%
+	// Equip: Increases the damage done by your Multi-Shot by 5% (server)
 	core.NewItemEffect(MarshalsChainGrips, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Multi-Shot Damage Increase",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.05
 			},
 		}))
 	})
-	// Equip: Increases the damage done by your Multi-Shot by 4%
+	// Equip: Increases the damage done by your Multi-Shot by 5% (server)
 	core.NewItemEffect(GeneralsChainGloves, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Multi-Shot Damage Increase",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.05
 			},
 		}))
 	})
-	// Equip: Increases the damage done by your Multi-Shot by 4%
+	// Equip: Increases the damage done by your Multi-Shot by 5% (server)
 	core.NewItemEffect(KnightLieutenantsChainVices, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Multi-Shot Damage Increase",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.05
 			},
 		}))
 	})
-	// Equip: Increases the damage done by your Multi-Shot by 4%
+	// Equip: Increases the damage done by your Multi-Shot by 5% (server)
 	core.NewItemEffect(BloodGuardsChainVices, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Multi-Shot Damage Increase",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.04
+				hunter.MultiShot.BaseDamageMultiplierAdditive += 0.05
 			},
 		}))
 	})
@@ -143,12 +143,12 @@ func init() {
 		procBonus := stats.Stats{
 			stats.AttackPower:       150,
 			stats.RangedAttackPower: 150,
-			stats.MeleeHit:          2,
+			stats.MeleeHit:          3, // server: +3% hit for 30 sec
 		}
 		aura := hunter.GetOrRegisterAura(core.Aura{
 			Label:    "Devilsaur Fury",
 			ActionID: core.ActionID{SpellID: 24352},
-			Duration: time.Second * 20,
+			Duration: time.Second * 30,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Unit.AddStatsDynamic(sim, procBonus)
