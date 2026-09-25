@@ -3745,3 +3745,26 @@ Checked the proc spells of the weapon enchants in `sim/common/enchant_effects.go
 - Crusader (20007: +100 Strength for 15 sec) already matched. Icy Chill (20005: -25% attack speed, -30% movement
   for 5 sec) and Unholy Weapon (20006) only affect the target's damage, so they are not in the DPS sim.
 No preset uses these two enchants, so no test baseline moved.
+
+## Part DD — Shaman talents: Armaments of Storm, Bloodlust, Aftershock (2026-09-25)
+
+Three talents from the "Talents not in the sim code" list that now have numbers from `Spell.csv`:
+- **Armaments of Storm** (33636-33640): melee auto attacks (proc flag 0x4) have a 5% chance per rank to trigger
+  33641, Nature damage equal to 5 x level (300 at 60; "up to 300 ... scales with your level"). No spell power
+  coefficient in the data. `sim/shaman/talents_server.go`.
+- **Bloodlust** (33630): attack (melee and ranged) and casting speed +10% for 3 min on a 1 min cooldown, so it is
+  modeled as always up on the shaman (TODO question 34: can the shaman cast it on itself?).
+- **Aftershock** (33648, new `sim/shaman/aftershock.go`): 20 sec cooldown, usable in the APL while Flame Shock is on
+  the target. It removes the Flame Shock DoT and deals its full 15 sec of damage at once (from the DoT snapshot, so
+  spell power and modifiers are already in). The Frost Shock stun and Earth Shock taunt do nothing in a DPS sim.
+
+Checked in a throwaway sim (2000 iterations, not committed): enhancement phase 1 gear 590 DPS -> 610 with Armaments
+of Storm 5/5 -> 642 with Bloodlust; elemental with Flame Shock added to the rotation 503 -> 518 with Aftershock (12
+casts per 5 min fight).
+
+Found on the way: the default elemental rotation never casts Flame Shock; adding "Flame Shock when its DoT is not
+active" at the top raised the test DPS from 474 to 503. Not changed (rotations are low priority, TODO note).
+
+Still without numbers: Shamanism and Thrill of the Hunt (the chance is not in the spell data, probably a
+procs-per-minute value from a table that is not exported), Ice Shards (cast time index 8, mana cost and spell power
+coefficient unknown).

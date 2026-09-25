@@ -98,6 +98,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     (b) Troll Berserking's casting speed is a flat +5% in the data (melee speed scales 10-30% with missing health);
     does the casting speed also scale with health? (c) Which races have "Light Weapons Specialization" (20558) and
     "Hunting Weapons Specialization" (26290)? The sim gives both to Trolls (classic ids of the troll racials).
+34. **Shaman talents** (Part DD): (a) Can Bloodlust be cast on the shaman itself? The sim assumes yes and keeps it up
+    (3 min buff, 1 min cooldown). (b) What do Aftershock and Bloodlust cost? Their cost is a percentage of base mana,
+    which the spell export does not include (the sim has them free). (c) Does Armaments of Storm scale with spell
+    power, and can it crit? The sim uses a flat 5 x level and lets it crit like a spell.
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 
@@ -116,8 +120,8 @@ Still open for a DPS sim:
 - **Improved Hunter's Mark**: covered by the "improved" Hunter's Mark debuff option (+20%/rank, 2/2 = +40%);
   the hunter doesn't cast the mark itself, so the talent field itself stays unused.
 - **Wand Specialization** (mage, priest): wands aren't used by any rotation.
-- Needs numbers: Shaman Armaments of Storm (25% chance, "up to 300", per hit or per imbue?), Shamanism (chance),
-  Bloodlust (cooldown), Aftershock (cooldown, what it consumes), Hunter Thrill of the Hunt (chance), Mage Ice Shards
+- Done in Part DD: Armaments of Storm, Bloodlust, Aftershock. Needs numbers: Shaman Shamanism (chance), Hunter
+  Thrill of the Hunt (chance), Mage Ice Shards
   (cooldown and spell power coefficient; Cold Grip depends on it), Warlock Withering Shroud and Death and Decay
   (cooldown, AoE only).
 
@@ -143,7 +147,7 @@ all the other data is done; do these as one batch then):
 - **Paladin** (17 of 60): Aura Mastery, Spiritual Focus, Shield Of Faith, Inner Light, Divine Grace, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Guardians Favor, Dominance, Second Wind, Improved Concentration Aura, Stoicism, Pursuit Of Justice, Divine Might, Eye For An Eye, Repentance
 - **Priest** (19 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
 - **Rogue** (19 of 60): Remorseless Attacks, Seek And Destroy, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
-- **Shaman** (18 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Aftershock, Improved Ghost Wolf, Bloodlust, Armaments Of Storm, Shamanism, Spiritwalking, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Cleansing Wave
+- **Shaman** (15 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Improved Ghost Wolf, Shamanism, Spiritwalking, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Cleansing Wave
 - **Warlock** (19 of 60): Fel Concentration, Jinx, Dread, Black Speech, Herald Of Woe, Withering Shroud, Death And Decay, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Fel Pact, Aftermath, Feeding Demons, Pyroclasm, Shock And Awe
 - **Warrior** (11 of 60): Improved Charge, Improved Hamstring, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
 
@@ -200,6 +204,8 @@ listed at the end of this overview so the older sections don't need rewriting.
 - LOW PRIORITY (Lokiy 2026-09-24: rotations and threat need all other data first): paladin ret/prot rotations are
   new and basic (written during the SoD removal); all rotations and threat values need tuning in game.
 - No preset uses Arcane Missiles or Insect Swarm, so the tests don't cover them (checked in the browser instead).
+- The default elemental shaman rotation never casts Flame Shock; adding it (when its DoT is not active) is +6% in the
+  test setup, and it is needed for Aftershock (Part DD).
 - Talent presets are all empty (question 1 at the top; low priority, one of the last tasks).
 - Healing: done in Part CG (priest, shaman, druid incl. Nature's Swiftness and Tranquility, paladin); Mana Tide
   Totem is in (Part BS follow-up). Not in the sim: Rebirth, Bash (no effect on a sim). Open healer items are in the

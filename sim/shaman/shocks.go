@@ -45,4 +45,5 @@ func (shaman *Shaman) registerShocks() {
 	shaman.registerEarthShockSpell(shockTimer)
 	shaman.registerFlameShockSpell(shockTimer)
 	shaman.registerFrostShockSpell(shockTimer)
+	shaman.registerAftershockSpell()
 }
