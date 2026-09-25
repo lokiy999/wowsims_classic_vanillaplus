@@ -19,6 +19,9 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-25 (Part DJ): paladin Seal of Light and Seal of Wisdom (passive healing / mana cost effects,
+  judgements), Divine Grace (seal part).
+- Done on 2026-09-25 (Part DI follow-up): Judgement of Wisdom 60 mana and 30 sec, Judgement of Light 30 sec.
 - Done on 2026-09-25 (Part DI): paladin Blessing of Sanctuary values and level ranges, Guardian's Favor (Sanctuary
   part), Libram of Fervor Holy damage part, Libram of Divinity.
 - Done on 2026-09-25 (Part DH): paladin Reckoning (4%/rank on any hit, 20%/rank on crits), Shield of Faith.

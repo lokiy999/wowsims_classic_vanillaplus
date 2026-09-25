@@ -3847,3 +3847,17 @@ Orb (5% crit for 1 min). No test baseline moved (no preset uses these).
   (20346): 30 sec. Retribution Aura (50 Holy damage, 10301), Blessing of Salvation (-20% threat) and Devotion Aura
   (700) already matched. Test baselines: protection paladin +1.2% (mana), other mana users within 0.1%.
 
+## Part DJ — Paladin: Seal of Light, Seal of Wisdom, Divine Grace (2026-09-25)
+
+New `sim/paladin/seal_light_wisdom.go`. On the server both seals have a passive effect while active (classic only had
+the melee procs):
+- **Seal of Light** (20165, 20347-20349, levels 30/40/50/60): healing done +20/40/64/102 for 2 min; mana 110/140/180/210.
+  Judging it applies Judgement of Light (20185, 20344-20346).
+- **Seal of Wisdom** (20166, 20356, 20357, levels 38/48/58): mana cost of all spells -5/10/20 for 2 min (flat, per
+  spell); mana 135/170/200. Judging it applies Judgement of Wisdom (20186, 20354, 20355).
+- **Divine Grace**: both effects +10% per rank (the Blessing of Wisdom / Light parts are not in the sim).
+- Both are castable in a rotation by spell id (like the other seals); Libram of Hope and Benediction reduce their cost.
+  Not modeled: the melee procs (Seal of Light heals the paladin for 90, Seal of Wisdom restores 90 mana at rank max),
+  the proc rate is not in the spell data. The seal option dropdown (proto enum) does not list them.
+Throwaway holy paladin sim (placeholder gear, 500 iterations): 337.6 HPS -> 340.9 with Seal of Light kept up, 338.0 with
+Seal of Wisdom.

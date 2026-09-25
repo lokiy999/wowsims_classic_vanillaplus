@@ -59,6 +59,8 @@ type Paladin struct {
 	aurasSoC     []*core.Aura
 	aurasSotC    []*core.Aura
 	aurasSoF     []*core.Aura
+	aurasSoL     []*core.Aura
+	aurasSoW     []*core.Aura
 
 	currentJudgement *core.Spell
 	allJudgeSpells   [][]*core.Spell
@@ -66,6 +68,8 @@ type Paladin struct {
 	spellsJoC        []*core.Spell
 	spellsJotC       []*core.Spell
 	spellsJoF        []*core.Spell
+	spellsJoL        []*core.Spell
+	spellsJoW        []*core.Spell
 
 	// Called after every Judgement cast (set bonuses).
 	judgementCastCallbacks []func(sim *core.Simulation)
@@ -130,16 +134,22 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerSealOfCommand()
 	paladin.registerSealOfTheCrusader()
 	paladin.registerSealOfFury()
+	paladin.registerSealOfLight()
+	paladin.registerSealOfWisdom()
 
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoR)
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoC)
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJotC)
 	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoF)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoL)
+	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoW)
 
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoR)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoC)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoF)
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoL)
+	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoW)
 
 	// Active abilities
 	paladin.registerForbearance()
