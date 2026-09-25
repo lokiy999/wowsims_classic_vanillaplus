@@ -93,6 +93,11 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 32. **Flurry and Lightning Shield timings** (Part DA): the server's Flurry buff lasts 8 sec (classic 15 sec) and
     Lightning Shield has 5 charges (classic 3). The sim now uses the server values; a quick check in game would
     confirm the 8 sec. Also: does Lightning Shield have a hidden cooldown between procs? The sim uses 3.5 sec.
+33. **Racials** (Part DB): (a) Orc Command's tooltip says "and your damage if an ally is nearby by 1%", but the spell
+    data only has the pet bonus. Is the 1% real (then the sim adds it, since a raid always has allies nearby)?
+    (b) Troll Berserking's casting speed is a flat +5% in the data (melee speed scales 10-30% with missing health);
+    does the casting speed also scale with health? (c) Which races have "Light Weapons Specialization" (20558) and
+    "Hunting Weapons Specialization" (26290)? The sim gives both to Trolls (classic ids of the troll racials).
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

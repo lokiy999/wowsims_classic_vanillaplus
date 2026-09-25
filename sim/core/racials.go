@@ -14,8 +14,10 @@ func applyRaceEffects(agent Agent) {
 
 	switch character.Race {
 	case proto.Race_RaceDwarf:
-		character.AddStat(stats.FrostResistance, 10)
+		// Server (Spell.csv): Frost Resistance 20 (20596); Thunderer (20595): Maces, Two-Handed Maces and Guns +5.
+		character.AddStat(stats.FrostResistance, 20)
 		character.GunSpecializationAura()
+		character.MaceSpecializationAura()
 
 		actionID := ActionID{SpellID: 20594}
 
@@ -52,24 +54,27 @@ func applyRaceEffects(agent Agent) {
 			},
 		})
 	case proto.Race_RaceGnome:
-		character.AddStat(stats.ArcaneResistance, 10)
-		character.MultiplyStat(stats.Intellect, 1.05)
+		// Server (Spell.csv): Arcane Resistance 20 (20592), Expansive Mind +10% Intellect (20591).
+		character.AddStat(stats.ArcaneResistance, 20)
+		character.MultiplyStat(stats.Intellect, 1.10)
 	case proto.Race_RaceHuman:
-		character.MultiplyStat(stats.Spirit, 1.05)
+		character.MultiplyStat(stats.Spirit, 1.10) // server: The Human Spirit (20598) +10%
 		character.SwordSpecializationAura()
 		character.MaceSpecializationAura()
 	case proto.Race_RaceNightElf:
-		character.AddStat(stats.NatureResistance, 10)
-		character.AddStat(stats.Dodge, 1)
-		// TODO: Shadowmeld?
+		// Server (Spell.csv): Nature Resistance 20 (20583); Quickness (20582): Agility, movement and casting
+		// speed +5% (classic: +1% dodge).
+		character.AddStat(stats.NatureResistance, 20)
+		character.MultiplyStat(stats.Agility, 1.05)
+		character.MultiplyCastSpeed(1.05)
 	case proto.Race_RaceOrc:
 		character.AxeSpecializationAura()
 
 		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
-			// Command Damage dealt by Hunter and Warlock pets increased by 5%
+			// Command (server 20575): damage dealt by Hunter and Warlock pets increased by 10%.
 			for _, pet := range character.Pets {
 				if !pet.IsGuardian() {
-					pet.PseudoStats.DamageDealtMultiplier *= 1.05
+					pet.PseudoStats.DamageDealtMultiplier *= 1.10
 				}
 			}
 		}
@@ -114,16 +119,28 @@ func applyRaceEffects(agent Agent) {
 			Type:  CooldownTypeDPS,
 		})
 	case proto.Race_RaceTauren:
-		character.AddStat(stats.NatureResistance, 10)
+		character.AddStat(stats.NatureResistance, 20) // server (20551)
 		character.MultiplyStat(stats.Health, 1.05)
 	case proto.Race_RaceTroll:
+		// Server (Spell.csv): Light Weapons Specialization (20558): one-handed axes, daggers and thrown +5;
+		// Hunting Weapons Specialization (26290): bows and polearms +5.
 		character.BowSpecializationAura()
 		character.ThrownSpecializationAura()
+		character.GetOrRegisterAura(Aura{
+			Label:      "Troll Weapon Skill Specialization",
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.AxesSkill += 5
+				character.PseudoStats.DaggersSkill += 5
+				character.PseudoStats.PolearmsSkill += 5
+			},
+		})
 
-		// Beast Slaying (+5% damage to beasts)
+		// Monster Slaying (server 20557): +5% damage against Beasts and Dragonkin.
 		character.Env.RegisterPostFinalizeEffect(func() {
 			for _, t := range character.Env.Encounter.Targets {
-				if t.MobType == proto.MobType_MobTypeBeast {
+				if t.MobType == proto.MobType_MobTypeBeast || t.MobType == proto.MobType_MobTypeDragonkin {
 					for _, at := range character.AttackTables[t.UnitIndex] {
 						at.DamageDealtMultiplier *= 1.05
 						at.CritMultiplier *= 1.05
@@ -172,49 +189,29 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 		}
 	}
 
-	var berserkingAura *Aura
+	// Server (Spell.csv 26635): melee attack speed +10% at full health up to +30% when badly hurt, ranged attack
+	// speed and casting speed +5%, for 20 sec.
 	var berserkingHaste float64
-	if character.HasManaBar() {
-		// Mana-using classes gain a flat % reduction in attack and cast speed
-		berserkingAura = character.RegisterAura(Aura{
-			Label:    label,
-			ActionID: actionID,
-			Duration: time.Second * 10,
-			OnGain: func(aura *Aura, sim *Simulation) {
-				berserkingHaste = 1 / (1 - calcBerserkingPct())
+	berserkingAura := character.RegisterAura(Aura{
+		Label:    label,
+		ActionID: actionID,
+		Duration: time.Second * 20,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			berserkingHaste = 1 + calcBerserkingPct()
+			character.MultiplyMeleeSpeed(sim, berserkingHaste)
+			character.MultiplyRangedSpeed(sim, 1.05)
+			character.MultiplyCastSpeed(1.05)
 
-				character.MultiplyCastSpeed(berserkingHaste)
-				character.MultiplyAttackSpeed(sim, berserkingHaste)
-
-				if sim.Log != nil {
-					character.Log(sim, "Berserking increased attack and casting speed by %.2f%% (%.2f%% hp)", berserkingHaste*100-100, character.CurrentHealthPercent()*100)
-				}
-			},
-			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed(1 / berserkingHaste)
-				character.MultiplyAttackSpeed(sim, 1/berserkingHaste)
-			},
-		})
-	} else {
-		// Non-mana bar classes gain a flat % reduction in attack and cast speed
-		berserkingAura = character.RegisterAura(Aura{
-			Label:    label,
-			ActionID: actionID,
-			Duration: time.Second * 10,
-			OnGain: func(aura *Aura, sim *Simulation) {
-				berserkingHaste = 1 + calcBerserkingPct()
-
-				character.MultiplyAttackSpeed(sim, berserkingHaste)
-
-				if sim.Log != nil {
-					character.Log(sim, "Berserking increased attack speed by %.2f%% (%.2f%% hp)", berserkingHaste*100-100, character.CurrentHealthPercent()*100)
-				}
-			},
-			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyAttackSpeed(sim, 1/berserkingHaste)
-			},
-		})
-	}
+			if sim.Log != nil {
+				character.Log(sim, "Berserking increased melee attack speed by %.2f%% (%.2f%% hp)", berserkingHaste*100-100, character.CurrentHealthPercent()*100)
+			}
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			character.MultiplyMeleeSpeed(sim, 1/berserkingHaste)
+			character.MultiplyRangedSpeed(sim, 1/1.05)
+			character.MultiplyCastSpeed(1 / 1.05)
+		},
+	})
 
 	config := SpellConfig{
 		ActionID: actionID,

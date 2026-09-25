@@ -99,99 +99,99 @@ stat_weights_results: {
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-Augur'sRegalia"
  value: {
-  tps: 11.48296
-  hps: 341.51985
+  tps: 11.47357
+  hps: 341.05129
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-CataclysmArmor"
  value: {
-  tps: 11.48477
-  hps: 336.46305
+  tps: 11.47612
+  hps: 334.94685
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
-  tps: 11.48727
-  hps: 337.87099
+  tps: 11.47969
+  hps: 336.64849
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheEarthfury"
  value: {
-  tps: 11.47836
-  hps: 386.2771
+  tps: 11.46447
+  hps: 385.16927
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheFiveThunders"
  value: {
-  tps: 11.47896
-  hps: 322.50937
+  tps: 11.46577
+  hps: 321.6283
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheStonefury"
  value: {
   tps: 11.53734
-  hps: 365.50096
+  hps: 365.21978
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-TheTenStorms"
  value: {
-  tps: 11.48296
-  hps: 359.89675
+  tps: 11.47357
+  hps: 357.43544
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  tps: 11.48477
-  hps: 353.00125
+  tps: 11.47612
+  hps: 351.46831
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Average-Default"
  value: {
-  tps: 11.4758
-  hps: 344.51065
+  tps: 11.46672
+  hps: 342.73464
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-FullBuffs-Consumes-LongMultiTarget"
  value: {
-  tps: 229.74541
-  hps: 339.19584
+  tps: 229.59377
+  hps: 338.1633
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-FullBuffs-Consumes-LongSingleTarget"
  value: {
-  tps: 11.48727
-  hps: 339.19584
+  tps: 11.47969
+  hps: 338.1633
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-FullBuffs-Consumes-ShortSingleTarget"
  value: {
-  tps: 27.4334
-  hps: 771.48414
+  tps: 27.39549
+  hps: 766.46175
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-NoBuffs-Consumes-LongMultiTarget"
  value: {
   tps: 230.74683
-  hps: 168.14423
+  hps: 168.11923
  }
 }
 dps_results: {
  key: "TestRestorationShaman-Phase1-Settings-Troll-placeholder-Standard-default-NoBuffs-Consumes-LongSingleTarget"
  value: {
   tps: 11.53734
-  hps: 168.14423
+  hps: 168.11923
  }
 }
 dps_results: {
@@ -204,7 +204,7 @@ dps_results: {
 dps_results: {
  key: "TestRestorationShaman-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  tps: 11.48727
-  hps: 339.19584
+  tps: 11.47969
+  hps: 338.1633
  }
 }

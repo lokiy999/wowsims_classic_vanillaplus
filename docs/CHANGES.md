@@ -3712,3 +3712,27 @@ range, so not worth a setting). The spell export has no "percent of base mana" c
 Wrath's (sim 12%) cannot be checked.
 
 No test baseline moved: the test presets have no talents, and no preset casts Lightning Shield rank 7.
+
+## Part DB — Racials from the server data (2026-09-25)
+
+Compared the racial passives and cooldowns in `Spell.csv` with `sim/core/racials.go`. The server keeps the classic
+spell ids, so the race of each spell follows classic. Changed:
+
+| Race | Sim before | Server (now) |
+|---|---|---|
+| Dwarf | Frost Resistance 10; Gun Specialization | Frost Resistance 20 (20596); Thunderer (20595): Maces, Two-Handed Maces and Guns +5 |
+| Gnome | Arcane Resistance 10; Intellect +5% | Arcane Resistance 20 (20592); Expansive Mind (20591) Intellect +10% |
+| Human | Spirit +5% | The Human Spirit (20598) Spirit +10% (Sword and Mace Specialization unchanged) |
+| Night Elf | Nature Resistance 10; Dodge +1% | Nature Resistance 20 (20583); Quickness (20582): Agility and casting speed +5% (movement not modeled) |
+| Orc | Command: pets +5% | Command (20575): pets +10% (Axe Specialization and Blood Fury unchanged) |
+| Tauren | Nature Resistance 10 | Nature Resistance 20 (20551) (Endurance +5% health unchanged) |
+| Troll | Bow and Thrown Specialization; Beast Slaying (beasts) | Light Weapons Specialization (20558): one-handed Axes, Daggers, Thrown +5; Hunting Weapons Specialization (26290): Bows and Polearms +5; Monster Slaying (20557): +5% damage against Beasts **and Dragonkin** |
+| Troll Berserking | 10 sec; melee (and, for mana users, casting) speed 10-30% by missing health | 20 sec (26635): melee attack speed +10% at full health up to +30% when badly hurt, ranged attack speed +5%, casting speed +5%, the same for every class; 3 min cooldown unchanged |
+
+Unchanged and matching: Stoneform, Endurance, Blood Fury (25% for 20 sec, 2 min), Axe/Sword/Mace Specialization,
+Undead Shadow Resistance 20. Command's tooltip also says "your damage if an ally is nearby by 1%", but the spell data
+has no effect for it, so it is not modeled (TODO question 33).
+
+Test averages: hunter 437 -> 445 (orc pet), warlock 824 -> 834 (orc pet), enhancement +0.4%, feral tank / prot
+paladin / tank shaman +0.2-0.3%, mage and elemental -0.1% (Troll Berserking now +5% casting speed for 20 sec instead
+of about +11% for 10 sec).

@@ -68,7 +68,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.10102
-  weights: 3.36371
+  weights: 3.36655
   weights: 2.45019
   weights: 0
   weights: 0
@@ -99,126 +99,126 @@ stat_weights_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-BeastmasterArmor"
  value: {
-  dps: 440.63452
+  dps: 448.77029
   tps: 269.78336
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-BloodGuard'sChainVices-22862"
  value: {
-  dps: 433.01098
+  dps: 441.15755
   tps: 261.93304
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Champion'sPursuance"
  value: {
-  dps: 428.78909
+  dps: 436.94166
   tps: 257.58505
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-DevilsaurEye-19991"
  value: {
-  dps: 438.42551
+  dps: 446.50396
   tps: 268.7781
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-DevilsaurTooth-19992"
  value: {
-  dps: 430.74987
+  dps: 438.87542
   tps: 260.11331
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-DragonstalkerArmor"
  value: {
-  dps: 443.08504
+  dps: 451.22806
   tps: 272.08174
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-FieldMarshal'sPursuit"
  value: {
-  dps: 440.13501
+  dps: 448.27078
   tps: 269.28386
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-General'sChainGloves-16571"
  value: {
-  dps: 435.72358
+  dps: 443.87015
   tps: 264.64564
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-GiantstalkerArmor"
  value: {
-  dps: 436.2561
+  dps: 444.40267
   tps: 265.17816
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Knight-Lieutenant'sChainVices-23279"
  value: {
-  dps: 433.01098
+  dps: 441.15755
   tps: 261.93304
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-LieutenantCommander'sPursuance"
  value: {
-  dps: 428.78909
+  dps: 436.94166
   tps: 257.58505
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-MarkoftheVeteran-26162"
  value: {
-  dps: 430.06484
+  dps: 438.15777
   tps: 260.11331
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-MarkoftheVeteran-26171"
  value: {
-  dps: 430.06484
+  dps: 438.15777
   tps: 260.11331
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Marshal'sChainGrips-16463"
  value: {
-  dps: 435.72358
+  dps: 443.87015
   tps: 264.64564
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Predator'sArmor"
  value: {
-  dps: 434.61571
+  dps: 442.74662
   tps: 263.8665
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Renataki'sCharmofBeasts-19953"
  value: {
-  dps: 430.06484
+  dps: 438.15777
   tps: 260.11331
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Warlord'sPursuit"
  value: {
-  dps: 440.13501
+  dps: 448.27078
   tps: 269.28386
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Average-Default"
  value: {
-  dps: 436.89905
+  dps: 445.0264
   tps: 266.2246
  }
 }
@@ -267,49 +267,49 @@ dps_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 699.43194
+  dps: 707.54213
   tps: 666.29067
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 544.98107
+  dps: 553.1622
   tps: 380.03599
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 577.44993
+  dps: 585.90379
   tps: 407.07252
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 269.14033
+  dps: 271.46562
   tps: 272.41703
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 204.31683
+  dps: 206.64615
   tps: 158.00657
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-Settings-Orc-p0.bis-Hunter-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 242.64531
+  dps: 245.1618
   tps: 194.15883
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 402.65868
+  dps: 410.81692
   tps: 231.33576
  }
 }

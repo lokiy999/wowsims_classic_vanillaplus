@@ -5,7 +5,7 @@ character_stats_results: {
   final_stats: 310.97
   final_stats: 346.06
   final_stats: 196.02
-  final_stats: 288.4035
+  final_stats: 302.137
   final_stats: 65.34
   final_stats: 0
   final_stats: 10
@@ -100,56 +100,56 @@ dps_results: {
  key: "TestRetribution-Phase5-AllItems-FieldMarshal'sAegis"
  value: {
   dps: 551.37507
-  tps: 578.60453
+  tps: 578.59881
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-Freethinker'sArmor"
  value: {
   dps: 456.80428
-  tps: 485.04411
+  tps: 485.03672
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-JudgementArmor"
  value: {
   dps: 571.93049
-  tps: 600.94743
+  tps: 600.94241
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-LawbringerArmor"
  value: {
   dps: 507.64644
-  tps: 534.40595
+  tps: 534.40228
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-LieutenantCommander'sRedoubt"
  value: {
   dps: 523.745
-  tps: 551.94998
+  tps: 551.94175
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-RighteousArmor"
  value: {
   dps: 469.17178
-  tps: 497.15696
+  tps: 497.14978
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-SanctifiedOrb-20512"
  value: {
   dps: 427.73996
-  tps: 455.94494
+  tps: 455.9367
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Average-Default"
  value: {
   dps: 421.72479
-  tps: 450.09419
+  tps: 450.08964
  }
 }
 dps_results: {
@@ -218,15 +218,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Settings-Human-blank-Seal of Righteousness Ret-ret-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 60.9092
-  tps: 195.72832
+  dps: 61.64206
+  tps: 194.37069
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Settings-Human-blank-Seal of Righteousness Ret-ret-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 60.9092
-  tps: 67.65016
+  dps: 61.64206
+  tps: 68.27849
  }
 }
 dps_results: {
@@ -240,6 +240,6 @@ dps_results: {
  key: "TestRetribution-Phase5-SwitchInFrontOfTarget-Default"
  value: {
   dps: 365.26229
-  tps: 392.09363
+  tps: 392.08114
  }
 }

@@ -50,24 +50,24 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankShaman-Phase1-StatWeights-Default"
  value: {
-  weights: 0.20284
+  weights: 0.20413
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.12947
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.1299
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.08382
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.08435
   weights: 0
   weights: 0
   weights: 0
@@ -99,57 +99,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-CataclysmArmor"
  value: {
-  dps: 314.72494
-  tps: 372.21289
+  dps: 315.74377
+  tps: 373.36951
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
-  dps: 265.60838
-  tps: 323.30708
+  dps: 266.21457
+  tps: 323.68572
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheEarthfury"
  value: {
-  dps: 246.32914
-  tps: 302.32943
+  dps: 246.92231
+  tps: 302.68401
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheFiveThunders"
  value: {
-  dps: 294.00098
-  tps: 349.46605
+  dps: 295.15463
+  tps: 350.74631
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheStonefury"
  value: {
-  dps: 271.38379
-  tps: 330.54516
+  dps: 272.31708
+  tps: 331.4328
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-TheTenStorms"
  value: {
-  dps: 271.11711
-  tps: 331.76273
+  dps: 271.54881
+  tps: 331.76922
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 279.28257
-  tps: 338.00587
+  dps: 279.91194
+  tps: 338.42133
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Average-Default"
  value: {
-  dps: 234.96529
-  tps: 288.12012
+  dps: 235.66956
+  tps: 288.64557
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 217.81774
-  tps: 271.76416
+  dps: 218.90509
+  tps: 272.91481
  }
 }

@@ -39,7 +39,7 @@ character_stats_results: {
   final_stats: 52
   final_stats: 80
   final_stats: 80
-  final_stats: 90
+  final_stats: 100
   final_stats: 80
   final_stats: 1530
   final_stats: 15
@@ -176,43 +176,43 @@ dps_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 106.9549
-  tps: 223.92743
+  dps: 112.53472
+  tps: 241.33185
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 106.9549
-  tps: 112.80353
+  dps: 112.53472
+  tps: 118.97457
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 103.03069
-  tps: 108.16241
+  dps: 109.4482
+  tps: 115.24433
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 62.79665
-  tps: 183.65062
+  dps: 63.7347
+  tps: 184.58867
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 62.79665
-  tps: 68.83935
+  dps: 63.7347
+  tps: 69.7774
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-Settings-NightElf-p0.bis-Default-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 70.18754
-  tps: 70.18754
+  dps: 72.79287
+  tps: 72.79287
  }
 }
 dps_results: {
