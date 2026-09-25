@@ -43,6 +43,7 @@ S = {
     "Defense": 28, "Block": 29, "BlockValue": 30, "Dodge": 31, "Parry": 32, "Health": 34,
     "ArcaneRes": 35, "FireRes": 36, "FrostRes": 37, "NatureRes": 38, "ShadowRes": 39,
     "RangedAttackPower": 27, "Armor": 26, "HealingPower": 41,
+    "FeralAttackPower": 43, "ArmorPenetration": 21, "MeleeHaste": 20, "SpellHaste": 15,
 }
 NSTATS = 44
 
@@ -236,6 +237,24 @@ def parse_item(lines):
         if m2:
             stats[S["MeleeCrit"]] += float(m2.group(1))
             stats[S["SpellCrit"]] += float(m2.group(1))
+            continue
+        m = re.match(r'^Equip: Improves your critical strike chance for all attacks and spells by ([\d.]+)%\.$', ln)
+        if m:  # e.g. Fist of Cenarius, Torturing Poker
+            stats[S["MeleeCrit"]] += float(m.group(1))
+            stats[S["SpellCrit"]] += float(m.group(1))
+            continue
+        m = re.match(r'^Equip: \+(\d+) Attack Power in Cat and Bear forms only\.$', ln)
+        if m:
+            stats[S["FeralAttackPower"]] += int(m.group(1))
+            continue
+        m = re.match(r"^Equip: Your attacks ignore (\d+) of your enemies' Armor\.$", ln)
+        if m:  # flat armor penetration (e.g. Sawtooth Talisman)
+            stats[S["ArmorPenetration"]] += int(m.group(1))
+            continue
+        m = re.match(r'^Equip: Increases your attack and casting speed by ([\d.]+)%\.?$', ln)
+        if m:  # percent haste; the sim reads item MeleeHaste / SpellHaste as percent
+            stats[S["MeleeHaste"]] += float(m.group(1))
+            stats[S["SpellHaste"]] += float(m.group(1))
             continue
         m = re.match(r'^Equip: Increased Defense \+(\d+)\.$', ln)
         if m:

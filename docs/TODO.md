@@ -55,6 +55,19 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     charge count (classic: 30 hits). Does the debuff really last the full 15 sec, or does it still end after N hits?
 20. **Execute extra rage** (Part CN): how much damage does each extra point of rage add? The tooltip value (`$f1`)
     is not in the dump; the sim uses classic 15 per rage.
+21. **Weapon procs without a proc rate** (Part CO): these epic weapons have a "Chance on hit" / proc line but no code
+    in the sim, and the dump has no procs-per-minute: Axe of the Deep Woods (90-126 Nature), Kang the Decapitator (560
+    bleed over 30 sec), Taran Icebreaker (180-220 Fire + 36), Brain Hacker (200-300 + Intellect -75), Sul'thraze the
+    Lasher, Blackfury (+20% attack speed 10 sec), Hurricane / Dwarven Hand Cannon (ranged procs), Ancient Hakkari
+    Manslayer (48-54 life steal), Sliverblade (45 Frost), and server items Magmastrike (+90 attack power 20 sec),
+    Aquastrike (mana), World Breaker (armor -50% for 3 attacks), Thunderstrike, Shadowstrike. Do you know their proc
+    rates? Otherwise the sim could use 1 proc per minute for all of them (upstream uses about that for similar weapons).
+22. **Rivenspike** (Part CO): the server text is "Equip: Your attacks ignore 5% of your enemies' Armor", the sim still
+    has the classic proc (reduce target armor, 2 per minute). Is there still a proc on the server, or only the 5%?
+
+- **Item pipeline rerun is not stable** (found 2026-09-25, Part CO): a full `/tmp/pipe.sh` run drops Ring of Swarming
+  Thought (21707) from `included_items.json` and rewrites `add_items.json`. For stat-only changes rerun only
+  `docs/parse_vplus.py` and gen_db. Find out why before the next full resync.
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 

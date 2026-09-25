@@ -3492,3 +3492,26 @@ Also checked in this round:
   Multi-Shot 150, Arcane Shot 275, Raptor Strike 140, hunter pet Claw 52-72 and Bite, Imp Firebolt, Lash of Pain
   100-300 with its 6 sec cooldown. Execute converts extra rage at 15 damage each; the server value is not in the
   dump (TODO question 20).
+
+## Part CO — Item stat lines the dump parser missed; % armor-ignore weapons (2026-09-25)
+
+Item stats come only from the in-game dump (`docs/parse_vplus.py` replaces them wholesale), so an "Equip:" wording the
+parser does not know is lost. Grouped every unparsed Equip line of the DB items (197 patterns; most are utility: run
+speed, stealth detection, health regen, fishing). New parser rules:
+- "Improves your critical strike chance for all attacks and spells by N%" -> melee and spell crit (Fist of Cenarius,
+  Torturing Poker, the Mark of the Veteran crit versions);
+- "+N Attack Power in Cat and Bear forms only" -> feral attack power (Fist of Cenarius 152, Hammer of Bestial Fury
+  154, Nat Pagle's Fish Terminator, Naturalist Staff, Stick of the Shapeshifter);
+- "Your attacks ignore N of your enemies' Armor" -> armor penetration (Whirlwind Warhammer, Seeping Willow, Relentless
+  Scythe, Barovian Family Sword, Sawtooth Talisman 250);
+- "Increases your attack and casting speed by N%" -> melee/ranged and casting speed (Hypergear 5%, Helm of Zeal 5%,
+  Trophy of the Quel'dorei 3%, Torturing Poker 1%).
+Mark of the Veteran's crit and Sawtooth Talisman's flat 250 were added in code before; that code is removed so they
+do not count twice (Sawtooth keeps its 5% in code). New equip effects for "ignore N% of armor": The Sawblade 15%,
+Blackwood Hacker 10%, Dark Iron Sunderer 15%. 18 items changed, nothing added or removed.
+
+Only `parse_vplus.py` + gen_db were rerun: a full `/tmp/pipe.sh` run dropped Ring of Swarming Thought (21707) from the
+include list and reshuffled `add_items.json`, so the item selection files were kept as committed (TODO).
+
+Not modeled yet (TODO questions 21-22): weapon "Chance on hit" procs without code and without a known proc rate, and
+Rivenspike's server text (ignores 5% armor) versus the sim's classic armor-reduction proc.

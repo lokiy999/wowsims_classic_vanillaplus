@@ -41,6 +41,9 @@ const (
 	MarkOfTheVeteranSpellHitB        = 26174
 	MarkOfThirst                     = 26203
 	SawtoothTalisman                 = 26212
+	TheSawblade                      = 26211
+	BlackwoodHacker                  = 26290
+	DarkIronSunderer                 = 11607
 	UthersStrength                   = 11302
 	ForceOfWill                      = 11810
 	ReactiveAutoRecaster             = 26223
@@ -191,15 +194,8 @@ func init() {
 	//                                 Equip effects
 	///////////////////////////////////////////////////////////////////////////
 
-	// Mark of the Veteran: Equip: Improves your critical strike chance for all attacks and spells by 2%.
-	for _, id := range []int32{MarkOfTheVeteranCritA, MarkOfTheVeteranCritB, MarkOfTheVeteranCritC, MarkOfTheVeteranCritD} {
-		core.NewItemEffect(id, func(agent core.Agent) {
-			agent.GetCharacter().AddStats(stats.Stats{
-				stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
-				stats.SpellCrit: 2 * core.SpellCritRatingPerCritChance,
-			})
-		})
-	}
+	// Mark of the Veteran (crit versions): the +2% crit is an item stat now (docs/parse_vplus.py reads the
+	// "critical strike chance for all attacks and spells" line), so no effect here.
 
 	// Mark of the Veteran: Equip: Grants +5% increased spell hit chance for 20 sec when one of your spells is resisted.
 	for _, id := range []int32{MarkOfTheVeteranSpellHitA, MarkOfTheVeteranSpellHitB} {
@@ -268,9 +264,17 @@ func init() {
 	// Sawtooth Talisman: Equip: Your attacks ignore 5% of your enemies' Armor. / Equip: Your attacks ignore 250 of your enemies' Armor.
 	core.NewItemEffect(SawtoothTalisman, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		character.AddStat(stats.ArmorPenetration, 250)
+		// The flat 250 is an item stat (ArmorPenetration, docs/parse_vplus.py); the 5% is here.
 		character.PseudoStats.IgnoreArmorPercent += 0.05
 	})
+
+	// Equip: Your attacks ignore N% of your enemies' Armor (server weapons).
+	for id, pct := range map[int32]float64{TheSawblade: 0.15, BlackwoodHacker: 0.10, DarkIronSunderer: 0.15} {
+		pct := pct
+		core.NewItemEffect(id, func(agent core.Agent) {
+			agent.GetCharacter().PseudoStats.IgnoreArmorPercent += pct
+		})
+	}
 
 	// Shen'dralar Badge of Deterrence: Equip: Threat +5%
 	core.NewItemEffect(ShendralarBadgeOfDeterrence, func(agent core.Agent) {
