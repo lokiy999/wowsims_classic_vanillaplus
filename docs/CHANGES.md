@@ -3543,3 +3543,13 @@ Checked every DB item for an AQ20 / AQ40 / Naxx source: only two had one.
 - **Para Bellum** (-4%/rank ability cooldowns) no longer shortens the 1 sec stance-swap cooldown; it never touched
   shared cooldowns (checked).
 - TODO overview refreshed (healing, spell values and talents entries were stale).
+
+## Part CR — Deep Wounds stacks (2026-09-25)
+
+- **Deep Wounds** (server text: "... over 12 sec. Stacks up to 5 times"): each crit now adds its own bleed (10/20/30%
+  of the weapon's average damage over 4 ticks of 3 sec) on top of the running one and refreshes the duration; at 5
+  stacks a new crit replaces an average stack. Before, every crit replaced the bleed, so overlapping crits lost the rest
+  of the old one. Throwaway sim (auto attacks only, 3/3, 32 crits per fight): 3,091 Deep Wounds damage against 3,184 if
+  every stack ticked out fully.
+- Shield Block has two server spells: 2565 (50% block, 10 sec, 20 sec cooldown, 1 block) and 12169 (75%, 5 sec,
+  5 sec cooldown). The sim uses 12169's values (TODO question 24).

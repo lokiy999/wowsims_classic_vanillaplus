@@ -7,6 +7,8 @@ import (
 	"github.com/wowsims/classic/sim/core/proto"
 )
 
+const deepWoundsMaxStacks = 5 // server talent text: "Stacks up to 5 times"
+
 func (warrior *Warrior) applyDeepWounds() {
 	if warrior.Talents.DeepWounds == 0 {
 		return
@@ -31,7 +33,8 @@ func (warrior *Warrior) applyDeepWounds() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Deep Wounds",
+				Label:     "Deep Wounds",
+				MaxStacks: deepWoundsMaxStacks,
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -44,7 +47,10 @@ func (warrior *Warrior) applyDeepWounds() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim) //Resets the tick counter with Apply vs ApplyorRefresh
+			dot := spell.Dot(target)
+			stacks := min(dot.GetStacks()+1, deepWoundsMaxStacks)
+			dot.Apply(sim) //Resets the tick counter with Apply vs ApplyorRefresh
+			dot.SetStacks(sim, stacks)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 		},
 	})
@@ -84,7 +90,17 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 
 	newDamage := awd * 0.1 * float64(warrior.Talents.DeepWounds) // DBC: 10%/20%/30% of the weapon's average damage
 
-	dot.SnapshotBaseDamage = newDamage / 4.0 // spread over 4 ticks of the dot
+	// Server: stacks up to 5 times. Each crit adds its own bleed (spread over the 4 ticks) and refreshes the duration;
+	// at 5 stacks the new one replaces an average stack.
+	perTick := newDamage / 4.0
+	switch {
+	case !dot.IsActive():
+		dot.SnapshotBaseDamage = perTick
+	case dot.GetStacks() < deepWoundsMaxStacks:
+		dot.SnapshotBaseDamage += perTick
+	default:
+		dot.SnapshotBaseDamage = dot.SnapshotBaseDamage*float64(deepWoundsMaxStacks-1)/float64(deepWoundsMaxStacks) + perTick
+	}
 	dot.SnapshotAttackerMultiplier = 1
 
 	warrior.DeepWounds.Cast(sim, target)

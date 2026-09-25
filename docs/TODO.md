@@ -70,6 +70,9 @@ Things only you can answer; everything else I keep working on. Newest at the bot
   list still had it and is fixed now. `add_items.json` changing between runs is expected (it lists items new
   relative to the committed DB).
 23. ~~**Cloak of Untold Secrets**~~ ANSWERED 2026-09-25: drops from Krixix in BWL, keep it. Source set (Part CP).
+24. **Shield Block** (Part CR): the server has 2565 (+50% block for 10 sec, 20 sec cooldown, blocks 1 attack) and 12169
+    (+75% for 5 sec, 5 sec cooldown). Which one does a level 60 warrior cast (is 12169 a talent or a second rank)? The
+    sim uses 75% / 5 sec / 5 sec.
 
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL)
 
@@ -220,8 +223,7 @@ Still open, the calculator confirmed the text but not the mechanics:
 
 - Warrior audit round 2 (CHANGES.md Part BB), still open and needs the game: Maim (10% on auto attacks per the DBC, +5%
   damage taken, duration unknown, all three ranks look identical); Improved Rend (stack behaviour: damage per stack,
-  duration); Deep Wounds duration and stacks (sim: 4 ticks of 3s, no stacks); Shield Block cooldown (DBC 20s on rank 1,
-  5s on rank 2, sim 5s); Berserker's Blood (needs current health, 1-40% speed); Improved Berserker Stance GCD reduction
+  duration); ~~Deep Wounds stacks~~ done (Part CR); Shield Block (question 24); Berserker's Blood (needs current health, 1-40% speed); Improved Berserker Stance GCD reduction
   (0.25s/rank); Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute rage-to-damage ratio (sim 15).
 - ~~Para Bellum~~ checked 2026-09-25 (Part CQ): shared cooldowns were never touched; the stance swap no longer is.
 
