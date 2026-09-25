@@ -8,8 +8,8 @@ import (
 
 func (mage *Mage) registerEvocationCD() {
 	actionID := core.ActionID{SpellID: 12051}
-	channelTime := time.Second * 8
-	cooldown := time.Minute * 10 // server (Spell.csv)
+	channelTime := time.Second * 10 // server (Spell.csv 12051): 10 sec channel, mana regeneration +1200%
+	cooldown := time.Minute * 10    // server (Spell.csv)
 
 	tickLength := time.Millisecond * 250
 	maxTicks := int32(channelTime / tickLength)
@@ -19,12 +19,12 @@ func (mage *Mage) registerEvocationCD() {
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.SpiritRegenMultiplier += 15
+			mage.PseudoStats.SpiritRegenMultiplier += 12
 			mage.PseudoStats.ForceFullSpiritRegen = true
 			mage.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.SpiritRegenMultiplier -= 15
+			mage.PseudoStats.SpiritRegenMultiplier -= 12
 			mage.PseudoStats.ForceFullSpiritRegen = false
 			mage.UpdateManaRegenRates()
 		},

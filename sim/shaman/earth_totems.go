@@ -34,7 +34,7 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 	manaCost := StrengthOfEarthTotemManaCost[rank]
 	level := StrengthOfEarthTotemLevel[rank]
 
-	duration := time.Second * 120
+	duration := time.Minute * 5 // server (Spell.csv): totems last 5 min
 	multiplier := []float64{1, 1.25, 1.50}[shaman.Talents.EnhancingTotems] * (1 + shaman.TotemEffectivenessBonusMultiplier)
 
 	buffAura := core.StrengthOfEarthTotemAura(&shaman.Unit, multiplier)
@@ -55,6 +55,7 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 const StoneskinTotemRanks = 6
 
 var StoneskinTotemSpellId = [StoneskinTotemRanks + 1]int32{0, 8071, 8154, 8155, 10406, 10407, 10408}
+
 // Armor by rank (server data).
 var StoneskinTotemArmor = [StoneskinTotemRanks + 1]float64{0, 130, 275, 390, 500, 600, 700}
 var StoneskinTotemManaCost = [StoneskinTotemRanks + 1]float64{0, 30, 60, 90, 115, 160, 210}
@@ -82,7 +83,7 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 	manaCost := StoneskinTotemManaCost[rank]
 	level := StoneskinTotemLevel[rank]
 
-	duration := time.Second * 120
+	duration := time.Minute * 5 // server (Spell.csv): totems last 5 min
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
@@ -99,7 +100,7 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 func (shaman *Shaman) registerTremorTotemSpell() {
 	spellId := int32(8143)
 	manaCost := float64(60)
-	duration := time.Second * 120
+	duration := time.Second * 20 // server (Spell.csv 8143)
 	level := 18
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)

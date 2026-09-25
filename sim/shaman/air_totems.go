@@ -61,7 +61,7 @@ func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
 
 	periodicTriggerAura := shaman.RegisterAura(core.Aura{
 		Label:    fmt.Sprintf("Windfury Trigger Dummy (Rank %d)", rank),
-		Duration: time.Minute * 2,
+		Duration: time.Minute * 5, // server (Spell.csv): totems last 5 min
 		OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			shaman.ActiveWindfuryTotemPeriodicAction = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:          time.Second * 5, // Totem refreshes every 5 seconds

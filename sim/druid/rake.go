@@ -13,32 +13,35 @@ type RakeRankInfo struct {
 	dotTickDamage float64
 }
 
+// Server (Spell.csv): initial damage plus a bleed ticking every 3 sec for 15 sec that stacks up to 5 times.
+const rakeMaxStacks = 5
+
 var rakeSpells = []RakeRankInfo{
 	{
 		id:            1822,
 		level:         24,
-		initialDamage: 19.0,
-		dotTickDamage: 13.0,
+		initialDamage: 30.0,
+		dotTickDamage: 15.0,
 	},
 	{
 		id:            1823,
 		level:         34,
-		initialDamage: 28.0,
-		dotTickDamage: 19.0,
+		initialDamage: 40.0,
+		dotTickDamage: 20.0,
 	},
 	{
 
 		id:            1824,
 		level:         44,
-		initialDamage: 43.0,
+		initialDamage: 50.0,
 		dotTickDamage: 25.0,
 	},
 	{
 
 		id:            9904,
 		level:         54,
-		initialDamage: 58.0,
-		dotTickDamage: 32.0,
+		initialDamage: 60.0,
+		dotTickDamage: 30.0,
 	},
 }
 
@@ -83,12 +86,13 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Rake",
+				Label:     "Rake",
+				MaxStacks: rakeMaxStacks,
 			},
-			NumberOfTicks: 3,
+			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := baseDamageTick
+				damage := baseDamageTick * float64(max(dot.GetStacks(), 1))
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -102,7 +106,12 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
-				spell.Dot(target).Apply(sim)
+				dot := spell.Dot(target)
+				dot.ApplyOrRefresh(sim)
+				if dot.GetStacks() < dot.MaxStacks {
+					dot.AddStack(sim)
+				}
+				dot.TakeSnapshot(sim, false)
 			} else {
 				spell.IssueRefund(sim)
 			}

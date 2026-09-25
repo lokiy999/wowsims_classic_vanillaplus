@@ -10,14 +10,16 @@ import (
 const DrainSoulRanks = 4
 
 func (warlock *Warlock) getDrainSoulBaseConfig(rank int) core.SpellConfig {
-	baseNumTicks := int32(5)
+	// Server (Spell.csv): a 5 sec channel ticking every 0.5 sec, 40/75/150/300 per tick (400-3000 total), mana
+	// 70/160/270/370. The spell power coefficient keeps the classic total (0.315 / 0.5) spread over the 10 ticks.
+	baseNumTicks := int32(10)
 	numTicks := baseNumTicks
-	tickLength := time.Second * 3
+	tickLength := time.Millisecond * 500
 
 	spellId := [DrainSoulRanks + 1]int32{0, 1120, 8288, 8289, 11675}[rank]
-	spellCoeff := [DrainSoulRanks + 1]float64{0, 0.063, 0.1, 0.1, 0.1}[rank]
-	baseDamage := [DrainSoulRanks + 1]float64{0, 55, 155, 295, 455}[rank] / float64(baseNumTicks)
-	manaCost := [DrainSoulRanks + 1]float64{0, 55, 125, 210, 290}[rank]
+	spellCoeff := [DrainSoulRanks + 1]float64{0, 0.0315, 0.05, 0.05, 0.05}[rank]
+	baseDamage := [DrainSoulRanks + 1]float64{0, 40, 75, 150, 300}[rank]
+	manaCost := [DrainSoulRanks + 1]float64{0, 70, 160, 270, 370}[rank]
 	level := [DrainSoulRanks + 1]int{0, 10, 24, 38, 52}[rank]
 
 	return core.SpellConfig{

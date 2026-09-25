@@ -176,15 +176,15 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 45.10308
-  tps: 213.25903
+  dps: 46.91207
+  tps: 216.81938
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Orc-blank-Default-default-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 45.10308
-  tps: 63.10692
+  dps: 46.91207
+  tps: 66.66727
  }
 }
 dps_results: {
@@ -218,15 +218,15 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 45.61859
-  tps: 215.04097
+  dps: 46.91005
+  tps: 217.47025
  }
 }
 dps_results: {
  key: "TestTankShaman-Phase1-Settings-Troll-blank-Default-default-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 45.61859
-  tps: 64.31063
+  dps: 46.91005
+  tps: 66.73991
  }
 }
 dps_results: {

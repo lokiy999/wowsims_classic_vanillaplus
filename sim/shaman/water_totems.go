@@ -41,7 +41,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 	manaCost := HealingStreamTotemManaCost[rank]
 	level := HealingStreamTotemLevel[rank]
 
-	duration := time.Second * 60
+	duration := time.Minute * 5 // server (Spell.csv): totems last 5 min
 	healInterval := time.Second * 2
 
 	config := shaman.newTotemSpellConfig(manaCost, spellId)
@@ -117,7 +117,7 @@ func (shaman *Shaman) newManaSpringTotemSpellConfig(rank int) core.SpellConfig {
 	manaCost := ManaSpringTotemManaCost[rank]
 	level := ManaSpringTotemLevel[rank]
 
-	duration := time.Second * 60
+	duration := time.Minute * 5 // server (Spell.csv): totems last 5 min
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level

@@ -68,7 +68,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		aura := paladin.RegisterAura(core.Aura{
 			Label:    "Seal of the Crusader" + paladin.Label + strconv.Itoa(i+1),
 			ActionID: core.ActionID{SpellID: rank.spellID},
-			Duration: time.Second * 30,
+			Duration: time.Minute * 2, // server (Spell.csv): every seal lasts 2 min
 			OnGain: func(_ *core.Aura, sim *core.Simulation) {
 				paladin.MultiplyMeleeSpeed(sim, 1.4)
 				paladin.AutoAttacks.MHAuto().DamageMultiplier /= 1.4

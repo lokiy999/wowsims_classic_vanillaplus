@@ -22,7 +22,7 @@ func (hunter *Hunter) registerVolleySpell() {
 
 func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 1510, 14294, 14295}[rank]
-	baseDamage := [4]float64{0, 50, 65, 80}[rank]
+	baseDamage := [4]float64{0, 60, 80, 100}[rank] // server (Spell.csv): per second for 10 sec
 	manaCost := [4]float64{0, 350, 420, 490}[rank]
 	level := [4]int{0, 40, 50, 58}[rank]
 
@@ -57,7 +57,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Volley (Rank %d)", rank),
 			},
-			NumberOfTicks:    6,
+			NumberOfTicks:    10,
 			TickLength:       time.Second * 1,
 			BonusCoefficient: .056,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -76,7 +76,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			hunter.Unit.AutoAttacks.DelayRangedUntil(sim, sim.CurrentTime+(time.Second*6))
+			hunter.Unit.AutoAttacks.DelayRangedUntil(sim, sim.CurrentTime+(time.Second*10))
 			spell.AOEDot().Apply(sim)
 		},
 	}

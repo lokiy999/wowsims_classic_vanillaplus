@@ -146,7 +146,7 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 	manaCost := MagmaTotemManaCost[rank]
 	level := MagmaTotemLevel[rank]
 
-	duration := time.Second * 20
+	duration := time.Second * 40 // server (Spell.csv): Magma Totem lasts 40 sec
 	attackInterval := time.Second * 2
 
 	aoeSpell := shaman.RegisterSpell(core.SpellConfig{

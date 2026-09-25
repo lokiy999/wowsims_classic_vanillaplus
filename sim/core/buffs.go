@@ -1437,7 +1437,7 @@ const ReplenishmentAuraDuration = time.Second * 15
 func StrengthOfEarthTotemAura(unit *Unit, multiplier float64) *Aura {
 	rank := TernaryInt32(IncludeAQ, 5, 4)
 	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
-	duration := time.Minute * 2
+	duration := time.Minute * 5 // server (Spell.csv): totems last 5 min
 	updateStats := BuffSpellValues[StrengthOfEarth].Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{
@@ -1466,7 +1466,7 @@ func StrengthOfEarthTotemAura(unit *Unit, multiplier float64) *Aura {
 func GraceOfAirTotemAura(unit *Unit, multiplier float64) *Aura {
 	rank := TernaryInt32(IncludeAQ, 3, 2)
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
-	duration := time.Minute * 2
+	duration := time.Minute * 5 // server (Spell.csv): totems last 5 min
 	updateStats := BuffSpellValues[GraceOfAir].Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{

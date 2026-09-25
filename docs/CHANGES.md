@@ -3564,3 +3564,26 @@ Checked every DB item for an AQ20 / AQ40 / Naxx source: only two had one.
   `Warrior.RegisterSpell`, so it covers every warrior ability (not items, racials or the stance swap). Bloodrage over
   300 sec: 6 casts at 0/5, 7 at 5/5 (48 sec cooldown).
 - Part CQ's note that Para Bellum was fine is corrected by this. Maim already uses 10/20/30 sec (TODO note was stale).
+
+## Part CT — Aura durations checked against the server data (2026-09-25)
+
+Throwaway test: every aura the sim registers (all classes, no talents and max talents, full raid buffs and debuffs)
+with its spell id and duration, compared with the `Spell.csv` duration. Differences that are the sim's own modelling
+(Slice and Dice / Expose Armor / Rupture base durations before combo points, trap objects, permanent raid-debuff
+options, talent-extended durations) were left. Fixed:
+
+| Spell | Sim before | Server (now) |
+|---|---|---|
+| Evocation | 8 sec, spirit regen +1500% | 10 sec, mana regen +1200% |
+| Drain Soul | 5 ticks of 3 sec, 55-455 total, mana 55-290 | 10 ticks of 0.5 sec, 40/75/150/300 per tick (400-3000), mana 70/160/270/370 |
+| Volley | 6 ticks of 50/65/80 | 10 ticks of 60/80/100 (auto shot waits the full 10 sec) |
+| Rake | 58 + 3 x 32 (9 sec) | 60 + 5 x 30 (15 sec), bleed stacks up to 5 times (ranks 1-3 too) |
+| Improved Shadow Bolt debuff | 12 sec, used up by 4 Shadow hits | 10 sec, no charges |
+| Seal of Righteousness / the Crusader | 30 sec | 2 min (as Seal of Command already had) |
+| Healing Stream, Mana Spring, Strength of Earth, Grace of Air, Stoneskin, Windfury totems | 1-2 min | 5 min |
+| Magma Totem | 20 sec | 40 sec |
+| Tremor Totem | 2 min | 20 sec |
+
+Drain Soul's spell power coefficient keeps the classic total spread over the 10 ticks (a guess, like the other
+re-ticked DoTs). Test baselines: elemental shaman +18% (its rotation keeps Magma Totem up, which now lasts twice as
+long per cast), warlock +1% (Improved Shadow Bolt), others within 1-3%.

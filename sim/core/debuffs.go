@@ -317,6 +317,9 @@ const (
 	ISBNumStacksBase = 4
 )
 
+// Classic Improved Shadow Bolt ends after 4 Shadow hits; the server version has no charges.
+const isbUsesCharges = false
+
 func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	isbLabel := "Improved Shadow Bolt"
 	if unit.GetAura(isbLabel) != nil {
@@ -335,7 +338,9 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},
-		Duration:  12 * time.Second,
+		// Server (Spell.csv 17800 / talent text): +10% Shadow damage taken for 10 sec, no charges (classic: 12 sec,
+		// 4 Shadow hits), so neither the warlock's nor the simulated priests' Shadow hits use it up.
+		Duration:  10 * time.Second,
 		MaxStacks: ISBNumStacksBase,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			// External shadow priests simulation
@@ -344,7 +349,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 				priestPa = NewPeriodicAction(sim, PeriodicActionOptions{
 					Period: GCDDefault,
 					OnAction: func(s *Simulation) {
-						if priestGcds[priestCurGcd] {
+						if isbUsesCharges && priestGcds[priestCurGcd] {
 							for i := 0; i < int(externalShadowPriests); i++ {
 								if aura.IsActive() {
 									aura.RemoveStack(sim)
@@ -367,7 +372,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= damageMulti
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() && result.Damage > 0 {
+			if isbUsesCharges && spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() && result.Damage > 0 {
 				aura.RemoveStack(sim)
 			}
 		},

@@ -121,7 +121,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		aura := paladin.RegisterAura(core.Aura{
 			Label:    "Seal of Righteousness" + paladin.Label + strconv.Itoa(i+1),
 			ActionID: core.ActionID{SpellID: rank.spellID},
-			Duration: time.Second * 30,
+			Duration: time.Minute * 2, // server (Spell.csv): every seal lasts 2 min
 
 			OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
