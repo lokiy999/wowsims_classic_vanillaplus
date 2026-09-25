@@ -198,7 +198,7 @@ listed at the end of this overview so the older sections don't need rewriting.
   +1% Arcane crit is one stack per cast (could be per missile).
 - Talents not modeled yet: the damage/threat/mana ones with clear numbers were done in Part BS. Left: utility and
   PvP talents (stuns, fears, movement, range), healing talents (no healing spells in the sim), and ones needing a new
-  mechanic (freeze for Shatter/Frostbite/Deep Freeze, Aftershock, Chain Reaction, Ice Shards, Withering Shroud,
+  mechanic (freeze for Shatter/Frostbite/Deep Freeze, Chain Reaction, Ice Shards, Withering Shroud,
   Death and Decay, Earthquake, Berserker's Blood). Improved Rend done (Part CM). The current per-class list is
   "Talents not in the sim code" below (regenerated 2026-09-25); the 2026-09-19/20 sections are partly stale.
 - LOW PRIORITY (Lokiy 2026-09-24: rotations and threat need all other data first): paladin ret/prot rotations are
