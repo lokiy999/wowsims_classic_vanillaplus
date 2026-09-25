@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestTankShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 278.42081
-  tps: 336.28236
+  dps: 279.28257
+  tps: 338.00587
  }
 }
 dps_results: {

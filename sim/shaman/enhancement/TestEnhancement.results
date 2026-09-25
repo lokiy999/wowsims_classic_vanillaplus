@@ -344,8 +344,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 536.05945
-  tps: 540.1358
+  dps: 536.3899
+  tps: 540.79669
  }
 }
 dps_results: {
@@ -582,8 +582,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase2-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 526.00102
-  tps: 530.07737
+  dps: 526.33147
+  tps: 530.73826
  }
 }
 dps_results: {
@@ -820,8 +820,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 529.69772
-  tps: 533.37343
+  dps: 529.90479
+  tps: 533.78756
  }
 }
 dps_results: {

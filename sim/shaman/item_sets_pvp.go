@@ -50,7 +50,7 @@ var ItemSetWarlordsEarthshaker = core.NewItemSet(core.ItemSet{
 				stats.RangedAttackPower: 40,
 			})
 		},
-		// Improves your chance to get a critical strike with all Shock spells by 2%.
+		// Improves your chance to get a critical strike with all Shock spells by 4%. (server)
 		3: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.GetOrRegisterAura(core.Aura{
@@ -59,7 +59,7 @@ var ItemSetWarlordsEarthshaker = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
 						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
+							spell.BonusCritRating += 4 * core.CritRatingPerCritChance
 						}
 					}
 				},

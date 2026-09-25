@@ -3647,6 +3647,9 @@ Took every set's bonus texts from the dump (130 sets with pieces in the DB) and 
   the next offensive ability deal 8% more (15 sec assumed, TODO question 27). The one classic piece still in the DB,
   Gauntlets of Might (16863), and Arcanist Boots (16800) still show the classic lists (question 28). Arcanist Regalia's
   code already follows the new list.
+- **Class PvP sets**: warlock Dreadgear / Threads Immolate cast time -0.5 sec (was -0.2, and the GCD was shortened too,
+  which the text doesn't say); priest Champion's / Lieutenant Commander's Investiture had the 2 and 6 bonuses swapped
+  (2 = +20 Stamina, 6 = +23 spell power); Warlord's Earthshaker 3 = +4% Shock crit (was 2%).
 Not modeled (no data or no effect in the sim): Vestments of the Virtuous / Devout shield procs, movement, range,
 Blink, Psychic Scream and Frost Shock duration bonuses, The Fists of Fury (its items have no set name in the DB).
 Test baselines: the new sets add "AllItems" cases; Battlegear of Might +5% in its warrior case; stats of presets with

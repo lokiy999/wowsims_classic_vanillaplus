@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-Champion'sDreadgear"
  value: {
-  dps: 834.69227
-  tps: 672.5915
+  dps: 837.96588
+  tps: 674.97613
  }
 }
 dps_results: {
@@ -127,8 +127,8 @@ dps_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-FieldMarshal'sThreads"
  value: {
-  dps: 862.37416
-  tps: 700.04523
+  dps: 866.1502
+  tps: 703.51062
  }
 }
 dps_results: {
@@ -148,8 +148,8 @@ dps_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-LieutenantCommander'sDreadgear"
  value: {
-  dps: 834.69227
-  tps: 672.5915
+  dps: 837.96588
+  tps: 674.97613
  }
 }
 dps_results: {
@@ -169,8 +169,8 @@ dps_results: {
 dps_results: {
  key: "TestWarlockSMRuin-Phase1-AllItems-Warlord'sThreads"
  value: {
-  dps: 862.37416
-  tps: 700.04523
+  dps: 866.1502
+  tps: 703.51062
  }
 }
 dps_results: {
