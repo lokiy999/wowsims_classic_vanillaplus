@@ -148,7 +148,12 @@ func (priest *Priest) applyInspiration() {
 			aura.Activate(sim)
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains([]int32{SpellCode_PriestFlashHeal, SpellCode_PriestHeal, SpellCode_PriestGreaterHeal}, spell.SpellCode) {
+			// Talent text: after a critical effect from Flash Heal, Heal, Greater Heal or Prayer of Healing.
+			if !result.DidCrit() {
+				return
+			}
+			if slices.Contains([]int32{SpellCode_PriestFlashHeal, SpellCode_PriestHeal, SpellCode_PriestGreaterHeal}, spell.SpellCode) ||
+				slices.Contains(priest.PrayerOfHealing, spell) {
 				auras[result.Target.UnitIndex].Activate(sim)
 			}
 		},

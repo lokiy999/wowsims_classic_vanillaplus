@@ -3601,3 +3601,12 @@ Bloodthirsty on Garrote, Feral Instinct on Tiger's Fury, Improved Fire Totems). 
   Spell Twisting 10 sec (15), Shadow Trance 8 sec (10), Fel Domination 10 sec (15), Amplify Curse 10 sec (30),
   Demonic Sacrifice buffs 5 min (30 min; a fight longer than 5 min now loses the buff).
 No test baseline changed (the presets have no talents).
+
+## Part CV — Priest Inspiration only on crits; spell-code check (2026-09-25)
+
+- **Inspiration** (priest) gave the +15% armor buff after every Flash Heal / Heal / Greater Heal; the talent text says
+  after a critical effect, and Prayer of Healing counts too. Fixed both.
+- After the Para Bellum finding (Part CS), checked every class for spell codes that talents test but no spell sets
+  (a talent keyed on such a code silently does nothing): none left; the few that looked unset are set through a
+  variable (Faerie Fire, priest heals, warrior stances). Illumination's mana refund reads `DefaultCast.Cost`, which
+  core fills from the spell's base cost, so it works.
