@@ -102,6 +102,8 @@ func (paladin *Paladin) RegisterHealingSpells() {
 		{20, 19750, 62, 72, 40}, {26, 19939, 96, 110, 60}, {34, 19940, 145, 163, 80}, {42, 19941, 197, 221, 105},
 		{50, 19942, 267, 299, 135}, {58, 19943, 343, 383, 170},
 	}
+	// Libram of Divinity: Flash of Light healing +53 ("up to", so it scales with the spell power coefficient).
+	flashLibramBonus := core.TernaryFloat64(paladin.Ranged().ID == LibramOfDivinity, 53, 0)
 	for i, rank := range flashOfLight {
 		if rank.level > paladin.Level {
 			break
@@ -132,7 +134,7 @@ func (paladin *Paladin) RegisterHealingSpells() {
 			ThreatMultiplier: 0.5,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealHealing(sim, target, sim.Roll(rank.min, rank.max), spell.OutcomeHealingCrit)
+				spell.CalcAndDealHealing(sim, target, sim.Roll(rank.min, rank.max)+spell.BonusCoefficient*flashLibramBonus, spell.OutcomeHealingCrit)
 				if sparkOfLight != nil && sim.RandomFloat("Light's Mercy") < sparkChance {
 					sparkOfLight.Activate(sim)
 					sparkOfLight.AddStack(sim)

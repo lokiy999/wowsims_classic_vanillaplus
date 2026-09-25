@@ -17,10 +17,11 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 		absorb   float64
 		damage   float64
 	}{
-		{minLevel: 1, maxLevel: 39, spellID: 20911, absorb: 10, damage: 14},
-		{minLevel: 40, maxLevel: 49, spellID: 20912, absorb: 14, damage: 21},
-		{minLevel: 50, maxLevel: 49, spellID: 20913, absorb: 19, damage: 28},
-		{minLevel: 60, maxLevel: 60, spellID: 20914, absorb: 24, damage: 35},
+		// Server (Spell.csv 20911-20914): damage taken reduced by 10/15/20/30, attackers take the same Holy damage.
+		{minLevel: 30, maxLevel: 39, spellID: 20911, absorb: 10, damage: 10},
+		{minLevel: 40, maxLevel: 49, spellID: 20912, absorb: 15, damage: 15},
+		{minLevel: 50, maxLevel: 59, spellID: 20913, absorb: 20, damage: 20},
+		{minLevel: 60, maxLevel: 60, spellID: 20914, absorb: 30, damage: 30},
 	}
 
 	for i, values := range sanctuaryValues {
@@ -29,7 +30,10 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 
 			rank := i + 1
 			actionID := core.ActionID{SpellID: values.spellID}
-			damage := values.damage
+			// Guardian's Favor: the effect of Blessing of Sanctuary +10% per rank.
+			guardiansFavor := 1 + 0.1*float64(paladin.Talents.GuardiansFavor)
+			damage := values.damage * guardiansFavor
+			values.absorb *= guardiansFavor
 
 			sanctuaryProc := paladin.RegisterSpell(core.SpellConfig{
 				ActionID:    actionID,

@@ -19,6 +19,8 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-25 (Part DI): paladin Blessing of Sanctuary values and level ranges, Guardian's Favor (Sanctuary
+  part), Libram of Fervor Holy damage part, Libram of Divinity.
 - Done on 2026-09-25 (Part DH): paladin Reckoning (4%/rank on any hit, 20%/rank on crits), Shield of Faith.
 - Done on 2026-09-25 (Part DG): paladin Judgement of Righteousness and Judgement of Command ranks, Seal of the
   Crusader (attack power and Holy damage, no attack speed); Consecration, Exorcism, Holy Wrath (60 sec) and Divine

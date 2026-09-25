@@ -72,10 +72,10 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			ActionID: core.ActionID{SpellID: rank.spellID},
 			Duration: time.Minute * 2, // server (Spell.csv): every seal lasts 2 min
 			OnGain: func(_ *core.Aura, sim *core.Simulation) {
-				paladin.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: ap*improvedSotC + libramAp, stats.HolyPower: ap * improvedSotC})
+				paladin.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: ap*improvedSotC + libramAp, stats.HolyPower: ap*improvedSotC + libramAp})
 			},
 			OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-				paladin.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -(ap*improvedSotC + libramAp), stats.HolyPower: -ap * improvedSotC})
+				paladin.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -(ap*improvedSotC + libramAp), stats.HolyPower: -(ap*improvedSotC + libramAp)})
 			},
 		})
 

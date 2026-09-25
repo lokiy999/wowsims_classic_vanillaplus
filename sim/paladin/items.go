@@ -9,9 +9,10 @@ import (
 
 // Libram IDs
 const (
-	SanctifiedOrb  = 20512
-	LibramOfHope   = 22401
-	LibramOfFervor = 23203
+	SanctifiedOrb    = 20512
+	LibramOfHope     = 22401
+	LibramOfFervor   = 23203
+	LibramOfDivinity = 23201
 )
 
 func init() {

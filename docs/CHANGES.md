@@ -3830,3 +3830,16 @@ Sanctity Aura, Vengeance, Blessed Strikes, Codex of the Silver Hand, Inevitable 
   20% per rank on a critical hit ("five times higher"). The sim only procced on melee/ranged crits.
 - **Shield of Faith** (not in the sim before): all spell damage taken -5% per rank.
 No test baseline moved (tests have no talents).
+
+## Part DI — Paladin: Blessing of Sanctuary, Guardian's Favor, librams (2026-09-25)
+
+- **Blessing of Sanctuary** (20911-20914): damage taken -10/15/20/30 and the same Holy damage to attackers (was
+  -10/14/19/24 and 14/21/28/35). Rank 3 had the level range 50-49, so a level 50-59 paladin got no Sanctuary at all;
+  now 50-59. Rank 1 starts at level 30 (the server rank level).
+- **Guardian's Favor**: Blessing of Sanctuary effect +10% per rank (both parts). The Salvation part is not in the sim.
+- **Libram of Fervor** (23203): "Increases bonuses of your Seal of the Crusader by 48": with the server Seal of the
+  Crusader (Part DG) that is +48 attack power and +48 Holy damage (was attack power only).
+- **Libram of Divinity** (23201, new): Flash of Light healing "up to 53", added as healing power for Flash of Light
+  (scaled by its spell power coefficient).
+Checked and matching: Libram of Hope (Seal costs -20), Libram of Truth (Devotion Aura +55 armor, Part CC), Sanctified
+Orb (5% crit for 1 min). No test baseline moved (no preset uses these).
