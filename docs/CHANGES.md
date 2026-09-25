@@ -3780,3 +3780,5 @@ Both are in `sim/warlock/talents_server.go`, with numbers from `Spell.csv`:
 Throwaway sim (SM/Ruin preset gear, succubus, 1000 iterations): Fel Pact gave about 1,300 mana and Feeding Demons
 about 2,800 pet mana per fight; DPS 836 -> 837 (this setup rarely runs out of mana). No test baseline moved (the test
 presets have no talents).
+- **Herald of Woe** (33931, 33932, 34006): Death Coil and Amplify Curse cooldowns -20% per rank (-60% at 3/3).
+  Death and Decay is not in the sim.

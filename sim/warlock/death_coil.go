@@ -47,7 +47,7 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Minute * 2,
+				Duration: warlock.heraldOfWoe(time.Minute * 2),
 			},
 		},
 

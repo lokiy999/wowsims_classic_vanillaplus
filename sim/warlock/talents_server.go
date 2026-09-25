@@ -145,3 +145,8 @@ func (warlock *Warlock) applyFeedingDemons() {
 		},
 	})
 }
+
+// Herald of Woe (Spell.csv 33931, 33932, 34006): cooldown of Amplify Curse, Death and Decay and Death Coil -20% per rank.
+func (warlock *Warlock) heraldOfWoe(cd time.Duration) time.Duration {
+	return time.Duration(float64(cd) * (1 - 0.2*float64(warlock.Talents.HeraldOfWoe)))
+}

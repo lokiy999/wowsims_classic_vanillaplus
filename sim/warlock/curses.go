@@ -309,7 +309,7 @@ func (warlock *Warlock) registerAmplifyCurseSpell() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: 5 * time.Minute, // Amplify Curse, server (Spell.csv)
+				Duration: warlock.heraldOfWoe(5 * time.Minute), // Amplify Curse, server (Spell.csv)
 			},
 		},
 
