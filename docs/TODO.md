@@ -87,6 +87,10 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     which the spell export does not include (the sim has them free). (c) Does Armaments of Storm scale with spell
     power, and can it crit? The sim uses a flat 5 x level and lets it crit like a spell.
 
+- **Enchants not modeled exactly** (Part DN): Greater Arcanum of Avoidance is "reduced the chance you are hit by
+  attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,
+  Concentration (cost -1%), Speed and the Sturdiness health regen ones are not in the sim.
+
 ## Talents not in the sim code (regenerated 2026-09-25, after Part CL; updated after Part DH)
 
 Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). Regenerate with a grep of

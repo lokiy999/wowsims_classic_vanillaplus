@@ -3912,3 +3912,49 @@ enchant gloves to grant a 2% haste bonus."); the Wowhead tooltip said +1% attack
 the server data).
 Character screen: the enchant label under the gear slot and its hover text (`assets/enchants/descriptions.json` 931)
 now say "Haste +2%" (was "Attack Speed +1%").
+
+## Part DN — Enchant audit against the server; local enchant tooltips (2026-09-26)
+
+Every enchant in the database was compared with its spell description in `CSV's/Spell.csv` (and the enchant item's
+"Use:" text in `VPlusItemDB.lua`). Fixed to the server values:
+
+| Enchant | Was | Server |
+|---|---|---|
+| Minor Striking (250) | +1 weapon damage | +2 |
+| Lesser Striking / Minor Impact (241) | +2 | +3 |
+| Striking / Lesser Impact (943) | +3 | +5 |
+| Greater Striking (805) | +4 | +5 |
+| Superior Striking / Impact (1897) | +5 | +7 |
+| Greater Impact (963) | not modeled | +9 |
+| Superior Impact (1896) | not modeled | +12 |
+| Minor Beastslayer (249) | +2 vs Beasts | +5 |
+| Lesser Beastslayer (853) | +6 vs Beasts | +15 |
+| Gloves - Threat (2613) | +2% threat | +5% |
+| Cloak - Subtlety (2621) | -2% threat | -3% |
+| 2H Weapon - Agility (2646) | +25 Agility | +30 |
+| Bracer - Mana Regeneration (2565) | 4 MP5 | 5 MP5 |
+| Core Armor Kit (2503) | +3 Defense | +5 |
+| Savage Guard (2681) | +10 Nature Resistance | +20 |
+| Syncretist's Sigil (2584, paladin) | 10 Sta, 7 Def, 24 healing | 10 Sta, +20 healing and Holy damage |
+| Death's Embrace (2585, rogue) | 28 AP, 1% dodge | 30 AP, 1% dodge |
+| Falcon's Call (2586, hunter) | 10 Sta, 24 RAP, 1% hit | 10 Sta, 30 Attack Power |
+| Vodouisant's Vigilant Embrace (2587, shaman) | 15 Int, 13 spell power | 10 Sta, 1% crit |
+| Presence of Sight (2588, mage) | 18 spell power, 1% spell hit | 15 Int, 1% spell hit |
+| Hoodoo Hex (2589, warlock) | 10 Sta, 18 spell power | 15 Sta, 1% spell hit |
+| Prophetic Aura (2590, priest) | 10 Sta, 4 MP5, 24 healing | 15 Sta, 25 healing |
+| Animist's Caress (2591, druid) | 10 Sta, 10 Int, 24 healing | +10 all stats |
+
+Removed: the SoD enchants Weapon - Dismantle (7210) and Chest - Retricutioner (7223): not in the server data and no
+effect in the sim. Files: `tools/database/enchant_overrides.go`, `sim/common/enchant_effects.go`,
+`assets/enchants/descriptions.json` (labels under the gear slot).
+
+**Tooltips.** `tools/gen_server_spell_tooltips.py` now also collects every enchant spell (DB enchants and
+`enchant_overrides.go`), so enchant tooltips in the enchant picker come from `Spell.csv` (183 rows rewritten; the new
+paladin seal/judgement spell ids from Part DJ were refreshed in the same run). Enchants with an item (Arcanums, armor
+kits, ZG/AQ head enchants, scopes) already used the server item tooltip. The custom 900xxx enchants had no tooltip or
+icon at all; they now have one in `SpellIconoverrides` (`tools/database/overrides.go`) with the `VPlusItemDB.lua`
+text and the AtlasLoot icon. Gear slot hover: items without a local tooltip no longer pass `ench=` to Wowhead
+(`ui/core/player.ts`), because Wowhead printed its own classic enchant values there.
+
+Test baselines: elemental shaman -3.0% (the preset uses Vodouisant's Vigilant Embrace), hunter +1.0% (Superior Impact
+now works).

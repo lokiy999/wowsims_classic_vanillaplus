@@ -33,6 +33,7 @@ GO_LINE_RE = re.compile(r"spell_?id", re.I)
 INT_RE = re.compile(r"\b(\d{2,6})\b")
 TS_RES = [re.compile(r"fromSpellId\(\s*(\d+)"), re.compile(r"spellId:\s*(\d+)")]
 APL_RE = re.compile(r'"spellId":\s*(\d+)')
+ENCHANT_SPELL_RE = re.compile(r"SpellId:\s*(\d+)")
 
 
 def collect_ids(repo):
@@ -51,6 +52,13 @@ def collect_ids(repo):
             ids.update(int(x) for x in r.findall(s))
     for p in glob.glob(os.path.join(repo, "ui/**/apls/*.json"), recursive=True):
         ids.update(int(x) for x in APL_RE.findall(open(p, encoding="utf-8").read()))
+    # Enchant spells (the enchant picker and gear slot show these): the DB's enchants and the overrides.
+    db_path = os.path.join(repo, "assets/database/db.json")
+    if os.path.exists(db_path):
+        db = json.load(open(db_path, encoding="utf-8"))
+        ids.update(e["spellId"] for e in db.get("enchants", []) if e.get("spellId"))
+    ids.update(int(x) for x in ENCHANT_SPELL_RE.findall(
+        open(os.path.join(repo, "tools/database/enchant_overrides.go"), encoding="utf-8").read()))
     return ids
 
 

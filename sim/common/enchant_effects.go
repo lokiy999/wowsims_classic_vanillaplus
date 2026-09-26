@@ -80,8 +80,8 @@ func init() {
 		if slot == proto.ItemSlot_ItemSlotOffHand {
 			w = agent.GetCharacter().AutoAttacks.OH()
 		}
-		w.BaseDamageMin += 2
-		w.BaseDamageMax += 2
+		w.BaseDamageMin += 3
+		w.BaseDamageMax += 3
 	})
 
 	// Weapon - Beast Slaying
@@ -94,12 +94,12 @@ func init() {
 				w = character.AutoAttacks.OH()
 			}
 
-			w.BaseDamageMin += 2
-			w.BaseDamageMax += 2
+			w.BaseDamageMin += 5
+			w.BaseDamageMax += 5
 
 			w = character.AutoAttacks.Ranged()
-			w.BaseDamageMin += 2
-			w.BaseDamageMax += 2
+			w.BaseDamageMin += 5
+			w.BaseDamageMax += 5
 		}
 	})
 
@@ -109,8 +109,8 @@ func init() {
 		if slot == proto.ItemSlot_ItemSlotOffHand {
 			w = agent.GetCharacter().AutoAttacks.OH()
 		}
-		w.BaseDamageMin += 1
-		w.BaseDamageMax += 1
+		w.BaseDamageMin += 2
+		w.BaseDamageMax += 2
 	})
 
 	// Deadly Scope
@@ -177,8 +177,8 @@ func init() {
 		if slot == proto.ItemSlot_ItemSlotOffHand {
 			w = agent.GetCharacter().AutoAttacks.OH()
 		}
-		w.BaseDamageMin += 4
-		w.BaseDamageMax += 4
+		w.BaseDamageMin += 5
+		w.BaseDamageMax += 5
 	})
 
 	// Weapon - Lesser Beastslayer
@@ -191,12 +191,12 @@ func init() {
 				w = character.AutoAttacks.OH()
 			}
 
-			w.BaseDamageMin += 6
-			w.BaseDamageMax += 6
+			w.BaseDamageMin += 15
+			w.BaseDamageMax += 15
 
 			w = character.AutoAttacks.Ranged()
-			w.BaseDamageMin += 6
-			w.BaseDamageMax += 6
+			w.BaseDamageMin += 15
+			w.BaseDamageMax += 15
 		}
 	})
 
@@ -237,8 +237,8 @@ func init() {
 		if slot == proto.ItemSlot_ItemSlotOffHand {
 			w = agent.GetCharacter().AutoAttacks.OH()
 		}
-		w.BaseDamageMin += 3
-		w.BaseDamageMax += 3
+		w.BaseDamageMin += 5
+		w.BaseDamageMax += 5
 	})
 
 	// Weapon - Superior Striking
@@ -247,8 +247,22 @@ func init() {
 		if slot == proto.ItemSlot_ItemSlotOffHand {
 			w = agent.GetCharacter().AutoAttacks.OH()
 		}
-		w.BaseDamageMin += 5
-		w.BaseDamageMax += 5
+		w.BaseDamageMin += 7
+		w.BaseDamageMax += 7
+	})
+
+	// 2H Weapon - Greater Impact (server: +9 damage)
+	core.AddWeaponEffect(963, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		w.BaseDamageMin += 9
+		w.BaseDamageMax += 9
+	})
+
+	// 2H Weapon - Superior Impact (server: +12 damage)
+	core.AddWeaponEffect(1896, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.MH()
+		w.BaseDamageMin += 12
+		w.BaseDamageMax += 12
 	})
 
 	// Weapon - Lifestealing
@@ -342,9 +356,9 @@ func init() {
 		character := agent.GetCharacter()
 
 		character.RegisterAura(core.Aura{
-			Label: "Threat +2%",
+			Label: "Threat +5%",
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier *= 1.02
+				character.PseudoStats.ThreatMultiplier *= 1.05
 			},
 		})
 	})
@@ -356,7 +370,7 @@ func init() {
 		character.RegisterAura(core.Aura{
 			Label: "Subtlety",
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier /= 1.02
+				character.PseudoStats.ThreatMultiplier /= 1.03
 			},
 		})
 	})

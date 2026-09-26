@@ -1186,9 +1186,8 @@ export class Player<SpecType extends Spec> {
 		const langPrefix = lang ? lang + '.' : '';
 		parts.push(`domain=${langPrefix}classic`);
 
-		if (equippedItem.enchant !== null) {
-			parts.push('ench=' + equippedItem.enchant.effectId);
-		}
+		// No `ench=`: Wowhead would add its own (classic) enchant text. The enchant label under the gear slot
+		// shows the server values instead (enchants/descriptions.json).
 		parts.push(
 			'pcs=' +
 				this.gear
