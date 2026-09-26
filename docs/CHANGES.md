@@ -3910,3 +3910,5 @@ preset with this enchant).
 Tooltip: `SpellIconoverrides` in `tools/database/overrides.go` gets 13948 with the server name and text ("Permanently
 enchant gloves to grant a 2% haste bonus."); the Wowhead tooltip said +1% attack speed. Reagents are left out (not in
 the server data).
+Character screen: the enchant label under the gear slot and its hover text (`assets/enchants/descriptions.json` 931)
+now say "Haste +2%" (was "Attack Speed +1%").
