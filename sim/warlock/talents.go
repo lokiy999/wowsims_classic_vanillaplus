@@ -294,16 +294,17 @@ func (warlock *Warlock) applyMasterDemonologist() {
 	}
 
 	points := float64(warlock.Talents.MasterDemonologist)
-	// DBC: Imp +3%/rank spell crit, Voidwalker -3%/rank physical damage taken,
-	// Succubus +3%/rank all damage, Felhunter +0.2 resistance per level (per rank).
+	// Server (23785, 23822-23825, all five ranks checked): Imp +3%/rank crit, Voidwalker -3%/rank physical damage
+	// taken, Succubus +3%/rank all damage, Felhunter all resistances +0.2 per level per rank (12/rank at 60).
 	damageDealtMultiplier := 1 + 0.03*points
 	damageTakenMultiplier := 1 - 0.03*points
 	critBonus := 3 * points * core.SpellCritRatingPerCritChance
-	bonusResistance := 2 * points
+	bonusResistance := 0.2 * float64(warlock.Level) * points
+	spellID := []int32{0, 23785, 23822, 23823, 23824, 23825}[warlock.Talents.MasterDemonologist]
 
 	impConfig := core.Aura{
 		Label:    "Master Demonologist (Imp)",
-		ActionID: core.ActionID{SpellID: 23825, Tag: 1},
+		ActionID: core.ActionID{SpellID: spellID, Tag: 1},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.SpellCrit, critBonus)
@@ -315,7 +316,7 @@ func (warlock *Warlock) applyMasterDemonologist() {
 
 	voidwalkerConfig := core.Aura{
 		Label:    "Master Demonologist (Voidwalker)",
-		ActionID: core.ActionID{SpellID: 23825, Tag: 2},
+		ActionID: core.ActionID{SpellID: spellID, Tag: 2},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
@@ -327,7 +328,7 @@ func (warlock *Warlock) applyMasterDemonologist() {
 
 	succubusConfig := core.Aura{
 		Label:    "Master Demonologist (Succubus)",
-		ActionID: core.ActionID{SpellID: 23825, Tag: 3},
+		ActionID: core.ActionID{SpellID: spellID, Tag: 3},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
@@ -339,7 +340,7 @@ func (warlock *Warlock) applyMasterDemonologist() {
 
 	felhunterConfig := core.Aura{
 		Label:    "Master Demonologist (Felhunter)",
-		ActionID: core.ActionID{SpellID: 23825, Tag: 4},
+		ActionID: core.ActionID{SpellID: spellID, Tag: 4},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.AddResistancesDynamic(sim, bonusResistance)

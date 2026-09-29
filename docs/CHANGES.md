@@ -3978,3 +3978,12 @@ Specialization, Deadeye; druid Predatory Strikes; mage Spell Twisting; etc.). Ea
 (`Talents.<Name>` uses) and CHANGES.md; done ones moved to `docs/TODO_DONE.md` ("Class notes"), open ones kept. The
 list of talents no code reads was regenerated: unchanged since Part DH (all left are utility or PvP, or need
 numbers from the game).
+
+## Part DP — Warlock Master Demonologist: all ranks checked, Felhunter resistance fixed (2026-09-29)
+
+TODO said ranks 2-5 were never checked. `Spell.csv` has all five talent ranks (23785, 23822-23825): Imp +3% crit per
+rank, Voidwalker -3% physical damage taken per rank, Succubus +3% all damage per rank, Felhunter all resistances
++0.2 per level per rank. The first three were right. The Felhunter part gave 2 resistance per rank (10 at 5/5); it
+is now 0.2 x level per rank (12 per rank, 60 at 5/5 at level 60), for the warlock and the Felhunter. The aura now
+shows the spell id of the rank taken (was always rank 5). Resistances are character stats, so the sidebar shows the
+change without extra code. File: `sim/warlock/talents.go`. Test presets have no talents: baselines unchanged.

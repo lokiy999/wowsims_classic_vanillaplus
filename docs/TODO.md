@@ -247,8 +247,6 @@ there is more to say.
   Aftermath / Shock and Awe (stuns and daze; Shock and Awe's +20% damage taken needs a stunnable target).
 - Improved Immolate's second stack is only used by a rotation that recasts Immolate while it is up; the default
   APL waits until the DoT is gone (Part DO).
-- Master Demonologist Felhunter resist and Voidwalker values were assumed to scale 3/rank and 2/rank from rank-1 DBC
-  only; ranks 2-5 of the sub-spells not checked.
 - Suppression (Affliction spells only) is not shown in the sidebar.
 
 **Priest**

@@ -19,6 +19,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-29 (Part DP): warlock Master Demonologist checked for all five ranks; Felhunter resistance fixed (0.2 x level per rank).
 - Done on 2026-09-29 (Part DO): warlock Improved Immolate (Immolate stacks up to 2 times).
 - Done on 2026-09-25 (Part DL): boss spell damage target option; core death delay; paladin Second Wind, Stoicism,
   Holy Shield coefficient 0.1 per block (assumed by Lokiy).
