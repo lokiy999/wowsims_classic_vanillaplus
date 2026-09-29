@@ -4013,3 +4013,32 @@ Question 10 (trap tick timing) is answered by the same data: Immolation Trap tic
 
 Test baseline: hunter +1.5 to +3% (the preset rotation keeps Serpent Sting up), `sim/hunter/TestP1Hunter.results`
 regenerated.
+
+## Part DS — Damage and mana tables of all classes vs the server; warlock fixes (2026-09-29)
+
+A throwaway script compared every per-rank table in `sim/<class>/` (spell ids with damage, mana and level arrays)
+with `Spell.csv`. What it needed to know about the data (0-based columns):
+- mana cost is column 32, spell level column 28, max level column 27;
+- damage per level (EffectRealPointsPerLevel) are floats from column 73, split in two fields when they have a
+  fraction ("2", "9000..." = 2.9). The sim's tables are the values at level 60: base + per level x
+  (min(max level, 60) - spell level). Frostbolt rank 10: 429-463 + 2.9 x 4 = 440-475, as in the sim.
+
+Everything matched (mage, priest, druid, shaman, paladin, rogue, warrior; hunter was done in Part DR) except these
+warlock spells, now set to the server values:
+- **Searing Pain**: was classic. Now, at level 60: 50-61, 87-103, 124-148, 174-206, 224-264, 276-324 (rank 6 was
+  208-244). Rank 3 is learned at 34 (was 36).
+- **Siphon Life**: 20/30/40/60 per 3 sec tick (was 15/22/33/45), mana 90/140/200/280 (was 150/205/285/365).
+- **Drain Life**: 10/20/30/40/60/80 per second (was 10/17/29/41/55/71).
+- **Conflagrate** ranks 1-3: 170-236, 236-316, 307-403, mana 110/140/175, learned at 40/50 (rank 4, 447-557 for
+  255 mana, already matched). Cooldown back to **10 sec**: Part AU recorded 10 sec as confirmed in game (the talent
+  spell 35737 has 10 sec); Part BZ had changed it to 15 sec from the ranked spells. The talent's spell 35737 works
+  differently ("instant damage equal to its periodic damage done"), see question 35.
+
+Not changed, only below level 60: a few low ranks are 1-8 points off because the per-level gain is rounded
+differently (Frostbolt rank 5, Scorch rank 4, Flamestrike rank 5, Lightning Bolt rank 6, Frost Shock rank 3,
+Holy Fire ranks 1 and 5, Immolate rank 3, Rain of Fire rank 2), and the learn level of Blast Wave (server 20/30/40/50)
+and Pyroblast rank 1 (server 14). Totem, imbue and trap damage sits in triggered spells; those were checked by hand
+earlier (Parts DA, DR).
+
+Test baseline: warlock +0.1 to +0.3%, `sim/warlock/dps/*.results` regenerated. Files: `sim/warlock/searing_pain.go`,
+`siphon_life.go`, `drain_life.go`, `conflagrate.go`.

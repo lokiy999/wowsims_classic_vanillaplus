@@ -10,10 +10,11 @@ const ConflagrateRanks = 4
 
 func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	spellId := [ConflagrateRanks + 1]int32{0, 17962, 18930, 18931, 18932}[rank]
-	baseDamageMin := [ConflagrateRanks + 1]float64{0, 249, 319, 395, 447}[rank]
-	baseDamageMax := [ConflagrateRanks + 1]float64{0, 316, 400, 491, 557}[rank]
-	manaCost := [ConflagrateRanks + 1]float64{0, 165, 200, 230, 255}[rank]
-	level := [ConflagrateRanks + 1]int{0, 0, 48, 54, 60}[rank]
+	// Server (Spell.csv) at level 60 (per level +1.6/+1.8/+2.0 up to max level 36/46/56).
+	baseDamageMin := [ConflagrateRanks + 1]float64{0, 170, 236, 307, 447}[rank]
+	baseDamageMax := [ConflagrateRanks + 1]float64{0, 236, 316, 403, 557}[rank]
+	manaCost := [ConflagrateRanks + 1]float64{0, 110, 140, 175, 255}[rank]
+	level := [ConflagrateRanks + 1]int{0, 0, 40, 50, 60}[rank]
 
 	spCoeff := 0.429
 
@@ -35,8 +36,9 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 15, // server (Spell.csv)
+				Timer: warlock.NewTimer(),
+				// The talent spell (35737) has 10 sec, confirmed in game (Part AU); the ranked spells have 15 sec.
+				Duration: time.Second * 10,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

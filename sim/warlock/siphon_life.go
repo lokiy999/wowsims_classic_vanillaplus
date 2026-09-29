@@ -11,8 +11,8 @@ const SiphonLifeRanks = 4
 
 func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 	spellId := [SiphonLifeRanks + 1]int32{0, 18265, 18879, 18880, 18881}[rank]
-	baseDamage := [SiphonLifeRanks + 1]float64{0, 15, 22, 33, 45}[rank]
-	manaCost := [SiphonLifeRanks + 1]float64{0, 150, 205, 285, 365}[rank]
+	baseDamage := [SiphonLifeRanks + 1]float64{0, 20, 30, 40, 60}[rank] // server (Spell.csv): per 3 sec tick
+	manaCost := [SiphonLifeRanks + 1]float64{0, 90, 140, 200, 280}[rank]
 	level := [SiphonLifeRanks + 1]int{0, 0, 38, 48, 58}[rank]
 
 	spellCoeff := 0.05

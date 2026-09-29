@@ -20,6 +20,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-29 (Part DS): damage and mana tables of all classes compared with the server by rank; warlock Searing Pain, Siphon Life, Drain Life and Conflagrate ranks fixed; Conflagrate cooldown back to 10 sec.
 - Done on 2026-09-29 (Part DR): hunter shot, strike and trap damage and mana tables compared by rank with the server; Serpent Sting damage fixed.
 - Done on 2026-09-29 (Part DQ): shaman Elemental Mastery checked against the server (crit only, the spell no longer makes the next spell free; 3 min cooldown matches).
 - Done on 2026-09-29 (Part DP): warlock Master Demonologist checked for all five ranks; Felhunter resistance fixed (0.2 x level per rank).

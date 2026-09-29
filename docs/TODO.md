@@ -86,6 +86,12 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     which the spell export does not include (the sim has them free). (c) Does Armaments of Storm scale with spell
     power, and can it crit? The sim uses a flat 5 x level and lets it crit like a spell.
 
+35. **Conflagrate** (Part DS): the talent teaches server spell 35737, "Ignites the target, consuming your Immolate for
+    instant damage equal to its periodic damage done" (10 sec cooldown, no mana cost in the data). The sim still
+    casts the classic ranked Conflagrate (447-557 Fire damage at rank 4, 255 mana). How much does it hit for in game:
+    the full periodic damage of the Immolate (all 5 ticks), what is left of it, or something else? And does it cost
+    mana?
+
 - **Enchants not modeled exactly** (Part DN): Greater Arcanum of Avoidance is "reduced the chance you are hit by
   attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,
   Concentration (cost -1%), Speed and the Sturdiness health regen ones are not in the sim.
