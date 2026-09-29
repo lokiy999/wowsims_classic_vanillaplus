@@ -27,7 +27,6 @@ Things only you can answer; everything else I keep working on. Newest at the bot
    `_olddb.json`, `_pvp_obsolete.json`, `_removelist.json`, `_removelist_aqnaxx.json`, `"Start Server.bat"`.
 9. **Execute**: the server text converts extra rage into "$*10;F1" damage per point, which I can't read from the
    data. The sim uses 15 per rage (classic). What does the tooltip say? (Same as question 20.)
-10. **Trap tick timing**: Immolation Trap (21 sec) and Explosive Trap (10 sec): how often do they tick?
 11. **Illumination** (paladin): the tooltips for ranks 2-4 show the rank 5 text. What % of the mana cost do ranks
     2, 3 and 4 return? (The sim uses 27.5 / 35 / 42.5%.)
 12. **Hunter Thrill of the Hunt**, **Shaman Shamanism**: the spell data has no proc chance ("a chance"); probably a
@@ -221,7 +220,7 @@ there is more to say.
   pet utility talents.
 - Kill Command mana cost (assumed free, check in game); Savage Blow damage (placeholder: one main-hand and one
   off-hand weapon hit); Whirling Axe mana cost and range (none set), slow and interrupt not modeled; Hunter's Mark
-  melee attack power (+90) not modeled; shot damage and mana tables by rank not compared.
+  melee attack power (+90) not modeled.
 
 **Paladin**
 - Seal of Light / Seal of Wisdom melee procs (proc rate unknown), Holy Purge, Repentance, the Judgement of Fury

@@ -6,6 +6,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Questions for Lokiy (answered)
 
+- **10. Trap tick timing**: ANSWERED 2026-09-29 from Spell.csv (tick interval column): Immolation Trap every 3 sec (7 ticks over 21 sec), Explosive Trap's burn every 2 sec (5 ticks over 10 sec); the sim already used these (Part DR).
 - **3. Arcane Missiles "energize"**: ANSWERED 2026-09-24: once per cast, 5 stacks max (as implemented).
 - **8. Mana Tide Totem**: ANSWERED 2026-09-24: yes, trainable; now castable by the shaman (Part BV).
 - **12. Armaments of Storm** (part of question 12): numbers found in Spell.csv (5%/rank, 5 x level), done in Part DD.
@@ -19,6 +20,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-29 (Part DR): hunter shot, strike and trap damage and mana tables compared by rank with the server; Serpent Sting damage fixed.
 - Done on 2026-09-29 (Part DQ): shaman Elemental Mastery checked against the server (crit only, the spell no longer makes the next spell free; 3 min cooldown matches).
 - Done on 2026-09-29 (Part DP): warlock Master Demonologist checked for all five ranks; Felhunter resistance fixed (0.2 x level per rank).
 - Done on 2026-09-29 (Part DO): warlock Improved Immolate (Immolate stacks up to 2 times).

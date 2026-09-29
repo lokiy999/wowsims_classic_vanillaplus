@@ -3998,3 +3998,18 @@ cooldown stay. File: `sim/shaman/talents.go`. Test presets have no talents: base
 Cooldown columns, for the record (0-based): column 19 is the spell's own cooldown, column 20 the category cooldown,
 column 21 the category id. A spell has one of the two (Elemental Mastery 180000 in column 19, Conflagrate 15000 in
 column 20). Part BZ already used both; only the short note in TODO_DONE.md ("column 20") was ambiguous.
+
+## Part DR — Hunter damage and mana tables by rank vs the server; Serpent Sting damage (2026-09-29)
+
+Compared every rank of the hunter's damage spells with `Spell.csv` (effect values; mana cost is column 32, counting
+from 0): Arcane Shot, Multi-Shot, Aimed Shot, Serpent Sting, Raptor Strike, Mongoose Bite, Wing Clip, Volley,
+Immolation Trap and Explosive Trap (their damage is in the triggered "Trap Effect" spells 13797/14298-14301 and
+13812/14314/14315). Damage, mana cost and spell level all match, except:
+- **Serpent Sting** damage was still classic (20 to 555 total by rank). Server: 50, 100, 150, 250, 300, 400, 500,
+  600, 700 over 15 sec (5 ticks). Mana costs (15 to 250) already matched. File: `sim/hunter/serpent_sting.go`.
+
+Question 10 (trap tick timing) is answered by the same data: Immolation Trap ticks every 3 sec (7 ticks of 21 to
+138 by rank), Explosive Trap's burn every 2 sec (5 ticks of 30/40/60). The sim already used these.
+
+Test baseline: hunter +1.5 to +3% (the preset rotation keeps Serpent Sting up), `sim/hunter/TestP1Hunter.results`
+regenerated.
