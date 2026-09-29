@@ -641,10 +641,6 @@ func (warlock *Warlock) applyDevastation() {
 	})
 }
 
-func (warlock *Warlock) improvedImmolateBonus() float64 {
-	return 0.05 * core.TernaryFloat64(warlock.Talents.ImprovedImmolate, 1, 0)
-}
-
 func (warlock *Warlock) applyRuin() {
 	if warlock.Talents.Ruin == 0 {
 		return

@@ -19,6 +19,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-29 (Part DO): warlock Improved Immolate (Immolate stacks up to 2 times).
 - Done on 2026-09-25 (Part DL): boss spell damage target option; core death delay; paladin Second Wind, Stoicism,
   Holy Shield coefficient 0.1 per block (assumed by Lokiy).
 - Done on 2026-09-25 (Part DK): paladin Eye for an Eye damage (threat still in the threat batch).
@@ -49,6 +50,29 @@ the Part named with each item. New finished items are added at the top of their 
   rank, matches). Holy Shock, Hammer of Wrath, Righteous Fury, Redoubt and Holy Shield confirmed (Part AY).
 - Druid Improved Mark of the Wild: RESOLVED 2026-09-19, 20%/rank confirmed by Lokiy (x1.6, armor 456, Part AP).
 - Priest Inner Fire and a no-proc Spirit Tap: done (Part AR).
+
+## Class notes (checked against the code 2026-09-29, Part DO)
+
+The class notes in TODO.md had items that were already done in earlier parts; moved here:
+- Warrior: Maim (10/20/30 sec), Improved Hamstring and Improved Charge are utility, Cleaving, Improved Execute,
+  Butterfly Style (dodge and crit).
+- Rogue: Improved Sinister Strike extra hit, Coup de Grace, Bloodthirsty, Combat Rush, Brigandage, Gaining an
+  Advantage, Physical Prowess (Strength and Evasion cooldown), Weapon Expertise.
+- Hunter: Melee Specialization, Dual Wield Specialization, Weapon Expertise, Find Weakness, Deadeye, Stalking, Spirit
+  Bond, Improved Tracking; Reconnaissance 3%/rank matches the talent text (15% at 5/5); Kill Command, Savage Blow,
+  Whirling Axe, Aspects of the Monkey/Beast/Pack are in; Lethal Shots and crossbow Weapon Expertise show in the
+  Ranged crit line.
+- Paladin: Divine Grace (seal part), Light's Mercy, Codex of the Silver Hand; Seal of Command values.
+- Shaman: Elemental Devastation (+10% melee and spell crit, 5/10/15 sec), Static Field, Guardian Totems, Healing
+  Way, Purification, Tidal Mastery.
+- Druid: Power of Nature, Dreamstate, Mighty Roots is utility, Unity with Nature, Stalking, Predatory Strikes (300%
+  of level at 3/3, matches the text), Primal Fury, Survival Instincts, Furor, Improved Rejuvenation / Regrowth, Gift
+  of Nature, Tranquil Spirit, Swiftbloom, Naturalist, Killer Instincts.
+- Mage: Spell Twisting, Thermal Expansion, Rimebound, Fire Warding, Brilliance Aura, Magic Absorption.
+- Warlock: Prolonged Misery, Sadism, Mayhem, Demonic Embrace, Soul Link, Improved Drain Soul (cooldown part),
+  Bring the Pain; Improved Immolate now stacks Immolate twice (Part DO, was a guessed +5%).
+- Priest: Purifying Light, Improved Inner Fire, healing talents (Spiritual Healing, Improved Healing, Improved Renew,
+  Improved Power Word: Shield, Improved Prayer of Healing).
 
 ## Healers and feral tank
 

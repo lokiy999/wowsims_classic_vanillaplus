@@ -3958,3 +3958,23 @@ text and the AtlasLoot icon. Gear slot hover: items without a local tooltip no l
 
 Test baselines: elemental shaman -3.0% (the preset uses Vodouisant's Vigilant Embrace), hunter +1.0% (Superior Impact
 now works).
+
+## Part DO — Warlock Improved Immolate stacks; class notes checked against the code (2026-09-29)
+
+**Improved Immolate** (server spell 17815: "Allows Immolate to stack up to 2 times"). The sim had a guessed +5%
+direct damage. Now it works like Improved Rend: with the talent, Immolate's DoT has 2 stacks, a new cast while it is
+up refreshes the duration and adds a stack, and each stack adds the full tick damage (spell power included). The
+direct hit is unchanged. Files: `sim/warlock/immolate.go` (removed `improvedImmolateBonus` from
+`sim/warlock/talents.go`).
+
+Checked with a temporary test (prebis gear, a rotation that recasts Immolate with 2.5 sec left): the direct damage
+is the same with and without the talent, and the ticks go from about 110 to about 220 once the second stack is on.
+The default warlock APL only casts Immolate when its DoT is gone, so it never builds the second stack (noted in
+TODO.md). Test presets have no talents: baselines unchanged. No sidebar stat is involved.
+
+**TODO cleanup.** The "Class notes still open" section in `docs/TODO.md` (from the 2026-09-19/20 audits) still listed
+many talents done in later parts (rogue Coup de Grace, Bloodthirsty, Combat Rush; hunter Melee / Dual Wield
+Specialization, Deadeye; druid Predatory Strikes; mage Spell Twisting; etc.). Each item was checked against the code
+(`Talents.<Name>` uses) and CHANGES.md; done ones moved to `docs/TODO_DONE.md` ("Class notes"), open ones kept. The
+list of talents no code reads was regenerated: unchanged since Part DH (all left are utility or PvP, or need
+numbers from the game).

@@ -91,7 +91,7 @@ Things only you can answer; everything else I keep working on. Newest at the bot
   attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,
   Concentration (cost -1%), Speed and the Sturdiness health regen ones are not in the sim.
 
-## Talents not in the sim code (regenerated 2026-09-25, after Part CL; updated after Part DH)
+## Talents not in the sim code (regenerated 2026-09-29, Part DO: unchanged since Part DH)
 
 Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). Regenerate with a grep of
 `Talents\.` in `sim/<class>/` against `ui/core/talents/trees/<class>.json` (per class: some names like Survival
@@ -204,72 +204,56 @@ the sim.
 - `docs/private-server-item-rules.md` "Known implementation wrinkles" still says `gen_phases.py` "only scans
   `Instances/`"; it now goes through `serverdata.atlasloot()` and covers all seven AtlasLoot folders.
 
-## Class notes still open (from the 2026-09-19/20 audits)
+## Class notes still open (from the 2026-09-19/20 audits; checked against the code 2026-09-29, Part DO)
+
+Only what is still open. The talents in the per-class lists above that no code reads are not repeated here unless
+there is more to say.
 
 **Warrior**
-- Maim (10% on auto attacks per the DBC, +5% damage taken, duration unknown, all three ranks look identical); Shield
-  Block (question 24); Berserker's Blood; Improved Hamstring, Improved Charge; Butterfly Style rage part; Execute
-  rage-to-damage ratio (question 20); Cleaving (Thunder Clap/Whirlwind), Improved Execute.
+- Shield Block (question 24); Execute rage-to-damage ratio (question 20); Berserker's Blood (needs the player's
+  health); Butterfly Style's rage from dodges and parries (dodge and crit part done; needs incoming attacks).
 
 **Rogue**
-- Not modeled: Improved Sinister Strike extra-hit proc (3/5%), Coup de Grace (+5%/rank damage below 20% health),
-  Bloodthirsty (Garrote/Rupture +10%/rank damage, shorter ticks), Combat Rush, Brigandage (damage may need a
-  coefficient check), Gaining an Advantage, Dazing Bolts, Survivor, Physical Prowess (and the Sprint cooldown part,
-  Improved Sprint), Improved Kidney Shot, Remorseless Attacks (needs kills), Weapon Expertise values. Thistle Tea
-  cooldown not in the DBC.
+- Remorseless Attacks (needs kills); Thistle Tea's 5 min cooldown is classic (not in the DBC).
 
 **Hunter**
-- Not modeled: Melee Specialization (+30% melee speed, -30% ranged), Dual Wield Specialization (OH +20-50%), Weapon
-  Expertise (extra arrow), Find Weakness, Thrill of the Hunt (question 12), Deadeye, Stalking's kill bonus, Vantage
-  Point, Spirit Bond, Improved Tracking, Deep Freeze, Team Play, Aspect Mastery, most pet utility talents.
-- Reconnaissance is coded 3%/rank all damage; DBC spell 34063 (3%) may be flat at every rank. Unchecked.
+- Thrill of the Hunt (question 12), Vantage Point (elevation), Team Play, Deep Freeze (needs Freezing Trap), most
+  pet utility talents.
 - Kill Command mana cost (assumed free, check in game); Savage Blow damage (placeholder: one main-hand and one
-  off-hand weapon hit), range and the Hawk/Cheetah/Wild effects; Whirling Axe cooldown, mana cost and range (none
-  set), slow and interrupt not modeled; Aspect of the Beast/Pack stat effects not applied; Hunter's Mark melee AP
-  (+90) not modeled; shot damage and mana tables by rank not compared; Lethal Shots and Weapon Expertise crossbow
-  crit are shown in the Melee Crit tooltip only.
+  off-hand weapon hit); Whirling Axe mana cost and range (none set), slow and interrupt not modeled; Hunter's Mark
+  melee attack power (+90) not modeled; shot damage and mana tables by rank not compared.
 
 **Paladin**
-- Not modeled: Seal of Light / Seal of Wisdom melee procs (proc rate unknown), Divine Grace's Blessing of Wisdom /
-  Light part, Light's Mercy (Flash of Light only on the heal page), Holy Purge, Repentance, Codex Holy
-  Light cost/cast time, the Judgement of Fury forced attack. Illumination: question 11.
-- Seal of Command: the 1 sec internal cooldown is unverified (damage 50%, 12 procs per minute, 120 sec duration and
-  top rank Judgement of Command 441-475 are confirmed).
+- Seal of Light / Seal of Wisdom melee procs (proc rate unknown), Holy Purge, Repentance, the Judgement of Fury
+  forced attack. Illumination: question 11.
+- Seal of Command: the 1 sec internal cooldown is unverified.
 - Holy Shield spell power coefficient 0.1 per block is assumed (Lokiy, Part DL); confirm in game. Holy Shock healing.
 
 **Shaman**
-- Elemental Devastation: DBC aura 30165 gives a flat 10% crit at every rank, code uses 3%/rank. Looks odd, so not
-  changed; confirm on the server.
-- Not modeled: Static Field, Earthquake, Earth Shield, Guardian Totems (partly in core), Improved Ghost Wolf,
-  Elemental Mastery values unchecked, healing talents (Healing Way, Purification damage part, Tidal Mastery speed part).
+- Earthquake, Earth Shield, Improved Ghost Wolf (see the talent list); Elemental Mastery values unchecked.
 
 **Druid**
-- Not modeled: Starfall, Power of Nature, Dreamstate, Mighty Roots, Hurricane, Cycle of Life, Unity with Nature,
-  Stalking, Predatory Strikes (custom DBC values look malformed), Primal Fury, Survival Instincts, Furor values,
-  healing talents (Improved Rejuvenation/Regrowth, Gift of Nature healing part, Tranquil Spirit), Swiftbloom,
-  Naturalist, Killer Instincts attack speed part.
+- Starfall (stun), Hurricane (22 Nature per second for 10 sec; cooldown and mana cost not in the tooltip), Cycle of
+  Life (needs kills), Untamed Heart, Catharsis (Innervate part).
 
 **Mage**
-- Not modeled: Shatter (needs a frozen-target state), Spell Twisting, Impact, Blazing Speed, Chain Reaction, Thermal
-  Expansion, Cryo Core, Cold Grip, Rimebound (needs spell 34266), Advanced Ice Shielding, Frost Warding/Fire Warding,
-  Practical talents, Brilliance Aura, Magic Absorption mana-on-resist.
+- Shatter / Frostbite / Chain Reaction (need a frozen-target state), Impact, Blazing Speed, Cryo Core, Cold Grip and
+  Ice Shards (numbers missing: cast time, mana cost, coefficient), Advanced Ice Shielding, Frost
+  Warding, Practical talents.
 - Hot Streak/Pyromania untested in a fire rotation (default mage APL is not fire).
 
 **Warlock**
-- Not modeled: Prolonged Misery (+2/4/6 sec DoT duration, not a multiple of the 3 sec tick), Jinx, Sadism,
-  Improved Immolate (2 stacks; current 5% bonus is a guess), Pyroclasm/Mayhem/Shock and Awe, Demonic Embrace regen,
-  Soul Link damage split (redirect is 20% per DBC; code uses a flat multiplier), Improved Drain Soul health/mana regen
-  on kill (stacks to 5).
+- Jinx (curse durations; Curse of Weakness +30%), Withering Shroud and Death and Decay (AoE spells), Pyroclasm /
+  Aftermath / Shock and Awe (stuns and daze; Shock and Awe's +20% damage taken needs a stunnable target).
+- Improved Immolate's second stack is only used by a rotation that recasts Immolate while it is up; the default
+  APL waits until the DoT is gone (Part DO).
 - Master Demonologist Felhunter resist and Voidwalker values were assumed to scale 3/rank and 2/rank from rank-1 DBC
   only; ranks 2-5 of the sub-spells not checked.
-- Suppression and Bring the Pain (+5%/rank crit on 4 spells) are not in the sidebar.
+- Suppression (Affliction spells only) is not shown in the sidebar.
 
 **Priest**
-- Power Word: Requital: implemented 2026-09-19, but the coefficient is a placeholder (1.5/3.5) and ranks 2-4 lack a
-  DB name/icon.
-- Not modeled: Purifying Light undead/demon bonus, Spirit Tap on-kill proc (50%/100% per rank), Improved Inner Fire,
-  Wand Specialization, Blackout, Blur, Focused Casting, Improved Psychic Scream / Shadow Word: Silence / Shadow Word:
-  Numb, Pilgrimage, Martyrdom, Stratagem, Improved Dispel Magic, Insanity.
+- Power Word: Requital coefficient is a placeholder (1.5/3.5).
+- Spirit Tap never procs (needs kills); Blackout, Blur, Focused Casting, Insanity and the other utility talents.
 - Talent hit/crit (Spell Focus, Force of Will, Holy Specialization) is applied per spell, so it does not show on the
   sidebar Spell Hit/Crit lines.
 

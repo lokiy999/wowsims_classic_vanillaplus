@@ -19,6 +19,10 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	manaCost := [ImmolateRanks + 1]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
 	level := [ImmolateRanks + 1]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
 
+	// Improved Immolate (server 17815): "Allows Immolate to stack up to 2 times." Like Improved Rend, each stack adds
+	// the full tick damage (spell power included); a new cast refreshes the duration.
+	maxStacks := core.TernaryInt32(warlock.Talents.ImprovedImmolate, 2, 1)
+
 	return core.SpellConfig{
 		SpellCode:   SpellCode_WarlockImmolate,
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -53,7 +57,8 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Immolate-" + warlock.Label + strconv.Itoa(rank),
+				Label:     "Immolate-" + warlock.Label + strconv.Itoa(rank),
+				MaxStacks: maxStacks,
 			},
 
 			NumberOfTicks:    5 + warlock.prolongedMiseryTicks(time.Second*3),
@@ -62,6 +67,9 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, dotDamage, isRollover)
+				if !isRollover {
+					dot.SnapshotBaseDamage *= float64(max(dot.GetStacks(), 1))
+				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				var result *core.SpellResult
@@ -71,14 +79,19 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= 1 + warlock.improvedImmolateBonus()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.Apply(sim)
+				if maxStacks == 1 {
+					dot.Apply(sim)
+				} else {
+					dot.ApplyOrRefresh(sim)
+					if dot.GetStacks() < dot.MaxStacks {
+						dot.AddStack(sim)
+					}
+					dot.TakeSnapshot(sim, false)
+				}
 			}
 
 			spell.DealDamage(sim, result)
