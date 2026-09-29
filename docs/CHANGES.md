@@ -3987,3 +3987,14 @@ rank, Voidwalker -3% physical damage taken per rank, Succubus +3% all damage per
 is now 0.2 x level per rank (12 per rank, 60 at 5/5 at level 60), for the warlock and the Felhunter. The aura now
 shows the spell id of the rank taken (was always rank 5). Resistances are character stats, so the sidebar shows the
 change without extra code. File: `sim/warlock/talents.go`. Test presets have no talents: baselines unchanged.
+
+## Part DQ — Shaman Elemental Mastery: no free spell (2026-09-29)
+
+TODO said Elemental Mastery's values were unchecked. The server spell 16166 has a single effect: +100% crit chance
+(flat modifier, 1 charge) on the next Fire, Frost or Nature damage spell, 3 min cooldown. The sim also made that
+spell free (mana cost -100%, the classic spell's second effect); that part is removed, the crit and the 3 min
+cooldown stay. File: `sim/shaman/talents.go`. Test presets have no talents: baselines unchanged.
+
+Cooldown columns, for the record (0-based): column 19 is the spell's own cooldown, column 20 the category cooldown,
+column 21 the category id. A spell has one of the two (Elemental Mastery 180000 in column 19, Conflagrate 15000 in
+column 20). Part BZ already used both; only the short note in TODO_DONE.md ("column 20") was ambiguous.

@@ -253,6 +253,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 
 	actionID := core.ActionID{SpellID: 16166}
 
+	// Server (16166): one effect, +100% crit chance on the next Fire, Frost or Nature damage spell, 1 charge, 3 min
+	// cooldown. The classic second effect (mana cost -100%) is not in the server spell, so the spell is not free.
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
 
@@ -271,17 +273,11 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.BonusCritRating += core.CritRatingPerCritChance * 100
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 100
-				}
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.BonusCritRating -= core.CritRatingPerCritChance * 100
-				if spell.Cost != nil {
-					spell.Cost.Multiplier += 100
-				}
 			})
 			shaman.ElementalMastery.CD.Use(sim)
 		},

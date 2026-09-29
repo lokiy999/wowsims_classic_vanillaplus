@@ -9,7 +9,7 @@ the Part named with each item. New finished items are added at the top of their 
 - **3. Arcane Missiles "energize"**: ANSWERED 2026-09-24: once per cast, 5 stacks max (as implemented).
 - **8. Mana Tide Totem**: ANSWERED 2026-09-24: yes, trainable; now castable by the shaman (Part BV).
 - **12. Armaments of Storm** (part of question 12): numbers found in Spell.csv (5%/rank, 5 x level), done in Part DD.
-- **14. Cooldowns in Spell.csv**: ANSWERED 2026-09-24: column 20 is the cooldown; applied (Part BZ).
+- **14. Cooldowns in Spell.csv**: ANSWERED 2026-09-24: column 20 is the cooldown; applied (Part BZ). Counting from 0: column 19 is the spell's own cooldown, column 20 the category cooldown (column 21 the category); a spell uses one of them (Part DQ).
 - **15. Item list resync**: ANSWERED 2026-09-24: follow the dump, never Naxx, rename ok; done (Part BY).
 - **17. Flask of Indomitable Might icon**: ANSWERED 2026-09-25: INV_Potion_21 (in-game AtlasLoot), applied.
 - **23. Cloak of Untold Secrets**: ANSWERED 2026-09-25: drops from Krixix in BWL, keep it. Source set (Part CP).
@@ -19,6 +19,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-29 (Part DQ): shaman Elemental Mastery checked against the server (crit only, the spell no longer makes the next spell free; 3 min cooldown matches).
 - Done on 2026-09-29 (Part DP): warlock Master Demonologist checked for all five ranks; Felhunter resistance fixed (0.2 x level per rank).
 - Done on 2026-09-29 (Part DO): warlock Improved Immolate (Immolate stacks up to 2 times).
 - Done on 2026-09-25 (Part DL): boss spell damage target option; core death delay; paladin Second Wind, Stoicism,

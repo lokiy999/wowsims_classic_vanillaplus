@@ -230,7 +230,7 @@ there is more to say.
 - Holy Shield spell power coefficient 0.1 per block is assumed (Lokiy, Part DL); confirm in game. Holy Shock healing.
 
 **Shaman**
-- Earthquake, Earth Shield, Improved Ghost Wolf (see the talent list); Elemental Mastery values unchecked.
+- Earthquake, Earth Shield, Improved Ghost Wolf (see the talent list).
 
 **Druid**
 - Starfall (stun), Hurricane (22 Nature per second for 10 sec; cooldown and mana cost not in the tooltip), Cycle of
