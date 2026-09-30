@@ -55,7 +55,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.47945
+  weights: 0.4138
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.52998
-  weights: 0.54878
+  weights: 1.36301
+  weights: 0.50312
   weights: 0
   weights: 0
   weights: 0.10591
   weights: 0
-  weights: 2.65288
+  weights: 2.65282
   weights: 0
   weights: 0
   weights: 0
@@ -99,57 +99,57 @@ stat_weights_results: {
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-FieldMarshal'sAegis"
  value: {
-  dps: 554.97494
-  tps: 582.34022
+  dps: 531.65451
+  tps: 559.01979
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-Freethinker'sArmor"
  value: {
-  dps: 460.42866
-  tps: 488.82308
+  dps: 444.83516
+  tps: 473.22957
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-JudgementArmor"
  value: {
-  dps: 575.51285
-  tps: 604.64883
+  dps: 552.23445
+  tps: 581.37043
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-LawbringerArmor"
  value: {
-  dps: 511.30584
-  tps: 538.21755
+  dps: 488.69891
+  tps: 515.61063
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-LieutenantCommander'sRedoubt"
  value: {
-  dps: 527.31686
-  tps: 555.66528
+  dps: 505.447
+  tps: 533.79543
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-RighteousArmor"
  value: {
-  dps: 472.96425
-  tps: 501.0962
+  dps: 456.31812
+  tps: 484.45007
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 431.34333
-  tps: 459.69175
+  dps: 419.52354
+  tps: 447.87197
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Average-Default"
  value: {
-  dps: 425.38252
-  tps: 453.90122
+  dps: 413.31512
+  tps: 441.83382
  }
 }
 dps_results: {
@@ -239,7 +239,7 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 368.80613
-  tps: 395.79835
+  dps: 358.2479
+  tps: 385.24013
  }
 }

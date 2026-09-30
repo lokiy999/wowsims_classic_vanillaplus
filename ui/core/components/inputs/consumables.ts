@@ -509,6 +509,11 @@ export const ElixirOfBruteForce: ConsumableInputConfig<StrengthBuff> = {
 	actionId: () => ActionId.fromItemId(13453),
 	value: StrengthBuff.ElixirOfBruteForce,
 };
+// Brute Force stacks with Elixir of Giants / Juju Power on the server (Lokiy 2026-09-30), so it has its own toggle.
+export const ElixirOfBruteForceBuff = makeBooleanConsumeInput({
+	actionId: () => ActionId.fromItemId(13453),
+	fieldName: 'elixirOfBruteForce',
+});
 export const ScrollOfStrengthV: ConsumableInputConfig<StrengthBuff> = {
 	actionId: () => ActionId.fromItemId(81011),
 	value: StrengthBuff.ScrollOfStrengthV,
@@ -519,7 +524,6 @@ export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
 	{ config: ElixirOfGiants, stats: [Stat.StatStrength] },
 	{ config: ElixirOfOgresStrength, stats: [Stat.StatStrength] },
 	{ config: ScrollOfStrength, stats: [Stat.StatStrength] },
-	{ config: ElixirOfBruteForce, stats: [Stat.StatStrength, Stat.StatStamina] },
 	{ config: ScrollOfStrengthV, stats: [Stat.StatStrength] },
 ];
 

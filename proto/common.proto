@@ -733,7 +733,7 @@ message IndividualBuffs {
 	bool slipkiks_savvy = 14;
 }
 
-// NextIndex: 30
+// NextIndex: 31
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -763,6 +763,8 @@ message Consumes {
 	PetMiscConsumes pet_misc_consumes = 27;
 	SapperExplosive sapper_explosive = 28;
 	IntellectElixir intellect_elixir = 29;
+	// Stacks with the strength_buff slot (Elixir of Giants, Juju Power) on the server (Lokiy 2026-09-30).
+	bool elixir_of_brute_force = 30;
 }
 
 // NextIndex: 26

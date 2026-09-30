@@ -385,7 +385,8 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 }
 
 func DragonBreathChiliAura(character *Character) *Aura {
-	baseDamage := 60.0
+	// Server (Spell.csv 15851): 80 to 98 Fire damage; no spell power coefficient any more (Lokiy 2026-09-30).
+	minDamage, maxDamage := 80.0, 98.0
 	procChance := .05
 	icd := Cooldown{
 		Timer:    character.NewTimer(),
@@ -401,11 +402,10 @@ func DragonBreathChiliAura(character *Character) *Aura {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			for _, aoeTarget := range sim.Environment.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
@@ -560,7 +560,7 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 					weapon.BaseDamageMax += 4
 				}
 			}
-		case proto.StrengthBuff_ElixirOfBruteForce:
+		case proto.StrengthBuff_ElixirOfBruteForce: // old saved settings; the UI now uses elixir_of_brute_force
 			character.AddStats(stats.Stats{
 				stats.Strength: 15,
 				stats.Stamina:  15,
@@ -574,14 +574,23 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyIntellectBuffConsumes(character *Character, consumes *proto.Consumes) {
+	// Elixir of Brute Force has its own field: it stacks with Elixir of Giants and Juju Power (Lokiy 2026-09-30).
+	if consumes.ElixirOfBruteForce && consumes.StrengthBuff != proto.StrengthBuff_ElixirOfBruteForce {
+		character.AddStats(stats.Stats{
+			stats.Strength: 15,
+			stats.Stamina:  15,
+		})
+	}
+
 	if consumes.IntellectElixir == proto.IntellectElixir_IntellectElixirUnknown {
 		return
 	}
 
 	switch consumes.IntellectElixir {
 	case proto.IntellectElixir_ElixirOfGreaterIntellect:
+		// Does not stack with Arcane Intellect / Brilliance (Lokiy 2026-09-30): only the larger one counts.
 		character.AddStats(stats.Stats{
-			stats.Intellect: 25,
+			stats.Intellect: max(0, 25-character.arcaneIntellectAmount),
 		})
 	case proto.IntellectElixir_ElixirOfTheSages:
 		character.AddStats(stats.Stats{

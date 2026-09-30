@@ -4203,3 +4203,32 @@ Feral druids still do not get Windfury (it does not work in cat form). Strength 
 already had no faction check and show for every melee spec (Strength / Agility / MP5 in the sidebar), paladins
 included. The sim side never checked the faction for these. No other buff or consumable in the UI has a faction check
 (presets only use the faction to pick a race).
+
+## Part EC — Buff and consumable stacking from Lokiy's answers; Dragonbreath Chili (2026-09-30)
+
+Lokiy's answers (2026-09-30) on what stacks on the server, and what the sim does:
+- Scrolls stack with the class buffs (Scroll of Intellect / Stamina / Spirit with Arcane Intellect / Fortitude /
+  Divine Spirit): already so.
+- One temporary weapon enchant per weapon (Windfury / Flametongue Totem take the main-hand slot like stones, oils and
+  poisons): already so.
+- Strength of Earth stacks with Scroll of Strength; Grace of Air with Scroll of Agility and Elixir of the Mongoose;
+  Mana Spring with Blessing of Wisdom; Battle Shout, Blessing of Might and Trueshot Aura with each other: already so.
+- Juju Might / Winterfall Firewater, Elixir of Giants / Juju Power, Elixir of Greater Agility / Mongoose do not stack:
+  already so (each pair shares one consumable slot).
+- Blessing of Kings multiplies the total attributes, so the totem, Mark of the Wild, scroll and elixir attributes are
+  raised by it too (a stat dependency on the final value): already so.
+Changed:
+- **Elixir of Brute Force stacks with Elixir of Giants**: it had to share the Strength slot, so it has its own toggle
+  now (new `Consumes.elixir_of_brute_force = 30` in `proto/common.proto`; `sim/core/consumes.go`; UI icon next to the
+  Strength picker in `consumes_picker.ts`, `ElixirOfBruteForceBuff` in `consumables.ts`). The old Strength-slot value
+  still works for saved settings.
+- **Elixir of Greater Intellect does not stack with Arcane Intellect / Brilliance**: the elixir now only adds what is
+  above the Intellect Arcane Intellect already gave (`max(0, 25 - AI)`; buffs are applied before consumables,
+  `Character.arcaneIntellectAmount`), so with Arcane Brilliance (30 or more) it adds nothing.
+- **Dragonbreath Chili**: no spell power coefficient any more (Lokiy); damage 80 to 98 Fire (server 15851; was a flat
+  60). Proc chance (5%) and 10 sec cooldown unchanged (not in the data).
+Still open (question 36): Stoneskin Totem with Devotion Aura, Elixir of the Sages / Juju Guile with Arcane
+Brilliance, Brute Force with Juju Power.
+
+Test baselines regenerated: specs with spell power and the chili lose 2-3% (retribution / protection paladin,
+enhancement / tank shaman), warriors gain a little (higher chili damage), hunter and feral small changes.

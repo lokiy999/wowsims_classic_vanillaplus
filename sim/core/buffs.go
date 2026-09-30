@@ -264,6 +264,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		bonus := max(arcaneIntellectTypeBonus[raidBuffs.ArcaneIntellectType], raidBuffs.ArcaneIntellectBonus)
 		updateStats = updateStats.Multiply(1 + float64(bonus)/100).Floor()
 		character.AddStats(updateStats)
+		character.arcaneIntellectAmount = updateStats[stats.Intellect]
 	}
 	if raidBuffs.ScrollOfIntellect == proto.TristateEffect_TristateEffectRegular {
 		character.AddStats(BuffSpellValues[ScrollOfIntellect])

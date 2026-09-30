@@ -34,6 +34,10 @@ const CharacterBuildPhaseAll = CharacterBuildPhaseBase | CharacterBuildPhaseGear
 // class logic shares.
 // All players have stats, equipment, auras, etc
 type Character struct {
+	// Intellect from Arcane Intellect / Brilliance (buffs are applied before consumables); Elixir of Greater
+	// Intellect does not stack with it.
+	arcaneIntellectAmount float64
+
 	// Ranks of Improved Weapon Totems on the shaman providing Windfury Totem (from the raid buffs), +25%/rank effect.
 	ImprovedWeaponTotems int32
 

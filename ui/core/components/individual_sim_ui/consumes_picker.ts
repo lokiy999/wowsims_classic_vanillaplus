@@ -179,6 +179,9 @@ export class ConsumesPicker extends Component {
 			buildIconInput(physicalConsumesElem, this.simUI.player, agiBuffOptions),
 			buildIconInput(physicalConsumesElem, this.simUI.player, strBuffOptions),
 		];
+		if (includeStr) {
+			pickers.push(buildIconInput(physicalConsumesElem, this.simUI.player, ConsumablesInputs.ElixirOfBruteForceBuff));
+		}
 
 		this.updateRow(row, pickers);
 	}
