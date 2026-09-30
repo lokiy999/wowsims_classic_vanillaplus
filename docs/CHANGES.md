@@ -4343,3 +4343,10 @@ that setup (Sunder, Armor Shatter 3, Curse of the Elements, the log's consumable
 220 sec): 995 DPS vs 1068 in game. Per ability (sim vs game): auto attack 330 vs 403, Seal of Command 208 vs 241,
 Crusader Strike 144 vs 120, Judgement of Command 144 vs 140, Exorcism 69 vs 52, Consecration 44 vs 24 (on Loksey),
 Hammer of Wrath 22 vs 31, Judgement 8-piece 17 vs 38.
+
+## Part EL — Arcane Elixirs selectable for retribution paladin (2026-09-30)
+
+Lokiy: Greater Arcane Elixir (+35 spell damage) could not be picked on retribution paladin. The Spell Damage picker only
+showed for specs that list the Spell Damage stat; ret shows Spell Power and Holy Damage instead. The (Greater) Arcane
+Elixir options are now also tagged Spell Power and Holy Damage (`consumables.ts`), so every spec that shows spell power
+gets them (also rogue, hunter, enhancement shaman and the tanks, whose stat lists include spell power).

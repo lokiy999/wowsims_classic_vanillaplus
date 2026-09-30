@@ -868,8 +868,9 @@ export const KingsHeartBuff = makeBooleanConsumeInput({
 });
 
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
-	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellDamage] },
-	{ config: ArcaneElixir, stats: [Stat.StatSpellDamage] },
+	// Spell power / holy damage tags too, so hybrids like retribution paladin (no Spell Damage stat shown) see them.
+	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellDamage, Stat.StatSpellPower, Stat.StatHolyPower] },
+	{ config: ArcaneElixir, stats: [Stat.StatSpellDamage, Stat.StatSpellPower, Stat.StatHolyPower] },
 ];
 
 export const makeSpellPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'spellPowerBuff' });
