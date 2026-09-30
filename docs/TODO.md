@@ -5,6 +5,13 @@ Things either of us raised that are still open. Finished, answered or decided it
 
 _Cleaned up 2026-09-25 (after Part DH)._
 
+## Lokiy's list: implement next time Lokiy asks what to implement (added 2026-09-30)
+
+Do not start these on your own; bring them up when Lokiy asks what to work on next.
+- Tears of Teremus
+- King's Heart
+- Hunter Find Weakness (5% melee / ranged crit)
+
 ## Questions for Lokiy (collected 2026-09-24)
 
 Things only you can answer; everything else I keep working on. Newest at the bottom. Numbers are kept as they were
