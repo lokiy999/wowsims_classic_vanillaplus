@@ -541,10 +541,15 @@ export const JujuGuile: ConsumableInputConfig<IntellectElixir> = {
 	value: IntellectElixir.JujuGuile,
 };
 
+// Juju Guile stacks with Elixir of the Sages (Lokiy 2026-09-30), so it has its own toggle.
+export const JujuGuileBuff = makeBooleanConsumeInput({
+	actionId: () => ActionId.fromItemId(12458),
+	fieldName: 'jujuGuile',
+});
+
 export const INTELLECT_CONSUMES_CONFIG: ConsumableStatOption<IntellectElixir>[] = [
 	{ config: ElixirOfGreaterIntellect, stats: [Stat.StatIntellect] },
 	{ config: ElixirOfTheSages, stats: [Stat.StatIntellect, Stat.StatSpirit] },
-	{ config: JujuGuile, stats: [Stat.StatIntellect] },
 ];
 
 export const makeIntellectConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'intellectElixir' });

@@ -4350,3 +4350,11 @@ Lokiy: Greater Arcane Elixir (+35 spell damage) could not be picked on retributi
 showed for specs that list the Spell Damage stat; ret shows Spell Power and Holy Damage instead. The (Greater) Arcane
 Elixir options are now also tagged Spell Power and Holy Damage (`consumables.ts`), so every spec that shows spell power
 gets them (also rogue, hunter, enhancement shaman and the tanks, whose stat lists include spell power).
+
+## Part EM — Juju Guile stacks with Elixir of the Sages (2026-09-30)
+
+Lokiy: Juju Guile and Elixir of the Sages stack, but both were options of the one Intellect picker. Juju Guile (+30
+Intellect) now has its own toggle `Consumes.juju_guile = 34` in the Spells row (specs with Intellect in their EP
+stats); the picker keeps Elixir of Greater Intellect and Elixir of the Sages. The old `IntellectElixir_JujuGuile` value
+still works for saved settings and is not counted twice. Files: `proto/common.proto`, `sim/core/consumes.go`,
+`consumables.ts`, `consumes_picker.ts`.

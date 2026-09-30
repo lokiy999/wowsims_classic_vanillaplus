@@ -733,7 +733,7 @@ message IndividualBuffs {
 	bool slipkiks_savvy = 14;
 }
 
-// NextIndex: 34
+// NextIndex: 35
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -772,6 +772,8 @@ message Consumes {
 	// Scroll of Unlimited Power (item 26093, Shen'dralar): +30 spell damage for 30 min, stacks with (Greater) Arcane
 	// Elixir (Lokiy 2026-09-30).
 	bool scroll_of_unlimited_power = 33;
+	// Juju Guile (+30 Intellect) stacks with Elixir of the Sages (Lokiy 2026-09-30), so it has its own toggle.
+	bool juju_guile = 34;
 }
 
 // NextIndex: 28

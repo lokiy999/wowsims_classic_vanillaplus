@@ -589,6 +589,13 @@ func applyIntellectBuffConsumes(character *Character, consumes *proto.Consumes) 
 		})
 	}
 
+	// Juju Guile has its own field: it stacks with Elixir of the Sages (Lokiy 2026-09-30).
+	if consumes.JujuGuile && consumes.IntellectElixir != proto.IntellectElixir_JujuGuile {
+		character.AddStats(stats.Stats{
+			stats.Intellect: 30,
+		})
+	}
+
 	if consumes.IntellectElixir == proto.IntellectElixir_IntellectElixirUnknown {
 		return
 	}
@@ -604,7 +611,7 @@ func applyIntellectBuffConsumes(character *Character, consumes *proto.Consumes) 
 			stats.Intellect: 20,
 			stats.Spirit:    20,
 		})
-	case proto.IntellectElixir_JujuGuile:
+	case proto.IntellectElixir_JujuGuile: // old saved settings; the UI now uses juju_guile
 		character.AddStats(stats.Stats{
 			stats.Intellect: 30,
 		})

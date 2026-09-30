@@ -257,6 +257,9 @@ export class ConsumesPicker extends Component {
 			buildIconInput(spellsCnsumesElem, this.simUI.player, mp5BuffOptions),
 			buildIconInput(spellsCnsumesElem, this.simUI.player, intBuffOptions),
 		];
+		if (this.simUI.individualConfig.epStats.includes(Stat.StatIntellect)) {
+			pickers.push(buildIconInput(spellsCnsumesElem, this.simUI.player, ConsumablesInputs.JujuGuileBuff));
+		}
 		const epStats = this.simUI.individualConfig.epStats;
 		if (epStats.includes(Stat.StatSpellDamage) || epStats.includes(Stat.StatSpellPower) || epStats.includes(Stat.StatHealingPower)) {
 			pickers.push(buildIconInput(spellsCnsumesElem, this.simUI.player, ConsumablesInputs.TearsOfTeremusBuff));
