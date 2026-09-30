@@ -11,6 +11,7 @@ Do not start these on your own; bring them up when Lokiy asks what to work on ne
 - Tears of Teremus
 - King's Heart
 - Hunter Find Weakness (5% melee / ranged crit)
+- Curses
 
 ## Questions for Lokiy (collected 2026-09-24)
 
