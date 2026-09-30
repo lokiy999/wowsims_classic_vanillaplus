@@ -4244,3 +4244,19 @@ Both give armor. They are now one exclusive effect category (`ArmorAuraEffectCat
 talent and Libram of Truth bonuses. Also applies to a shaman's own Stoneskin Totem. Checked with a throwaway
 ComputeStats test (human warrior, no gear): Devotion only +700, improved Stoneskin only +1050, both +1050. Test
 baselines unchanged (no test has both).
+
+## Part EE — Extra attacks no longer reset the swing timer (2026-09-30)
+
+Lokiy: "Extra attacks no longer reset the attack timer." In the sim (classic behaviour), an extra attack (Windfury
+Totem / Weapon, Hand of Justice, Sword Specialization, Thrash Blade, Ironfoe, Flurry Axe, ...: everything that goes
+through `AutoAttacks.ExtraMHAttack`) set the main-hand swing to now, and that swing then started a full new swing
+timer. Now the extra attack still happens at once, but the regular main-hand swing it interrupted keeps its time:
+`ExtraMHAttack` remembers the scheduled swing (`resumeSwingAt` / `resumeLastSwingAt` on `WeaponAttack`), and the
+extra-attack swing restores it instead of starting a new timer (`sim/core/attack.go`; cleared on reset). Stored extra
+attacks (released with the next regular swing) are unchanged.
+
+Checked in a combat log (fury warrior, phase 1 gear, Windfury Totem, auto attacks only): main-hand swings at 1.03,
+3.63, 6.23, 8.83, ... every 2.60 sec, with the Windfury extra attacks at 3.64 and 19.24 in between; the next swing
+after them stays at 6.23 / 21.83 (it was pushed to 3.64 + 2.60 before).
+
+Test baselines regenerated: rogue +0.2 to +0.8%, fury warrior +0.7%, hunter -0.3%, enhancement shaman about 0.

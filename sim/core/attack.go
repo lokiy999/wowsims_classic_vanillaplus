@@ -251,6 +251,12 @@ type WeaponAttack struct {
 	extraAttacksPending int32 // extraAttacks prior to previous ones resolving for spell metrics
 	extraAttacksAura    *Aura
 
+	// Server: extra attacks no longer reset the attack timer (Lokiy 2026-09-30). When an extra attack is granted, the
+	// regular swing it interrupts is remembered and restored after the extra attack(s).
+	hasResumeSwing    bool
+	resumeSwingAt     time.Duration
+	resumeLastSwingAt time.Duration
+
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
 }
@@ -334,8 +340,14 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		// Update swing timer BEFORE the cast, so that APL checks for TimeToNextAuto behave correctly
 		// if the attack causes APL evaluations (e.g. from rage gain).
 
-		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
-		wa.lastSwingAt = sim.CurrentTime
+		if isExtraAttack && wa.hasResumeSwing {
+			// Extra attack: the regular swing timer keeps running (no reset).
+			wa.swingAt = max(wa.resumeSwingAt, sim.CurrentTime)
+			wa.lastSwingAt = wa.resumeLastSwingAt
+		} else {
+			wa.swingAt = sim.CurrentTime + wa.curSwingDuration
+			wa.lastSwingAt = sim.CurrentTime
+		}
 
 		// don't update isExtraAttack here
 
@@ -368,8 +380,12 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		if wa.extraAttacksPending > 0 {
 			wa.spell.SetMetricsSplit(1)
 			wa.swingAt = sim.CurrentTime + SpellBatchWindow
-			wa.lastSwingAt = sim.CurrentTime
+			if !wa.hasResumeSwing {
+				wa.lastSwingAt = sim.CurrentTime
+			}
 			sim.rescheduleWeaponAttack(wa.swingAt) // Required to fix extra attack procs triggered during swing
+		} else if isExtraAttack {
+			wa.hasResumeSwing = false
 		}
 
 		if !sim.Options.Interactive && wa.unit.Rotation != nil {
@@ -576,6 +592,7 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 	// Make sure extra attacks are reset
 	aa.mh.extraAttacks = 0
 	aa.mh.extraAttacksPending = 0
+	aa.mh.hasResumeSwing = false
 	aa.mh.spell.SetMetricsSplit(0)
 
 	if aa.ranged.spell != nil {
@@ -759,6 +776,12 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 		aa.mh.unit.Log(sim, "gained %d extra main-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 
+	if !aa.mh.hasResumeSwing {
+		// Remember the regular swing: the extra attack happens now, the swing timer is not reset.
+		aa.mh.hasResumeSwing = true
+		aa.mh.resumeSwingAt = aa.mh.swingAt
+		aa.mh.resumeLastSwingAt = aa.mh.lastSwingAt
+	}
 	aa.mh.swingAt = sim.CurrentTime
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)

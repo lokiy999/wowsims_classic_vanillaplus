@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.163
-  weights: 6.74108
-  weights: 4.67008
+  weights: 6.67455
+  weights: 4.7264
   weights: 0
   weights: 0
   weights: 0
@@ -197,7 +197,7 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase2-StatWeights-Default"
  value: {
-  weights: 0.39056
+  weights: 0.39054
   weights: 0.24575
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.16139
-  weights: 6.67354
-  weights: 4.68487
+  weights: 0.16138
+  weights: 6.59745
+  weights: 4.70687
   weights: 0
   weights: 0
   weights: 0
@@ -246,12 +246,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase3-StatWeights-Default"
  value: {
-  weights: 0.38751
+  weights: 0.38749
   weights: 0.35531
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.05116
+  weights: 0.05113
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.16013
-  weights: 6.54883
-  weights: 4.99415
+  weights: 0.16012
+  weights: 6.5654
+  weights: 5.00577
   weights: 0
   weights: 0
   weights: 0
@@ -295,15 +295,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestEnhancement-Phase1-AllItems-Augur'sRegalia"
  value: {
-  dps: 518.28645
-  tps: 520.98913
+  dps: 518.13427
+  tps: 520.83694
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-AllItems-CataclysmArmor"
  value: {
-  dps: 573.52296
-  tps: 573.82271
+  dps: 573.19864
+  tps: 573.49839
  }
 }
 dps_results: {
@@ -323,8 +323,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase1-AllItems-TheFiveThunders"
  value: {
-  dps: 552.01649
-  tps: 556.57941
+  dps: 551.75609
+  tps: 556.33134
  }
 }
 dps_results: {
@@ -337,22 +337,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase1-AllItems-TheTenStorms"
  value: {
-  dps: 468.26883
-  tps: 468.93513
+  dps: 468.39846
+  tps: 469.06476
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 526.19268
-  tps: 530.22756
+  dps: 526.20944
+  tps: 530.24432
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Average-Default"
  value: {
-  dps: 582.59718
-  tps: 587.70412
+  dps: 582.61839
+  tps: 587.72924
  }
 }
 dps_results: {
@@ -526,22 +526,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 461.96082
-  tps: 466.63426
+  dps: 462.12913
+  tps: 466.91567
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase2-AllItems-Augur'sRegalia"
  value: {
-  dps: 507.20906
-  tps: 509.91173
+  dps: 506.89426
+  tps: 509.59693
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase2-AllItems-CataclysmArmor"
  value: {
-  dps: 561.30304
-  tps: 561.74331
+  dps: 560.98324
+  tps: 561.42351
  }
 }
 dps_results: {
@@ -561,8 +561,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase2-AllItems-TheFiveThunders"
  value: {
-  dps: 540.92373
-  tps: 545.48665
+  dps: 540.66333
+  tps: 545.23858
  }
 }
 dps_results: {
@@ -575,22 +575,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase2-AllItems-TheTenStorms"
  value: {
-  dps: 458.82293
-  tps: 459.48923
+  dps: 458.9503
+  tps: 459.61661
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase2-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 516.97688
-  tps: 521.01176
+  dps: 516.99364
+  tps: 521.02851
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase2-Average-Default"
  value: {
-  dps: 571.42498
-  tps: 576.53192
+  dps: 571.45244
+  tps: 576.56329
  }
 }
 dps_results: {
@@ -764,8 +764,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase2-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 455.59524
-  tps: 460.26868
+  dps: 455.76354
+  tps: 460.55008
  }
 }
 dps_results: {
@@ -778,15 +778,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-CataclysmArmor"
  value: {
-  dps: 576.59626
-  tps: 576.31008
+  dps: 576.42346
+  tps: 576.13729
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-Champion'sStormcaller"
  value: {
-  dps: 502.54663
-  tps: 506.05508
+  dps: 502.37822
+  tps: 505.88667
  }
 }
 dps_results: {
@@ -799,8 +799,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-TheFiveThunders"
  value: {
-  dps: 553.6077
-  tps: 558.17062
+  dps: 553.53309
+  tps: 558.10834
  }
 }
 dps_results: {
@@ -813,22 +813,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-TheTenStorms"
  value: {
-  dps: 471.12373
-  tps: 471.79004
+  dps: 471.27084
+  tps: 471.93714
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase3-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 520.22619
-  tps: 523.06178
+  dps: 520.2923
+  tps: 523.14717
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase3-Average-Default"
  value: {
-  dps: 588.67618
-  tps: 591.97053
+  dps: 588.72516
+  tps: 592.02741
  }
 }
 dps_results: {
