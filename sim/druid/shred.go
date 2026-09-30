@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerShredSpell() {
-	damageMultiplier := 2.25
+	damageMultiplier := 2.5 // server (Spell.csv 9830): 250% weapon damage plus 200 (80 x 2.5)
 	flatDamageBonus := map[int32]float64{
 		25: 24,
 		40: 44,

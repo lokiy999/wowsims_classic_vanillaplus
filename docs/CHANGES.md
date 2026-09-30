@@ -4089,3 +4089,17 @@ off-hand 163 average. The test rotations do not use Overpower: baselines unchang
 `sim/warrior/overpower.go`.
 
 Left open (TODO.md): Rend's server text says "increased by your Attack Power", but the data has no coefficient.
+
+## Part DW — Feral druid, paladin and heals vs the server; Shred 250% (2026-09-30)
+
+Compared with `Spell.csv` (same method as Parts DS-DV):
+- **Feral druid**: Claw (+115), Rake (60 + 30 per 3 sec), Rip (17 + 28 per combo point per 2 sec tick, 1 point =
+  270 over 12 sec as in the tooltip), Ferocious Bite (52-112, +147 per combo point), Tiger's Fury, Swipe match.
+  **Shred** did not: the server is 250% weapon damage plus 200 (80 x 2.5); the sim used 225% (2.25 x (80 + weapon)).
+  Now 2.5. File: `sim/druid/shred.go`. Feral test baseline up (Shred is most of the cat's damage; +11% in the
+  no-buffs case).
+- **Paladin**: Consecration (8/15/24/35/48 per tick), Exorcism, Hammer of Wrath, Holy Shield, Holy Wrath and their
+  mana costs match. Hammer of Wrath ranks 1-2 have per-level scaling the sim leaves out (only below level 60).
+- **Heals** (every rank of `sim/{priest,druid,shaman,paladin}/heals.go`: heal ranges at level 60, HoT ticks, mana):
+  all match. Tranquility's heal is in its triggered spells (35768-35771) and Holy Shock's mana cost is on the cast
+  spell, both already used.
