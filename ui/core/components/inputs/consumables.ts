@@ -9,7 +9,6 @@ import {
 	Conjured,
 	Consumes,
 	Explosive,
-	Faction,
 	FirePowerBuff,
 	Flask,
 	Food,
@@ -163,14 +162,14 @@ export const CONJURED_CONFIG: ConsumableStatOption<Conjured>[] = [
 	{ config: ConjuredGreaterHealthstone, stats: [Stat.StatArmor] },
 	{ config: ConjuredHealthstone, stats: [Stat.StatArmor] },
 
-	{ config: ConjuredDemonicRune, stats: [Stat.StatIntellect] },
-	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect] },
+	{ config: ConjuredDemonicRune, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: ConjuredMinorRecombobulator, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 
 	{ config: ConjuredRogueThistleTea, stats: [] },
 
 	{ config: ConjuredWhipperRootTuber, stats: [Stat.StatArmor] },
-	{ config: ConjuredNightDragonsBreath, stats: [Stat.StatArmor] },
-	{ config: ConjuredLilyRoot, stats: [Stat.StatArmor] },
+	{ config: ConjuredNightDragonsBreath, stats: [Stat.StatArmor, Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: ConjuredLilyRoot, stats: [Stat.StatArmor, Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 ];
 
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });
@@ -258,7 +257,7 @@ export const FlaskOfIndomitableMight: ConsumableInputConfig<Flask> = {
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [] },
-	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
+	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfChromaticResistance, stats: [] },
 	{ config: FlaskOfIndomitableMight, stats: [Stat.StatAttackPower] },
@@ -324,12 +323,12 @@ export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
 	{ config: SmokedDesertDumpling, stats: [Stat.StatStrength] },
 	{ config: RunnTumTuberSurprise, stats: [Stat.StatIntellect] },
 	{ config: BlessSunfruit, stats: [Stat.StatStrength] },
-	{ config: BlessedSunfruitJuice, stats: [Stat.StatSpirit] },
-	{ config: NightfinSoup, stats: [Stat.StatMP5] },
+	{ config: BlessedSunfruitJuice, stats: [Stat.StatSpirit, Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: NightfinSoup, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 	{ config: TenderWolfSteak, stats: [Stat.StatStamina, Stat.StatSpirit] },
-	{ config: SagefishDelight, stats: [Stat.StatMP5] },
+	{ config: SagefishDelight, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 	{ config: HotWolfRibs, stats: [Stat.StatSpirit] },
-	{ config: SmokedSagefish, stats: [Stat.StatMP5] },
+	{ config: SmokedSagefish, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({ consumesFieldName: 'food' });
@@ -801,10 +800,10 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: SuperiorHealingPotion, stats: [Stat.StatArmor] },
 	{ config: GreaterHealingPotion, stats: [Stat.StatArmor] },
 
-	{ config: MajorManaPotion, stats: [Stat.StatIntellect] },
-	{ config: SuperiorManaPotion, stats: [Stat.StatIntellect] },
-	{ config: GreaterManaPotion, stats: [Stat.StatIntellect] },
-	{ config: ManaPotion, stats: [Stat.StatIntellect] },
+	{ config: MajorManaPotion, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: SuperiorManaPotion, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: GreaterManaPotion, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: ManaPotion, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 
 	{ config: MightRagePotion, stats: [] },
 	{ config: GreatRagePotion, stats: [] },
@@ -826,7 +825,7 @@ export const POTIONS_CONFIG: ConsumableStatOption<Potions>[] = [
 	{ config: StrongTrollsBloodPotion, stats: [Stat.StatArmor] },
 	{ config: WeakTrollsBloodPotion, stats: [Stat.StatArmor] },
 
-	{ config: MajorRejuvenationPotion, stats: [Stat.StatArmor] },
+	{ config: MajorRejuvenationPotion, stats: [Stat.StatArmor, Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 ];
 
 export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });
@@ -901,7 +900,7 @@ export const MagebloodPotion: ConsumableInputConfig<ManaRegenElixir> = {
 	value: ManaRegenElixir.MagebloodPotion,
 };
 
-export const MP5_CONFIG: ConsumableStatOption<ManaRegenElixir>[] = [{ config: MagebloodPotion, stats: [Stat.StatMP5] }];
+export const MP5_CONFIG: ConsumableStatOption<ManaRegenElixir>[] = [{ config: MagebloodPotion, stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] }];
 
 export const makeMp5ConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'manaRegenElixir' });
 
@@ -914,8 +913,9 @@ export const Windfury: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromSpellId(10614),
 	value: WeaponImbue.Windfury,
 	showWhen: player => {
-		// Shamans use their own Windfury Weapon.
-		return player.getClass() !== Class.ClassShaman && player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid);
+		// Shamans use their own Windfury Weapon. Any faction: the server is cross-faction (paladins get totems too).
+		// Feral druids: Windfury does not work in cat form.
+		return player.getClass() !== Class.ClassShaman && !player.isSpec(Spec.SpecFeralDruid);
 	},
 };
 
@@ -924,7 +924,7 @@ export const FlametongueTotem: ConsumableInputConfig<WeaponImbue> = {
 	actionId: () => ActionId.fromSpellId(16387),
 	value: WeaponImbue.FlametongueTotem,
 	showWhen: player => {
-		return player.getClass() !== Class.ClassShaman && player.getFaction() === Faction.Horde && !player.isSpec(Spec.SpecFeralDruid);
+		return player.getClass() !== Class.ClassShaman && !player.isSpec(Spec.SpecFeralDruid);
 	},
 };
 
@@ -1121,9 +1121,9 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: MinorWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: BlessedWizardOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 
-	{ config: BrilliantManaOil(slot), stats: [Stat.StatMP5, Stat.StatHealingPower] },
-	{ config: LesserManaOil(slot), stats: [Stat.StatMP5] },
-	{ config: MinorManaOil(slot), stats: [Stat.StatMP5] },
+	{ config: BrilliantManaOil(slot), stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5, Stat.StatHealingPower] },
+	{ config: LesserManaOil(slot), stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
+	{ config: MinorManaOil(slot), stats: [Stat.StatIntellect, Stat.StatMana, Stat.StatMP5] },
 
 	{ config: ConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },

@@ -4179,3 +4179,27 @@ tank shaman -9% (Stormstrike), hunter and rogue slightly lower (Nature damage), 
 tank +0.9% (the boss no longer misses more, so more rage). Files: `sim/core/buffs.go`, `sim/core/debuffs.go`.
 UI: the Insect Swarm debuff is no longer listed (it has no effect on the server) and the Stormstrike settings no
 longer show "Other Nature Attacks Frequency" (`ui/core/components/inputs/buffs_debuffs.ts`, `other_inputs.ts`).
+
+## Part EB — Mana consumables for every mana user; totems for every faction (2026-09-30)
+
+Lokiy: every class should have access to all mana consumables (like the priest pages with Lily Root), and all melee
+classes, paladins included, to the totems.
+
+**Why they were missing.** A consumable or buff option is only shown on a spec page when one of its tagged stats is in
+the spec's sidebar stats (`relevantStatOptions`, `ui/core/components/inputs/stat_options.ts`). Lily Root, Night
+Dragon's Breath and Major Rejuvenation Potion were tagged Armor only (the two priest pages listed them by hand), and
+Mageblood, the mana oils and the mana fish foods only MP5 (the protection paladin sidebar has no MP5).
+
+**Mana consumables** (`ui/core/components/inputs/consumables.ts`): tagged with Intellect, Mana and MP5, so every spec
+that shows any of them gets them: mana potions (Major/Superior/Greater/normal), Major Rejuvenation Potion, Demonic
+Rune, Night Dragon's Breath, Lily Root, Minor Recombobulator (still only with the trinket equipped), Flask of Distilled
+Wisdom, Mageblood Potion, Nightfin Soup, Sagefish Delight, Smoked Sagefish, Blessed Sunfruit Juice and the three mana
+oils. Healing and armor tags stay for the tank pages. Every mana-using spec page shows Intellect or Mana (feral tank,
+which shows neither, is the only exception).
+
+**Totems.** Windfury Totem and Flametongue Totem (weapon imbue options for non-shamans) were shown for Horde characters
+only; the server is cross-faction, so the faction check is removed (Lokiy: "This faction restriction can be removed").
+Feral druids still do not get Windfury (it does not work in cat form). Strength of Earth, Grace of Air and Mana Spring
+already had no faction check and show for every melee spec (Strength / Agility / MP5 in the sidebar), paladins
+included. The sim side never checked the faction for these. No other buff or consumable in the UI has a faction check
+(presets only use the faction to pick a race).
