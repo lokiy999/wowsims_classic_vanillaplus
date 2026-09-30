@@ -4274,3 +4274,17 @@ Both scrolls are now scroll buffs like Stamina / Intellect / Spirit: an icon in 
 Strength / Agility slot values still work for saved settings. UI: removed from the Strength and Agility pickers
 (`consumables.ts`), `ScrollOfStrength` / `ScrollOfAgility` in `buffs_debuffs.ts`, added to the Scrolls row
 (`consumes_picker.ts`). No preset or test used them: baselines unchanged.
+
+## Part EG — Tears of Teremus and King's Heart as stacking consumes (2026-09-30)
+
+Lokiy: add the Tears of Teremus and King's Heart buffs to the specs that use them; "stacks with everything else".
+- Tears of Teremus (item 26430, "increasing spell damage and healing by up to 120 for 30 min") was already in the sim
+  (Part T), but as an option of the Spell Damage picker, so it could not be combined with (Greater) Arcane Elixir. It
+  now has its own toggle in the Spells row, shown for specs that use spell damage, spell power or healing.
+- King's Heart (item 26013, King Mosh in Un'Goro, "granting you 200 Attack Power for 30 min") is new: +200 attack
+  power, own toggle in the Physical row, shown for specs that use attack power.
+
+`proto/common.proto`: `Consumes.tears_of_teremus = 31`, `Consumes.kings_heart = 32`. `sim/core/consumes.go` applies
+them (the old `SpellPowerBuff_TearsOfTeremus` value still works for saved settings and is not counted twice). UI:
+`TearsOfTeremusBuff` / `KingsHeartBuff` in `consumables.ts`, added in `consumes_picker.ts`. No preset uses them:
+baselines unchanged.

@@ -850,8 +850,19 @@ export const TearsOfTeremus: ConsumableInputConfig<SpellPowerBuff> = {
 	value: SpellPowerBuff.TearsOfTeremus,
 };
 
+// Tears of Teremus stacks with everything else (Lokiy 2026-09-30), so it has its own toggle instead of being in the
+// Spell Damage picker with the Arcane Elixirs.
+export const TearsOfTeremusBuff = makeBooleanConsumeInput({
+	actionId: () => ActionId.fromItemId(26430),
+	fieldName: 'tearsOfTeremus',
+});
+// King's Heart (Un'Goro, King Mosh): +200 attack power for 30 min, stacks with everything else (Lokiy 2026-09-30).
+export const KingsHeartBuff = makeBooleanConsumeInput({
+	actionId: () => ActionId.fromItemId(26013),
+	fieldName: 'kingsHeart',
+});
+
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
-	{ config: TearsOfTeremus, stats: [Stat.StatSpellDamage, Stat.StatHealingPower] },
 	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellDamage] },
 	{ config: ArcaneElixir, stats: [Stat.StatSpellDamage] },
 ];

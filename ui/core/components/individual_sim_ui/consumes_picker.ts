@@ -184,6 +184,9 @@ export class ConsumesPicker extends Component {
 		if (includeStr) {
 			pickers.push(buildIconInput(physicalConsumesElem, this.simUI.player, ConsumablesInputs.ElixirOfBruteForceBuff));
 		}
+		if (this.simUI.individualConfig.epStats.includes(Stat.StatAttackPower)) {
+			pickers.push(buildIconInput(physicalConsumesElem, this.simUI.player, ConsumablesInputs.KingsHeartBuff));
+		}
 
 		this.updateRow(row, pickers);
 	}
@@ -254,6 +257,10 @@ export class ConsumesPicker extends Component {
 			buildIconInput(spellsCnsumesElem, this.simUI.player, mp5BuffOptions),
 			buildIconInput(spellsCnsumesElem, this.simUI.player, intBuffOptions),
 		];
+		const epStats = this.simUI.individualConfig.epStats;
+		if (epStats.includes(Stat.StatSpellDamage) || epStats.includes(Stat.StatSpellPower) || epStats.includes(Stat.StatHealingPower)) {
+			pickers.push(buildIconInput(spellsCnsumesElem, this.simUI.player, ConsumablesInputs.TearsOfTeremusBuff));
+		}
 
 		this.updateRow(row, pickers);
 	}

@@ -8,8 +8,6 @@ _Cleaned up 2026-09-25 (after Part DH)._
 ## Lokiy's list: implement next time Lokiy asks what to implement (added 2026-09-30)
 
 Do not start these on your own; bring them up when Lokiy asks what to work on next.
-- Tears of Teremus
-- King's Heart
 - Hunter Find Weakness (5% melee / ranged crit)
 - Curses
 

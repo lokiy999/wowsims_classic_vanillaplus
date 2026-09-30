@@ -733,7 +733,7 @@ message IndividualBuffs {
 	bool slipkiks_savvy = 14;
 }
 
-// NextIndex: 31
+// NextIndex: 33
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -765,6 +765,10 @@ message Consumes {
 	IntellectElixir intellect_elixir = 29;
 	// Stacks with the strength_buff slot (Elixir of Giants, Juju Power) on the server (Lokiy 2026-09-30).
 	bool elixir_of_brute_force = 30;
+	// Tears of Teremus (item 26430, +120 spell damage and healing) and King's Heart (item 26013, +200 attack power)
+	// stack with everything else (Lokiy 2026-09-30), so each has its own toggle.
+	bool tears_of_teremus = 31;
+	bool kings_heart = 32;
 }
 
 // NextIndex: 26

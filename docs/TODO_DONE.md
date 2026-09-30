@@ -181,3 +181,7 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
   Arathor, The Wall's Chime, Ultra-Flash Shadow Reflector, Ultrasafe Transporter: Gadgetzan, Vial of Elune's Light.
 - Warlock Withering Shroud (5 yd around the warlock) and Death and Decay (20 yd): do nothing at range, left out
   (Part DF).
+
+## Lokiy's list (2026-09-30)
+- Tears of Teremus: own toggle, stacks with everything (Part EG)
+- King's Heart: +200 attack power, own toggle, stacks with everything (Part EG)

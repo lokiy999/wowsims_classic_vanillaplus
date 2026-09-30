@@ -574,6 +574,13 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyIntellectBuffConsumes(character *Character, consumes *proto.Consumes) {
+	// King's Heart: "granting you 200 Attack Power for 30 min", stacks with everything else (Lokiy 2026-09-30).
+	if consumes.KingsHeart {
+		character.AddStats(stats.Stats{
+			stats.AttackPower: 200,
+		})
+	}
+
 	// Elixir of Brute Force has its own field: it stacks with Elixir of Giants and Juju Power (Lokiy 2026-09-30).
 	if consumes.ElixirOfBruteForce && consumes.StrengthBuff != proto.StrengthBuff_ElixirOfBruteForce {
 		character.AddStats(stats.Stats{
@@ -619,12 +626,20 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.SpellDamage: 35,
 			})
-		case proto.SpellPowerBuff_TearsOfTeremus:
+		case proto.SpellPowerBuff_TearsOfTeremus: // old saved settings; the UI now uses tears_of_teremus
 			character.AddStats(stats.Stats{
 				stats.SpellDamage:  120,
 				stats.HealingPower: 120,
 			})
 		}
+	}
+
+	// Tears of Teremus stacks with everything else (Lokiy 2026-09-30).
+	if consumes.TearsOfTeremus && consumes.SpellPowerBuff != proto.SpellPowerBuff_TearsOfTeremus {
+		character.AddStats(stats.Stats{
+			stats.SpellDamage:  120,
+			stats.HealingPower: 120,
+		})
 	}
 
 	if consumes.FirePowerBuff != proto.FirePowerBuff_FirePowerBuffUnknown {
