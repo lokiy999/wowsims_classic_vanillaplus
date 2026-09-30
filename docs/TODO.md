@@ -62,7 +62,7 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     next offensive ability by 8%." How long does that buff last (sim: 15 sec)? Is it used up by the next ability?
 28. **Gauntlets of Might (16863) and Arcanist Boots (16800)** (Part CX): the dump still has these classic pieces with
     the old set bonuses, next to the renumbered pieces. Can players still get them, or should they leave the DB?
-29. **Set proc chances** (Part CX): Lightforge 6 / Soulforge 4 (+5% crit for 10 sec) and The Elements 6 (+100 attack
+29. **Set proc chances** (Part CX; Soulforge 4 added in Part DY): Lightforge 6 / Soulforge 4 (+5% crit for 10 sec) and The Elements 6 (+100 attack
     power, damage and healing) say "chance on offensive action" without a number; the sim uses 6% / 6% / 4%.
 30. **Items whose effect type changed** (Part CY): Seeping Willow ("Use: Lowers all stats by 50, armor by 400 and deals
     20 Nature damage every 3 sec ... for 30 sec") and Ragehammer ("Use: Instantly generates 80 rage and increases damage

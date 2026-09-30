@@ -79,12 +79,11 @@ var ItemSetBloodvineGarb = core.NewItemSet(core.ItemSet{
 var ItemSetBloodTigerHarness = core.NewItemSet(core.ItemSet{
 	Name: "Blood Tiger Harness",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Improves your chance to get a critical strike by 1%.
-		// Improves your chance to get a critical strike with spells by 1%.
+		// Server: Improves your critical strike chance for all attacks and spells by 2%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-			character.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+			character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+			character.AddStat(stats.SpellCrit, 2*core.SpellCritRatingPerCritChance)
 		},
 	},
 })

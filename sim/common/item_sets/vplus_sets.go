@@ -1,13 +1,15 @@
 package item_sets
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 )
 
 // Sets in the DB that had no code. Bonus texts from the server's item dump (CSV's/VPlusItemDB.lua).
-// Not modeled: Soulforge Armor 4 (crit proc, rate unknown), Vestments of the Virtuous 4 (damage shield proc),
+// Not modeled: Vestments of the Virtuous 4 (damage shield proc),
 // Augur's Regalia 2/3 (Frost Shock duration, spell range), Primal Batskin / Primal Fury / Gurubashi Ceremonial
 // Blades (movement, kill and heal procs), The Fists of Fury (its items have no set name in the DB).
 
@@ -134,6 +136,27 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 		// +10 Resistances/+200 Armor.
 		2: func(agent core.Agent) {
 			addResistancesAndArmor(agent.GetCharacter(), 10, 200)
+		},
+		// Chance on offensive action to increase your melee and spell critical strike chance for 5% for 10 sec.
+		// Same effect as Lightforge Armor 6; the proc chance is not in the data, 6% like Lightforge (question 29).
+		4: func(agent core.Agent) {
+			c := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 27498}
+			procAura := c.NewTemporaryStatsAura("Crusader's Wrath (Soulforge)", actionID, stats.Stats{
+				stats.MeleeCrit: 5 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 5 * core.SpellCritRatingPerCritChance,
+			}, time.Second*10)
+			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
+				ActionID:   actionID,
+				Name:       "Item - Crusader's Wrath Proc - Soulforge Armor",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskMelee | core.ProcMaskSpellDamage,
+				ProcChance: 0.06,
+				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					procAura.Activate(sim)
+				},
+			})
 		},
 		// +40 Attack Power.
 		6: func(agent core.Agent) {

@@ -4132,3 +4132,15 @@ loop, which the script did not follow).
 
 `sim/common/item_effects.go` was also run through gofmt (four lines were misformatted before). Test baselines
 unchanged. File: `sim/common/item_effects.go`.
+
+## Part DY — Set bonuses re-checked against VPlusItemDB (2026-09-30)
+
+A script collected every set's "(N) Set:" lines from `VPlusItemDB.lua` (by the "Set Name (0/N)" line of each piece)
+and compared them with the `core.NewItemSet` code. Part CX had already done this; most flags were known: the tier 1
+sets have both the classic pieces (2/4/6/8 bonuses) and the renumbered server pieces in the dump (question 28), and the
+rest are utility bonuses (range, movement, pet, Blink, Judgement of Light, shields). Two fixes:
+- **Blood Tiger Harness** 2: +2% crit for attacks and spells (was 1%). `sim/common/item_sets/crafted.go`.
+- **Soulforge Armor** 4: "Chance on offensive action to increase your melee and spell critical strike chance for 5%
+  for 10 sec" was not modeled; it is the same effect as Lightforge Armor 6, now added with the same assumed 6% chance
+  (question 29). `sim/common/item_sets/vplus_sets.go`.
+Test baselines unchanged (no preset or test uses these sets).
