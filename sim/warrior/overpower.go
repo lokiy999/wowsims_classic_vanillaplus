@@ -29,6 +29,29 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		Duration: time.Second * 5,
 	})
 
+	// Server: Overpower "attacks with both weapons". 11585 triggers 34596, an off-hand strike (needs an off-hand
+	// weapon, spell attribute) for off-hand weapon damage plus 25, with the same no dodge/parry/block outcome.
+	ohBonusDamage := 25.0 // server (Spell.csv 34596)
+	ohHit := warrior.RegisterSpell(BattleStance, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 34596},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeOHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		BonusCritRating: 25 * core.CritRatingPerCritChance * float64(warrior.Talents.Duelist),
+		CritDamageBonus: warrior.impale(),
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0.75,
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := ohBonusDamage + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+		},
+	})
+
 	warrior.Overpower = warrior.RegisterSpell(BattleStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorOverpower,
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -66,6 +89,9 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := bonusDamage + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			if warrior.AutoAttacks.IsDualWielding {
+				ohHit.Cast(sim, target)
+			}
 
 			warrior.OverpowerAura.Deactivate(sim)
 			if !result.Landed() {

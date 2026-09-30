@@ -20,6 +20,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-30 (Part DV): warrior abilities compared with the server; Overpower now also strikes with the off-hand.
 - Done on 2026-09-30 (Part DU): level-keyed spell tables (rogue, warrior, druid, paladin, armors) compared with the server; rogue Expose Armor, Instant and Deadly Poison, Mage Armor and Demon Armor fixed.
 - Done on 2026-09-29 (Part DS): damage and mana tables of all classes compared with the server by rank; warlock Searing Pain, Siphon Life, Drain Life and Conflagrate ranks fixed; Conflagrate cooldown back to 10 sec.
 - Done on 2026-09-29 (Part DR): hunter shot, strike and trap damage and mana tables compared by rank with the server; Serpent Sting damage fixed.

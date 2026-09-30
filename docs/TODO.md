@@ -215,6 +215,7 @@ Only what is still open. The talents in the per-class lists above that no code r
 there is more to say.
 
 **Warrior**
+- Rend: the server text says "increased by your Attack Power", with no coefficient in the data; the sim has no attack power scaling on Rend.
 - Shield Block (question 24); Execute rage-to-damage ratio (question 20); Berserker's Blood (needs the player's
   health); Butterfly Style's rage from dodges and parries (dodge and crit part done; needs incoming attacks).
 

@@ -4072,3 +4072,20 @@ Garrote, Rupture, Sinister Strike, Slice and Dice, Ice Armor, Curse of Shadow, S
 
 Test baselines: rogue about +0.5% (poisons), warlock character stats (armor, Shadow resistance). Resistances and
 armor are character stats, so the sidebar shows them without extra code.
+
+## Part DV — Warrior abilities vs the server; Overpower off-hand strike (2026-09-30)
+
+The warrior abilities use single spell ids, not tables, so they were compared by hand with `Spell.csv`: Bloodthirst
+(50% of attack power, 40 rage), Mortal Strike (+160, 30 rage), Execute (750), Heroic Strike (+157 / +138 without
+AQ), Cleave (+50), Revenge (50% weapon damage +60), Slam (+107), Sunder Armor, Thunder Clap (134), Whirlwind,
+Hamstring (45) and Rend (36 per 3 sec, 10 ticks) all match, with their rage costs and cooldowns.
+
+**Overpower** did not: the server text is "attacking with both weapons and causing weapon damage plus 50". Spell
+11585 triggers 34596, a second strike that needs an off-hand weapon (spell attribute) for off-hand weapon damage
+plus 25. The sim now casts that off-hand strike (off-hand normalized weapon damage with the usual 50% off-hand
+penalty, +25; cannot be dodged, parried or blocked; same Duelist crit and Impale bonus, same threat) after every
+Overpower when dual wielding. Checked with a temporary test (phase 1 fury gear, Overpower only): main hand 343,
+off-hand 163 average. The test rotations do not use Overpower: baselines unchanged. File:
+`sim/warrior/overpower.go`.
+
+Left open (TODO.md): Rend's server text says "increased by your Attack Power", but the data has no coefficient.
