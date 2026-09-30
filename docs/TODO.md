@@ -103,6 +103,11 @@ Things only you can answer; everything else I keep working on. Newest at the bot
   attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,
   Concentration (cost -1%), Speed and the Sturdiness health regen ones are not in the sim.
 
+37. **Ret paladin per-hit damage vs combat log (2026-09-30, PassimLoksey.csv).** Normal hits in game vs sim: Seal of
+    Command 1111 vs 781 (fits 100% weapon damage; the sim uses 50%, noted as confirmed in game), Hammer of Wrath 1917 vs
+    1330, Judgement 8-piece proc (23590) 334 vs 148, Consecration tick about 131 vs 95; Judgement of Command crits
+    higher too. Exorcism, Crusader Strike and the Fireball proc match. Lokiy: wait before changing these.
+
 ## Talents not in the sim code (regenerated 2026-09-29, Part DO: unchanged since Part DH)
 
 Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). Regenerate with a grep of
@@ -289,6 +294,11 @@ there is more to say.
 - A shaman dropping his own Mana Spring Totem does not use Restorative Totems (the raid buff "Improved" option is +50%).
 - Fire totems match the server data at level 60 (Searing Totem rank 6, Magma Totem rank 4, Fire Nova Totem rank 5);
   decide whether anything is missing.
+
+## Armor debuffs still to add (Lokiy 2026-09-30)
+
+- Armor Shatter (1-3 stacks) is in the debuff list since Part EJ; Lokiy: there are other armor debuffs too, add them
+  later (ask which ones).
 
 ## Trinkets and items still open
 

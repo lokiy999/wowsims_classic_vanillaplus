@@ -147,6 +147,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(FaerieFireAura(target))
 	}
 
+	if debuffs.ArmorShatter > 0 {
+		MakePermanent(ArmorShatterRaidDebuffAura(target, min(debuffs.ArmorShatter, 3)))
+	}
+
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(CurseOfWeaknessAura(target, GetTristateValueInt32(debuffs.CurseOfWeakness, 0, 3)))
 	}
@@ -628,6 +632,26 @@ func WintersChillAura(target *Unit) *Aura {
 
 var majorArmorReductionEffectCategory = "MajorArmorReduction"
 var minorArmorReductionEffectCategory = "MinorArmorReduction"
+
+// Armor Shatter (Annihilator proc, spell 16928) kept up by someone else in the raid: 1-3 stacks of -200 armor. Same
+// armor reduction category as the player's own Annihilator (sim/common ArmorShatterAuras), so they do not add up.
+func ArmorShatterRaidDebuffAura(target *Unit, stacks int32) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Armor Shatter (raid)",
+		ActionID: ActionID{SpellID: 16928},
+		Duration: time.Second * 45,
+	})
+	aura.NewExclusiveEffect(minorArmorReductionEffectCategory, true, ExclusiveEffect{
+		Priority: 200 * float64(stacks),
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, -ee.Priority)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, ee.Priority)
+		},
+	})
+	return aura
+}
 
 func SunderArmorAura(target *Unit) *Aura {
 	arpen := 500.0 // server (Spell.csv 11597)

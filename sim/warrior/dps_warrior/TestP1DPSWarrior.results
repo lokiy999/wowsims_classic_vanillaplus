@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestP1DPSWarrior-Phase1-StatWeights-Default"
  value: {
-  weights: 0.93877
-  weights: 0.1756
+  weights: 0.58452
+  weights: 0.25309
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4384
-  weights: 1.2082
-  weights: 4.48992
+  weights: 0.2564
+  weights: 2.35032
+  weights: 4.41563
   weights: 0
   weights: 0
   weights: 0
@@ -99,64 +99,64 @@ stat_weights_results: {
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-BattlegearofHeroism"
  value: {
-  dps: 743.94323
-  tps: 668.83272
+  dps: 745.62737
+  tps: 670.42821
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-BattlegearofMight"
  value: {
-  dps: 826.38141
-  tps: 740.03116
+  dps: 821.9453
+  tps: 735.70038
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-BattlegearofWrath"
  value: {
-  dps: 708.39047
-  tps: 639.52141
+  dps: 702.31629
+  tps: 634.71972
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-Champion'sBattlearmor"
  value: {
-  dps: 759.37489
-  tps: 682.5919
+  dps: 755.56149
+  tps: 679.03195
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-FieldMarshal'sBattlegear"
  value: {
-  dps: 799.55438
-  tps: 717.59394
+  dps: 796.9647
+  tps: 714.90164
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-LieutenantCommander'sBattlearmor"
  value: {
-  dps: 759.37489
-  tps: 682.5919
+  dps: 755.56149
+  tps: 679.03195
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-Vindicator'sBattlegear"
  value: {
-  dps: 828.43265
-  tps: 748.64086
+  dps: 821.95535
+  tps: 742.74169
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-AllItems-Warlord'sBattlegear"
  value: {
-  dps: 799.55438
-  tps: 717.59394
+  dps: 796.9647
+  tps: 714.90164
  }
 }
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-Average-Default"
  value: {
-  dps: 830.17515
-  tps: 745.00718
+  dps: 825.09966
+  tps: 740.51751
  }
 }
 dps_results: {
@@ -330,7 +330,7 @@ dps_results: {
 dps_results: {
  key: "TestP1DPSWarrior-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 675.42796
-  tps: 609.11244
+  dps: 670.26588
+  tps: 604.11738
  }
 }

@@ -5,6 +5,7 @@ import {
 	makeBooleanDebuffInput,
 	makeBooleanIndividualBuffInput,
 	makeBooleanRaidBuffInput,
+	makeEnumDebuffInput,
 	makeEnumIndividualBuffInput,
 	makeEnumRaidBuffInput,
 	makeMultistateIndividualBuffInput,
@@ -506,6 +507,22 @@ export const CurseOfRecklessness = withLabel(
 	'Curse of Recklessness',
 );
 
+// Armor Shatter from someone else's Annihilator: pick how many stacks (-200 armor each) are kept up.
+export const ArmorShatter = withOptionLabels(
+	makeEnumDebuffInput({
+		fieldName: 'armorShatter',
+		values: [
+			{ value: 0, tooltip: 'Armor Shatter: none' },
+			...[1, 2, 3].map(stacks => ({
+				value: stacks,
+				actionId: () => ActionId.fromSpellId(16928),
+				text: `${stacks}`,
+				tooltip: `Armor Shatter (Annihilator): ${stacks} stack${stacks > 1 ? 's' : ''}, -${200 * stacks} armor`,
+			})),
+		],
+	}),
+);
+
 export const FaerieFire = withLabel(
 	makeBooleanDebuffInput({
 		actionId: () => ActionId.fromSpellId(9907),
@@ -901,6 +918,11 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: FaerieFire,
 		picker: IconPicker,
+		stats: [Stat.StatAttackPower],
+	},
+	{
+		config: ArmorShatter,
+		picker: IconEnumPicker,
 		stats: [Stat.StatAttackPower],
 	},
 	/* {

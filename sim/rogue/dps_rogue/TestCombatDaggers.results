@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombatDaggers-Phase5-StatWeights-Default"
  value: {
-  weights: 0.26703
-  weights: 0.48292
+  weights: 0.26626
+  weights: 0.49225
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.22069
-  weights: 4.76645
-  weights: 5.60829
+  weights: 0.22005
+  weights: 4.79308
+  weights: 5.52254
   weights: 0
   weights: 0
   weights: 0
@@ -99,78 +99,78 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-BloodfangArmor"
  value: {
-  dps: 669.58716
-  tps: 475.40689
+  dps: 669.75481
+  tps: 475.52592
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-Champion'sGuard"
  value: {
-  dps: 612.2912
-  tps: 434.72675
+  dps: 611.79878
+  tps: 434.37713
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-DarkmantleArmor"
  value: {
-  dps: 672.20421
-  tps: 477.26499
+  dps: 670.05208
+  tps: 475.73698
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-FieldMarshal'sVestments"
  value: {
-  dps: 643.44184
-  tps: 456.84371
+  dps: 643.42396
+  tps: 456.83102
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-LieutenantCommander'sGuard"
  value: {
-  dps: 612.2912
-  tps: 434.72675
+  dps: 611.79878
+  tps: 434.37713
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-Madcap'sOutfit"
  value: {
-  dps: 642.77958
-  tps: 456.3735
+  dps: 637.52746
+  tps: 452.64449
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-MarkoftheVeteran-26164"
  value: {
-  dps: 644.78193
-  tps: 457.79517
+  dps: 645.25255
+  tps: 458.12931
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-MarkoftheVeteran-26173"
  value: {
-  dps: 644.78193
-  tps: 457.79517
+  dps: 645.25255
+  tps: 458.12931
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-NightslayerArmor"
  value: {
-  dps: 629.46066
-  tps: 446.91707
+  dps: 628.92967
+  tps: 446.54006
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-AllItems-Warlord'sVestments"
  value: {
-  dps: 643.44184
-  tps: 456.84371
+  dps: 643.42396
+  tps: 456.83102
  }
 }
 dps_results: {
  key: "TestCombatDaggers-Phase5-Average-Default"
  value: {
-  dps: 624.55332
-  tps: 443.43285
+  dps: 622.75679
+  tps: 442.15732
  }
 }
 dps_results: {
@@ -260,7 +260,7 @@ dps_results: {
 dps_results: {
  key: "TestCombatDaggers-Phase5-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 264.18146
-  tps: 187.56884
+  dps: 262.5539
+  tps: 186.41327
  }
 }

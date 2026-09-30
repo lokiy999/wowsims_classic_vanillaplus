@@ -4310,3 +4310,22 @@ Lokiy: tooltips for King's Heart and Tears of Teremus. Tears of Teremus already 
 King's Heart (26013) is a server item Wowhead does not know: re-ran `tools/gen_server_item_tooltips.py` (it now finds
 the id in the UI) and regenerated the DB, so it gets the tooltip from `VPlusItemDB.lua` ("Use: Consume the King
 Mosh' Heart, granting you 200 Attack Power for 30 min.") and the AtlasLoot icon `inv_misc_organ_01`.
+
+## Part EJ — Armor Shatter debuff; Windfury Totem 3 sec cooldown (2026-09-30)
+
+From Lokiy's combat log `PassimLoksey.csv` (ret paladin Passim vs Loksey, level 63 boss, 219 sec, 1068 DPS on Loksey):
+- **Armor Shatter** (Annihilator proc, 16928) was kept up by the tank (Ashdeena). New raid debuff option
+  `Debuffs.armor_shatter = 27` (number of stacks, 0-3): -200 armor per stack, same minor armor reduction category as
+  the player's own Annihilator (`core.ArmorShatterRaidDebuffAura`). UI: `ArmorShatter` dropdown (none / 1 / 2 / 3
+  stacks) in the debuff list for attack power specs, with a new `makeEnumDebuffInput` helper (`icon_inputs.ts`).
+- **Windfury Totem**: the server passive (34704, 10%) applies "Windfury CD" (34702, duration index 27 = 3 sec); the sim
+  used a 1.5 sec cooldown. Now 3 sec. Seal of Command procs (ProcMaskMeleeProc) no longer trigger it. In the sim the
+  number of Windfury procs for the ret paladin dropped by about a third; the log shows even fewer (about 3 in 220 sec),
+  probably because the totem was not up all fight.
+
+Sim with the log's setup (Windfury Totem, Sunder Armor, Armor Shatter, Curse of the Elements, the log's consumables,
+Hammer of Wrath on, 220 sec): 1056 DPS vs 1068 in game. Per hit, Seal of Command (1111 in game vs 781), Hammer of Wrath
+(1917 vs 1330) and the Judgement 8-piece proc (334 vs 148) are still lower in the sim; left as is on Lokiy's request
+(open question 37).
+
+Test baselines regenerated (Windfury cooldown): fury warrior and combat rogue -0.1 to -0.3% on average (-0.9% at most).

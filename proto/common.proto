@@ -771,7 +771,7 @@ message Consumes {
 	bool kings_heart = 32;
 }
 
-// NextIndex: 27
+// NextIndex: 28
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -809,6 +809,9 @@ message Debuffs {
 	TristateEffect hunters_mark = 19;
 	// Hunter talent debuff (spell 33589): +5% melee and ranged crit chance against the target (Lokiy 2026-09-30).
 	bool find_weakness = 26;
+	// Armor Shatter (Annihilator proc, spell 16928) from someone else in the raid: number of stacks kept up (0-3),
+	// -200 armor per stack.
+	int32 armor_shatter = 27;
 
 	// Misc Debuffs
 	bool gift_of_arthas = 9;

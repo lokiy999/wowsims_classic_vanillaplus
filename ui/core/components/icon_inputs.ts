@@ -229,6 +229,24 @@ export function makeEnumRaidBuffInput<SpecType extends Spec>(
 	);
 }
 
+// Dropdown for a numeric Debuffs field (e.g. a number of stacks), one entry per value.
+export function makeEnumDebuffInput<SpecType extends Spec>(
+	config: RaidBuffEnumInputConfig<Debuffs, Player<SpecType>>,
+): InputHelpers.TypedIconEnumPickerConfig<Player<SpecType>, number> {
+	return InputHelpers.makeEnumIconInput<any, Debuffs, Player<SpecType>, number>(
+		{
+			getModObject: (player: Player<SpecType>) => player,
+			showWhen: (player: Player<SpecType>) => !config.showWhen || config.showWhen(player),
+			getValue: (player: Player<SpecType>) => player.getRaid()!.getDebuffs(),
+			setValue: (eventID: EventID, player: Player<SpecType>, newVal: Debuffs) => player.getRaid()!.setDebuffs(eventID, newVal),
+			changeEmitter: (player: Player<SpecType>) => TypedEvent.onAny([player.getRaid()!.debuffsChangeEmitter]),
+		},
+		config.fieldName,
+		config.values,
+		config.numColumns ?? 1,
+	);
+}
+
 export function makeTristateIndividualBuffInput<SpecType extends Spec>(
 	config: TristateInputConfig<IndividualBuffs, Player<SpecType>>,
 ): InputHelpers.TypedIconPickerConfig<Player<SpecType>, number> {

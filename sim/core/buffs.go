@@ -1677,9 +1677,10 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 		},
 	}))
 
+	// Server: the Windfury Totem passive (34704) applies "Windfury CD" (34702) for 3 sec after a proc.
 	icd := Cooldown{
 		Timer:    character.NewTimer(),
-		Duration: time.Millisecond * 1500,
+		Duration: time.Second * 3,
 	}
 
 	apBuffAura.Icd = &icd
@@ -1695,6 +1696,10 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 			}
 
 			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
+				return
+			}
+			// Melee damage procs (Seal of Command) do not trigger it (combat log 2026-09-30: ~3 procs in 220 sec).
+			if spell.ProcMask.Matches(ProcMaskMeleeProc) {
 				return
 			}
 
