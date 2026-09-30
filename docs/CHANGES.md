@@ -4232,3 +4232,15 @@ Brilliance, Brute Force with Juju Power.
 
 Test baselines regenerated: specs with spell power and the chili lose 2-3% (retribution / protection paladin,
 enhancement / tank shaman), warriors gain a little (higher chili damage), hunter and feral small changes.
+
+## Part ED — Devotion Aura and Stoneskin Totem do not stack (2026-09-30)
+
+Lokiy's answers to question 36: Elixir of the Sages and Juju Guile stack with Arcane Intellect, and Elixir of Brute
+Force stacks with Juju Power (both already so in the sim, Part EC); Stoneskin Totem and Devotion Aura "likely don't
+stack, change that".
+
+Both give armor. They are now one exclusive effect category (`ArmorAuraEffectCategory`, `armorAuraEffect` in
+`sim/core/buffs.go`, the same mechanism as Sunder / Expose Armor): only the one giving more armor applies, with its
+talent and Libram of Truth bonuses. Also applies to a shaman's own Stoneskin Totem. Checked with a throwaway
+ComputeStats test (human warrior, no gear): Devotion only +700, improved Stoneskin only +1050, both +1050. Test
+baselines unchanged (no test has both).

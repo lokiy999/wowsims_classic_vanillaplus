@@ -650,16 +650,28 @@ func DevotionAuraAura(unit *Unit, points int32, libramOfTruth bool) *Aura {
 	}
 	updateStats = updateStats.Multiply(1 + .25*float64(points))
 
-	return unit.RegisterAura(Aura{
+	aura := unit.RegisterAura(Aura{
 		Label:      "Devotion Aura",
 		ActionID:   ActionID{SpellID: 10293},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs, // so the armor shows in the sidebar stats, like Stoneskin
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, updateStats)
+	})
+	armorAuraEffect(aura, updateStats[stats.BonusArmor])
+	return aura
+}
+
+// Devotion Aura and Stoneskin Totem do not stack (Lokiy 2026-09-30: "likely don't stack"): only the one giving
+// more armor applies.
+const ArmorAuraEffectCategory = "DevotionStoneskinArmor"
+
+func armorAuraEffect(aura *Aura, armor float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect(ArmorAuraEffectCategory, false, ExclusiveEffect{
+		Priority: armor,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.BonusArmor: ee.Priority})
 		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.BonusArmor: -ee.Priority})
 		},
 	})
 }
@@ -671,7 +683,7 @@ const StoneskinTotemTopRankArmor = 700.0
 func StoneskinTotemAura(unit *Unit, baseArmor float64, points int32, bonusMultiplier float64) *Aura {
 	armor := math.Floor(baseArmor * (1 + .25*float64(points)) * (1 + bonusMultiplier))
 
-	return unit.GetOrRegisterAura(Aura{
+	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Stoneskin",
 		ActionID:   ActionID{SpellID: 10408},
 		Duration:   NeverExpires,
@@ -679,13 +691,9 @@ func StoneskinTotemAura(unit *Unit, baseArmor float64, points int32, bonusMultip
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.BonusArmor: armor})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.BonusArmor: -armor})
-		},
 	})
+	armorAuraEffect(aura, armor) // exclusive with Devotion Aura
+	return aura
 }
 
 func RetributionAura(character *Character, points int32, bonusDamage int32) *Aura {

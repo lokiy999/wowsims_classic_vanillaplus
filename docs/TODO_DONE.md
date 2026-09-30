@@ -6,6 +6,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Questions for Lokiy (answered)
 
+- **36. Buff stacking**: ANSWERED 2026-09-30: Elixir of the Sages and Juju Guile stack with Arcane Intellect, Brute Force stacks with Juju Power (both already so); Stoneskin Totem and Devotion Aura "likely don't stack": now exclusive, the larger armor applies (Part ED).
 - **22. Rivenspike**: ANSWERED 2026-09-30 by VPlusItemDB: both "Equip: Your attacks ignore 5% of your enemies' Armor" and "Chance on hit: Reduces targets armor by 300 for 20 sec"; both in the sim now (Part DX).
 - **10. Trap tick timing**: ANSWERED 2026-09-29 from Spell.csv (tick interval column): Immolation Trap every 3 sec (7 ticks over 21 sec), Explosive Trap's burn every 2 sec (5 ticks over 10 sec); the sim already used these (Part DR).
 - **3. Arcane Missiles "energize"**: ANSWERED 2026-09-24: once per cast, 5 stacks max (as implemented).

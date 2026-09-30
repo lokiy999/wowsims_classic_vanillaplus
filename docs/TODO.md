@@ -93,10 +93,6 @@ Things only you can answer; everything else I keep working on. Newest at the bot
 - **Item procs only partly modeled** (Part DX): Hookfang Shanker and The Cruel Hand of Timmy stack up to 3 times on
   the server (the sim applies one stack); Rivenspike's armor proc rate is unknown (kept at 2 per minute).
 
-36. **Buff stacking still open** (Part EC): (a) Stoneskin Totem and Devotion Aura: do they stack (Lokiy: "unsure,
-    I'd have to check"; the sim stacks them)? (b) Elixir of the Sages and Juju Guile with Arcane Brilliance (the sim
-    stacks them; only Elixir of Greater Intellect is limited now)? (c) Elixir of Brute Force with Juju Power (the sim
-    stacks them, like Brute Force with Elixir of Giants)?
 
 - **Enchants not modeled exactly** (Part DN): Greater Arcanum of Avoidance is "reduced the chance you are hit by
   attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,
