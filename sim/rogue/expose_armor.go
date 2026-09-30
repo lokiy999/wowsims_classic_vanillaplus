@@ -18,14 +18,14 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		60: 11198,
 	}[rogue.Level]
 
-	arpenPerCombo := map[int32]float64{
-		25: 80,
-		40: 210,
-		50: 275,
-		60: 340,
+	// Server (Spell.csv 8647/8650/11197/11198): a flat armor reduction per rank; combo points only make it last
+	// longer (9 to 21 sec).
+	arpenByRank := map[int32]float64{
+		25: 500,
+		40: 1500,
+		50: 2000,
+		60: 2500,
 	}[rogue.Level]
-
-	arpenPerCombo *= []float64{1, 1.25, 1.5}[int32(0) /*removed*/]
 
 	// share ExtraCastCondition() state with ApplyEffects()
 	var arpen float64
@@ -59,7 +59,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			}
 
 			eaAura = rogue.ExposeArmorAuras.Get(target)
-			arpen = float64(rogue.ComboPoints()) * arpenPerCombo
+			arpen = arpenByRank
 
 			if curActive := eaAura.ExclusiveEffects[0].Category.GetActiveEffect(); curActive != nil {
 				return arpen >= curActive.Priority

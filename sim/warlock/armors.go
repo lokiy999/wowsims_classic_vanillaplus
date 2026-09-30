@@ -13,18 +13,18 @@ func (warlock *Warlock) applyDemonArmor() {
 		60: 11735,
 	}[warlock.Level]
 
-	armor := map[int32]float64{
+	armor := map[int32]float64{ // server (Spell.csv 706/11733/11734/11735)
 		25: 210.0,
-		40: 390.0,
-		50: 480.0,
-		60: 570.0,
+		40: 400.0,
+		50: 500.0,
+		60: 600.0,
 	}[warlock.Level]
 
 	shadowRes := map[int32]float64{
-		25: 3.0,
-		40: 9.0,
-		50: 12.0,
-		60: 15.0,
+		25: 5.0,
+		40: 15.0,
+		50: 20.0,
+		60: 30.0,
 	}[warlock.Level]
 
 	// DBC: Demonic Embrace +10%/rank effectiveness.

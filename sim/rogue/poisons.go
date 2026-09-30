@@ -9,16 +9,17 @@ import (
 )
 
 /**
+Server values (Spell.csv, Part DU):
 Instant Poison: 20% proc chance
-25: 22 +/- 3 damage, 8679 ID, 40 charges
-40: 50 +/- 6 damage, 8688 ID, 70 charges
-50: 76 +/- 9 damage, 11338 ID, 85 charges
-60: 130 =/- 18 damage, 11340 ID, 115 charges
+25: 25-31 damage, 8679 ID
+40: 55-67 damage, 8688 ID
+50: 85-103 damage, 11338 ID
+60: 140-176 damage, 11340 ID, 115 charges
 
-Deadly Poison: 30% proc chance, 5 stacks
-40: 52 damage, 2824 ID, 75 charges
+Deadly Poison: 30% proc chance, 5 stacks, over 10 sec
+40: 60 damage, 2824 ID, 75 charges
 50: 80 damage, 11355 ID, 90 charges
-60: 108 damage, 11356 ID, 105 charges (Rank 4, Rank 5 is by book)
+60: 140 damage, 25351 ID, 120 charges (Rank 5, AQ book; rank 4 11356: 100 damage)
 
 Wound Poison: 30% proc chance, 5 stacks
 25: x damage, x ID (none, first rank is level 32)
@@ -148,17 +149,19 @@ func (rogue *Rogue) registerInstantPoisonSpell() {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
+	// Server (Spell.csv): Deadly Poison I-V tick 8/12/16/20/28 every 2 sec; level 40 has rank II, 50 rank III,
+	// 60 rank V (AQ book, rank IV without AQ).
 	baseDamageTick := map[int32]float64{
-		25: 9,
-		40: 13,
-		50: 20,
-		60: 27,
+		25: 8,
+		40: 12,
+		50: 16,
+		60: core.TernaryFloat64(core.IncludeAQ, 28, 20),
 	}[rogue.Level]
 	spellID := map[int32]int32{
 		25: 2823,
 		40: 2824,
 		50: 11355,
-		60: 11356,
+		60: core.TernaryInt32(core.IncludeAQ, 25351, 11356),
 	}[rogue.Level]
 
 	rogue.deadlyPoisonTick = rogue.RegisterSpell(core.SpellConfig{
@@ -230,11 +233,12 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 
 // Make a source based variant of Instant Poison
 func (rogue *Rogue) makeInstantPoison() *core.Spell {
+	// Server (Spell.csv proc spells 8680/8689/11335/11337): 25-31, 55-67, 85-103, 140-176.
 	baseDamageByLevel := map[int32]float64{
-		25: 19,
-		40: 44,
-		50: 67,
-		60: 112,
+		25: 25,
+		40: 55,
+		50: 85,
+		60: 140,
 	}[rogue.Level]
 
 	damageVariance := map[int32]float64{

@@ -4053,3 +4053,22 @@ spell's DoT/HoT (ticks x tick length); a script compared that with `Spell.csv` (
 - Consecration ticks every 0.95 sec on the server (8 ticks in 8 sec); the sim uses 1 sec. Same number of ticks.
 - Traps (the server duration is the trap object, 60 sec) and the clipped Mind Flay variants are expected.
 The rogue was not dumped (it needs a weapon to build); its DoTs were checked in earlier parts.
+
+## Part DU — Level-keyed spell tables vs the server: rogue Expose Armor and poisons, Mage and Demon Armor (2026-09-30)
+
+Part DS only covered tables indexed by rank. Many spells use tables keyed by character level
+(`map[int32]...{25: .., 40: .., 50: .., 60: ..}`: rogue, warrior, druid, paladin, armors, poisons). The same script
+now reads those and compares the level-60 entry with `Spell.csv`. Matching already: Ambush, Backstab, Eviscerate,
+Garrote, Rupture, Sinister Strike, Slice and Dice, Ice Armor, Curse of Shadow, Scorpid Poison. Fixed:
+- **Rogue Expose Armor**: the server removes a flat 500/1500/2000/2500 armor by rank (combo points only add
+  duration, 9 to 21 sec). The rogue's own Expose Armor gave 340 per combo point (1700 at 5). The raid debuff option
+  already used 2500. `sim/rogue/expose_armor.go`.
+- **Instant Poison**: 140-176 at 60 (was 112-148); lower levels 25-31, 55-67, 85-103.
+- **Deadly Poison**: rank V (AQ book, spell 25351) at 60, 28 per 2 sec tick, 140 per stack over 10 sec (was 27 per
+  tick with the rank IV spell id); lower ranks 8/12/16/20 per tick. `sim/rogue/poisons.go`.
+- **Mage Armor**: all magic resistances +10/20/30 (was 5/10/15). `sim/mage/armors.go`.
+- **Demon Armor**: armor 210/400/500/600 and Shadow resistance 5/15/20/30 (was 210/390/480/570 and 3/9/12/15).
+  Its 50 health per 5 sec is still not modeled. `sim/warlock/armors.go`.
+
+Test baselines: rogue about +0.5% (poisons), warlock character stats (armor, Shadow resistance). Resistances and
+armor are character stats, so the sidebar shows them without extra code.

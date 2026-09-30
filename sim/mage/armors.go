@@ -63,10 +63,10 @@ func (mage *Mage) applyMageArmor() {
 		60: 22783,
 	}[mage.Level]
 
-	spellRes := map[int32]float64{
-		40: 5,
-		50: 10,
-		60: 15,
+	spellRes := map[int32]float64{ // server (Spell.csv 6117/22782/22783)
+		40: 10,
+		50: 20,
+		60: 30,
 	}[mage.Level]
 
 	mage.MageArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
