@@ -4144,3 +4144,12 @@ rest are utility bonuses (range, movement, pet, Blink, Judgement of Light, shiel
   for 10 sec" was not modeled; it is the same effect as Lightforge Armor 6, now added with the same assumed 6% chance
   (question 29). `sim/common/item_sets/vplus_sets.go`.
 Test baselines unchanged (no preset or test uses these sets).
+
+## Part DZ — Consumables checked against VPlusItemDB (2026-09-30)
+
+Check only, no code changed. Every consumable in the UI (`ui/core/components/inputs/consumables.ts`, enum -> item id)
+was matched with its server "Use:" text and the value in `sim/core/consumes.go` (the case block, or the potion /
+rune / conjured amount tables by item id): flasks, elixirs, juju, Zanza buffs, scrolls (including the custom Scroll of
+the Moon, Nightborne Fury Saga, Memory of Hyjal), food, alcohol, oils, sharpening stones and weightstones, mana /
+health / rage / rejuvenation potions, stoneshield and protection potions, healthstones and conjured food. All match
+the server values.
