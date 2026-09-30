@@ -4042,3 +4042,14 @@ earlier (Parts DA, DR).
 
 Test baseline: warlock +0.1 to +0.3%, `sim/warlock/dps/*.results` regenerated. Files: `sim/warlock/searing_pain.go`,
 `siphon_life.go`, `drain_life.go`, `conflagrate.go`.
+
+## Part DT — DoT and HoT durations checked against the server (2026-09-30)
+
+Check only, no code changed. A throwaway test built every class (no talents, and every talent maxed) and dumped each
+spell's DoT/HoT (ticks x tick length); a script compared that with `Spell.csv` (duration index column 30 via
+`SpellDuration.csv`, tick interval columns 94-96). All match, with and without talents, except:
+- Fireball ranks 1-3: the server burn lasts 4/6/6 sec (1/1/2 per 2 sec); the sim uses 8 sec (4 ticks) with the same
+  total. Only below level 20, left as is.
+- Consecration ticks every 0.95 sec on the server (8 ticks in 8 sec); the sim uses 1 sec. Same number of ticks.
+- Traps (the server duration is the trap object, 60 sec) and the clipped Mind Flay variants are expected.
+The rogue was not dumped (it needs a weapon to build); its DoTs were checked in earlier parts.
