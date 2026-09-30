@@ -139,6 +139,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(CurseOfRecklessnessAura(target))
 	}
 
+	if debuffs.FindWeakness {
+		MakePermanent(FindWeaknessAura(target))
+	}
+
 	if debuffs.FaerieFire {
 		MakePermanent(FaerieFireAura(target))
 	}
@@ -675,6 +679,23 @@ func ExposeArmorAura(target *Unit, improvedEA int32) *Aura {
 	})
 
 	return aura
+}
+
+// Find Weakness (hunter talent, spell 33589): +5% chance for melee and ranged attacks to crit the target for 20 sec.
+// On the server the debuff has "attacker melee crit" (187) and "attacker ranged crit" (188) auras; its third aura
+// (179, attacker spell crit) has no school, so spells are not affected.
+func FindWeaknessAura(target *Unit) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "Find Weakness",
+		ActionID: ActionID{SpellID: 33589},
+		Duration: time.Second * 20,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexPhysical] += 0.05
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolCritTakenChance[stats.SchoolIndexPhysical] -= 0.05
+		},
+	})
 }
 
 func CurseOfRecklessnessAura(target *Unit) *Aura {

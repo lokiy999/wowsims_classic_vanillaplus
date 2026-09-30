@@ -771,7 +771,7 @@ message Consumes {
 	bool kings_heart = 32;
 }
 
-// NextIndex: 26
+// NextIndex: 27
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -807,6 +807,8 @@ message Debuffs {
 	bool scorpid_sting = 18;
 
 	TristateEffect hunters_mark = 19;
+	// Hunter talent debuff (spell 33589): +5% melee and ranged crit chance against the target (Lokiy 2026-09-30).
+	bool find_weakness = 26;
 
 	// Misc Debuffs
 	bool gift_of_arthas = 9;

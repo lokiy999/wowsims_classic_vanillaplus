@@ -4288,3 +4288,18 @@ Lokiy: add the Tears of Teremus and King's Heart buffs to the specs that use the
 them (the old `SpellPowerBuff_TearsOfTeremus` value still works for saved settings and is not counted twice). UI:
 `TearsOfTeremusBuff` / `KingsHeartBuff` in `consumables.ts`, added in `consumes_picker.ts`. No preset uses them:
 baselines unchanged.
+
+## Part EH — Find Weakness debuff; curses in every class's debuff list (2026-09-30)
+
+Lokiy: "do both find weakness and curses and add them to all classes to the debuffs list".
+- **Find Weakness** (hunter talent debuff, spell 33589) is a new raid debuff option: +5% chance for melee and ranged
+  attacks to crit the target. On the server the debuff has "attacker melee crit" (187) and "attacker ranged crit"
+  (188) auras at 5%; the third aura (179, attacker spell crit) has no school, so it does nothing. The hunter talent
+  added +5% crit taken to every school, spells included; it now uses the same physical-only aura
+  (`core.FindWeaknessAura`).
+- **Curses** (Curse of Recklessness, Curse of the Elements / Shadow, Curse of Weakness) were only listed for specs
+  whose stats matched (attack power / spell power / armor). They and Find Weakness are now listed for every class.
+
+`proto/common.proto`: `Debuffs.find_weakness = 26`. `sim/core/debuffs.go`: `FindWeaknessAura`, applied as a
+permanent debuff. `sim/hunter/talents_extra.go` uses it. UI: `FindWeakness` input and empty stats (= always shown) on
+the curse entries in `DEBUFFS_CONFIG` (`buffs_debuffs.ts`).

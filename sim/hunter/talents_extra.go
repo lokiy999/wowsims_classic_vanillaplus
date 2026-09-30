@@ -160,7 +160,8 @@ func (hunter *Hunter) registerDeadeye() {
 	})
 }
 
-// Find Weakness: ranged crits have a 20%/rank chance to add +5% crit chance to all attacks against the target for 20 sec.
+// Find Weakness: ranged crits have a 20%/rank chance to add +5% melee and ranged crit chance against the target for
+// 20 sec (core.FindWeaknessAura, also a raid debuff option).
 func (hunter *Hunter) applyFindWeakness() {
 	if hunter.Talents.FindWeakness == 0 {
 		return
@@ -168,21 +169,7 @@ func (hunter *Hunter) applyFindWeakness() {
 
 	procChance := 0.2 * float64(hunter.Talents.FindWeakness)
 	auras := hunter.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return target.RegisterAura(core.Aura{
-			Label:    "Find Weakness",
-			ActionID: core.ActionID{SpellID: 33589},
-			Duration: time.Second * 20,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for i := range aura.Unit.PseudoStats.SchoolCritTakenChance {
-					aura.Unit.PseudoStats.SchoolCritTakenChance[i] += 0.05
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for i := range aura.Unit.PseudoStats.SchoolCritTakenChance {
-					aura.Unit.PseudoStats.SchoolCritTakenChance[i] -= 0.05
-				}
-			},
-		})
+		return core.FindWeaknessAura(target)
 	})
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{

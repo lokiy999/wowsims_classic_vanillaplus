@@ -514,6 +514,14 @@ export const FaerieFire = withLabel(
 	'Faerie Fire',
 );
 
+export const FindWeakness = withLabel(
+	makeBooleanDebuffInput({
+		actionId: () => ActionId.fromSpellId(33589),
+		fieldName: 'findWeakness',
+	}),
+	'Find Weakness',
+);
+
 export const curseOfWeaknessDebuff = withLabel(
 	makeTristateDebuffInput({
 		actionId: () => ActionId.fromSpellId(11708),
@@ -879,10 +887,16 @@ export const DEBUFFS_CONFIG = [
 		stats: [Stat.StatAttackPower],
 		picker: MultiIconPicker,
 	},
+	// Curses and Find Weakness are listed for every class (Lokiy 2026-09-30).
 	{
 		config: CurseOfRecklessness,
 		picker: IconPicker,
-		stats: [Stat.StatAttackPower],
+		stats: [],
+	},
+	{
+		config: FindWeakness,
+		picker: IconPicker,
+		stats: [],
 	},
 	{
 		config: FaerieFire,
@@ -929,7 +943,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: WarlockCursesConfig,
 		picker: MultiIconPicker,
-		stats: [Stat.StatSpellPower],
+		stats: [],
 	},
 
 	// Defensive
@@ -946,7 +960,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: curseOfWeaknessDebuff,
 		picker: IconPicker,
-		stats: [Stat.StatArmor],
+		stats: [],
 	},
 	// Insect Swarm (MeleeHitDebuff) is not listed: on the server it has no "chance to hit reduced" effect (Part EA).
 

@@ -185,3 +185,5 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 ## Lokiy's list (2026-09-30)
 - Tears of Teremus: own toggle, stacks with everything (Part EG)
 - King's Heart: +200 attack power, own toggle, stacks with everything (Part EG)
+- Hunter Find Weakness: raid debuff option, +5% melee / ranged crit taken, for every class (Part EH)
+- Curses: listed in every class's debuff list (Part EH)
