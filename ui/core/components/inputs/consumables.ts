@@ -852,6 +852,11 @@ export const TearsOfTeremus: ConsumableInputConfig<SpellPowerBuff> = {
 
 // Tears of Teremus stacks with everything else (Lokiy 2026-09-30), so it has its own toggle instead of being in the
 // Spell Damage picker with the Arcane Elixirs.
+// Scroll of Unlimited Power (Shen'dralar): +30 spell damage, stacks with the Arcane Elixirs (Lokiy 2026-09-30).
+export const ScrollOfUnlimitedPowerBuff = makeBooleanConsumeInput({
+	actionId: () => ActionId.fromItemId(26093),
+	fieldName: 'scrollOfUnlimitedPower',
+});
 export const TearsOfTeremusBuff = makeBooleanConsumeInput({
 	actionId: () => ActionId.fromItemId(26430),
 	fieldName: 'tearsOfTeremus',

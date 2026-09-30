@@ -733,7 +733,7 @@ message IndividualBuffs {
 	bool slipkiks_savvy = 14;
 }
 
-// NextIndex: 33
+// NextIndex: 34
 message Consumes {
 	Flask flask = 1;
 	Food food = 2;
@@ -769,6 +769,9 @@ message Consumes {
 	// stack with everything else (Lokiy 2026-09-30), so each has its own toggle.
 	bool tears_of_teremus = 31;
 	bool kings_heart = 32;
+	// Scroll of Unlimited Power (item 26093, Shen'dralar): +30 spell damage for 30 min, stacks with (Greater) Arcane
+	// Elixir (Lokiy 2026-09-30).
+	bool scroll_of_unlimited_power = 33;
 }
 
 // NextIndex: 28

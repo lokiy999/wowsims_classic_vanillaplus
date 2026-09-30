@@ -642,6 +642,13 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		})
 	}
 
+	// Scroll of Unlimited Power: "Increases damage done by magical spells and effects by up to 30 for 30 min."
+	if consumes.ScrollOfUnlimitedPower {
+		character.AddStats(stats.Stats{
+			stats.SpellDamage: 30,
+		})
+	}
+
 	if consumes.FirePowerBuff != proto.FirePowerBuff_FirePowerBuffUnknown {
 		switch consumes.FirePowerBuff {
 		case proto.FirePowerBuff_ElixirOfFirepower:

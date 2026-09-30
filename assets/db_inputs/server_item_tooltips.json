@@ -689,6 +689,11 @@
   "name": "King's Heart",
   "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">King's Heart</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Consume the King Mosh' Heart, granting you 200 Attack Power for 30 min.</div>"
  },
+ "26093": {
+  "icon": "inv_scroll_04",
+  "name": "Scroll of Unlimited Power",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Scroll of Unlimited Power</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique (5)</div><div style=\"color:#9d9d9d\">Requires Level 60</div><div style=\"color:#9d9d9d\">Requires Shen'dralar - Honored</div><div style=\"color:#1eff00\">Use: Increases damage done by magical spells and effects by up to 30 for 30 min.</div>"
+ },
  "26430": {
   "icon": "inv_potion_13",
   "name": "Tears of Teremus",

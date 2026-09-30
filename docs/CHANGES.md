@@ -4329,3 +4329,17 @@ Hammer of Wrath on, 220 sec): 1056 DPS vs 1068 in game. Per hit, Seal of Command
 (open question 37).
 
 Test baselines regenerated (Windfury cooldown): fury warrior and combat rogue -0.1 to -0.3% on average (-0.9% at most).
+
+## Part EK — Scroll of Unlimited Power (2026-09-30)
+
+Server item 26093 (Shen'dralar, Honored): "Increases damage done by magical spells and effects by up to 30 for 30 min."
+Lokiy: stacks with Greater Arcane Elixir. New toggle `Consumes.scroll_of_unlimited_power = 33` (+30 spell damage) in
+the Spells row next to Tears of Teremus (`consumables.ts` / `consumes_picker.ts`); tooltip and icon from the server
+data (`tools/gen_server_item_tooltips.py`, DB regenerated).
+
+Also from the Loksey log (Part EJ): Passim got no Windfury attacks (only the totem passive aura; the other players'
+procs show as "Windfury Attack" 34700) and no Frost Oil Frostbolts, so the log's setup has no weapon imbue. Sim with
+that setup (Sunder, Armor Shatter 3, Curse of the Elements, the log's consumables incl. this scroll, Hammer of Wrath,
+220 sec): 995 DPS vs 1068 in game. Per ability (sim vs game): auto attack 330 vs 403, Seal of Command 208 vs 241,
+Crusader Strike 144 vs 120, Judgement of Command 144 vs 140, Exorcism 69 vs 52, Consecration 44 vs 24 (on Loksey),
+Hammer of Wrath 22 vs 31, Judgement 8-piece 17 vs 38.

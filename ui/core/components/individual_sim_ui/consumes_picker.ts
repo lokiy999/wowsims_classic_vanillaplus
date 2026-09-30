@@ -260,6 +260,7 @@ export class ConsumesPicker extends Component {
 		const epStats = this.simUI.individualConfig.epStats;
 		if (epStats.includes(Stat.StatSpellDamage) || epStats.includes(Stat.StatSpellPower) || epStats.includes(Stat.StatHealingPower)) {
 			pickers.push(buildIconInput(spellsCnsumesElem, this.simUI.player, ConsumablesInputs.TearsOfTeremusBuff));
+			pickers.push(buildIconInput(spellsCnsumesElem, this.simUI.player, ConsumablesInputs.ScrollOfUnlimitedPowerBuff));
 		}
 
 		this.updateRow(row, pickers);
