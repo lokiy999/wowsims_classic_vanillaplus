@@ -6,6 +6,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Questions for Lokiy (answered)
 
+- **22. Rivenspike**: ANSWERED 2026-09-30 by VPlusItemDB: both "Equip: Your attacks ignore 5% of your enemies' Armor" and "Chance on hit: Reduces targets armor by 300 for 20 sec"; both in the sim now (Part DX).
 - **10. Trap tick timing**: ANSWERED 2026-09-29 from Spell.csv (tick interval column): Immolation Trap every 3 sec (7 ticks over 21 sec), Explosive Trap's burn every 2 sec (5 ticks over 10 sec); the sim already used these (Part DR).
 - **3. Arcane Missiles "energize"**: ANSWERED 2026-09-24: once per cast, 5 stacks max (as implemented).
 - **8. Mana Tide Totem**: ANSWERED 2026-09-24: yes, trainable; now castable by the shaman (Part BV).
@@ -20,6 +21,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-30 (Part DX): item effects compared with VPlusItemDB; Venomspitter, Keris of Zul'Serak, Skullforge Reaver, Hameya's Slayer, Mark of the Chosen, Rivenspike fixed.
 - Done on 2026-09-30 (Part DW): feral druid, paladin and all heal tables compared with the server; Shred 250% weapon damage.
 - Done on 2026-09-30 (Part DV): warrior abilities compared with the server; Overpower now also strikes with the off-hand.
 - Done on 2026-09-30 (Part DU): level-keyed spell tables (rogue, warrior, druid, paladin, armors) compared with the server; rogue Expose Armor, Instant and Deadly Poison, Mage Armor and Demon Armor fixed.

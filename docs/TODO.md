@@ -51,8 +51,6 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     Manslayer (48-54 life steal), Sliverblade (45 Frost), and server items Magmastrike (+90 attack power 20 sec),
     Aquastrike (mana), World Breaker (armor -50% for 3 attacks), Thunderstrike, Shadowstrike. Do you know their proc
     rates? Otherwise the sim could use 1 proc per minute for all of them (upstream uses about that for similar weapons).
-22. **Rivenspike** (Part CO): the server text is "Equip: Your attacks ignore 5% of your enemies' Armor", the sim still
-    has the classic proc (reduce target armor, 2 per minute). Is there still a proc on the server, or only the 5%?
 24. **Shield Block** (Part CR): the server has 2565 (+50% block for 10 sec, 20 sec cooldown, blocks 1 attack) and 12169
     (+75% for 5 sec, 5 sec cooldown). Which one does a level 60 warrior cast (is 12169 a talent or a second rank)? The
     sim uses 75% / 5 sec / 5 sec.
@@ -91,6 +89,9 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     casts the classic ranked Conflagrate (447-557 Fire damage at rank 4, 255 mana). How much does it hit for in game:
     the full periodic damage of the Immolate (all 5 ticks), what is left of it, or something else? And does it cost
     mana?
+
+- **Item procs only partly modeled** (Part DX): Hookfang Shanker and The Cruel Hand of Timmy stack up to 3 times on
+  the server (the sim applies one stack); Rivenspike's armor proc rate is unknown (kept at 2 per minute).
 
 - **Enchants not modeled exactly** (Part DN): Greater Arcanum of Avoidance is "reduced the chance you are hit by
   attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,

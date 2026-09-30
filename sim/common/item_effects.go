@@ -641,7 +641,7 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(Bloodfist, "Bloodfist", 4, 16433, core.SpellSchoolPhysical, 20, 0, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=9511/bloodletter-scalpel
-	itemhelpers.CreateWeaponCoHProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 110, 40, /* server 110-150 */ 0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 110, 40 /* server 110-150 */, 0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=809/bloodrazor
 	itemhelpers.CreateWeaponProcSpell(Bloodrazor, "Bloodrazor", 1.0, func(character *core.Character) *core.Spell {
@@ -761,7 +761,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=10761/coldrage-dagger
 	// Chance on hit: Launches a bolt of frost at the enemy causing 20 to 30 Frost damage and slowing movement speed by 50% for 5 sec.
 	// 2.2 PPM from Armaments Discord
-	itemhelpers.CreateWeaponCoHProcDamage(ColdrageDagger, "Coldrage Dagger", 2.2, 13439, core.SpellSchoolFrost, 40, 15, /* server 40-55 */ 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(ColdrageDagger, "Coldrage Dagger", 2.2, 13439, core.SpellSchoolFrost, 40, 15 /* server 40-55 */, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=13984/darrowspike
 	// Chance on hit: Blasts a target for 90 Frost damage.
@@ -1407,14 +1407,14 @@ func init() {
 					Label: "Rend (Hameya's Slayer)",
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 8, dot.OutcomeTick)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 24, dot.OutcomeTick) // server: 240 over 30 sec
 				},
 			},
 		})
 	})
 
 	// https://www.wowhead.com/classic/item=810/hammer-of-the-northern-wind
-	itemhelpers.CreateWeaponCoHProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 40, 15, /* server 40-55 */ 0, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 40, 15 /* server 40-55 */, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=2243/hand-of-edward-the-odd
 	// Chance on hit: Next spell cast within 4 sec will cast instantly.
@@ -1541,39 +1541,9 @@ func init() {
 	// https://www.wowhead.com/classic/item=12582/keris-of-zulserak
 	// Chance on hit: Inflicts numbing pain that deals 10 Nature damage every 2 sec and increases time between target's attacks by 10% for 10 sec.
 	// 1 PPM assumed and needs testing
-	itemhelpers.CreateWeaponProcSpell(KerisOfZulSerak, "Keris of Zul'Serak", 1.0, func(character *core.Character) *core.Spell {
-		return character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 16528},
-			SpellSchool:      core.SpellSchoolNature,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			Flags:            core.SpellFlagPoison | core.SpellFlagPureDot,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-				if result.Landed() {
-					spell.Dot(target).Apply(sim)
-				}
-			},
-			Dot: core.DotConfig{
-				NumberOfTicks: 5,
-				TickLength:    time.Second * 2,
-				Aura: core.Aura{
-					Label: "Numbing Pain",
-					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						core.AtkSpeedReductionEffect(aura, 1.10)
-					},
-				},
-				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 8, isRollover)
-				},
-				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				},
-			},
-		})
-	})
+	// Server (VPlusItemDB): no chance on hit any more, only "Use: slows target's attack, casting and movement
+	// speed by 30% for 10 sec" (no damage), not modeled.
+	_ = KerisOfZulSerak
 
 	// https://www.wowhead.com/classic/item=11902/linkens-sword-of-mastery
 	itemhelpers.CreateWeaponCoHProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
@@ -1916,10 +1886,30 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=13286/rivenspike
-	// Chance on hit: Punctures target's armor lowering it by 200. Can be applied up to 3 times.
-	// 2 PPM - Armaments Discord has 1 PPM recorded before it could record refreshes.  Bashguuder with same effect is recorded at 2PPM so setting to match
+	// Server (VPlusItemDB): "Chance on hit: Reduces targets armor by 300 for 20 sec." (no stacks). Proc rate unknown,
+	// kept at the classic 2 per minute.
 	itemhelpers.CreateWeaponProcSpell(Rivenspike, "Rivenspike", 2.0, func(character *core.Character) *core.Spell {
-		punctureArmorAuras := character.NewEnemyAuraArray(PunctureArmorAura)
+		// Server (VPlusItemDB): "Equip: Your attacks ignore 5% of your enemies' Armor." (the generator runs once per
+		// character when the item is equipped).
+		character.PseudoStats.IgnoreArmorPercent += 0.05
+
+		armorAuras := character.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			aura := target.GetOrRegisterAura(core.Aura{
+				Label:    "Rivenspike Puncture",
+				ActionID: core.ActionID{SpellID: 17315},
+				Duration: time.Second * 20,
+			})
+			aura.NewExclusiveEffect(minorArmorReductionEffectCategory, true, core.ExclusiveEffect{
+				Priority: 300,
+				OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+					ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, -ee.Priority)
+				},
+				OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+					ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, ee.Priority)
+				},
+			})
+			return aura
+		})
 
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 17315},
@@ -1929,12 +1919,7 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				activateAura := punctureArmorAuras.Get(target)
-				activateAura.Activate(sim)
-
-				if activateAura.IsActive() {
-					activateAura.AddStack(sim)
-				}
+				armorAuras.Get(target).Activate(sim)
 			},
 		})
 	})
@@ -2101,10 +2086,11 @@ func init() {
 				NumberOfTicks: 30,
 				TickLength:    time.Second,
 				Aura: core.Aura{
-					Label: "Skullforge Brand",
+					Label:     "Skullforge Brand",
+					MaxStacks: 10, // server: 1 Shadow damage per sec per stack, up to 10 stacks, 30 sec
 				},
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 2, isRollover)
+					dot.Snapshot(target, float64(max(dot.GetStacks(), 1)), isRollover)
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -2114,7 +2100,12 @@ func init() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.Dot(target).Apply(sim)
+				dot := spell.Dot(target)
+				dot.ApplyOrRefresh(sim)
+				if dot.GetStacks() < dot.MaxStacks {
+					dot.AddStack(sim)
+				}
+				dot.TakeSnapshot(sim, false)
 			},
 		})
 	})
@@ -2512,38 +2503,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=13183/venomspitter
 	// Chance on hit: Poisons target for 7 Nature damage every 2 sec for 30 sec.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcSpell(Venomspitter, "Venomspitter", 1.0, func(character *core.Character) *core.Spell {
-		return character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 18203},
-			SpellSchool: core.SpellSchoolNature,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagPoison | core.SpellFlagPureDot,
-			Dot: core.DotConfig{
-				Aura: core.Aura{
-					Label: "Poison (Venomspitter)",
-				},
-				TickLength:    time.Second * 2,
-				NumberOfTicks: 15,
-
-				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					dot.Snapshot(target, 7, isRollover)
-				},
-
-				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				},
-			},
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-				if result.Landed() {
-					spell.Dot(target).Apply(sim)
-				}
-			},
-		})
-	})
+	// Server (VPlusItemDB): the proc only slows movement by 40% for 15 sec (no damage), not modeled.
+	_ = Venomspitter
 
 	// https://www.wowhead.com/classic/item=11603/vilerend-slicer
 	itemhelpers.CreateWeaponCoHProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
@@ -2916,7 +2877,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=17774/mark-of-the-chosen
 	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		statIncrease := float64(25)
+		statIncrease := float64(15) // server (VPlusItemDB): all stats by 15 for 1 min
 		markProcChance := 0.02
 
 		procAura := character.GetOrRegisterAura(core.Aura{
@@ -2955,7 +2916,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=19947/nat-pagles-broken-reel
 	core.NewSimpleStatOffensiveTrinketEffect(NatPaglesBrokenReel, stats.Stats{
-		stats.SpellHit: 10 * core.SpellHitRatingPerHitChance,
+		stats.SpellHit:         10 * core.SpellHitRatingPerHitChance,
 		stats.SpellPenetration: 50, // server
 	}, time.Second*25, time.Second*90)
 

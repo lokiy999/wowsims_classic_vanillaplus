@@ -4103,3 +4103,26 @@ Compared with `Spell.csv` (same method as Parts DS-DV):
 - **Heals** (every rank of `sim/{priest,druid,shaman,paladin}/heals.go`: heal ranges at level 60, HoT ticks, mana):
   all match. Tranquility's heal is in its triggered spells (35768-35771) and Holy Shock's mana cost is on the cast
   spell, both already used.
+
+## Part DX — Item effects vs VPlusItemDB (2026-09-30)
+
+A throwaway script took every item with an effect in the sim (215 items: `core.NewItemEffect`, the stat trinket
+helpers, `itemhelpers.CreateWeapon*`), their code, and the item's "Equip:" / "Use:" / "Chance on hit:" lines from
+`VPlusItemDB.lua`, and flagged items where a number in the server text is not in the code (plain stat lines like
+defense, block or spell power are item stats and were skipped). 16 were flagged; checked by hand, fixed:
+- **Venomspitter**: the server proc only slows movement (40% for 15 sec); the sim still did the classic 7 Nature
+  damage every 2 sec for 30 sec. Proc removed.
+- **Keris of Zul'Serak**: no chance on hit on the server any more, only a Use slow (30% for 10 sec). The classic
+  damage proc was removed.
+- **Skullforge Reaver**: 1 Shadow damage per sec per stack, up to 10 stacks, 30 sec (was 2 per sec, no stacks).
+- **Hameya's Slayer**: bleed 240 over 30 sec (was 80).
+- **Mark of the Chosen**: all stats +15 (was 25).
+- **Rivenspike**: "ignore 5% of your enemies' Armor" is now applied (`PseudoStats.IgnoreArmorPercent`), and the proc is
+  armor -300 for 20 sec, no stacks (was the classic Puncture Armor, -200 stacking 3 times). This answers question 22.
+  Proc rate still the classic 2 per minute.
+Already right (flag was a false alarm): Fiery War Axe, Firebreather, The Jackhammer, Coldrage Dagger, Hookfang Shanker's
+values, Diamond Flask. Still open: Ragehammer and Seeping Willow are Use effects on the server (question 30); Hookfang
+Shanker and The Cruel Hand of Timmy stack up to 3 times (the sim applies one stack).
+
+`sim/common/item_effects.go` was also run through gofmt (four lines were misformatted before). Test baselines
+unchanged. File: `sim/common/item_effects.go`.
