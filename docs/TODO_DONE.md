@@ -21,6 +21,7 @@ the Part named with each item. New finished items are added at the top of their 
 
 ## Talents
 
+- Done on 2026-09-30 (Part EA): raid buffs and debuffs compared with the server; Blood Pact, Stormstrike, Curse of Weakness, Insect Swarm, Gift of Arthas and Scorpid Sting fixed.
 - Done on 2026-09-30 (Part DY): set bonuses re-checked against VPlusItemDB; Blood Tiger Harness 2% crit, Soulforge Armor 4 crit proc added.
 - Done on 2026-09-30 (Part DX): item effects compared with VPlusItemDB; Venomspitter, Keris of Zul'Serak, Skullforge Reaver, Hameya's Slayer, Mark of the Chosen, Rivenspike fixed.
 - Done on 2026-09-30 (Part DW): feral druid, paladin and all heal tables compared with the server; Shred 250% weapon damage.

@@ -4153,3 +4153,27 @@ rune / conjured amount tables by item id): flasks, elixirs, juju, Zanza buffs, s
 the Moon, Nightborne Fury Saga, Memory of Hyjal), food, alcohol, oils, sharpening stones and weightstones, mana /
 health / rage / rejuvenation potions, stoneshield and protection potions, healthstones and conjured food. All match
 the server values.
+
+## Part EA — Raid buffs and debuffs vs the server (2026-09-30)
+
+Compared `BuffSpellValues` (`sim/core/buffs.go`) and the debuff auras (`sim/core/debuffs.go`) with the top-rank
+spells in `Spell.csv`. Already matching: Arcane Intellect / Brilliance 30, Divine Spirit / Prayer of Spirit 40,
+Fortitude 54, Battle Shout 232 (185 without AQ), Blessing of Might 185 / Wisdom 33, Mark of the Wild, Devotion Aura
+700, Grace of Air / Strength of Earth 70, Mana Spring 10 per 2 sec, the resistance auras and totems 60, Shadow
+Protection, Aspect of the Wild, Sunder Armor, Expose Armor, Curse of Recklessness, Curse of Shadow / Elements, Hunter's
+Mark, Expose Weakness, Improved Scorch, Winter's Chill, Shadow Vulnerability, Crystal Yield, Thunderfury. Fixed:
+- **Blood Pact**: 38 Stamina (server top rank 11767; classic 42). Improved Imp 2/2 still +30% (49).
+- **Stormstrike** debuff (external shaman option): Nature damage taken +10% for 10 sec with no charges (was +20% for
+  12 sec, 2 charges used up by Nature hits). The "nature attackers" frequency setting only removed charges, so it no
+  longer does anything.
+- **Curse of Weakness**: melee and ranged attack power -130 for 1 min (was the classic -31 as a flat damage per hit,
+  2 min). The improved option is now Jinx 3/3 (+30%; was the classic Improved Curse of Weakness +20%).
+- **Insect Swarm** debuff: the server spell (24977) has only the damage over time and lasts 16 sec; the classic "2%
+  chance to hit reduced" is gone. The debuff now lasts 16 sec with no effect of its own; the druid's own Insect Swarm
+  no longer expires 4 sec before its DoT.
+- **Gift of Arthas**: +14 physical damage taken (was 8).
+- **Scorpid Sting**: 30 sec (was 20).
+
+Test baselines regenerated: character stats of every spec (Blood Pact in the full buffs), enhancement shaman -5% and
+tank shaman -9% (Stormstrike), hunter and rogue slightly lower (Nature damage), balance +1.3% (Insect Swarm), feral
+tank +0.9% (the boss no longer misses more, so more rage). Files: `sim/core/buffs.go`, `sim/core/debuffs.go`.

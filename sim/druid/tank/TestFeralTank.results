@@ -3,7 +3,7 @@ character_stats_results: {
  value: {
   final_stats: 419.87
   final_stats: 352.11
-  final_stats: 596.53
+  final_stats: 590.48
   final_stats: 243.21
   final_stats: 319.44
   final_stats: 81.07
@@ -35,7 +35,7 @@ character_stats_results: {
   final_stats: 20.1455
   final_stats: 5.64
   final_stats: 0
-  final_stats: 10012.8609
+  final_stats: 9932.8194
   final_stats: 52
   final_stats: 80
   final_stats: 80
@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFeralTank-Phase1-StatWeights-Default"
  value: {
-  weights: 0.00681
-  weights: 0.42562
+  weights: 0.15821
+  weights: 0.06926
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.26449
+  weights: -0.11592
   weights: 0
   weights: 0
   weights: 0
@@ -76,9 +76,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.00693
+  weights: -0.03555
   weights: 0
-  weights: -0.35354
+  weights: -0.16328
   weights: 0
   weights: 0
   weights: 0
@@ -169,9 +169,9 @@ dps_results: {
 dps_results: {
  key: "TestFeralTank-Phase1-Average-Default"
  value: {
-  dps: 334.88401
-  tps: 678.22398
-  dtps: 991.09735
+  dps: 334.71806
+  tps: 678.46208
+  dtps: 966.0007
  }
 }
 dps_results: {
@@ -213,8 +213,8 @@ dps_results: {
 dps_results: {
  key: "TestFeralTank-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 377.0052
-  tps: 766.12175
-  dtps: 923.76419
+  dps: 380.36208
+  tps: 770.85439
+  dtps: 898.2721
  }
 }

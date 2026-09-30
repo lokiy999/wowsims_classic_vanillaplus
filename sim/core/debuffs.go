@@ -207,7 +207,6 @@ func ExternalStormstrikeCaster(_ *proto.Debuffs, target *Unit) {
 				TickImmediately: true,
 				OnAction: func(s *Simulation) {
 					stormstrikeAura.Activate(sim)
-					stormstrikeAura.SetStacks(sim, stormstrikeAura.MaxStacks)
 				},
 			})
 			sim.AddPendingAction(pa)
@@ -219,43 +218,19 @@ func ExternalStormstrikeCaster(_ *proto.Debuffs, target *Unit) {
 }
 
 func StormstrikeAura(unit *Unit) *Aura {
-	stormstrikeConfig := unit.Env.Raid.Parties[0].Players[0].GetCharacter().StormstrikeConfig
-
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:     "Stormstrike",
-		ActionID:  ActionID{SpellID: 17364},
-		Duration:  time.Second * 12,
-		MaxStacks: 2,
+	// Server (Spell.csv 17364): Nature damage taken +10% for 10 sec, no charges (classic: +20%, 2 charges, 12 sec).
+	// The "nature attackers" setting only removed charges, so it has no effect any more.
+	return unit.GetOrRegisterAura(Aura{
+		Label:    "Stormstrike",
+		ActionID: ActionID{SpellID: 17364},
+		Duration: time.Second * 10,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1.20
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1.10
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 1.20
-		},
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if aura.GetStacks() > 0 && spell.SpellSchool.Matches(SpellSchoolNature) && result.Landed() && result.Damage > 0 {
-				aura.RemoveStack(sim)
-			}
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 1.10
 		},
 	})
-
-	// External attacks using nature strike
-	if stormstrikeConfig.natureAttackersFrequency > 0 {
-		aura.OnReset = func(aura *Aura, sim *Simulation) {
-			sim.AddPendingAction(
-				NewPeriodicAction(sim, PeriodicActionOptions{
-					Period: DurationFromSeconds(stormstrikeConfig.natureAttackersFrequency),
-					OnAction: func(s *Simulation) {
-						if aura.GetStacks() > 0 {
-							aura.RemoveStack(sim)
-						}
-					},
-				}),
-			)
-		}
-	}
-
-	return aura
 }
 
 func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
@@ -336,8 +311,8 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	// DBC spell 17800: +10% Shadow damage taken regardless of talent rank.
 	damageMulti := 1.10
 	aura := unit.GetOrRegisterAura(Aura{
-		Label:     isbLabel,
-		ActionID:  ActionID{SpellID: 17800},
+		Label:    isbLabel,
+		ActionID: ActionID{SpellID: 17800},
 		// Server (Spell.csv 17800 / talent text): +10% Shadow damage taken for 10 sec, no charges (classic: 12 sec,
 		// 4 Shadow hits), so neither the warlock's nor the simulated priests' Shadow hits use it up.
 		Duration:  10 * time.Second,
@@ -560,10 +535,10 @@ func GiftOfArthasAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 11374},
 		Duration: time.Minute * 3,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += 8
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] += 14 // server (Spell.csv 11374)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 8
+			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 14
 		},
 	})
 }
@@ -755,20 +730,20 @@ func faerieFireAuraInternal(target *Unit, label string, spellID int32) *Aura {
 }
 
 func CurseOfWeaknessAura(target *Unit, points int32) *Aura {
-	modDmgReduction := -31.0
-
-	modDmgReduction *= []float64{1, 1.06, 1.13, 1.20}[points]
-	modDmgReduction = math.Floor(modDmgReduction)
+	// Server (Spell.csv 11708): melee and ranged attack power -130 for 1 min (classic: -31). The improved option is
+	// Jinx 3/3 (+10% effect per rank).
+	apReduction := math.Floor(130 * []float64{1, 1.1, 1.2, 1.3}[points])
+	reduction := stats.Stats{stats.AttackPower: -apReduction, stats.RangedAttackPower: -apReduction}
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Weakness" + strconv.Itoa(int(points)),
 		ActionID: ActionID{SpellID: 11708},
-		Duration: time.Minute * 2,
+		Duration: time.Minute,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamage += modDmgReduction
+			aura.Unit.AddStatsDynamic(sim, reduction)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusPhysicalDamage -= modDmgReduction
+			aura.Unit.AddStatsDynamic(sim, reduction.Invert())
 		},
 	})
 	return aura
@@ -909,9 +884,9 @@ func InsectSwarmAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "InsectSwarmMiss",
 		ActionID: ActionID{SpellID: 24977},
-		Duration: time.Second * 12,
+		Duration: time.Second * 16,
 	})
-	increasedMissEffect(aura, 0.02)
+	// Server (Spell.csv 24977): only the damage over time; no "chance to hit reduced" effect (classic: 2%).
 	return aura
 }
 
@@ -919,7 +894,7 @@ func ScorpidStingAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Scorpid Sting",
 		ActionID: ActionID{SpellID: 3043},
-		Duration: time.Second * 20,
+		Duration: time.Second * 30, // server (Spell.csv 3043)
 	})
 	return aura
 }

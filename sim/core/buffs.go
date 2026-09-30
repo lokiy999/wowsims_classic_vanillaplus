@@ -86,7 +86,7 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 		stats.MP5: TernaryFloat64(IncludeAQ, 33, 30),
 	},
 	BloodPact: {
-		stats.Stamina: 42,
+		stats.Stamina: 38, // server (Spell.csv 11767, top rank): 38 (classic 42)
 	},
 	DevotionAura: {
 		stats.BonusArmor: 700, // confirmed in game; Improved Devotion Aura is +25% per point (1050 at 2/2)
