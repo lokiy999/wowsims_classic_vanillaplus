@@ -482,8 +482,7 @@ export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
 	{ config: ElixirOfGreaterAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfLesserAgility, stats: [Stat.StatAgility] },
-	{ config: ScrollOfAgility, stats: [Stat.StatAgility] },
-	{ config: ScrollOfAgilityV, stats: [Stat.StatAgility] },
+	// Scroll of Agility IV / V are in the Scrolls row (BuffDebuffInputs.ScrollOfAgility): they stack with these.
 ];
 
 export const makeAgilityConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'agilityElixir' });
@@ -523,8 +522,7 @@ export const STRENGTH_CONSUMES_CONFIG: ConsumableStatOption<StrengthBuff>[] = [
 	{ config: JujuPower, stats: [Stat.StatStrength] },
 	{ config: ElixirOfGiants, stats: [Stat.StatStrength] },
 	{ config: ElixirOfOgresStrength, stats: [Stat.StatStrength] },
-	{ config: ScrollOfStrength, stats: [Stat.StatStrength] },
-	{ config: ScrollOfStrengthV, stats: [Stat.StatStrength] },
+	// Scroll of Strength IV / V are in the Scrolls row (BuffDebuffInputs.ScrollOfStrength): they stack with these.
 ];
 
 export const makeStrengthConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'strengthBuff' });

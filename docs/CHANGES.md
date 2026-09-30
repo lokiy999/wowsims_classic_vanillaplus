@@ -4260,3 +4260,17 @@ Checked in a combat log (fury warrior, phase 1 gear, Windfury Totem, auto attack
 after them stays at 6.23 / 21.83 (it was pushed to 3.64 + 2.60 before).
 
 Test baselines regenerated: rogue +0.2 to +0.8%, fury warrior +0.7%, hunter -0.3%, enhancement shaman about 0.
+
+## Part EF — Scrolls of Strength and Agility stack with the elixirs (2026-09-30)
+
+Lokiy: Scroll of Strength was in the same Strength picker as Juju Power (so only one could be picked), but they stack;
+"do the same for agility" (Scroll of Agility was in the Agility picker with Elixir of the Mongoose / Greater Agility).
+Both scrolls are now scroll buffs like Stamina / Intellect / Spirit: an icon in the Scrolls row of the consumables
+(none / rank IV / rank V):
+- Scroll of Strength IV +15 Strength; V (Nightborne Fury Saga) +19 Strength and +4 weapon damage.
+- Scroll of Agility IV +15 Agility; V (Scroll of the Moon) +19 Agility and +3% attack speed.
+`proto/common.proto`: the unused `RaidBuffs.scroll_of_strength` / `scroll_of_agility` bools became TristateEffect
+(same wire type). `sim/core/buffs.go` applies them (the rank V extras moved there from `consumes.go`); the old
+Strength / Agility slot values still work for saved settings. UI: removed from the Strength and Agility pickers
+(`consumables.ts`), `ScrollOfStrength` / `ScrollOfAgility` in `buffs_debuffs.ts`, added to the Scrolls row
+(`consumes_picker.ts`). No preset or test used them: baselines unchanged.

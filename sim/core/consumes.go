@@ -519,7 +519,7 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.Agility: 8,
 			})
-		case proto.AgilityElixir_ScrollOfAgility:
+		case proto.AgilityElixir_ScrollOfAgility: // old saved settings; the UI now uses raid_buffs.scroll_of_agility
 			character.AddStats(BuffSpellValues[ScrollOfAgility])
 		case proto.AgilityElixir_ScrollOfAgilityV:
 			character.AddStats(BuffSpellValues[ScrollOfAgilityV])
@@ -550,7 +550,7 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.Strength: 8,
 			})
-		case proto.StrengthBuff_ScrollOfStrength:
+		case proto.StrengthBuff_ScrollOfStrength: // old saved settings; the UI now uses raid_buffs.scroll_of_strength
 			character.AddStats(BuffSpellValues[ScrollOfStrength])
 		case proto.StrengthBuff_ScrollOfStrengthV:
 			character.AddStats(BuffSpellValues[ScrollOfStrengthV])

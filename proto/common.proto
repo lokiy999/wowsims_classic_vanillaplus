@@ -647,8 +647,8 @@ message RaidBuffs {
 	// Scroll
 	bool scroll_of_protection = 26;
 	TristateEffect scroll_of_stamina = 27; // none, rank IV, rank V
-	bool scroll_of_strength = 28;
-	bool scroll_of_agility = 29;
+	TristateEffect scroll_of_strength = 28; // none, rank IV, rank V (stacks with Juju Power / Giants, Lokiy 2026-09-30)
+	TristateEffect scroll_of_agility = 29; // none, rank IV, rank V (stacks with Mongoose / Greater Agility, Lokiy 2026-09-30)
 	TristateEffect scroll_of_intellect = 30; // none, rank IV, rank V
 	TristateEffect scroll_of_spirit = 31; // none, rank IV, rank V
 

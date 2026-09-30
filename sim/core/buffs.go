@@ -266,6 +266,37 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		character.AddStats(updateStats)
 		character.arcaneIntellectAmount = updateStats[stats.Intellect]
 	}
+	// Scroll of Strength stacks with Juju Power / Elixir of Giants / Strength of Earth (Lokiy 2026-09-30), so it is a
+	// scroll buff like Intellect / Stamina / Spirit instead of a Strength consumable.
+	if raidBuffs.ScrollOfStrength == proto.TristateEffect_TristateEffectRegular {
+		character.AddStats(BuffSpellValues[ScrollOfStrength])
+	} else if raidBuffs.ScrollOfStrength == proto.TristateEffect_TristateEffectImproved {
+		// Nightborne Fury Saga: +19 Strength and +4 weapon damage.
+		character.AddStats(BuffSpellValues[ScrollOfStrengthV])
+		if !character.PseudoStats.FeralCombatEnabled {
+			for _, weapon := range []*Weapon{character.AutoAttacks.MH(), character.AutoAttacks.OH()} {
+				weapon.BaseDamageMin += 4
+				weapon.BaseDamageMax += 4
+			}
+		}
+	}
+	// Scroll of Agility stacks with Elixir of the Mongoose / Greater Agility and Grace of Air (Lokiy 2026-09-30).
+	if raidBuffs.ScrollOfAgility == proto.TristateEffect_TristateEffectRegular {
+		character.AddStats(BuffSpellValues[ScrollOfAgility])
+	} else if raidBuffs.ScrollOfAgility == proto.TristateEffect_TristateEffectImproved {
+		// Scroll of the Moon: +19 Agility and +3% attack speed.
+		character.AddStats(BuffSpellValues[ScrollOfAgilityV])
+		MakePermanent(character.GetOrRegisterAura(Aura{
+			Label:    "Scroll of the Moon",
+			ActionID: ActionID{ItemID: 81010},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
+			},
+		}))
+	}
 	if raidBuffs.ScrollOfIntellect == proto.TristateEffect_TristateEffectRegular {
 		character.AddStats(BuffSpellValues[ScrollOfIntellect])
 	} else if raidBuffs.ScrollOfIntellect == proto.TristateEffect_TristateEffectImproved {

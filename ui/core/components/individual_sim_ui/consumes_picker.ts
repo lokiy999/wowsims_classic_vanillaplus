@@ -116,6 +116,8 @@ export class ConsumesPicker extends Component {
 
 		const pickers = [
 			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfStamina),
+			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfStrength),
+			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfAgility),
 			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfIntellect),
 			buildIconInput(scrollsElem, this.simUI.player, BuffDebuffInputs.ScrollOfSpirit),
 		];

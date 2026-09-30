@@ -286,6 +286,22 @@ export const ScrollOfStamina = makeEnumRaidBuffInput({
 		{ value: TristateEffect.TristateEffectImproved, actionId: () => ActionId.fromItemId(81013) },
 	],
 });
+export const ScrollOfStrength = makeEnumRaidBuffInput({
+	fieldName: 'scrollOfStrength',
+	values: [
+		{ value: TristateEffect.TristateEffectMissing },
+		{ value: TristateEffect.TristateEffectRegular, actionId: () => ActionId.fromItemId(10310) },
+		{ value: TristateEffect.TristateEffectImproved, actionId: () => ActionId.fromItemId(81011) },
+	],
+});
+export const ScrollOfAgility = makeEnumRaidBuffInput({
+	fieldName: 'scrollOfAgility',
+	values: [
+		{ value: TristateEffect.TristateEffectMissing },
+		{ value: TristateEffect.TristateEffectRegular, actionId: () => ActionId.fromItemId(10309) },
+		{ value: TristateEffect.TristateEffectImproved, actionId: () => ActionId.fromItemId(81010) },
+	],
+});
 export const ScrollOfIntellect = makeEnumRaidBuffInput({
 	fieldName: 'scrollOfIntellect',
 	values: [
