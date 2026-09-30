@@ -224,7 +224,8 @@ export const StormstrikeNatureAttackersFrequencey = {
 
 export const StormstrikeConfig = {
 	tooltip: 'Stormstrike debuff configuration',
-	inputs: [StormstrikeFrequency, StormstrikeNatureAttackersFrequencey],
+	// Other Nature Attacks Frequency is not shown: the server Stormstrike debuff has no charges to use up (Part EA).
+	inputs: [StormstrikeFrequency],
 };
 
 export const TankAssignment = {

@@ -4177,3 +4177,5 @@ Mark, Expose Weakness, Improved Scorch, Winter's Chill, Shadow Vulnerability, Cr
 Test baselines regenerated: character stats of every spec (Blood Pact in the full buffs), enhancement shaman -5% and
 tank shaman -9% (Stormstrike), hunter and rogue slightly lower (Nature damage), balance +1.3% (Insect Swarm), feral
 tank +0.9% (the boss no longer misses more, so more rage). Files: `sim/core/buffs.go`, `sim/core/debuffs.go`.
+UI: the Insect Swarm debuff is no longer listed (it has no effect on the server) and the Stormstrike settings no
+longer show "Other Nature Attacks Frequency" (`ui/core/components/inputs/buffs_debuffs.ts`, `other_inputs.ts`).

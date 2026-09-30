@@ -932,11 +932,7 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
-	{
-		config: MeleeHitDebuff,
-		picker: IconPicker,
-		stats: [Stat.StatDodge],
-	},
+	// Insect Swarm (MeleeHitDebuff) is not listed: on the server it has no "chance to hit reduced" effect (Part EA).
 
 	// Other Debuffs
 	{
