@@ -4124,5 +4124,11 @@ Already right (flag was a false alarm): Fiery War Axe, Firebreather, The Jackham
 values, Diamond Flask. Still open: Ragehammer and Seeping Willow are Use effects on the server (question 30); Hookfang
 Shanker and The Cruel Hand of Timmy stack up to 3 times (the sim applies one stack).
 
+Reverse check: items in the sim's item list whose server text has a Use / Chance on hit / proc line but no code.
+Almost all are utility (stuns, shields, summons, PvP trinkets, thorns). The ones that matter for damage are the weapon
+procs without a known proc rate (question 21) and Ragehammer / Seeping Willow (question 30); the armor-ignore weapons
+(The Sawblade, Blackwood Hacker) and Shard of the Fallen Star were already in `vplus_trinkets.go` (registered in a
+loop, which the script did not follow).
+
 `sim/common/item_effects.go` was also run through gofmt (four lines were misformatted before). Test baselines
 unchanged. File: `sim/common/item_effects.go`.
