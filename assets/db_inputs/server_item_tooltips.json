@@ -684,6 +684,11 @@
   "name": "Elixir of Minor Fortitude",
   "tooltip": "<div class=\"whtt-name\" style=\"color:#ffffff\">Elixir of Minor Fortitude</div><div style=\"color:#9d9d9d\">Requires Level 2</div><div style=\"color:#1eff00\">Use: Increases the player's maximum health by 50 for 1 hour.</div>"
  },
+ "26013": {
+  "icon": "inv_misc_organ_01",
+  "name": "King's Heart",
+  "tooltip": "<div class=\"whtt-name\" style=\"color:#1eff00\">King's Heart</div><div style=\"color:#ffffff\">Binds when picked up</div><div style=\"color:#ffffff\">Unique</div><div style=\"color:#1eff00\">Use: Consume the King Mosh' Heart, granting you 200 Attack Power for 30 min.</div>"
+ },
  "26430": {
   "icon": "inv_potion_13",
   "name": "Tears of Teremus",

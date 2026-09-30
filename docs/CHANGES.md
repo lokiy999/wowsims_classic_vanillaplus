@@ -4303,3 +4303,10 @@ Lokiy: "do both find weakness and curses and add them to all classes to the debu
 `proto/common.proto`: `Debuffs.find_weakness = 26`. `sim/core/debuffs.go`: `FindWeaknessAura`, applied as a
 permanent debuff. `sim/hunter/talents_extra.go` uses it. UI: `FindWeakness` input and empty stats (= always shown) on
 the curse entries in `DEBUFFS_CONFIG` (`buffs_debuffs.ts`).
+
+## Part EI — King's Heart tooltip (2026-09-30)
+
+Lokiy: tooltips for King's Heart and Tears of Teremus. Tears of Teremus already had its in-game tooltip (Part CK).
+King's Heart (26013) is a server item Wowhead does not know: re-ran `tools/gen_server_item_tooltips.py` (it now finds
+the id in the UI) and regenerated the DB, so it gets the tooltip from `VPlusItemDB.lua` ("Use: Consume the King
+Mosh' Heart, granting you 200 Attack Power for 30 min.") and the AtlasLoot icon `inv_misc_organ_01`.
