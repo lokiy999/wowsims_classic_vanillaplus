@@ -40,8 +40,27 @@ ICON_URL = "https://wow.zamimg.com/images/wow/icons/{size}/{icon}.jpg"
 QUALITY = {"Poor": 0, "Common": 1, "Uncommon": 2, "Rare": 3, "Epic": 4, "Legendary": 5, "Artifact": 6}
 Q_COLOR = {0: "#9d9d9d", 1: "#ffffff", 2: "#1eff00", 3: "#0070dd", 4: "#a335ee", 5: "#ff8000", 6: "#e6cc80"}
 GREEN = ("Equip:", "Use:", "Chance on hit:", "(", "Set:")
+HERE = os.path.dirname(os.path.abspath(__file__))
+# Server-made icons extracted from the client's patch MPQs (tools/itemdb/icons/<name>.jpg 56px, <name>_s.jpg 18px);
+# everything else comes from the public icon CDN.
+LOCAL_ICONS = {f[:-4] for f in os.listdir(os.path.join(HERE, "icons")) if f.endswith(".jpg") and not f.endswith("_s.jpg")}
+# Typos in the server's AtlasLoot icon names.
+ICON_ALIAS = {
+    "inv_brancer_11": "inv_bracer_11",
+    "inv_misc bomb_03": "inv_misc_bomb_03",
+    "inv_misc_armorkit 27": "inv_misc_armorkit_27",
+    "inv_throwing knife_01": "inv_throwingknife_01",
+}
 
 esc = html.escape
+
+
+def icon_url(icon, size="large", absolute=False):
+    icon = ICON_ALIAS.get(icon, icon or "inv_misc_questionmark")
+    local = icon.replace(" ", "_")
+    if local in LOCAL_ICONS:
+        return f"{SITE_URL if absolute else ''}/icons/{local}{'_s' if size == 'small' else ''}.jpg"
+    return ICON_URL.format(size=size, icon=icon)
 
 
 # --------------------------------------------------------------------------------------------- data
@@ -91,6 +110,23 @@ def load_table_names():
     return names, order
 
 
+def load_text_codes():
+    """AtlasLoot's #codes# (e.g. #r3# -> Honored, #a2# -> Leather) from Core/TextParsing.lua."""
+    txt = open(os.path.join(ATLAS, "Core", "TextParsing.lua"), encoding="utf-8", errors="replace").read()
+    codes = {}
+    for code, expr in re.findall(r'gsub\(\s*text\s*,\s*"(#[^"]+#)"\s*,\s*(.+?)\);?\s*$', txt, re.M):
+        val = lua_string_expr(expr)
+        if val and code not in codes:
+            codes[code] = val
+    return codes
+
+
+def clean_label(s, codes):
+    s = re.sub(r"=[a-z]+\d*=", "", s)
+    s = re.sub(r"#[^#\s]+#", lambda m: codes.get(m.group(0), ""), s)
+    return re.sub(r"\s+", " ", s).strip(" ,")
+
+
 def load_loot_tables():
     """{table_key: [(item_id, icon, display_name, is_new)]} in AtlasLoot order (id 0 rows are spacers / headers)."""
     tables = {}
@@ -127,10 +163,9 @@ def tooltip_html(item):
 
 
 def icon_img(icon, size="medium", cls="icon"):
-    icon = icon or "inv_misc_questionmark"
-    # Server-made icons (e.g. inv_misc_mc_*) are not on the public icon CDN: fall back to the question mark.
+    # An icon that is neither local nor on the CDN falls back to the question mark.
     fallback = ICON_URL.format(size=size, icon="inv_misc_questionmark")
-    return (f'<img class="{cls}" src="{ICON_URL.format(size=size, icon=esc(icon))}" alt="" loading="lazy" '
+    return (f'<img class="{cls}" src="{esc(icon_url(icon, size))}" alt="" loading="lazy" '
             f'width="36" height="36" onerror="this.onerror=null;this.src=\'{fallback}\'">')
 
 
@@ -192,6 +227,7 @@ def main():
     items = load_items()
     names, cat_order = load_table_names()
     tables = load_loot_tables()
+    codes = load_text_codes()
 
     flagged_new = {r[0] for rows in tables.values() for r in rows if r[3]}
 
@@ -245,7 +281,7 @@ def main():
   {src_html}
 </article>"""
         with open(os.path.join(out, "item", f"{iid}.html"), "w", encoding="utf-8") as f:
-            f.write(page(it["name"], body, description=desc, image=ICON_URL.format(size="large", icon=icon),
+            f.write(page(it["name"], body, description=desc, image=icon_url(icon, "large", absolute=True),
                          color=color, path=f"/item/{iid}"))
 
     # ---- loot table pages
@@ -254,7 +290,7 @@ def main():
         rows = []
         for iid, icon, label, _ in tables[key]:
             if not iid:
-                header = re.sub(r"=q\d=|=ds=", "", label).strip()
+                header = clean_label(label, codes)
                 if header:
                     rows.append(f'<li class="sub">{esc(header)}</li>')
                 continue
@@ -319,14 +355,15 @@ def main():
                      'Only Vanilla Plus custom items are listed for now.</p><p><a href="/">Back to all items</a></p></article>'))
 
     # ---- data for search / hover tooltips
-    data = [{"id": i, "n": items[i]["name"], "q": items[i]["quality"], "i": icons.get(i, "inv_misc_questionmark"),
+    data = [{"id": i, "n": items[i]["name"], "q": items[i]["quality"], "i": icon_url(icons.get(i), "small"),
              "s": [table_label(k)[0] for k in sources.get(i, [])], "t": tooltip_html(items[i])} for i in custom]
     with open(os.path.join(out, "items.json"), "w", encoding="utf-8") as f:
         json.dump(data, f, separators=(",", ":"))
 
-    here = os.path.dirname(os.path.abspath(__file__))
     for asset in ("style.css", "site.js"):
-        shutil.copy(os.path.join(here, asset), os.path.join(out, asset))
+        shutil.copy(os.path.join(HERE, asset), os.path.join(out, asset))
+    shutil.rmtree(os.path.join(out, "icons"), ignore_errors=True)
+    shutil.copytree(os.path.join(HERE, "icons"), os.path.join(out, "icons"))
 
     print(f"{len(custom)} items, {len(loot_keys)} loot tables, {len(nosrc)} without source -> {out}")
 

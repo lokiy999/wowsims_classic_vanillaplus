@@ -1,4 +1,4 @@
-// db.lokiy.dev: search and hover tooltips. Data: /items.json [{id, n: name, q: quality, i: icon, s: sources, t: tooltip html}]
+// db.lokiy.dev: search and hover tooltips. Data: /items.json [{id, n: name, q: quality, i: small icon URL, s: sources, t: tooltip html}]
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const ICON = icon => `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
@@ -36,7 +36,7 @@
 			? hits
 					.map(
 						it =>
-							`<li><a class="item" href="/item/${it.id}" data-item="${it.id}"><img class="icon-s" src="${ICON(it.i)}" alt="" onerror="this.onerror=null;this.src='${ICON('inv_misc_questionmark')}'"><span style="color:${QC[it.q] || '#fff'}">${escapeHtml(it.n)}</span></a>` +
+							`<li><a class="item" href="/item/${it.id}" data-item="${it.id}"><img class="icon-s" src="${it.i}" alt="" onerror="this.onerror=null;this.src='${ICON('inv_misc_questionmark')}'"><span style="color:${QC[it.q] || '#fff'}">${escapeHtml(it.n)}</span></a>` +
 							(it.s.length ? `<span class="muted">${escapeHtml(it.s.join(', '))}</span>` : '') +
 							'</li>',
 					)
