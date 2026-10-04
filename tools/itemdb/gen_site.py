@@ -7,12 +7,14 @@ Reads the server data in the repo's CSV's/ folder:
 and writes plain HTML pages (Caddy serves them from disk):
   /index.html             search + browse by instance / boss
   /item/<id>.html         one page per item (tooltip, icon, where it drops), with Open Graph tags for link previews
-  /loot/<table>.html      one page per loot table (boss, trash, set, ...) that has custom items
+  /loot/<table>.html      one page per loot table (boss, trash, set, ...) that has custom or reworked items
+  /reworked.html          reworked classic items by instance / boss
   /items.json             search / hover-tooltip data
   /style.css, /site.js
 
-Scope (Lokiy 2026-10-04): custom items only = item ids that do not exist in classic 1.12 (above 24283) plus the
-items AtlasLoot flags as new ("N"). All items come later: change is_custom().
+Scope (Lokiy 2026-10-04): custom items = item ids that do not exist in classic 1.12 (above 24283) plus the items
+AtlasLoot flags as new ("N"); reworked items = classic ids whose server tooltip differs from Wowhead's classic one
+(reworked.py). All items come later.
 
 Usage:
   python3 tools/itemdb/gen_site.py [--out /var/www/db]
@@ -30,6 +32,8 @@ from datetime import date
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(REPO, "docs"))
 from parse_vplus import parse_lua  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from reworked import find_reworked, norm  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -221,9 +225,11 @@ def rate_text(drops, kills, estimated):
 
 # --------------------------------------------------------------------------------------------- html
 
-def tooltip_html(item):
+def tooltip_html(item, mark=(), mark_cls="tt-new"):
+    """mark: normalized lines to highlight (the changes against the other version of a reworked item)."""
     color = Q_COLOR.get(item["quality"], "#ffffff")
-    out = [f'<div class="tt-name" style="color:{color}">{esc(item["name"])}</div>']
+    name_cls = f' {mark_cls}' if norm(item["name"]) in mark else ""
+    out = [f'<div class="tt-name{name_cls}" style="color:{color}">{esc(item["name"])}</div>']
     for ln in item["lines"]:
         cls = "tt-white"
         if re.match(r"^\(\d+\) Set:", ln) or ln.startswith("  ") or re.match(r"^.+\(\d+/\d+\)$", ln):
@@ -232,6 +238,8 @@ def tooltip_html(item):
             cls = "tt-green"
         elif ln.startswith(('"', "Requires ", "Classes:", "Races:")):
             cls = "tt-grey" if not ln.startswith('"') else "tt-flavor"
+        if mark and norm(ln) in mark:
+            cls += " " + mark_cls
         out.append(f'<div class="{cls}">{esc(ln)}</div>')
     return "".join(out)
 
@@ -270,6 +278,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <body>
 <header class="top">
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
+  <nav class="nav"><a href="/">Custom</a><a href="/reworked">Reworked</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -277,7 +286,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <main>
 {body}
 </main>
-<footer>Vanilla Plus custom items, from the server's item data and AtlasLoot. Updated {date.today().isoformat()}.</footer>
+<footer>Vanilla Plus custom and reworked items, from the server's item data and AtlasLoot. Updated {date.today().isoformat()}.</footer>
 <script src="/site.js" defer></script>
 </body>
 </html>
@@ -308,18 +317,24 @@ def main():
     def is_custom(iid):
         return iid in items and (iid > CLASSIC_MAX_ITEM_ID or iid in flagged_new)
 
+    reworked = find_reworked(items, CLASSIC_MAX_ITEM_ID, skip=flagged_new)
+
+    def listed(iid):
+        return is_custom(iid) or iid in reworked
+
     icons, sources = {}, {}
     for key, rows in tables.items():
         for iid, icon, _, _ in rows:
             if iid and icon and iid not in icons:
                 icons[iid] = icon
-            if is_custom(iid):
+            if listed(iid):
                 sources.setdefault(iid, [])
                 if key not in sources[iid]:
                     sources[iid].append(key)
 
     custom = sorted(i for i in items if is_custom(i))
-    loot_keys = [k for k in tables if any(is_custom(r[0]) for r in tables[k])]
+    all_listed = sorted(i for i in items if listed(i))
+    loot_keys = [k for k in tables if any(listed(r[0]) for r in tables[k])]
 
     def table_label(key):
         name, cat = names.get(key, (key, "Other"))
@@ -332,7 +347,7 @@ def main():
     for key, (nm, cat) in names.items():
         tables_by_cat.setdefault(cat, []).append(key)
     boss_names = {nm for nm, cat in names.values() if nm and not nm.startswith("Trash")}
-    observed = {i: observed_drops(i, sources.get(i, []), names, tables_by_cat, obs, boss_names) for i in custom}
+    observed = {i: observed_drops(i, sources.get(i, []), names, tables_by_cat, obs, boss_names) for i in all_listed}
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
 
@@ -342,8 +357,9 @@ def main():
         os.makedirs(os.path.join(out, sub), exist_ok=True)
 
     # ---- item pages
-    for iid in custom:
+    for iid in all_listed:
         it = items[iid]
+        rw = reworked.get(iid)
         icon = icons.get(iid, "inv_misc_questionmark")
         color = Q_COLOR.get(it["quality"], "#ffffff")
         src_html = ""
@@ -361,13 +377,27 @@ def main():
                           for label, n, k, est in observed[iid])
             src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
                          f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{obs_note}</section>')
+        if rw:
+            classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}
+            top_html = f"""<section class="card changes">
+  <h2>Changed from classic</h2>
+  <div class="compare">
+    <div><h3>Vanilla Plus</h3><div class="tooltip">{tooltip_html(it, set(rw["added"]), "tt-new")}</div></div>
+    <div><h3>Classic</h3><div class="tooltip">{tooltip_html(classic_item, set(rw["removed"]), "tt-old")}</div></div>
+  </div>
+  <p class="muted small">Highlighted lines differ. Classic = WoW Classic data from
+  <a href="https://www.wowhead.com/classic/item={iid}" rel="noopener">Wowhead</a>.</p>
+</section>"""
+        else:
+            top_html = f'<div class="tooltip">{tooltip_html(it)}</div>'
+        kind = "Reworked classic item" if rw else "Custom item"
         desc = "\n".join(it["lines"])
         body = f"""
 <article class="item-page">
   <div class="item-head">{icon_img(icon, 'large', 'icon-l')}
-    <div><h1 style="color:{color}">{esc(it['name'])}</h1><div class="muted">Item {iid}</div></div>
+    <div><h1 style="color:{color}">{esc(it['name'])}</h1><div class="muted">{kind} {iid}</div></div>
   </div>
-  <div class="tooltip">{tooltip_html(it)}</div>
+  {top_html}
   {src_html}
 </article>"""
         with open(os.path.join(out, "item", f"{iid}.html"), "w", encoding="utf-8") as f:
@@ -384,10 +414,12 @@ def main():
                 if header:
                     rows.append(f'<li class="sub">{esc(header)}</li>')
                 continue
-            if is_custom(iid):
+            if listed(iid):
                 rate = next((rate_text(n, k, est) for label, n, k, est in observed[iid] if label == name), "")
                 rate_html = f'<span class="rate" title="Observed drop rate in players\' combat logs">{rate}</span>' if rate else ""
-                rows.append(f'<li class="custom">{item_link(items[iid], icons.get(iid, icon))}{rate_html}</li>')
+                tag = '<span class="tag">changed</span>' if iid in reworked else ""
+                cls = "reworked" if iid in reworked else "custom"
+                rows.append(f'<li class="{cls}">{item_link(items[iid], icons.get(iid, icon))}{tag}{rate_html}</li>')
             else:
                 q = items.get(iid, {}).get("quality", 1)
                 nm = items.get(iid, {}).get("name", label)
@@ -395,6 +427,8 @@ def main():
                             f'{icon_img(icon, "small", "icon-s")}<span style="color:{Q_COLOR.get(q, "#fff")}">{esc(nm)}</span></a>'
                             f'<span class="muted ext-note">classic</span></li>')
         n_custom = sum(1 for r in tables[key] if is_custom(r[0]))
+        n_rw = sum(1 for r in tables[key] if r[0] in reworked)
+        counts = ", ".join(x for x in (f"{n_custom} custom" if n_custom else "", f"{n_rw} reworked" if n_rw else "") if x)
         nk = obs["kills"].get(name, 0)
         kills_note = (f"Killed {nk} times in players' combat logs; percentages are the observed drop rates "
                       f"(~ = estimate).") if nk else ""
@@ -402,57 +436,79 @@ def main():
 <article>
   <div class="crumbs"><a href="/">All items</a>{' / ' + esc(cat) if cat and cat != 'Other' else ''}</div>
   <h1>{esc(name)}</h1>
-  <p class="muted">{n_custom} custom item{'s' if n_custom != 1 else ''}. Classic items link to Wowhead.
+  <p class="muted">{counts} item{'s' if n_custom + n_rw != 1 else ''}. Unchanged classic items link to Wowhead.
   {kills_note}</p>
   <ul class="loot">{''.join(rows)}</ul>
 </article>"""
         with open(os.path.join(out, "loot", f"{key}.html"), "w", encoding="utf-8") as f:
-            f.write(page(name, body, description=f"{name}: {n_custom} Vanilla Plus custom items.", path=f"/loot/{key}"))
+            f.write(page(name, body, description=f"{name}: {counts} Vanilla Plus items.", path=f"/loot/{key}"))
 
-    # ---- index: browse by category
-    by_cat = {}
-    for key in loot_keys:
-        name, cat = table_label(key)
-        by_cat.setdefault(cat, []).append(key)
-    cats = [c for c in cat_order if c in by_cat] + [c for c in by_cat if c not in cat_order]
-    blocks = []
-    for cat in cats:
-        tbl = []
-        for key in by_cat[cat]:
-            name, _ = table_label(key)
-            its = [items[r[0]] for r in tables[key] if is_custom(r[0])]
-            seen, links = set(), []
-            for it in its:
-                if it["id"] in seen:
-                    continue
-                seen.add(it["id"])
-                links.append(f'<li>{item_link(it, icons.get(it["id"]))}</li>')
-            tbl.append(f'<div class="table"><h3><a href="/loot/{key}">{esc(name)}</a></h3><ul class="loot">{"".join(links)}</ul></div>')
-        blocks.append(f'<section class="cat" data-cat><h2>{esc(cat)}</h2>{"".join(tbl)}</section>')
-    nosrc = [items[i] for i in custom if not sources.get(i)]
-    if nosrc:
-        nosrc.sort(key=lambda it: (-it["quality"], it["name"]))
-        blocks.append('<section class="cat" data-cat><h2>No known drop source</h2><div class="table"><ul class="loot">'
-                      + "".join(f'<li>{item_link(it, icons.get(it["id"]))}</li>' for it in nosrc) + "</ul></div></section>")
+    # ---- browse pages: custom items (index) and reworked items, by instance / boss
+    def browse_blocks(wanted):
+        by_cat = {}
+        for key in loot_keys:
+            if any(wanted(r[0]) for r in tables[key]):
+                by_cat.setdefault(table_label(key)[1], []).append(key)
+        cats = [c for c in cat_order if c in by_cat] + [c for c in by_cat if c not in cat_order]
+        blocks = []
+        for cat in cats:
+            tbl = []
+            for key in by_cat[cat]:
+                name, _ = table_label(key)
+                seen, links = set(), []
+                for r in tables[key]:
+                    if wanted(r[0]) and r[0] not in seen:
+                        seen.add(r[0])
+                        links.append(f'<li>{item_link(items[r[0]], icons.get(r[0]))}</li>')
+                tbl.append(f'<div class="table"><h3><a href="/loot/{key}">{esc(name)}</a></h3><ul class="loot">{"".join(links)}</ul></div>')
+            blocks.append(f'<section class="cat" data-cat><h2>{esc(cat)}</h2>{"".join(tbl)}</section>')
+        nosrc = [items[i] for i in all_listed if wanted(i) and not sources.get(i)]
+        if nosrc:
+            nosrc.sort(key=lambda it: (-it["quality"], it["name"]))
+            blocks.append('<section class="cat" data-cat><h2>No known drop source</h2><div class="table wide"><ul class="loot cols">'
+                          + "".join(f'<li>{item_link(it, icons.get(it["id"]))}</li>' for it in nosrc) + "</ul></div></section>")
+        return "".join(blocks), len(nosrc)
+
+    search_box = '<section id="results" class="card" hidden><h2>Search results</h2><ul class="loot" id="result-list"></ul></section>'
+    blocks, n_nosrc = browse_blocks(is_custom)
     body = f"""
 <section class="intro">
   <h1>Vanilla Plus custom items</h1>
   <p class="muted">{len(custom)} items that are new on Vanilla Plus, with their in-game tooltips and where they drop.
-  Link any item: <code>db.lokiy.dev/item/&lt;id&gt;</code></p>
+  Also: <a href="/reworked">{len(reworked)} reworked classic items</a>. Link any item: <code>db.lokiy.dev/item/&lt;id&gt;</code></p>
 </section>
-<section id="results" class="card" hidden><h2>Search results</h2><ul class="loot" id="result-list"></ul></section>
-<div id="browse">{''.join(blocks)}</div>"""
+{search_box}
+<div id="browse">{blocks}</div>"""
     with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
         f.write(page("Custom items", body, description=f"{len(custom)} Vanilla Plus custom items with tooltips and drop sources.", path="/"))
+
+    blocks, n_rw_nosrc = browse_blocks(lambda i: i in reworked)
+    body = f"""
+<section class="intro">
+  <h1>Reworked classic items</h1>
+  <p class="muted">{len(reworked)} classic items whose stats or effects are different on Vanilla Plus. Each item page
+  shows the Vanilla Plus and the classic tooltip side by side. Compared against WoW Classic data from Wowhead, so a few
+  differences can be Classic-only changes rather than Vanilla Plus ones.</p>
+</section>
+{search_box}
+<div id="browse">{blocks}</div>"""
+    with open(os.path.join(out, "reworked.html"), "w", encoding="utf-8") as f:
+        f.write(page("Reworked classic items", body, path="/reworked",
+                     description=f"{len(reworked)} classic items with changed stats on Vanilla Plus, compared with classic."))
 
     # ---- 404
     with open(os.path.join(out, "404.html"), "w", encoding="utf-8") as f:
         f.write(page("Not found", '<article><h1>Not found</h1><p class="muted">That item or page is not in the database. '
-                     'Only Vanilla Plus custom items are listed for now.</p><p><a href="/">Back to all items</a></p></article>'))
+                     'Only Vanilla Plus custom and reworked items are listed for now.</p><p><a href="/">Back to all items</a></p></article>'))
 
     # ---- data for search / hover tooltips
-    data = [{"id": i, "n": items[i]["name"], "q": items[i]["quality"], "i": icon_url(icons.get(i), "small"),
-             "s": [table_label(k)[0] for k in sources.get(i, [])], "t": tooltip_html(items[i])} for i in custom]
+    data = []
+    for i in all_listed:
+        d = {"id": i, "n": items[i]["name"], "q": items[i]["quality"], "i": icon_url(icons.get(i), "small"),
+             "s": [table_label(k)[0] for k in sources.get(i, [])], "t": tooltip_html(items[i])}
+        if i in reworked:
+            d["r"] = 1
+        data.append(d)
     with open(os.path.join(out, "items.json"), "w", encoding="utf-8") as f:
         json.dump(data, f, separators=(",", ":"))
 
@@ -461,7 +517,8 @@ def main():
     shutil.rmtree(os.path.join(out, "icons"), ignore_errors=True)
     shutil.copytree(os.path.join(HERE, "icons"), os.path.join(out, "icons"))
 
-    print(f"{len(custom)} items, {len(loot_keys)} loot tables, {len(nosrc)} without source -> {out}")
+    print(f"{len(custom)} custom + {len(reworked)} reworked items, {len(loot_keys)} loot tables, "
+          f"{n_nosrc} custom / {n_rw_nosrc} reworked without source -> {out}")
 
 
 if __name__ == "__main__":

@@ -191,3 +191,4 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 ## Item database site (2026-10-04)
 - Server-made icons on db.lokiy.dev: extracted from the client patches (Part EO)
 - Drop chances: observed rates from the Chronicle logs, "~" when uncertain (Part EO)
+- Reworked classic items on db.lokiy.dev, compared with classic side by side (Part EP)

@@ -303,7 +303,6 @@ there is more to say.
 ## Item database site db.lokiy.dev (Part EN)
 
 - All items (Lokiy: later); now custom items only (`is_custom()` in `tools/itemdb/gen_site.py`).
-- Reworked classic items (same id, changed stats on the server, e.g. Sulfuras): Lokiy wants them too, later.
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.

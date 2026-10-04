@@ -4389,3 +4389,17 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   table pages the rate next to each custom item. "~" when kills < 10, the source is guessed, trash (all zone kills
   counted) or the rate is above 50%; more drops than logged kills shows "~100%+". Now 44 items have observed drops,
   all still "~" (2-7 kills per boss in the logs).
+
+## Part EP — db.lokiy.dev: reworked classic items (2026-10-04)
+
+- New `tools/itemdb/reworked.py`: compares every classic item id (up to 24283) in the server's `VPlusItemDB.lua` with
+  Wowhead's classic tooltip (`assets/db_inputs/wowhead_item_tooltips.csv`). Both become text lines; lines only one side
+  has (item level, durability, sell price, dps, charges, drop chance, "<Random enchantment>", set piece names,
+  class / rank / reputation requirements, Wowhead's "(1 Hour Cooldown)" / "(Proc chance)" suffixes) are dropped and
+  number formatting is normalized. Recipes are skipped (they show the crafted item, which is compared itself).
+  Result: 2847 of 13660 classic items differ (stats, damage, armor, set bonuses, effects, required level).
+- The site lists them next to the custom items: item page shows the Vanilla Plus and the classic tooltip side by side
+  with the changed lines highlighted (green = Vanilla Plus, red struck-through = classic) and links Wowhead; loot table
+  pages mark them "changed"; new `/reworked` page browses them by instance / boss; search shows a "changed" tag;
+  header links Custom / Reworked. Observed drop rates are shown for them too.
+- Caveat on the page: the classic side is WoW Classic data, so a few differences can be Classic-era changes.
