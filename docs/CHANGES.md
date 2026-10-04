@@ -4372,3 +4372,20 @@ link to it too). New generator `tools/itemdb/gen_site.py` (+ `style.css`, `site.
 
 Scope "custom items" = item ids above 24283 (not in classic 1.12) plus items AtlasLoot flags "N": 693 items, 126 loot
 tables, 154 items without a known source. Regenerate after a data update: `python3 tools/itemdb/gen_site.py`.
+
+## Part EO — db.lokiy.dev: server icons, AtlasLoot codes, observed drop rates (2026-10-04)
+
+- **Icons**: 46 icons the site uses are not on the public icon CDN. 42 are server-made icons, extracted from the
+  client's `Data/patch.MPQ` and `patch-3.MPQ` (BLP -> JPG 56px + 18px, in `tools/itemdb/icons/`, served from
+  `/icons/`); 4 are typos in the server's AtlasLoot (`ICON_ALIAS` in `gen_site.py`, e.g. `INV_Brancer_11`).
+- **AtlasLoot #codes#** in loot table sub-headers (`#r3#` -> Honored, ...) translated with AtlasLoot's own
+  `Core/TextParsing.lua`.
+- **Observed drops** (Lokiy: use the Chronicle logs; mark uncertain or too-high rates with ~). `tools/itemdb/
+  loot_from_logs.py` (run on Lokiy's PC) reads `CustomData/Chronicle_*.txt` (19 logs: 7257 kills of 386 creatures,
+  2360 loot events) and writes `tools/itemdb/observed_loot.json` (no player names). Each loot event lists the creatures
+  that died in the 10 min before it; the generator credits it to the item's AtlasLoot boss if that boss is among them,
+  to the zone's trash for "Trash Mobs" tables (the log zone has no wing: "Dire Maul", "Blackrock Spire"), or, for items
+  without an AtlasLoot source, to the last creature that died within 2 min. Item pages show Drops / Kills / Rate, loot
+  table pages the rate next to each custom item. "~" when kills < 10, the source is guessed, trash (all zone kills
+  counted) or the rate is above 50%; more drops than logged kills shows "~100%+". Now 44 items have observed drops,
+  all still "~" (2-7 kills per boss in the logs).

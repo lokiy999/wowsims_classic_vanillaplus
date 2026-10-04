@@ -145,6 +145,80 @@ def load_loot_tables():
     return tables
 
 
+# --------------------------------------------------------------------------------------------- observed drops
+
+def norm_zone(z):
+    z = re.sub(r"\s*\(.*?\)\s*", "", z or "").strip().lower()
+    return re.sub(r"^(lower|upper) ", "", z)
+
+
+def observed_drops(iid, keys, names, tables_by_cat, obs, boss_names):
+    """Credit this item's logged loot events to its AtlasLoot sources.
+
+    Returns [(label, drops, kills, estimated)]. A loot is credited to an AtlasLoot boss of the item if that boss died
+    in the 10 min before it; to a trash table if a non-boss creature of that zone died before it; items AtlasLoot
+    has no source for are credited to the creature that died last (within 2 min), always as an estimate.
+    """
+    events = obs["loots"].get(str(iid), [])
+    if not events:
+        return []
+    allowed, trash_zones = set(), {}
+    for key in keys:
+        name, cat = names.get(key, (key, "Other"))
+        m = re.match(r"^Trash Mobs \((.*)\)$", name)
+        if m:
+            # The logs only know the zone ("Dire Maul", "Blackrock Spire"), not the wing.
+            zone = re.sub(r"\s*\(.*?\)\s*", "", m.group(1)).strip()
+            zone = re.sub(r"^(Lower|Upper) ", "", zone)
+            trash_zones[norm_zone(m.group(1))] = f"Trash Mobs ({zone})"
+        elif "random" in name.lower() or "RANDOM" in key:
+            allowed |= {names[k][0] for k in tables_by_cat.get(cat, []) if not names[k][0].startswith("Trash")}
+        else:
+            allowed.add(name)
+    credit, guessed = {}, set()
+    for cands in events:
+        target = None
+        for name, _, _ in cands:
+            if name in allowed:
+                target = name
+                break
+        if not target and trash_zones:
+            for name, _, zone in cands:
+                if name not in boss_names and norm_zone(zone) in trash_zones:
+                    target = "trash:" + norm_zone(zone)
+                    break
+        if not target and not keys and cands and cands[0][1] <= 120:
+            target = cands[0][0]
+            guessed.add(target)
+        if target:
+            credit[target] = credit.get(target, 0) + 1
+    out = []
+    for target, n in sorted(credit.items(), key=lambda kv: -kv[1]):
+        if target.startswith("trash:"):
+            zone = target[6:]
+            label = trash_zones[zone]
+            kills = sum(v for z, v in obs["zone_kills"].items() if norm_zone(z) == zone)
+            estimated = True  # all trash of the zone counted as kills
+        else:
+            label, kills = target, obs["kills"].get(target, 0)
+            estimated = target in guessed
+        rate = n / kills if kills else 1
+        if kills < 10 or rate > 0.5:
+            estimated = True  # few kills or a suspiciously high rate
+        out.append((label, n, kills, estimated))
+    return out
+
+
+def rate_text(drops, kills, estimated):
+    if not kills:
+        return "~?"
+    r = drops / kills * 100
+    if r > 100:
+        return "~100%+"  # more drops than logged kills: a logger missed kills, or it can drop more than once
+    s = f"{r:.0f}%" if r >= 10 else f"{r:.1f}%"
+    return ("~" if estimated else "") + s
+
+
 # --------------------------------------------------------------------------------------------- html
 
 def tooltip_html(item):
@@ -251,6 +325,17 @@ def main():
         name, cat = names.get(key, (key, "Other"))
         return name or key, cat
 
+    # observed drops from players' combat logs (tools/itemdb/observed_loot.json, from loot_from_logs.py)
+    obs_path = os.path.join(HERE, "observed_loot.json")
+    obs = json.load(open(obs_path)) if os.path.exists(obs_path) else {"loots": {}, "kills": {}, "zone_kills": {}, "logs": 0}
+    tables_by_cat = {}
+    for key, (nm, cat) in names.items():
+        tables_by_cat.setdefault(cat, []).append(key)
+    boss_names = {nm for nm, cat in names.values() if nm and not nm.startswith("Trash")}
+    observed = {i: observed_drops(i, sources.get(i, []), names, tables_by_cat, obs, boss_names) for i in custom}
+    obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
+                f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
+
     # clean output (only our generated files)
     for sub in ("item", "loot"):
         shutil.rmtree(os.path.join(out, sub), ignore_errors=True)
@@ -271,6 +356,11 @@ def main():
             src_html = f'<section class="card"><h2>Source</h2><ul class="sources">{"".join(lis)}</ul></section>'
         else:
             src_html = '<section class="card"><h2>Source</h2><p class="muted">No known drop source yet.</p></section>'
+        if observed[iid]:
+            trs = "".join(f'<tr><td>{esc(label)}</td><td>{n}</td><td>{k}</td><td class="rate">{rate_text(n, k, est)}</td></tr>'
+                          for label, n, k, est in observed[iid])
+            src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
+                         f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{obs_note}</section>')
         desc = "\n".join(it["lines"])
         body = f"""
 <article class="item-page">
@@ -295,7 +385,9 @@ def main():
                     rows.append(f'<li class="sub">{esc(header)}</li>')
                 continue
             if is_custom(iid):
-                rows.append(f'<li class="custom">{item_link(items[iid], icons.get(iid, icon))}</li>')
+                rate = next((rate_text(n, k, est) for label, n, k, est in observed[iid] if label == name), "")
+                rate_html = f'<span class="rate" title="Observed drop rate in players\' combat logs">{rate}</span>' if rate else ""
+                rows.append(f'<li class="custom">{item_link(items[iid], icons.get(iid, icon))}{rate_html}</li>')
             else:
                 q = items.get(iid, {}).get("quality", 1)
                 nm = items.get(iid, {}).get("name", label)
@@ -303,11 +395,15 @@ def main():
                             f'{icon_img(icon, "small", "icon-s")}<span style="color:{Q_COLOR.get(q, "#fff")}">{esc(nm)}</span></a>'
                             f'<span class="muted ext-note">classic</span></li>')
         n_custom = sum(1 for r in tables[key] if is_custom(r[0]))
+        nk = obs["kills"].get(name, 0)
+        kills_note = (f"Killed {nk} times in players' combat logs; percentages are the observed drop rates "
+                      f"(~ = estimate).") if nk else ""
         body = f"""
 <article>
   <div class="crumbs"><a href="/">All items</a>{' / ' + esc(cat) if cat and cat != 'Other' else ''}</div>
   <h1>{esc(name)}</h1>
-  <p class="muted">{n_custom} custom item{'s' if n_custom != 1 else ''}. Classic items link to Wowhead.</p>
+  <p class="muted">{n_custom} custom item{'s' if n_custom != 1 else ''}. Classic items link to Wowhead.
+  {kills_note}</p>
   <ul class="loot">{''.join(rows)}</ul>
 </article>"""
         with open(os.path.join(out, "loot", f"{key}.html"), "w", encoding="utf-8") as f:

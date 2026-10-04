@@ -187,3 +187,7 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 - King's Heart: +200 attack power, own toggle, stacks with everything (Part EG)
 - Hunter Find Weakness: raid debuff option, +5% melee / ranged crit taken, for every class (Part EH)
 - Curses: listed in every class's debuff list (Part EH)
+
+## Item database site (2026-10-04)
+- Server-made icons on db.lokiy.dev: extracted from the client patches (Part EO)
+- Drop chances: observed rates from the Chronicle logs, "~" when uncertain (Part EO)

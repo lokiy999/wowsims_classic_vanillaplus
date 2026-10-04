@@ -303,8 +303,9 @@ there is more to say.
 ## Item database site db.lokiy.dev (Part EN)
 
 - All items (Lokiy: later); now custom items only (`is_custom()` in `tools/itemdb/gen_site.py`).
-- 24 server-made icons (`inv_misc_mc_*`, e.g. the Brohtos items) are not on the public icon CDN and show a question
-  mark: convert them from the client's CustomData (BLP) and host them on the site.
+- Reworked classic items (same id, changed stats on the server, e.g. Sulfuras): Lokiy wants them too, later.
+- Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
+  come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.
 - A styled page for unknown URLs needs a Caddy `handle_errors` block (404.html exists) and a Caddy reload by Lokiy.
 - No drop chances (not in the data we have).
