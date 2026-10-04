@@ -4358,3 +4358,17 @@ Intellect) now has its own toggle `Consumes.juju_guile = 34` in the Spells row (
 stats); the picker keeps Elixir of Greater Intellect and Elixir of the Sages. The old `IntellectElixir_JujuGuile` value
 still works for saved settings and is not counted twice. Files: `proto/common.proto`, `sim/core/consumes.go`,
 `consumables.ts`, `consumes_picker.ts`.
+
+## Part EN — Item database site db.lokiy.dev (2026-10-04)
+
+Lokiy: a classicdb-style item database for the Vanilla Plus custom loot that people can link to (later the sim can
+link to it too). New generator `tools/itemdb/gen_site.py` (+ `style.css`, `site.js`) writes static pages to
+`/var/www/db`, served by Caddy as db.lokiy.dev (Caddyfile block added; `try_files` gives clean URLs):
+- `/item/<id>`: in-game tooltip (from `VPlusItemDB.lua`), icon (AtlasLoot icon names, wow.zamimg.com CDN), sources;
+  Open Graph tags so links pasted in Discord show the name, icon, tooltip text and quality color.
+- `/loot/<AtlasLoot table>`: a boss / trash / set / vendor table with all its items (custom ones highlighted and
+  linked to the site, classic ones to Wowhead); names and instances from AtlasLoot's `AtlasLoot_TableNamesBoss`.
+- `/`: browse by instance and boss, client-side search (`items.json`), hover tooltips on item links.
+
+Scope "custom items" = item ids above 24283 (not in classic 1.12) plus items AtlasLoot flags "N": 693 items, 126 loot
+tables, 154 items without a known source. Regenerate after a data update: `python3 tools/itemdb/gen_site.py`.
