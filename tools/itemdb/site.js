@@ -1,4 +1,5 @@
-// db.lokiy.dev: search and hover tooltips. Data: /items.json [{id, n: name, q: quality, i: small icon URL, s: sources, t: tooltip html, r: 1 if reworked}]
+// db.lokiy.dev: search and hover tooltips. Data: /items.json [{id, n: name, q: quality, i: small icon URL, s?: sources,
+// c?: 1 if new, r?: 1 if reworked}], hover tooltips in /tt/<id // 500>.json {id: html}
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const ICON = icon => `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
@@ -11,6 +12,19 @@
 				.catch(() => new Map());
 		}
 		return dataPromise;
+	};
+	const ttChunks = new Map();
+	const loadTooltip = id => {
+		const n = Math.floor(Number(id) / 500);
+		if (!ttChunks.has(n)) {
+			ttChunks.set(
+				n,
+				fetch(`/tt/${n}.json`)
+					.then(r => r.json())
+					.catch(() => ({})),
+			);
+		}
+		return ttChunks.get(n).then(chunk => chunk[id]);
 	};
 	const escapeHtml = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
@@ -29,16 +43,16 @@
 		}
 		const data = await loadData();
 		const hits = [...data.values()]
-			.filter(it => it.n.toLowerCase().includes(q) || String(it.id) === q || it.s.some(s => s.toLowerCase().includes(q)))
-			.sort((a, b) => b.q - a.q || a.n.localeCompare(b.n))
+			.filter(it => it.n.toLowerCase().includes(q) || String(it.id) === q || (it.s || []).some(s => s.toLowerCase().includes(q)))
+			.sort((a, b) => (b.n.toLowerCase().startsWith(q) - a.n.toLowerCase().startsWith(q)) || b.q - a.q || a.n.localeCompare(b.n))
 			.slice(0, 200);
 		list.innerHTML = hits.length
 			? hits
 					.map(
 						it =>
 							`<li><a class="item" href="/item/${it.id}" data-item="${it.id}"><img class="icon-s" src="${it.i}" alt="" onerror="this.onerror=null;this.src='${ICON('inv_misc_questionmark')}'"><span style="color:${QC[it.q] || '#fff'}">${escapeHtml(it.n)}</span></a>` +
-							(it.r ? '<span class="tag">changed</span>' : '') +
-								(it.s.length ? `<span class="muted">${escapeHtml(it.s.join(', '))}</span>` : '') +
+							(it.c ? '<span class="tag">new</span>' : it.r ? '<span class="tag">changed</span>' : '') +
+								(it.s ? `<span class="muted">${escapeHtml(it.s.slice(0, 3).join(', '))}</span>` : '') +
 							'</li>',
 					)
 					.join('')
@@ -80,10 +94,9 @@
 		const a = e.target.closest && e.target.closest('a[data-item]');
 		if (!a || a === current) return;
 		current = a;
-		const data = await loadData();
-		const it = data.get(a.dataset.item);
-		if (!it || current !== a) return;
-		tt.innerHTML = it.t;
+		const html = await loadTooltip(a.dataset.item);
+		if (!html || current !== a) return;
+		tt.innerHTML = html;
 		tt.hidden = false;
 		place(e);
 	});

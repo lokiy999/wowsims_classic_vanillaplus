@@ -4403,3 +4403,25 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   pages mark them "changed"; new `/reworked` page browses them by instance / boss; search shows a "changed" tag;
   header links Custom / Reworked. Observed drop rates are shown for them too.
 - Caveat on the page: the classic side is WoW Classic data, so a few differences can be Classic-era changes.
+
+## Part EQ — db.lokiy.dev: every server item, browse by type and instance (2026-10-04)
+
+- Lokiy: "continue with all other items as well. consumables, non-equipable, etc." All 14352 items of
+  `VPlusItemDB.lua` get a page now (693 new, 2847 reworked, the rest marked "Classic item, same as classic" when
+  Wowhead's classic tooltip matches, or "Classic item" for recipes / items Wowhead lacks), with a Wowhead link for
+  classic ids. Icons: AtlasLoot's, else Wowhead's classic icon.
+- New `tools/itemdb/item_types.py`: the item type from the tooltip lines (the server item list has no class /
+  subclass): weapons by type and hand, ranged & ammo, cloth / leather / mail / plate by slot, cloaks / jewelry /
+  trinkets, shields / off-hands / relics, consumables (food, drinks, potions, elixirs & flasks, scrolls, bandages,
+  poisons, item enhancements, engineering & fireworks, other usable), recipes by profession (+ class books), bags &
+  quivers, mounts & pets, quest items, trade goods, junk. `/type/<type>` pages list them by section, best quality
+  first, tagged new / changed; item pages link their type section.
+- `/instances`: every AtlasLoot table (558) by instance, tagged with its count of new / changed items. Loot table
+  pages now link every item to its own page.
+- Home page: browse-by-type box, then the new items by instance as before. Header: Home / Reworked / Types / Instances.
+- Search covers all items (prefix matches first, "new" / "changed" tags). `items.json` holds only the search index
+  (1.8 MB, gzip via Caddy); hover tooltips moved to `/tt/<id // 500>.json` chunks loaded on demand.
+- Observed drops are shown for all items with an AtlasLoot source; the "last kill before the loot" guess stays for
+  custom items only (classic items without a source are mostly vendor, crafted or world drops).
+- `reworked.py`: no per-item set copies (5 s instead of 30 s); `load_wowhead()` also returns the icon.
+- Caddyfile db block: `encode zstd gzip` and `handle_errors` serving `/404.html` (validated; Lokiy reloads Caddy).

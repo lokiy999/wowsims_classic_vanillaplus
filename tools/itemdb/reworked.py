@@ -59,19 +59,20 @@ def load_wowhead():
                 d = json.loads(body)
             except (ValueError, json.JSONDecodeError):
                 continue
-            out[iid] = {"name": d.get("name", ""), "quality": d.get("quality"), "lines": wowhead_lines(d.get("tooltip", ""))}
+            out[iid] = {"name": d.get("name", ""), "quality": d.get("quality"), "icon": d.get("icon", ""),
+                        "lines": wowhead_lines(d.get("tooltip", ""))}
     return out
 
 
 RECIPE = ("Pattern:", "Plans:", "Recipe:", "Formula:", "Schematic:", "Manual:")
 
 
-def comparable_set(lines, other_names):
+def comparable_set(lines, names, own):
     """Lines that matter for "was this item changed": no set piece names (the game lists the pieces you lack, Wowhead
     all of them), no class / race / rank / reputation requirements (worded differently on each side)."""
     out = []
     for ln in comparable(lines):
-        if ln in other_names or ln.startswith(("Classes:", "Races:")):
+        if (ln in names and ln not in own) or ln.startswith(("Classes:", "Races:")):
             continue
         if ln.startswith("Requires ") and not ln.startswith("Requires Level"):
             continue
@@ -79,10 +80,11 @@ def comparable_set(lines, other_names):
     return out
 
 
-def find_reworked(items, max_classic_id, skip=()):
+def find_reworked(items, max_classic_id, skip=(), wh=None):
     """{id: {"classic": Wowhead classic tooltip lines, "removed": [...], "added": [...]}} for classic item ids whose
-    server tooltip differs from the classic one. Recipes are left out (they show the crafted item, listed itself)."""
-    wh = load_wowhead()
+    server tooltip differs from the classic one. Recipes are left out (they show the crafted item, listed itself).
+    wh: load_wowhead() result, loaded here when not given."""
+    wh = wh if wh is not None else load_wowhead()
     names = {it["name"] for it in items.values()} | {w["name"] for w in wh.values()}
     out = {}
     for iid, it in items.items():
@@ -90,8 +92,9 @@ def find_reworked(items, max_classic_id, skip=()):
             continue
         classic = [wh[iid]["name"]] + wh[iid]["lines"][1:]
         server = [it["name"]] + it["lines"]
-        a = comparable_set(classic, names - {it["name"], wh[iid]["name"]})
-        b = comparable_set(server, names - {it["name"], wh[iid]["name"]})
+        own = {it["name"], wh[iid]["name"]}
+        a = comparable_set(classic, names, own)
+        b = comparable_set(server, names, own)
         if "Quest Item" in wh[iid]["lines"]:
             b = [x for x in b if x != "Binds when picked up"]  # the game shows quest items as soulbound
         removed = [x for x in a if x not in b]
