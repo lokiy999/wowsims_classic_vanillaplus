@@ -300,12 +300,11 @@ there is more to say.
 - Armor Shatter (1-3 stacks) is in the debuff list since Part EJ; Lokiy: there are other armor debuffs too, add them
   later (ask which ones).
 
-## Item database site db.lokiy.dev (Parts EN-EQ)
+## Item database site db.lokiy.dev (Parts EN-ER)
 
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.
-- Caddyfile has `encode zstd gzip` + `handle_errors` (404 page) for db.lokiy.dev (Part EQ): needs a Caddy reload by Lokiy.
 - Drop chances: only the observed rates from the Chronicle logs; no server loot-table chances in the data we have.
 
 ## Trinkets and items still open

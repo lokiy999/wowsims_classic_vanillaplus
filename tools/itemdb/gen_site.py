@@ -11,6 +11,7 @@ and writes plain HTML pages (Caddy serves them from disk):
   /reworked.html          reworked classic items by instance / boss
   /instances.html         every loot table by instance
   /type/<type>.html       every item by type (item_types.py)
+  /search.html            filter all items (search.js over /search.json; stats from item_stats.py)
   /items.json             search index; /tt/<id // 500>.json hover tooltips
   /style.css, /site.js
 
@@ -37,6 +38,7 @@ from parse_vplus import parse_lua  # noqa: E402
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
+from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -60,6 +62,9 @@ ICON_ALIAS = {
 }
 
 esc = html.escape
+# Blizzard / server test and placeholder items: they keep their page but stay out of search and browse lists.
+DEV_ITEM = re.compile(r"^QA|\(Test\)|\bTest (Item|Bow|Crit|Defense|Stationery)|TEST ITEM|Test Beatdown|"
+                      r"Properties Test|^Deprecated |^Monster - |\[PH\]|\[DEP\]|\bUNUSED\b|^Unused |^DEBUG ")
 # type page sections: armor slots in equipment order, the rest alphabetical
 SECTION_ORDER = {s: n for n, s in enumerate(ARMOR_SLOTS)}
 
@@ -288,7 +293,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <body>
 <header class="top">
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Home</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a></nav>
+  <nav class="nav"><a href="/">Home</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -331,6 +336,7 @@ def main():
     reworked = find_reworked(items, CLASSIC_MAX_ITEM_ID, skip=flagged_new, wh=wowhead)
     all_items = sorted(items)
     custom = [i for i in all_items if is_custom(i)]
+    browsable = [i for i in all_items if not DEV_ITEM.search(items[i]["name"])]
     types = {i: classify(items[i]) for i in all_items}
 
     icons, sources = {}, {}
@@ -352,6 +358,8 @@ def main():
         return name or key, cat
 
     def kind(iid):
+        if DEV_ITEM.search(items[iid]["name"]):
+            return "Test / unused item"
         if is_custom(iid):
             return "Custom item"
         if iid in reworked:
@@ -488,7 +496,7 @@ def main():
                     tbl.append(f'<div class="table"><h3><a href="/loot/{key}">{esc(name)}</a></h3><ul class="loot">{"".join(links)}</ul></div>')
             if tbl:
                 blocks.append(f'<section class="cat" data-cat><h2>{esc(cat)}</h2>{"".join(tbl)}</section>')
-        nosrc = [items[i] for i in all_items if wanted(i) and not sources.get(i)]
+        nosrc = [items[i] for i in browsable if wanted(i) and not sources.get(i)]
         if nosrc:
             nosrc.sort(key=lambda it: (-it["quality"], it["name"]))
             blocks.append('<section class="cat" data-cat><h2>No known drop source</h2><div class="table wide"><ul class="loot cols">'
@@ -496,7 +504,7 @@ def main():
         return "".join(blocks), len(nosrc)
 
     type_counts = {}
-    for iid in all_items:
+    for iid in browsable:
         type_counts[types[iid][0]] = type_counts.get(types[iid][0], 0) + 1
     type_nav = ('<section class="card"><h2>Browse by type</h2><ul class="type-grid">'
                 + "".join(f'<li><a href="/type/{k}">{esc(nm)}</a> <span class="muted">{type_counts[k]}</span></li>'
@@ -551,7 +559,7 @@ def main():
 
     # ---- type pages: every item, by type and section
     for page_key, page_name in PAGES:
-        ids = [i for i in all_items if types[i][0] == page_key]
+        ids = [i for i in browsable if types[i][0] == page_key]
         if not ids:
             continue
         secs = {}
@@ -579,6 +587,52 @@ def main():
         with open(os.path.join(out, "type", f"{page_key}.html"), "w", encoding="utf-8") as f:
             f.write(page(page_name, body, path=f"/type/{page_key}", description=f"{len(ids)} Vanilla Plus {page_name.lower()}."))
 
+    # ---- advanced search: /search.html + /search.json (search.js filters it in the browser)
+    sec_names = sorted({types[i][1] for i in browsable})
+    sec_idx = {s: n for n, s in enumerate(sec_names)}
+    type_idx = {k: n for n, (k, _) in enumerate(PAGES)}
+    cat_idx = {c: n for n, c in enumerate(cats_all)}
+    srows = []
+    for i in browsable:
+        it = items[i]
+        pk, sec = types[i]
+        info = parse_stats(it, pk, sec)
+        status = 3 if is_custom(i) else 2 if i in reworked else 0 if kind(i).endswith("same as classic") else 1
+        cats = sorted({cat_idx[table_label(k)[1]] for k in sources.get(i, []) if table_label(k)[1] in cat_idx})
+        ic = icon_url(icons.get(i), "small")  # CDN icons as their bare name, local ones as /icons/<name>_s.jpg
+        cdn = ICON_URL.split("{icon}")[0].format(size="small")
+        ic = ic[len(cdn):-4] if ic.startswith(cdn) else ic
+        srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
+                      info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic])
+    with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
+        json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,
+                   "stats": STAT_LABELS, "items": srows}, f, separators=(",", ":"))
+    body = """
+<section class="intro"><h1>Item search</h1>
+<p class="muted">Filter all items. Stats are read from the in-game tooltips; set bonuses are not counted. The URL keeps
+your filters, so you can share a search.</p></section>
+<form id="filters" class="card filters loading" autocomplete="off">
+  <label class="f-name">Name<input name="q" type="search" placeholder="Item name or id"></label>
+  <fieldset class="f-quality"><legend>Quality</legend><div id="qualities" class="chips"></div></fieldset>
+  <label>Type<select name="type"></select></label>
+  <label>Subtype<select name="sec"></select></label>
+  <label>Slot<select name="slot"></select></label>
+  <label>Usable by<select name="cls"></select></label>
+  <label>Required level<span class="range"><input name="lmin" type="number" min="0" max="60" placeholder="min" aria-label="Minimum level"><span class="muted">-</span><input name="lmax" type="number" min="0" max="60" placeholder="max" aria-label="Maximum level"></span></label>
+  <label>Binds<select name="bind"></select></label>
+  <label>Vanilla Plus<select name="st"><option value="">Any</option><option value="vp">New or changed</option><option value="new">New items</option><option value="changed">Changed from classic</option><option value="same">Same as classic</option></select></label>
+  <label>Drops in<select name="src"></select></label>
+  <fieldset class="f-stats"><legend>Stats (item has the stat, at least the value)</legend><div id="stat-rows"></div>
+    <div class="f-actions"><button type="button" id="add-stat">+ Add stat filter</button><button type="button" id="reset">Reset all</button></div></fieldset>
+</form>
+<div id="results-top" class="results-head"><strong id="count">Loading...</strong><div class="pager"></div></div>
+<div class="table-wrap"><table id="results-table" class="results"></table></div>
+<div class="results-foot"><div class="pager"></div></div>"""
+    with open(os.path.join(out, "search.html"), "w", encoding="utf-8") as f:
+        f.write(page("Item search", body, path="/search",
+                     description="Search all Vanilla Plus items by quality, type, slot, level, class and stats.",
+                     extra_head='<script src="/search.js" defer></script>'))
+
     # ---- 404
     with open(os.path.join(out, "404.html"), "w", encoding="utf-8") as f:
         f.write(page("Not found", '<article><h1>Not found</h1><p class="muted">That item or page is not in the database.</p>'
@@ -586,7 +640,7 @@ def main():
 
     # ---- data: search index (small, all items) and hover tooltips in chunks of 500 ids (/tt/<id // 500>.json)
     data, chunks = [], {}
-    for i in all_items:
+    for i in browsable:
         d = {"id": i, "n": items[i]["name"], "q": items[i]["quality"], "i": icon_url(icons.get(i), "small")}
         src = [table_label(k)[0] for k in sources.get(i, [])]
         if src:
@@ -603,7 +657,7 @@ def main():
         with open(os.path.join(out, "tt", f"{n}.json"), "w", encoding="utf-8") as f:
             json.dump(chunk, f, separators=(",", ":"))
 
-    for asset in ("style.css", "site.js"):
+    for asset in ("style.css", "site.js", "search.js"):
         shutil.copy(os.path.join(HERE, asset), os.path.join(out, asset))
     shutil.rmtree(os.path.join(out, "icons"), ignore_errors=True)
     shutil.copytree(os.path.join(HERE, "icons"), os.path.join(out, "icons"))

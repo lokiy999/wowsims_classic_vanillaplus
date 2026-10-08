@@ -4425,3 +4425,20 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   custom items only (classic items without a source are mostly vendor, crafted or world drops).
 - `reworked.py`: no per-item set copies (5 s instead of 30 s); `load_wowhead()` also returns the icon.
 - Caddyfile db block: `encode zstd gzip` and `handle_errors` serving `/404.html` (validated; Lokiy reloads Caddy).
+
+## Part ER — db.lokiy.dev: item search page (2026-10-08)
+
+- Lokiy: a search page like Wowhead's item list (filter by rarity, type, level, ...), functional rather than a copy.
+  New `/search`: filters for name / id, quality (chips), type + subtype, slot, usable by class, required level range,
+  binding, Vanilla Plus status (new / changed / same as classic), "drops in" (AtlasLoot instance) and any number of
+  stat filters ("has the stat, at least N"). Results table: sortable columns (name, required level, slot, type, plus
+  DPS / speed for weapons, armor for armor and a column per stat filter), 50 per page, hover tooltips. The filters,
+  sort and page live in the URL, so a search can be linked.
+- New `tools/itemdb/item_stats.py`: stats from the tooltip lines (primary stats, armor, block, weapon damage / speed /
+  dps, attack power, spell damage and healing, school damage, hit / crit (melee and spell), defense, dodge / parry /
+  block, mp5 / hp5, spell penetration, resistances, weapon skill, armor penetration, haste, bag slots); set bonuses and
+  recipes' crafted items are not counted. Usable classes from the "Classes:" line, else 1.12 armor / weapon / relic
+  proficiencies. Required level, slot, binding.
+- Data: `/search.json` (1.4 MB, gzip) built by `gen_site.py`; `search.js` filters it in the browser.
+- Test / placeholder items (QATest, "Monster - ...", Deprecated, DEBUG, [UNUSED], ... 30 items) keep their page
+  ("Test / unused item") but are left out of search, type pages and the browse lists.
