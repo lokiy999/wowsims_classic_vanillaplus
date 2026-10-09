@@ -44,6 +44,8 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; font-si
 	top: 0;
 	z-index: 10;
 }
+.home { color: var(--muted); font-size: .85rem; white-space: nowrap; padding-right: 14px; border-right: 1px solid var(--border); }
+.home:hover { color: var(--text); text-decoration: none; }
 .brand { display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; white-space: nowrap; }
 .brand:hover { text-decoration: none; }
 .brand-icon { width: 22px; height: 22px; border-radius: 4px; }

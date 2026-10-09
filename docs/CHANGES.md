@@ -4442,3 +4442,11 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - Data: `/search.json` (1.4 MB, gzip) built by `gen_site.py`; `search.js` filters it in the browser.
 - Test / placeholder items (QATest, "Monster - ...", Deprecated, DEBUG, [UNUSED], ... 30 items) keep their page
   ("Test / unused item") but are left out of search, type pages and the browse lists.
+
+## Part ES — db.lokiy.dev linked with the lokiy.dev homepage (2026-10-09)
+
+- Lokiy: a way back to the homepage from the database, and the database on the homepage.
+- db.lokiy.dev header: "<- lokiy.dev" link left of the site name; the database's own home link is now "Database".
+  Footer links lokiy.dev, Sim, Calculators, Addons and Collection.
+- lokiy.dev (`/var/www/lokiy/index.html`, not in this repo; backup `index.html.bak-2026-10-09`): a "Database" feature
+  card under the Collection card and a "Database" button first in the link row.

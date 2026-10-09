@@ -292,8 +292,9 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 </head>
 <body>
 <header class="top">
+  <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Home</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -301,7 +302,10 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <main>
 {body}
 </main>
-<footer>Vanilla Plus items, from the server's item data and AtlasLoot. Updated {date.today().isoformat()}.</footer>
+<footer>Vanilla Plus items, from the server's item data and AtlasLoot. Updated {date.today().isoformat()}.
+&middot; Part of <a href="https://lokiy.dev">lokiy.dev</a>: <a href="https://sim.lokiy.dev">Sim</a>,
+<a href="https://calc.lokiy.dev">Calculators</a>, <a href="https://addons.lokiy.dev">Addons</a>,
+<a href="https://collection.lokiy.dev">Collection</a></footer>
 <script src="/site.js" defer></script>
 </body>
 </html>
