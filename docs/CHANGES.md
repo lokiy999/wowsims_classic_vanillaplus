@@ -4486,7 +4486,7 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   off is fine. Then: tiers of one affix as a range ("7-8"), and "15/17" when the values have a gap.
 - New `tools/itemdb/fetch_affix_chances.py`: reads the "Random Enchantments" list (affix name, % chance) from
   Wowhead's classic item page of every item with random affixes, ~1 request / 4 s, resumable ->
-  `tools/itemdb/affix_chances.json` (1717 items, 1302 with chances; the rest have no list on Wowhead).
+  `tools/itemdb/affix_chances.json` (1717 items, 1297 with chances; the rest have no list on Wowhead).
 - Wowhead lists only the affixes it has seen drop (the listed chances add up to less than 100%). An affix it does
   not list is shown as "<" the item's lowest listed chance (Vice Grips of Fire Resistance: <3.9%). Items without
   Wowhead chances keep the "~" name-share estimate.
