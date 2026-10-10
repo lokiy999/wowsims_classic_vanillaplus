@@ -39,7 +39,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
-from loot_sync import load_loot, load_random_affixes, seen_affixes  # noqa: E402
+from loot_sync import load_loot, load_random_affixes, merge_tiers, seen_affixes  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -385,7 +385,7 @@ def main():
     # Lokiy's loot tracker (lokiy.dev/loot) and the possible random affixes per item
     loot = load_loot()
     loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
-    affixes, affix_stats = load_random_affixes()
+    affixes, affix_stats, affix_chances = load_random_affixes()
     loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
                  + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '') + '.</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
@@ -431,16 +431,21 @@ def main():
                 groups.setdefault(name, []).append(eff)
             for name in seen:
                 groups.setdefault(name, [])
+            chances = affix_chances.get(iid, {})
             lis = []
-            for name in sorted(groups, key=lambda n: (-seen.get(n, 0), n)):
-                effs = " / ".join(esc(e) for e in groups[name]) or '<span class="muted">stats unknown</span>'
+            for name in sorted(groups, key=lambda n: (-chances.get(n, -1), -seen.get(n, 0), n)):
+                effs = esc(merge_tiers(groups[name])) or '<span class="muted">stats unknown</span>'
                 tag = f'<span class="tag">seen {seen[name]}&times;</span>' if name in seen else ""
+                pct = (f'<span class="rate">{chances[name]:g}%</span>' if name in chances
+                       else f'<span class="rate muted">&lt;{min(chances.values()):g}%</span>' if chances else "")
                 lis.append(f'<li class="{"seen" if name in seen else ""}"><span class="affix" style="color:{color}">{esc(it["name"])} '
-                           f'<b>{esc(name)}</b></span>{tag}<span class="muted affix-stats">{effs}</span></li>')
+                           f'<b>{esc(name)}</b></span>{tag}{pct}<span class="muted affix-stats">{effs}</span></li>')
+            chance_note = (" Roll chances from Wowhead; it only lists affixes it has seen drop, the others are rarer "
+                           "(shown as &lt; the lowest listed chance)." if chances else "")
             src_html += (f'<section class="card affixes"><h2>Random affixes</h2><ul class="affix-list">{"".join(lis)}</ul>'
-                         f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); a name with several '
-                         f'values has tiers. "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
-                         f', matched by name.</p></section>')
+                         f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); an affix with several '
+                         f'values has tiers (12-13 = any value in between, 15/17 = one of those).{chance_note} "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s '
+                         f'loot tracker</a>, matched by name.</p></section>')
         if rw:
             classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}
             top_html = f"""<section class="card changes">
@@ -661,7 +666,7 @@ your filters, so you can share a search.</p></section>
   <label>Drops in<select name="src"></select></label>
   <label>Random affixes<select name="ra"><option value="">Any</option><option value="1">Has random affixes</option><option value="0">No random affixes</option></select></label>
   <fieldset class="f-stats"><legend>Stats (item has the stat, at least the value)</legend><div id="stat-rows"></div>
-    <label class="check"><input type="checkbox" name="aff" checked> Also match random affixes <span class="muted">(shown as <span class="aff">+17 <small>~8%</small></span>: best affix value, ~share of the item's affixes)</span></label>
+    <label class="check"><input type="checkbox" name="aff" checked> Also match random affixes <span class="muted">(shown as <span class="aff">17 <small>1.7%</small></span>: best affix value and the roll chance on Wowhead; &lt; = rarer than Wowhead lists, ~ = estimate)</span></label>
     <div class="f-actions"><button type="button" id="add-stat">+ Add stat filter</button><button type="button" id="reset">Reset all</button></div></fieldset>
 </form>
 <div id="results-top" class="results-head"><strong id="count">Loading...</strong><div class="pager"></div></div>

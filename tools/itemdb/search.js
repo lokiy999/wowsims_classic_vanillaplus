@@ -1,6 +1,6 @@
 // db.lokiy.dev/search: filter all items by name, quality, type, slot, level, class, binding, status, source and stats.
 // Data: /search.json {types, sections, cats, classes, stats, items: [[id, name, quality, type, section, level, slot,
-// bind, classMask, status, stats, cats, icon, hasRandomAffixes, affixStats {stat: [max, ~chance %]}]]}. The filter state lives in the URL, so a search can be linked.
+// bind, classMask, status, stats, cats, icon, hasRandomAffixes, affixStats {stat: [max, chance text]}]]}. The filter state lives in the URL, so a search can be linked.
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const QN = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
@@ -152,7 +152,7 @@
 		const s = statOf(it, k);
 		if (!s) return '';
 		if (s.c === undefined) return s.v;
-		return `<span class="aff" title="Random affix: up to ${s.v} ${esc(statLabel(k))}, ~${s.c}% of this item's affixes">${s.v} <small>~${s.c}%</small></span>`;
+		return `<span class="aff" title="Random affix: up to ${s.v} ${esc(statLabel(k))}, rolls ${esc(s.c)} of the time">${s.v} <small>${esc(s.c)}</small></span>`;
 	};
 
 	const render = () => {

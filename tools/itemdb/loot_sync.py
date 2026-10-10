@@ -14,6 +14,7 @@ import re
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 GEARPLANNER = os.path.join(REPO, "assets", "db_inputs", "wowhead_gearplannerdb.txt")
 LOOT_JSON = "/var/www/lokiy/loot/loot.json"
+CHANCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "affix_chances.json")
 
 
 def _page_data(text, name):
@@ -37,14 +38,60 @@ AFFIX_STAT = {
 }
 
 
-def load_random_affixes():
-    """({item_id: [(affix name, effects text)]}, {item_id: {stat: [max value, ~chance %]}}).
+def merge_tiers(effects):
+    """The tiers of one affix name as one line: ["+12 Intellect, +13 Spirit", "+13 Intellect, +12 Spirit"] ->
+    "+12-13 Intellect, +12-13 Spirit"; values with a gap are listed: "+15/17 Fire Resistance" (Lokiy). Effects that
+    are not "+N Stat" are kept as they are."""
+    values, order, other = {}, [], []
+    for line in effects:
+        for part in [p.strip() for p in line.split(",") if p.strip()]:
+            m = re.match(r"^\+(\d+) (.+)$", part)
+            if not m:
+                if part not in other:
+                    other.append(part)
+                continue
+            v, stat = int(m.group(1)), m.group(2)
+            if stat not in values:
+                order.append(stat)
+                values[stat] = set()
+            values[stat].add(v)
+    out = []
+    for stat in order:
+        vs = sorted(values[stat])
+        if len(vs) == 1:
+            txt = str(vs[0])
+        elif vs[-1] - vs[0] == len(vs) - 1:
+            txt = f"{vs[0]}-{vs[-1]}"
+        else:
+            txt = "/".join(str(v) for v in vs)
+        out.append(f"+{txt} {stat}")
+    return ", ".join(out + other)
 
-    Tiers of one name are sorted by their first number. The chance is the share of the item's affix names that give
-    the stat (the real roll weights are server data we don't have), so it is an estimate.
+
+def chance_text(names, chances, n_names):
+    """Roll chance of getting one of these affix names, as display text: Wowhead's chances added up ("13.2%"); "<4.6%"
+    when Wowhead lists other affixes of the item but not these (it only lists the ones it has seen); "~7%" (share of the
+    item's affix names) when there is no Wowhead chance data for the item."""
+    if chances:
+        listed = [chances[n] for n in names if n in chances]
+        if listed:
+            return f"{round(sum(listed), 1):g}%"
+        return f"<{min(chances.values()):g}%"
+    return f"~{round(len(names) / (n_names or 1) * 100)}%"
+
+
+def load_random_affixes():
+    """({item_id: [(affix name, effects text)]}, {item_id: {stat: [max value, chance text]}}, {item_id: {name: %}}).
+
+    Tiers of one name are sorted by their first number. Chances: Wowhead's per item affix roll chances
+    (affix_chances.json, from fetch_affix_chances.py), see chance_text().
     """
     text = open(GEARPLANNER, encoding="utf-8").read()
     enchants = _page_data(text, "wow.gearPlanner.classic.randomEnchant")
+    try:
+        all_chances = {int(k): v for k, v in json.load(open(CHANCES, encoding="utf-8")).items()}
+    except (OSError, ValueError):
+        all_chances = {}
     out, stats = {}, {}
     for item in _page_data(text, "wow.gearPlanner.classic.item").values():
         ids = item.get("randomEnchants")
@@ -61,15 +108,16 @@ def load_random_affixes():
                     if key and v:
                         mx, nm = by_stat.get(key, (0, set()))
                         by_stat[key] = (max(mx, v), nm | {e["name"]})
-        n_names = len({r[0] for r in rows}) or 1
+        n_names = len({r[0] for r in rows})
+        chances = all_chances.get(int(item["id"]), {})
         if by_stat:
-            stats[int(item["id"])] = {k: [mx, round(len(nm) / n_names * 100)] for k, (mx, nm) in by_stat.items()}
+            stats[int(item["id"])] = {k: [mx, chance_text(nm, chances, n_names)] for k, (mx, nm) in by_stat.items()}
 
         def first_number(r):
             m = re.search(r"\d+", r[1])
             return int(m.group(0)) if m else 0
         out[int(item["id"])] = sorted(rows, key=lambda r: (r[0], first_number(r), r[1]))
-    return out, stats
+    return out, stats, all_chances
 
 
 def load_loot():
