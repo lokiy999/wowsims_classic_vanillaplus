@@ -195,3 +195,4 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 - All items on db.lokiy.dev (consumables, recipes, quest items, ...), browse by type and instance (Part EQ)
 - Caddy gzip + 404 page for db.lokiy.dev live (Lokiy reloaded Caddy)
 - Item search page with filters (quality, type, slot, class, level, binding, status, instance, stats) (Part ER)
+- db.lokiy.dev synced with lokiy.dev/loot: random affixes per item, seen affixes, Lokiy's drops (Part ET)

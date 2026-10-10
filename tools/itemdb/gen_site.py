@@ -39,6 +39,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
+from loot_sync import load_loot, load_random_affixes, seen_affixes  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -381,6 +382,12 @@ def main():
     boss_names = {nm for nm, cat in names.values() if nm and not nm.startswith("Trash")}
     observed = {i: observed_drops(i, sources.get(i, []), names, tables_by_cat, obs, boss_names, guess=is_custom(i))
                 for i in all_items}
+    # Lokiy's loot tracker (lokiy.dev/loot) and the possible random affixes per item
+    loot = load_loot()
+    loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
+    affixes = load_random_affixes()
+    loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
+                 + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '') + '.</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
 
@@ -410,6 +417,30 @@ def main():
                           for label, n, k, est in observed[iid])
             src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
                          f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{obs_note}</section>')
+        if loot_drops.get(iid):
+            trs = "".join(f'<tr><td>{esc(src)}</td><td>{n}</td><td>{k}</td><td class="rate">'
+                          f'{(f"{r * 100:.0f}%" if r >= 0.1 else f"{r * 100:.1f}%") if r is not None else ""}</td></tr>'
+                          for src, n, k, r in loot_drops[iid])
+            src_html += (f'<section class="card obs"><h2>Lokiy\'s loot</h2><table class="obs-table"><thead><tr>'
+                         f'<th>Source</th><th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>'
+                         f'{loot_note}</section>')
+        seen = seen_affixes(it["name"], loot_names.get(iid, {}))
+        if affixes.get(iid) or seen:
+            groups = {}
+            for name, eff in affixes.get(iid, []):
+                groups.setdefault(name, []).append(eff)
+            for name in seen:
+                groups.setdefault(name, [])
+            lis = []
+            for name in sorted(groups, key=lambda n: (-seen.get(n, 0), n)):
+                effs = " / ".join(esc(e) for e in groups[name]) or '<span class="muted">stats unknown</span>'
+                tag = f'<span class="tag">seen {seen[name]}&times;</span>' if name in seen else ""
+                lis.append(f'<li class="{"seen" if name in seen else ""}"><span class="affix" style="color:{color}">{esc(it["name"])} '
+                           f'<b>{esc(name)}</b></span>{tag}<span class="muted affix-stats">{effs}</span></li>')
+            src_html += (f'<section class="card affixes"><h2>Random affixes</h2><ul class="affix-list">{"".join(lis)}</ul>'
+                         f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); a name with several '
+                         f'values has tiers. "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
+                         f', matched by name.</p></section>')
         if rw:
             classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}
             top_html = f"""<section class="card changes">
@@ -607,7 +638,8 @@ def main():
         cdn = ICON_URL.split("{icon}")[0].format(size="small")
         ic = ic[len(cdn):-4] if ic.startswith(cdn) else ic
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
-                      info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic])
+                      info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
+                      1 if affixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0])
     with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
         json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,
                    "stats": STAT_LABELS, "items": srows}, f, separators=(",", ":"))
@@ -626,6 +658,7 @@ your filters, so you can share a search.</p></section>
   <label>Binds<select name="bind"></select></label>
   <label>Vanilla Plus<select name="st"><option value="">Any</option><option value="vp">New or changed</option><option value="new">New items</option><option value="changed">Changed from classic</option><option value="same">Same as classic</option></select></label>
   <label>Drops in<select name="src"></select></label>
+  <label>Random affixes<select name="ra"><option value="">Any</option><option value="1">Has random affixes</option><option value="0">No random affixes</option></select></label>
   <fieldset class="f-stats"><legend>Stats (item has the stat, at least the value)</legend><div id="stat-rows"></div>
     <div class="f-actions"><button type="button" id="add-stat">+ Add stat filter</button><button type="button" id="reset">Reset all</button></div></fieldset>
 </form>

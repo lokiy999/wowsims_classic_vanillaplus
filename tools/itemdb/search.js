@@ -1,6 +1,6 @@
 // db.lokiy.dev/search: filter all items by name, quality, type, slot, level, class, binding, status, source and stats.
 // Data: /search.json {types, sections, cats, classes, stats, items: [[id, name, quality, type, section, level, slot,
-// bind, classMask, status, stats, cats, icon]]}. The filter state lives in the URL, so a search can be linked.
+// bind, classMask, status, stats, cats, icon, hasRandomAffixes]]}. The filter state lives in the URL, so a search can be linked.
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const QN = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
@@ -46,7 +46,7 @@
 		const p = new URLSearchParams(location.search);
 		form.q.value = p.get('q') || '';
 		for (const cb of form.querySelectorAll('[name=ql]')) cb.checked = (p.get('ql') || '').split(',').includes(cb.value);
-		for (const n of ['type', 'slot', 'cls', 'bind', 'st', 'src', 'lmin', 'lmax']) form[n].value = p.get(n) || '';
+		for (const n of ['type', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax']) form[n].value = p.get(n) || '';
 		fillSections();
 		form.sec.value = p.get('sec') || '';
 		$('stat-rows').innerHTML = '';
@@ -71,7 +71,7 @@
 		if (form.q.value.trim()) p.set('q', form.q.value.trim());
 		const ql = [...form.querySelectorAll('[name=ql]:checked')].map(cb => cb.value);
 		if (ql.length) p.set('ql', ql.join(','));
-		for (const n of ['type', 'sec', 'slot', 'cls', 'bind', 'st', 'src', 'lmin', 'lmax']) if (form[n].value) p.set(n, form[n].value);
+		for (const n of ['type', 'sec', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax']) if (form[n].value) p.set(n, form[n].value);
 		const sf = statFilters();
 		if (sf.length) p.set('stats', sf.map(([k, v]) => (v ? `${k}:${v}` : k)).join(','));
 		if (!(sortKey === 'q' && sortDir === -1)) p.set('sort', (sortDir < 0 ? '-' : '') + sortKey);
@@ -90,11 +90,12 @@
 		const bind = form.bind.value;
 		const st = form.st.value;
 		const src = form.src.value === '' ? -1 : +form.src.value;
+		const ra = form.ra.value;
 		const lmin = form.lmin.value === '' ? -1 : +form.lmin.value;
 		const lmax = form.lmax.value === '' ? 999 : +form.lmax.value;
 		const sf = statFilters().map(([k, v]) => [k, v === '' ? null : +v]);
 		return D.items.filter(it => {
-			const [id, name, quality, t, s, lv, sl, b, cm, status, stats, cats] = it;
+			const [id, name, quality, t, s, lv, sl, b, cm, status, stats, cats, , affix] = it;
 			if (q && !name.toLowerCase().includes(q) && String(id) !== q) return false;
 			if (ql.size && !ql.has(quality)) return false;
 			if (type && D.types[t][0] !== type) return false;
@@ -107,6 +108,7 @@
 			if (st === 'vp' && status < 2) return false;
 			if (st === 'same' && status !== 0) return false;
 			if (src >= 0 && !(cats && cats.includes(src))) return false;
+			if (ra !== '' && String(affix || 0) !== ra) return false;
 			if (lv < lmin || lv > lmax) return false;
 			for (const [k, min] of sf) {
 				const v = stats ? stats[k] : undefined;

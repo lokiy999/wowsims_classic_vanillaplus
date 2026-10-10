@@ -4450,3 +4450,20 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   Footer links lokiy.dev, Sim, Calculators, Addons and Collection.
 - lokiy.dev (`/var/www/lokiy/index.html`, not in this repo; backup `index.html.bak-2026-10-09`): a "Database" feature
   card under the Collection card and a "Database" button first in the link row.
+
+## Part ET — db.lokiy.dev: random affixes and Lokiy's loot tracker (2026-10-10)
+
+- Lokiy: sync the database with lokiy.dev/loot, check for affixes and list them under the item.
+- New `tools/itemdb/loot_sync.py`:
+  - possible random affixes per item from Wowhead's classic gear planner data (`wowhead_gearplannerdb.txt`:
+    `item.randomEnchants` + `randomEnchant` names / effects; 1688 items). Classic data: the server may have changed
+    a pool.
+  - Lokiy's loot from `/var/www/lokiy/loot/loot.json` (read only; uploaded by the LootTracker addon's
+    `publish_site.py`): looted names from the drop log (`recentDrops`, up to 1000 drops of the logged quality) and
+    `items`, drops / kills / rate per mob and chest.
+- Item pages: "Random affixes" card (every possible affix name with its tiers; affixes Lokiy looted are highlighted
+  with "seen N×", matched by name since the addon logs the name, not the affix id) and a "Lokiy's loot" table
+  (source, drops, kills, rate) linking lokiy.dev/loot.
+- Search: "Random affixes" filter (has / has none).
+- Sync: `tools/itemdb/sync_db.sh` in lokiy's crontab every 5 min rebuilds the site when loot.json is newer than the
+  last build (`/var/www/db/.loot-built`); log in `~/loot-sync/db-sync.log`.

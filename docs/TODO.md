@@ -300,8 +300,11 @@ there is more to say.
 - Armor Shatter (1-3 stacks) is in the debuff list since Part EJ; Lokiy: there are other armor debuffs too, add them
   later (ask which ones).
 
-## Item database site db.lokiy.dev (Parts EN-ER)
+## Item database site db.lokiy.dev (Parts EN-ET)
 
+- Exact affix tiers: the LootTracker addon logs the looted name only. Saving the random property id from the
+  loot link (`item:<id>:<enchant>:<suffix>:...`, already read in `GetLootSlotLink`) would let the site show the
+  exact tier seen. Ask Lokiy before changing the addon.
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.
