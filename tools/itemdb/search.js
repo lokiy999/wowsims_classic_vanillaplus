@@ -1,6 +1,6 @@
 // db.lokiy.dev/search: filter all items by name, quality, type, slot, level, class, binding, status, source and stats.
 // Data: /search.json {types, sections, cats, classes, stats, items: [[id, name, quality, type, section, level, slot,
-// bind, classMask, status, stats, cats, icon, hasRandomAffixes]]}. The filter state lives in the URL, so a search can be linked.
+// bind, classMask, status, stats, cats, icon, hasRandomAffixes, affixStats {stat: [max, ~chance %]}]]}. The filter state lives in the URL, so a search can be linked.
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const QN = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
@@ -58,6 +58,7 @@
 			sortKey = p.get('sort').replace(/^-/, '');
 			sortDir = p.get('sort').startsWith('-') ? -1 : 1;
 		}
+		form.aff.checked = p.get('aff') !== '0';
 		pageNo = Math.max(0, (parseInt(p.get('p'), 10) || 1) - 1);
 	};
 
@@ -74,10 +75,20 @@
 		for (const n of ['type', 'sec', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax']) if (form[n].value) p.set(n, form[n].value);
 		const sf = statFilters();
 		if (sf.length) p.set('stats', sf.map(([k, v]) => (v ? `${k}:${v}` : k)).join(','));
+		if (!form.aff.checked) p.set('aff', '0');
 		if (!(sortKey === 'q' && sortDir === -1)) p.set('sort', (sortDir < 0 ? '-' : '') + sortKey);
 		if (pageNo) p.set('p', pageNo + 1);
 		const qs = p.toString();
 		history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+	};
+
+	// A stat of an item: its own value, else (when allowed) its best random affix value with the ~chance.
+	const statOf = (it, k, min = null) => {
+		const b = it[10] ? it[10][k] : undefined;
+		if (b !== undefined && (min === null || b >= min)) return { v: b };
+		const a = form.aff.checked && it[14] ? it[14][k] : undefined;
+		if (a && (min === null || a[0] >= min)) return { v: a[0], c: a[1] };
+		return null;
 	};
 
 	const filter = () => {
@@ -110,10 +121,7 @@
 			if (src >= 0 && !(cats && cats.includes(src))) return false;
 			if (ra !== '' && String(affix || 0) !== ra) return false;
 			if (lv < lmin || lv > lmax) return false;
-			for (const [k, min] of sf) {
-				const v = stats ? stats[k] : undefined;
-				if (v === undefined || (min !== null && v < min)) return false;
-			}
+			for (const [k, min] of sf) if (!statOf(it, k, min)) return false;
 			return true;
 		});
 	};
@@ -136,7 +144,15 @@
 		if (key === 'lv') return it[5];
 		if (key === 'type') return D.sections[it[4]];
 		if (key === 'slot') return it[6] || '';
-		return it[10] && it[10][key] !== undefined ? it[10][key] : -1;
+		const s = statOf(it, key);
+		return s ? s.v : -1;
+	};
+
+	const statCell = (it, k) => {
+		const s = statOf(it, k);
+		if (!s) return '';
+		if (s.c === undefined) return s.v;
+		return `<span class="aff" title="Random affix: up to ${s.v} ${esc(statLabel(k))}, ~${s.c}% of this item's affixes">${s.v} <small>~${s.c}%</small></span>`;
 	};
 
 	const render = () => {
@@ -169,7 +185,7 @@
 					`<tr><td class="l"><a class="item" href="/item/${id}" data-item="${id}"><img class="icon-s" src="${esc(src)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${ZAM('inv_misc_questionmark')}'">` +
 					`<span style="color:${QC[quality] || '#fff'}">${esc(name)}</span></a></td>` +
 					`<td>${lv || ''}</td><td class="l hide-s">${esc(sl || '')}</td><td class="l hide-s muted">${esc(D.sections[s])}</td>` +
-					cols.map(k => `<td>${stats && stats[k] !== undefined ? stats[k] : ''}</td>`).join('') +
+					cols.map(k => `<td>${statCell(it, k)}</td>`).join('') +
 					`<td class="hide-s">${tag}</td></tr>`
 				);
 			})

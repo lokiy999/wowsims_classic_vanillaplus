@@ -148,6 +148,10 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .stat-row select { flex: 1; }
 .stat-row input { width: 90px; }
 .stat-row .x { padding: 4px 10px; }
+.aff { color: #1eff00; }
+.aff small { color: var(--muted); font-size: .75rem; }
+.filters .check { flex-direction: row; align-items: center; gap: 6px; margin: 2px 0 8px; }
+.filters .check input { width: auto; }
 .f-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .results-head, .results-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 8px 0; }
 .pager { display: flex; align-items: center; gap: 10px; }

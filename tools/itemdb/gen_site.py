@@ -385,7 +385,7 @@ def main():
     # Lokiy's loot tracker (lokiy.dev/loot) and the possible random affixes per item
     loot = load_loot()
     loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
-    affixes = load_random_affixes()
+    affixes, affix_stats = load_random_affixes()
     loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
                  + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '') + '.</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
@@ -639,7 +639,8 @@ def main():
         ic = ic[len(cdn):-4] if ic.startswith(cdn) else ic
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
                       info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
-                      1 if affixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0])
+                      1 if affixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
+                      affix_stats.get(i, 0)])
     with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
         json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,
                    "stats": STAT_LABELS, "items": srows}, f, separators=(",", ":"))
@@ -660,6 +661,7 @@ your filters, so you can share a search.</p></section>
   <label>Drops in<select name="src"></select></label>
   <label>Random affixes<select name="ra"><option value="">Any</option><option value="1">Has random affixes</option><option value="0">No random affixes</option></select></label>
   <fieldset class="f-stats"><legend>Stats (item has the stat, at least the value)</legend><div id="stat-rows"></div>
+    <label class="check"><input type="checkbox" name="aff" checked> Also match random affixes <span class="muted">(shown as <span class="aff">+17 <small>~8%</small></span>: best affix value, ~share of the item's affixes)</span></label>
     <div class="f-actions"><button type="button" id="add-stat">+ Add stat filter</button><button type="button" id="reset">Reset all</button></div></fieldset>
 </form>
 <div id="results-top" class="results-head"><strong id="count">Loading...</strong><div class="pager"></div></div>

@@ -4467,3 +4467,15 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - Search: "Random affixes" filter (has / has none).
 - Sync: `tools/itemdb/sync_db.sh` in lokiy's crontab every 5 min rebuilds the site when loot.json is newer than the
   last build (`/var/www/db/.loot-built`); log in `~/loot-sync/db-sync.log`.
+
+## Part EU — db.lokiy.dev search: stat filters match random affixes (2026-10-10)
+
+- Lokiy: a fire resistance search for plate hands should also find Vice Grips (it can roll "of Fire Resistance"),
+  with the amount / chance if it doesn't clutter.
+- `loot_sync.load_random_affixes()` also returns per item {stat: [best affix value, ~chance %]} (Wowhead affix stat
+  keys mapped to the search's keys). Chance = share of the item's affix names that give the stat: the real roll
+  weights are server data we don't have, so it is marked "~".
+- `search.json` row field 14 = those affix stats. A stat filter matches the item's own stat, else (checkbox "Also
+  match random affixes", on by default, `aff=0` in the URL turns it off) its best affix value; the cell then shows
+  the affix value in green with "~7%". Sorting uses the same value.
+- Example: plate hands, Paladin, fire resistance: 16 items with affixes (Vice Grips 17 ~7%), 5 without.

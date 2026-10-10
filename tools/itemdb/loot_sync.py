@@ -26,26 +26,50 @@ def _page_data(text, name):
     return obj
 
 
+# Wowhead random enchant stat keys -> item_stats.py keys (for the search page)
+AFFIX_STAT = {
+    "str": "str", "agi": "agi", "sta": "sta", "int": "int", "spi": "spi", "armor": "armor", "def": "def",
+    "mleatkpwr": "ap", "rgdatkpwr": "rap", "splheal": "heal", "spldmg": "sp", "blockpct": "blockc", "dodgepct": "dodge",
+    "manargn": "mp5", "healthrgn": "hp5", "skillBuff": "skill", "mlecritstrkpct": "crit",
+    "arcres": "arcres", "firres": "firres", "frores": "frores", "natres": "natres", "shares": "shares",
+    "arcsplpwr": "arcsp", "firsplpwr": "firsp", "frosplpwr": "frosp", "holsplpwr": "holsp", "natsplpwr": "natsp",
+    "shasplpwr": "shasp",
+}
+
+
 def load_random_affixes():
-    """{item_id: [(affix name, effects text)]}, tiers of one name sorted by their first number."""
+    """({item_id: [(affix name, effects text)]}, {item_id: {stat: [max value, ~chance %]}}).
+
+    Tiers of one name are sorted by their first number. The chance is the share of the item's affix names that give
+    the stat (the real roll weights are server data we don't have), so it is an estimate.
+    """
     text = open(GEARPLANNER, encoding="utf-8").read()
     enchants = _page_data(text, "wow.gearPlanner.classic.randomEnchant")
-    out = {}
+    out, stats = {}, {}
     for item in _page_data(text, "wow.gearPlanner.classic.item").values():
         ids = item.get("randomEnchants")
         if not ids:
             continue
         rows = set()
+        by_stat = {}  # stat -> (max value, {affix names})
         for rid in ids:
             e = enchants.get(str(rid))
             if e and e.get("name"):
                 rows.add((e["name"], ", ".join(e.get("effects", []))))
+                for k, v in e.get("stats", {}).items():
+                    key = AFFIX_STAT.get(k)
+                    if key and v:
+                        mx, nm = by_stat.get(key, (0, set()))
+                        by_stat[key] = (max(mx, v), nm | {e["name"]})
+        n_names = len({r[0] for r in rows}) or 1
+        if by_stat:
+            stats[int(item["id"])] = {k: [mx, round(len(nm) / n_names * 100)] for k, (mx, nm) in by_stat.items()}
 
         def first_number(r):
             m = re.search(r"\d+", r[1])
             return int(m.group(0)) if m else 0
         out[int(item["id"])] = sorted(rows, key=lambda r: (r[0], first_number(r), r[1]))
-    return out
+    return out, stats
 
 
 def load_loot():
