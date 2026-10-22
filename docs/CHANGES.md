@@ -4511,3 +4511,11 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - Rate = drops / kills for uncommon+ items (Righteous Orb: 3 / 12 = 25%), drops / looted corpses for poor and
   common items, which never roll (Troll Sweat from Sandfury Blood Drinker: 25 / 93 = 27%). Note under the table
   says so. Chests: per opening.
+
+## Part EY — db.lokiy.dev: per-kill rate for anything seen rolled (2026-10-22)
+
+- Lokiy changed settings to see grey drops too. If the group loot threshold is Poor, greys go to a roll as well and
+  the addon sees them from every corpse. The rate now uses kills for a mob + item when the item is uncommon+ or the
+  drop log has a roll drop of it from that mob; otherwise looted corpses. No grey / white roll drops logged yet.
+- Caveat: a grey item's earlier drops (before the change) were only seen on Lokiy's own corpses, so its per-kill rate
+  reads low until new data outweighs the old.

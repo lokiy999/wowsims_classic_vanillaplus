@@ -135,19 +135,22 @@ def load_loot():
     for iid, info in d.get("items", {}).items():  # last looted name; counts only if the log missed it
         if info.get("name"):
             names.setdefault(int(iid), {}).setdefault(info["name"], 1)
+    # (mob, item) pairs the drop log shows coming from a group roll: the addon sees those from every corpse
+    rolled = {(e.get("mob"), int(e["item"])) for e in d.get("recentDrops", []) if e.get("roll") and e.get("item")}
     drops = {}
     for kind, rows in (("mob", d.get("mobs", [])), ("chest", d.get("chests", []))):
         for src in rows:
-            # Rate per kill for uncommon+ items: in a group they go to a roll that the addon sees whoever opens the
-            # corpse, so drops count from every kill. Poor / common items are only seen on corpses Lokiy opened, so
-            # their rate is per looted corpse.
+            # Rate per kill for items that go to a group roll (the addon sees the roll whoever opens the corpse, so
+            # drops count from every kill): uncommon+ (the usual loot threshold) and anything the drop log shows
+            # rolled (e.g. a Poor threshold). Other items are only seen on corpses Lokiy opened: per looted corpse.
             kills = src.get("kills") if kind == "mob" else src.get("opened")
             looted = src.get("looted") if kind == "mob" else src.get("opened")
             for it in src.get("items", []):
                 if not it.get("id"):
                     continue
                 n = it.get("drops", 0)
-                per = kills if (it.get("quality") or 0) >= 2 else looted
+                rolls = (it.get("quality") or 0) >= 2 or (src["name"], int(it["id"])) in rolled
+                per = kills if rolls else looted
                 rate = n / per if per else it.get("dropRate")
                 drops.setdefault(int(it["id"]), []).append((src["name"], n, looted or 0, kills or 0, rate))
     for v in drops.values():

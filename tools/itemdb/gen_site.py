@@ -389,8 +389,9 @@ def main():
     loot_rolls = load_rolls()
     loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
                  + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '')
-                 + '. Rate = drops per kill for green and better items (group rolls show them from every '
-                 + 'corpse), drops per looted corpse for grey and white items (only seen on corpses Lokiy opened).</p>')
+                 + '. Rate = drops per kill for items that go to a group roll (green and better, or anything seen '
+                 + 'rolled; the roll shows them from every corpse), else drops per looted corpse (only seen on corpses '
+                 + 'Lokiy opened).</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
 
