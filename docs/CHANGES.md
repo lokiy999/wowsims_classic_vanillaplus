@@ -4501,3 +4501,13 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   what unlooted corpses held is unknown, so the rate stays per looted corpse.
 - "Lokiy's loot" table: new Looted column (looted corpses, opened chests); rate = drops / looted, with a note under
   the table.
+
+## Part EX — db.lokiy.dev: Lokiy's loot rate per kill for green+ items (2026-10-22)
+
+- Lokiy: green and better items go to a group roll, so the addon sees them whoever opens the corpse; Part EW's
+  per-looted-corpse rate is wrong for them. Checked in the addon: START_LOOT_ROLL fires for everyone in the group and
+  is recorded as a drop (kind "roll") without counting a looted corpse; 222 of the 396 green+ log drops came from
+  rolls (all 3 Righteous Orbs).
+- Rate = drops / kills for uncommon+ items (Righteous Orb: 3 / 12 = 25%), drops / looted corpses for poor and
+  common items, which never roll (Troll Sweat from Sandfury Blood Drinker: 25 / 93 = 27%). Note under the table
+  says so. Chests: per opening.

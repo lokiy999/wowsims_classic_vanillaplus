@@ -138,14 +138,17 @@ def load_loot():
     drops = {}
     for kind, rows in (("mob", d.get("mobs", [])), ("chest", d.get("chests", []))):
         for src in rows:
-            # rate = drops per looted corpse / opened chest: what was on corpses Lokiy didn't loot is unknown
+            # Rate per kill for uncommon+ items: in a group they go to a roll that the addon sees whoever opens the
+            # corpse, so drops count from every kill. Poor / common items are only seen on corpses Lokiy opened, so
+            # their rate is per looted corpse.
             kills = src.get("kills") if kind == "mob" else src.get("opened")
             looted = src.get("looted") if kind == "mob" else src.get("opened")
             for it in src.get("items", []):
                 if not it.get("id"):
                     continue
                 n = it.get("drops", 0)
-                rate = n / looted if looted else it.get("dropRate")
+                per = kills if (it.get("quality") or 0) >= 2 else looted
+                rate = n / per if per else it.get("dropRate")
                 drops.setdefault(int(it["id"]), []).append((src["name"], n, looted or 0, kills or 0, rate))
     for v in drops.values():
         v.sort(key=lambda r: -r[1])
