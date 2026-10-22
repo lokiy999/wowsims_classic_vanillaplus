@@ -4493,3 +4493,11 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - Search: a stat's affix chance is the sum of the chances of the affixes that give it (Vice Grips Strength: 59.5%).
 - Item pages: each affix shows its chance, sorted most likely first; tiers merged by `loot_sync.merge_tiers()`:
   "+11-12 Stamina, +11-12 Strength" instead of every combination, "+15/17 Fire Resistance" for values with a gap.
+
+## Part EW — db.lokiy.dev: Lokiy's loot rate per looted corpse (2026-10-22)
+
+- Lokiy: item 12811 showed "3 drops, 12 kills, 50%". The rate was the tracker's dropRate = drops / looted corpses
+  (3 / 6), but the table only showed kills. Not every kill is looted by Lokiy (group loot, corpses left alone), and
+  what unlooted corpses held is unknown, so the rate stays per looted corpse.
+- "Lokiy's loot" table: new Looted column (looted corpses, opened chests); rate = drops / looted, with a note under
+  the table.

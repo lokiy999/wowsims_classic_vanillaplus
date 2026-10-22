@@ -39,7 +39,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
-from loot_sync import load_loot, load_random_affixes, merge_tiers, seen_affixes  # noqa: E402
+from loot_sync import load_loot, load_random_affixes, load_rolls, merge_tiers, seen_affixes  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -386,8 +386,10 @@ def main():
     loot = load_loot()
     loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
     affixes, affix_stats, affix_chances = load_random_affixes()
+    loot_rolls = load_rolls()
     loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
-                 + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '') + '.</p>')
+                 + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '')
+                 + '. Rate = drops per looted corpse or opened chest.</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
 
@@ -418,11 +420,11 @@ def main():
             src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
                          f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{obs_note}</section>')
         if loot_drops.get(iid):
-            trs = "".join(f'<tr><td>{esc(src)}</td><td>{n}</td><td>{k}</td><td class="rate">'
-                          f'{(f"{r * 100:.0f}%" if r >= 0.1 else f"{r * 100:.1f}%") if r is not None else ""}</td></tr>'
-                          for src, n, k, r in loot_drops[iid])
+            trs = "".join(f'<tr><td>{esc(src)}</td><td>{n}</td><td>{lt}</td><td>{k}</td><td class="rate">'
+                          f'{(f"{min(r, 1) * 100:.0f}%" if r >= 0.1 else f"{r * 100:.1f}%") if r is not None else ""}</td></tr>'
+                          for src, n, lt, k, r in loot_drops[iid])
             src_html += (f'<section class="card obs"><h2>Lokiy\'s loot</h2><table class="obs-table"><thead><tr>'
-                         f'<th>Source</th><th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>'
+                         f'<th>Source</th><th>Drops</th><th>Looted</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>'
                          f'{loot_note}</section>')
         seen = seen_affixes(it["name"], loot_names.get(iid, {}))
         if affixes.get(iid) or seen:
@@ -436,6 +438,10 @@ def main():
             for name in sorted(groups, key=lambda n: (-chances.get(n, -1), -seen.get(n, 0), n)):
                 effs = esc(merge_tiers(groups[name])) or '<span class="muted">stats unknown</span>'
                 tag = f'<span class="tag">seen {seen[name]}&times;</span>' if name in seen else ""
+                rolls = loot_rolls.get(iid, {}).get(f'{it["name"]} {name}', {})
+                if rolls:  # the exact tiers seen, e.g. "rolled +15 Arcane Resistance" (or "+14 ... 1x, +15 ... 2x")
+                    tag += ('<span class="muted"> rolled ' + esc(", ".join(r if len(rolls) == 1 else f"{r} {n}x"
+                                                                     for r, n in sorted(rolls.items()))) + '</span>')
                 pct = (f'<span class="rate">{chances[name]:g}%</span>' if name in chances
                        else f'<span class="rate muted">&lt;{min(chances.values()):g}%</span>' if chances else "")
                 lis.append(f'<li class="{"seen" if name in seen else ""}"><span class="affix" style="color:{color}">{esc(it["name"])} '
@@ -445,7 +451,7 @@ def main():
             src_html += (f'<section class="card affixes"><h2>Random affixes</h2><ul class="affix-list">{"".join(lis)}</ul>'
                          f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); an affix with several '
                          f'values has tiers (12-13 = any value in between, 15/17 = one of those).{chance_note} "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s '
-                         f'loot tracker</a>, matched by name.</p></section>')
+                         f'loot tracker</a>, matched by name; "rolled" = the exact value, for drops logged since the addon saves it.</p></section>')
         if rw:
             classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}
             top_html = f"""<section class="card changes">

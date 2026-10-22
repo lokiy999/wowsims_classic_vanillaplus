@@ -121,7 +121,7 @@ def load_random_affixes():
 
 
 def load_loot():
-    """Lokiy's loot tracker: (seen affixes {item_id: {affix name: count}}, drops {item_id: [(source, drops, kills, rate)]},
+    """Lokiy's loot tracker: (seen affixes {item_id: {affix name: count}}, drops {item_id: [(source, drops, looted, kills, rate)]},
     generatedAt) or None when the file is missing."""
     try:
         d = json.load(open(LOOT_JSON, encoding="utf-8"))
@@ -138,18 +138,35 @@ def load_loot():
     drops = {}
     for kind, rows in (("mob", d.get("mobs", [])), ("chest", d.get("chests", []))):
         for src in rows:
-            seen = src.get("kills") if kind == "mob" else src.get("opened")
+            # rate = drops per looted corpse / opened chest: what was on corpses Lokiy didn't loot is unknown
+            kills = src.get("kills") if kind == "mob" else src.get("opened")
+            looted = src.get("looted") if kind == "mob" else src.get("opened")
             for it in src.get("items", []):
                 if not it.get("id"):
                     continue
                 n = it.get("drops", 0)
-                rate = it.get("dropRate")
-                if rate is None and seen:
-                    rate = n / seen
-                drops.setdefault(int(it["id"]), []).append((src["name"], n, seen or 0, rate))
+                rate = n / looted if looted else it.get("dropRate")
+                drops.setdefault(int(it["id"]), []).append((src["name"], n, looted or 0, kills or 0, rate))
     for v in drops.values():
         v.sort(key=lambda r: -r[1])
     return names, drops, d.get("generatedAt")
+
+
+def load_rolls():
+    """Exact affix rolls from Lokiy's loot tracker: {item_id: {full looted name: {"+15 Arcane Resistance": count}}}.
+    Newer addon versions read the rolled lines off the game's tooltip and log them as "stats"; older drops have none."""
+    try:
+        d = json.load(open(LOOT_JSON, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for e in d.get("recentDrops", []):
+        stats = e.get("stats")
+        if e.get("item") and e.get("name") and isinstance(stats, list) and stats:
+            c = out.setdefault(int(e["item"]), {}).setdefault(e["name"], {})
+            roll = ", ".join(stats)
+            c[roll] = c.get(roll, 0) + int(e.get("quantity") or 1)
+    return out
 
 
 def seen_affixes(base_name, looted_names):
