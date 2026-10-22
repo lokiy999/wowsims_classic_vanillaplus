@@ -4519,3 +4519,12 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   drop log has a roll drop of it from that mob; otherwise looted corpses. No grey / white roll drops logged yet.
 - Caveat: a grey item's earlier drops (before the change) were only seen on Lokiy's own corpses, so its per-kill rate
   reads low until new data outweighs the old.
+
+## Part EZ — notes: LootTracker's exact affix rolls (2026-10-22)
+
+- Another session (LootTracker work, see the addon's `HISTORY.md`) added exact random-suffix rolls: the addon now
+  saves the rolled stat lines (`stats`, e.g. "+15 Arcane Resistance") and the suffix ID from the item link, and
+  `loot_sync.py` / `gen_site.py` show "rolled +15 Arcane Resistance" next to a seen affix. That patch was left
+  uncommitted on the server by request, and was then committed as part of Part EW, because Part EW was built on the
+  server's files. It is live and unchanged.
+- The TODO "exact affix tiers: the addon logs the looted name only" is done by that work; moved to TODO_DONE.

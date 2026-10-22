@@ -196,3 +196,4 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 - Caddy gzip + 404 page for db.lokiy.dev live (Lokiy reloaded Caddy)
 - Item search page with filters (quality, type, slot, class, level, binding, status, instance, stats) (Part ER)
 - db.lokiy.dev synced with lokiy.dev/loot: random affixes per item, seen affixes, Lokiy's drops (Part ET)
+- Exact affix rolls on db.lokiy.dev: LootTracker saves rolled stats + suffix ID, shown as "rolled ..." (Part EZ)
