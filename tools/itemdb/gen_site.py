@@ -43,7 +43,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
-from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_random_affixes, load_rolls,  # noqa: E402
+from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import Lookups, tooltip  # noqa: E402
 
@@ -209,6 +209,24 @@ def load_loot_tables():
     return tables
 
 
+def tables_by_name(names, tables):
+    """{boss / table display name: [(table key, instance)]}"""
+    by_name = {}
+    for key, (name, cat) in names.items():
+        if key in tables:
+            by_name.setdefault(name, []).append((key, cat))
+    return by_name
+
+
+def mob_table(by_name, mob, zones):
+    """The loot table of a mob the loot tracker saw, matched by name; when several tables share the name, by the
+    table's instance and the zones it was killed in. None when there is no single match."""
+    keys = by_name.get(mob, [])
+    if len(keys) > 1:
+        keys = [(k, c) for k, c in keys if c in zones]
+    return keys[0][0] if len(keys) == 1 else None
+
+
 def add_tracked_drops(tables, names, items):
     """Items Lokiy's loot tracker saw a boss drop that AtlasLoot has nowhere (new server items such as Hospitaller
     Codex from Brigitte Abbendis) are added to the end of that boss's loot table as ordinary drops (Lokiy 2026-10-23:
@@ -217,18 +235,12 @@ def add_tracked_drops(tables, names, items):
     matched by name; when several tables share the name, by the table's instance and the zones it was killed in.
     Returns {table key: [item ids added]}."""
     in_tables = {r[0] for rows in tables.values() for r in rows if r[0]}
-    by_name = {}
-    for key, (name, cat) in names.items():
-        if key in tables:
-            by_name.setdefault(name, []).append((key, cat))
+    by_name = tables_by_name(names, tables)
     added = {}
     for mob, zones, drops in load_mob_drops():
-        keys = by_name.get(mob, [])
-        if len(keys) > 1:
-            keys = [(k, c) for k, c in keys if c in zones]
-        if len(keys) != 1:
+        key = mob_table(by_name, mob, zones)
+        if not key:
             continue
-        key = keys[0][0]
         new = [iid for iid, q in drops if q >= TRACKED_MIN_QUALITY and iid in items and iid not in in_tables
                and iid not in added.get(key, [])]
         if new:
@@ -378,7 +390,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -485,8 +497,51 @@ def main():
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
 
+    # every mob / boss Lokiy's loot tracker saw: its drops on the boss's loot table page, else on its own /mob page
+    mob_loot = load_mob_loot()
+    by_name = tables_by_name(names, tables)
+    mob_key = {}
+    for m in mob_loot:
+        key = mob_table(by_name, m["name"], set(m["zones"]))
+        if key in loot_keys:
+            mob_key[m["name"]] = key
+    loot_key_mobs = {}
+    for m in mob_loot:
+        if m["name"] in mob_key:
+            loot_key_mobs.setdefault(mob_key[m["name"]], []).append(m)
+
+    def mob_href(m):
+        return f'/loot/{mob_key[m["name"]]}' if m["name"] in mob_key else f'/mob/{slug(m["name"])}'
+
+    def mob_rate(r):
+        return (f"{min(r, 1) * 100:.0f}%" if r >= 0.1 else f"{r * 100:.1f}%") if r is not None else "?"
+
+    rough_note = ('<p class="notice"><b>Very rough.</b> These drops come from very little data: one player\'s '
+                  'loot tracker and a handful of kills, so rates can be far off and many drops are still missing. '
+                  'They get better as more kills are tracked.</p>')
+
+    def mob_drops_html(m, heading="Drops seen"):
+        seen = (f'Killed {m["kills"]} time{"s" if m["kills"] != 1 else ""}, {m["looted"]} '
+                f'corpse{"s" if m["looted"] != 1 else ""} looted')
+        if not m["items"]:
+            return (f'<section class="card mob-drops"><h2>{esc(heading)}</h2>{rough_note}'
+                    f'<p class="muted">{seen}. No drops seen yet.</p></section>')
+        trs = []
+        for iid, nm, q, n, r in m["items"]:
+            if iid in items:
+                cell = item_link(items[iid], icons.get(iid, "inv_misc_questionmark"))
+            else:
+                cell = f'<span style="color:{Q_COLOR.get(q, "#ffffff")}">{esc(nm or str(iid))}</span>'
+            trs.append(f'<tr><td>{cell}</td><td>{n}</td><td class="rate">~{mob_rate(r)}</td></tr>')
+        return (f'<section class="card mob-drops"><h2>{esc(heading)}</h2>{rough_note}'
+                f'<p class="muted small">{seen}, from <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>.</p>'
+                f'<table class="obs-table"><thead><tr><th>Item</th><th>Drops</th><th>Rate</th></tr></thead>'
+                f'<tbody>{"".join(trs)}</tbody></table>'
+                f'<p class="muted small">Rate = drops per kill for green and better items (the group roll shows them '
+                f'from every corpse), else drops per looted corpse. ~ = estimate.</p></section>')
+
     # clean output (only our generated files)
-    for sub in ("item", "loot", "type", "tt"):
+    for sub in ("item", "loot", "type", "tt", "mob"):
         shutil.rmtree(os.path.join(out, sub), ignore_errors=True)
         os.makedirs(os.path.join(out, sub), exist_ok=True)
 
@@ -616,6 +671,7 @@ def main():
   <h1>{esc(name)}</h1>
   <p class="muted">{counts} {kills_note}</p>
   <ul class="loot">{''.join(rows)}</ul>
+  {''.join(mob_drops_html(m, f"Drops seen from {m['name']}") for m in loot_key_mobs.get(key, []))}
 </article>"""
         with open(os.path.join(out, "loot", f"{key}.html"), "w", encoding="utf-8") as f:
             f.write(page(name, body, description=f"{name} loot on Vanilla Plus. {counts}", path=f"/loot/{key}"))
@@ -684,6 +740,41 @@ def main():
     with open(os.path.join(out, "reworked.html"), "w", encoding="utf-8") as f:
         f.write(page("Reworked classic items", body, path="/reworked",
                      description=f"{len(reworked)} classic items with changed stats on Vanilla Plus, compared with classic."))
+
+    # ---- mob pages (mobs without a loot table) and the mobs index
+    def main_zone(m):
+        return max(m["zones"], key=lambda z: m["zones"][z]) if m["zones"] else "Unknown zone"
+
+    by_zone = {}
+    for m in mob_loot:
+        by_zone.setdefault(main_zone(m), []).append(m)
+        if m["name"] in mob_key:
+            continue
+        info = ", ".join(x for x in (f'Level {m["level"]}' if m["level"] else "",
+                                     m["elite"].replace("rareelite", "rare elite").capitalize()) if x)
+        body = f"""
+<article>
+  <div class="crumbs"><a href="/mobs">Mobs</a> / {esc(main_zone(m))}</div>
+  <h1>{esc(m['name'])}</h1>
+  <p class="muted">{esc(info)}</p>
+  {mob_drops_html(m)}
+</article>"""
+        with open(os.path.join(out, "mob", f"{slug(m['name'])}.html"), "w", encoding="utf-8") as f:
+            f.write(page(m["name"], body, path=f"/mob/{slug(m['name'])}",
+                         description=f"{m['name']} drops on Vanilla Plus, seen by Lokiy's loot tracker (very rough)."))
+    blocks = []
+    for zone in sorted(by_zone, key=lambda z: (z == "Unknown zone", z)):
+        lis = "".join(f'<li><a href="{mob_href(m)}">{esc(m["name"])}</a> <span class="muted">'
+                      f'{m["kills"]} kills, {len(m["items"])} item{"s" if len(m["items"]) != 1 else ""}</span></li>'
+                      for m in sorted(by_zone[zone], key=lambda m: m["name"]))
+        blocks.append(f'<section class="cat"><h2>{esc(zone)}</h2><ul class="loot cols wide-list">{lis}</ul></section>')
+    body = f"""
+<section class="intro"><h1>Mobs &amp; bosses</h1>
+<p class="muted">Every mob and boss <a href="https://lokiy.dev/loot/">Lokiy's loot tracker</a> has seen, with what
+it dropped. Bosses link to their loot table.</p>{rough_note}</section>
+{"".join(blocks)}"""
+    with open(os.path.join(out, "mobs.html"), "w", encoding="utf-8") as f:
+        f.write(page("Mobs", body, path="/mobs", description="Vanilla Plus mobs and bosses and their drops (very rough)."))
 
     # ---- instances: every loot table by instance / group
     blocks = []

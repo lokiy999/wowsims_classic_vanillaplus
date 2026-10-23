@@ -4635,3 +4635,19 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   (26300 Hospitaller Codex now sits between 26298 and 26303 on Brigitte's page).
 - Only the /loot/<table> pages change; the index, reworked and instance pages keep their order.
 - Rebuilt /var/www/db.
+
+## Part FG — db.lokiy.dev: drops seen per mob and boss (2026-10-23)
+
+- Lokiy asked for every mob / boss to list what it dropped according to the loot tracker (lokiy.dev/loot), so
+  estimates of each mob's drops start appearing, with a notice that they are very rough (little data).
+- `loot_sync.py`: `load_mob_loot()` = every mob in `loot.json` with kills, looted corpses, level, elite and its
+  drops; the rate rule moved into `drop_rate()` (shared with `load_loot()`): per kill for green+ or rolled items,
+  else per looted corpse.
+- `gen_site.py`:
+  - Bosses that match a loot table (same name rule as Part FD, now `tables_by_name()` / `mob_table()`) get a
+    "Drops seen from <boss>" card on their /loot/<table> page (34 tables).
+  - Every other tracked mob gets `/mob/<slug>` (178 pages): level, elite, kills / looted and its drops with rates.
+  - `/mobs`: every tracked mob and boss by its main zone (bosses link to their loot table); "Mobs" in the nav.
+  - Every card and /mobs carry a "Very rough" notice (one player's tracker, few kills); all rates show as ~.
+- `style.css`: `.notice`, `.mob-drops`.
+- Mobs are matched by name (loot.json has no NPC IDs yet). Chests are not shown. Rebuilt /var/www/db.

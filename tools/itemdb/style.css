@@ -109,6 +109,8 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .obs-table th, .obs-table td { text-align: right; padding: 3px 8px; border-bottom: 1px solid var(--border); }
 .obs-table th:first-child, .obs-table td:first-child { text-align: left; padding-left: 0; }
 .obs-table th { color: var(--muted); font-weight: 600; font-size: .85rem; }
+.notice { border-left: 3px solid #e6a23c; background: rgba(230, 162, 60, .1); padding: 8px 12px; border-radius: 4px; margin: 8px 0; font-size: .9rem; }
+.mob-drops { margin-top: 20px; }
 .rate { color: var(--accent); font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 8px; font-size: .9rem; }
 
 .section-title { margin: 8px 0 12px; }

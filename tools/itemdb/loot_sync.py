@@ -134,6 +134,13 @@ def load_affix_ids():
     return out
 
 
+def drop_rate(it, src_name, kills, looted, rolled):
+    """Drops per kill for items that go to a group roll (uncommon+, or seen rolled), else per looted corpse."""
+    rolls = (it.get("quality") or 0) >= 2 or (src_name, int(it["id"])) in rolled
+    per = kills if rolls else looted
+    return it.get("drops", 0) / per if per else it.get("dropRate")
+
+
 def load_loot():
     """Lokiy's loot tracker: (seen affixes {item_id: {affix name: count}}, drops {item_id: [(source, drops, looted, kills, rate)]},
     generatedAt) or None when the file is missing."""
@@ -163,9 +170,7 @@ def load_loot():
                 if not it.get("id"):
                     continue
                 n = it.get("drops", 0)
-                rolls = (it.get("quality") or 0) >= 2 or (src["name"], int(it["id"])) in rolled
-                per = kills if rolls else looted
-                rate = n / per if per else it.get("dropRate")
+                rate = drop_rate(it, src["name"], kills, looted, rolled)
                 drops.setdefault(int(it["id"]), []).append((src["name"], n, looted or 0, kills or 0, rate))
     for v in drops.values():
         v.sort(key=lambda r: -r[1])
@@ -181,6 +186,29 @@ def load_mob_drops():
     return [(m["name"], set(m.get("zones") or {}), [(int(i["id"]), i.get("quality") or 0) for i in m.get("items", [])
                                                      if i.get("id")])
             for m in d.get("mobs", []) if m.get("name")]
+
+
+def load_mob_loot():
+    """Lokiy's loot tracker, one dict per mob it saw killed or looted: name, zones {zone: count}, kills, looted, elite,
+    level, items [(item id, name, quality, drops, rate)] (rate as in load_loot), highest rate first."""
+    try:
+        d = json.load(open(LOOT_JSON, encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    rolled = {(e.get("mob"), int(e["item"])) for e in d.get("recentDrops", []) if e.get("roll") and e.get("item")}
+    mobs = []
+    for m in d.get("mobs", []):
+        if not m.get("name"):
+            continue
+        kills, looted = m.get("kills") or 0, m.get("looted") or 0
+        rows = [(int(it["id"]), it.get("name") or "", it.get("quality") or 0, it.get("drops", 0),
+                 drop_rate(it, m["name"], kills, looted, rolled)) for it in m.get("items", []) if it.get("id")]
+        rows.sort(key=lambda r: (-(r[4] or 0), r[0]))
+        lo, hi = m.get("minLevel"), m.get("maxLevel")
+        level = "" if not lo else str(lo) if lo == hi or not hi else f"{lo}-{hi}"
+        mobs.append({"name": m["name"], "zones": m.get("zones") or {}, "kills": kills, "looted": looted,
+                     "elite": m.get("elite") or "", "level": level, "items": rows})
+    return mobs
 
 
 def load_rolls():
