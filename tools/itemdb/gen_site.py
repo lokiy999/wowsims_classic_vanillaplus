@@ -2,7 +2,9 @@
 """Static item database site for db.lokiy.dev (all Vanilla Plus items).
 
 Reads the server data in the repo's CSV's/ folder:
-  - VPlusItemDB.lua: in-game tooltip lines of every server item
+  - VPlusItemDB.lua: in-game tooltip lines of every server item (dump of 2026-08-26)
+  - ~/itemcache/items.json: the game client's item cache (itemcache_sync.py), the server's current data; its items
+    replace the dump's and add the ones the dump doesn't have
   - AtlasLoot (the server's fork): loot tables, their boss/instance names and item icons
 and writes plain HTML pages (Caddy serves them from disk):
   /index.html             search + browse by instance / boss
@@ -40,9 +42,12 @@ from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
 from loot_sync import load_loot, load_random_affixes, load_rolls, merge_tiers, seen_affixes  # noqa: E402
+from wdb_tooltip import Lookups, tooltip  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
+ITEMCACHE = os.path.expanduser("~/itemcache/items.json")
+SPELL_DB = "/var/www/lokiy/spells/db"
 CLASSIC_MAX_ITEM_ID = 24283
 SITE_NAME = "Vanilla Plus Database"
 SITE_URL = "https://db.lokiy.dev"
@@ -100,6 +105,22 @@ def load_items():
         if keep:
             items[iid] = {"id": iid, "name": keep[0], "quality": quality, "lines": keep[1:]}
     return items
+
+
+def add_cache_items(items):
+    """Items from the game client's item cache (the server's current data) replace the dump's tooltips.
+    Returns {id: icon} from the items' display ids."""
+    try:
+        with open(ITEMCACHE, encoding="utf-8") as f:
+            store = json.load(f)["items"]
+    except (OSError, ValueError):
+        return {}
+    recs = {int(k): v["item"] for k, v in store.items()}
+    lk = Lookups(SPELL_DB, os.path.join(CSV, "dbc"))
+    for iid, rec in recs.items():
+        lines = tooltip(rec, lk, recs)
+        items[iid] = {"id": iid, "name": lines[0], "quality": rec["quality"], "lines": lines[1:-1]}
+    return {iid: lk.icons[rec["displayId"]] for iid, rec in recs.items() if rec["displayId"] in lk.icons}
 
 
 def add_addon_items(items):
@@ -346,6 +367,7 @@ def main():
     out = args.out
 
     items = load_items()
+    cache_icons = add_cache_items(items)
     add_addon_items(items)
     names, cat_order = load_table_names()
     tables = load_loot_tables()
@@ -373,7 +395,9 @@ def main():
                 if key not in sources[iid]:
                     sources[iid].append(key)
     for iid in all_items:
-        if iid not in icons and wowhead.get(iid, {}).get("icon"):
+        if iid not in icons and cache_icons.get(iid):
+            icons[iid] = cache_icons[iid]
+        elif iid not in icons and wowhead.get(iid, {}).get("icon"):
             icons[iid] = wowhead[iid]["icon"]
     loot_keys = [k for k in tables if any(r[0] in items for r in tables[k])]
 

@@ -302,6 +302,9 @@ there is more to say.
 
 ## Item database site db.lokiy.dev (Parts EN-ET)
 
+- Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the sim could read
+  `~/itemcache/items.json` instead of the dump (`docs/parse_vplus.py`); the spells site shows food / drink totals
+  ($oN) as one tick and "hr" for hours (spell_changelog.py), `wdb_tooltip.py` corrects both on the item side.
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.

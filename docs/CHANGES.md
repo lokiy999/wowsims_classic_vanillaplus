@@ -4528,3 +4528,31 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   uncommitted on the server by request, and was then committed as part of Part EW, because Part EW was built on the
   server's files. It is live and unchanged.
 - The TODO "exact affix tiers: the addon logs the looted name only" is done by that work; moved to TODO_DONE.
+
+## Part FA — db.lokiy.dev from the game's item cache (2026-10-23)
+
+- Lokiy: update the website from the client's `WDB/itemcache.wdb` automatically, instead of the 2026-08-26
+  VPlusItemDB.lua tooltip dump. The cache holds the server's full item record for every item the client has seen.
+- Flow: Lokiy's PC (`projects\ItemCacheSync`, lokiy999/ItemCacheSync) uploads each client's cache when it changed,
+  every 10 minutes by a scheduled task, to `~/itemcache/incoming/`; `tools/itemdb/itemcache_sync.py` merges it into
+  `~/itemcache/items.json`, logs new / changed items to `~/itemcache/changes.jsonl` and runs `gen_site.py` (under
+  `sync_db.sh`'s lock). An item only updates from a cache file at least as new as the one it came from. The first
+  import is the baseline and isn't logged.
+- `tools/itemdb/wdb_items.py`: reads the cache (1.12 build 5875 record layout; every record checked against its
+  size). `tools/itemdb/wdb_tooltip.py`: record -> tooltip lines in the dump's format, so item_stats / item_types /
+  reworked read them unchanged. Spell text from `/var/www/lokiy/spells/db`; sets, skills, factions, zones and icons
+  from `CSV's/dbc/` (ItemSet, SkillLine, Faction, AreaTable, Map, ItemDisplayInfo, copied from the hub's
+  `data\dbc` = Patch 3).
+- Matches the client: stat order Str, Agi, Sta, Int, Spi; resistances Arcane first; weapon damage min rounded down,
+  max up; dps exact halves down; cloaks without "Cloth"; "Conjured Item"; zone lines before the binding; recipes
+  with the crafted item and reagents; set pieces, set skill and bonuses in DBC order; "1.50 min" / "1 hour" /
+  "2 hrs". The spells site counts food and drink totals ($oN) as one tick; corrected here (TODO for the spells site).
+  Against the dump: 14,310 of 14,352 items give the same lines; the rest are the dump's quirks (Horde scanner:
+  "Requires Grunt" on Alliance items, now the item's own faction title; her / his; broken `’`; "Already known").
+- `gen_site.py`: `add_cache_items()` puts the cache items over the dump's (and adds the ones it lacks); icon
+  fallback from the cache's display id before Wowhead's. Also commits `add_addon_items()` (items LootTracker saw
+  that the dump lacks), which another session left uncommitted on 2026-10-22; it was live and is unchanged. The
+  working copy had been converted to LF line endings, so this commit changes every line of gen_site.py.
+- First import: 14,378 items (7 new, 14,386 pages). Between the Addon Tickering client's cache (2026-09-30) and the
+  live one (2026-10-22) the server changed 228 items: 218 PvP items are no longer Unique, 8 names lost a broken `’`,
+  26194 Golden Ceremonial Bloodletter and 80027 Talon of Tethis got a Use spell (34275).
