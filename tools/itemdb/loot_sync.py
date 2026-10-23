@@ -172,6 +172,17 @@ def load_loot():
     return names, drops, d.get("generatedAt")
 
 
+def load_mob_drops():
+    """Lokiy's loot tracker: [(mob name, {zone names}, [(item id, quality)])] for every mob it saw drop something."""
+    try:
+        d = json.load(open(LOOT_JSON, encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return [(m["name"], set(m.get("zones") or {}), [(int(i["id"]), i.get("quality") or 0) for i in m.get("items", [])
+                                                     if i.get("id")])
+            for m in d.get("mobs", []) if m.get("name")]
+
+
 def load_rolls():
     """Exact affix rolls from Lokiy's loot tracker: {item_id: {full looted name: {"+15 Arcane Resistance": count}}}.
     Newer addon versions read the rolled lines off the game's tooltip and log them as "stats"; older drops have none."""

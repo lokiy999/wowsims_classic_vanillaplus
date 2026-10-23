@@ -4576,3 +4576,19 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - `~/loot-sync/enrich.py` (not in git) reads only that file: no sim DB, no item cache, no classicdb cache. /loot
   tooltip text is identical to before for all 319 items; suffix stats per suffix ID now for 52 items (6 before).
   The LootTracker page takes the icon URL from it only.
+
+## Part FD — loot tables: boss drops seen by Lokiy's loot tracker (2026-10-23)
+
+- Lokiy: Hospitaller Codex (26300) dropped from Brigitte Abbendis and got an item page, but wasn't on
+  `/loot/SMBrigitte`. AtlasLoot has no row for it, and the loot table pages only list AtlasLoot.
+- `gen_site.py` `add_tracked_drops()` (data: `loot_sync.load_mob_drops()` from loot.json): an item the tracker saw a
+  mob drop is added to that mob's loot table, under "Also seen dropping (Lokiy's loot tracker)", when it is rare+ and
+  in no AtlasLoot table at all. That keeps out trash loot (cloth, Troll Sweat, mojo, elemental reagents) and
+  zone-wide drops that belong to another table (Primordial Hakkari Bijou, Pattern: Flarecore Wraps). The mob is
+  matched by the table name; when several tables share it, by instance and the zones it was killed in. The item's
+  page then shows the boss as its source. Runs on every rebuild, so new drops are added automatically.
+- Added now: Hospitaller Codex (Brigitte), Champion's Broken Tooth (Herod), and ZG's shared boss items Might of the
+  Tribe, Belt of Untapped Power, Zulian Scepter of Rites, Cloak of the Hakkari Worshipers, Seal of the Gurubashi
+  Berserker (Thekal, Venoxis, Arlokk, Mar'li).
+- Built with the committed `docs/parse_vplus.py`: the working copy (another session, sim switch) had dropped
+  `parse_lua`, which `gen_site.py` imports; that session was told.

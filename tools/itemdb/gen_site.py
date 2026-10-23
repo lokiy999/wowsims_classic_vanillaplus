@@ -43,8 +43,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
-from loot_sync import (load_affix_ids, load_loot, load_random_affixes, load_rolls, merge_tiers,  # noqa: E402
-                       seen_affixes)
+from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_random_affixes, load_rolls,  # noqa: E402
+                       merge_tiers, seen_affixes)
 from wdb_tooltip import Lookups, tooltip  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
@@ -52,6 +52,8 @@ ATLAS = os.path.join(CSV, "AtlasLoot")
 ITEMCACHE = os.path.expanduser("~/itemcache/items.json")
 SPELL_DB = "/var/www/lokiy/spells/db"
 CLASSIC_MAX_ITEM_ID = 24283
+TRACKED_HEADER = "Also seen dropping (Lokiy's loot tracker)"
+TRACKED_MIN_QUALITY = 3  # rare+: lower drops are mostly trade goods / trash loot every mob of the zone has
 SITE_NAME = "Vanilla Plus Database"
 SITE_URL = "https://db.lokiy.dev"
 ICON_URL = "https://wow.zamimg.com/images/wow/icons/{size}/{icon}.jpg"
@@ -206,6 +208,34 @@ def load_loot_tables():
             if any(r[0] for r in rows):
                 tables.setdefault(m.group(1), rows)
     return tables
+
+
+def add_tracked_drops(tables, names, items):
+    """Items Lokiy's loot tracker saw a boss drop that AtlasLoot has nowhere (new server items such as Hospitaller
+    Codex from Brigitte Abbendis) are added to that boss's loot table under TRACKED_HEADER. Only rare+ items that are
+    in no table at all, so trash loot and items that belong to another table (zone-wide drops) stay out. The mob is
+    matched by name; when several tables share the name, by the table's instance and the zones it was killed in.
+    Returns {table key: [item ids added]}."""
+    in_tables = {r[0] for rows in tables.values() for r in rows if r[0]}
+    by_name = {}
+    for key, (name, cat) in names.items():
+        if key in tables:
+            by_name.setdefault(name, []).append((key, cat))
+    added = {}
+    for mob, zones, drops in load_mob_drops():
+        keys = by_name.get(mob, [])
+        if len(keys) > 1:
+            keys = [(k, c) for k, c in keys if c in zones]
+        if len(keys) != 1:
+            continue
+        key = keys[0][0]
+        new = [iid for iid, q in drops if q >= TRACKED_MIN_QUALITY and iid in items and iid not in in_tables
+               and iid not in added.get(key, [])]
+        if new:
+            added.setdefault(key, []).extend(new)
+    for key, ids in added.items():
+        tables[key] = tables[key] + [(0, "", TRACKED_HEADER, False)] + [(i, "", items[i]["name"], False) for i in ids]
+    return added
 
 
 # --------------------------------------------------------------------------------------------- observed drops
@@ -385,6 +415,7 @@ def main():
     addon_icons = add_addon_items(items)
     names, cat_order = load_table_names()
     tables = load_loot_tables()
+    tracked = add_tracked_drops(tables, names, items)
     codes = load_text_codes()
     wowhead = load_wowhead()
 
