@@ -12,6 +12,7 @@ flock -n 9 || exit 0
 touch "$STAMP.new"
 if python3 /opt/wowsims-classic/tools/itemdb/gen_site.py >>"$LOG" 2>&1; then
 	mv "$STAMP.new" "$STAMP"
+	python3 /home/lokiy/loot-sync/enrich.py >>"$LOG" 2>&1  # lokiy.dev/loot: links to new mob / item pages
 	echo "$(date -u '+%F %T') rebuilt after loot.json change" >>"$LOG"
 else
 	rm -f "$STAMP.new"

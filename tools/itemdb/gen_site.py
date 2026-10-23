@@ -17,6 +17,7 @@ and writes plain HTML pages (Caddy serves them from disk):
   /items.json             search index; /tt/<id // 500>.json hover tooltips
   /api/items.json         every item for other sites (lokiy.dev/loot): name, quality, icon URL, tooltip lines with
                           their colour class, custom flag, random affixes. db.lokiy.dev is the only item source.
+  /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there)
   /style.css, /site.js
 
 Scope (Lokiy 2026-10-04): custom items = item ids that do not exist in classic 1.12 (above 24283) plus the items
@@ -775,6 +776,11 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
 {"".join(blocks)}"""
     with open(os.path.join(out, "mobs.html"), "w", encoding="utf-8") as f:
         f.write(page("Mobs", body, path="/mobs", description="Vanilla Plus mobs and bosses and their drops (very rough)."))
+    # lokiy.dev/loot links each mob name to its page here
+    os.makedirs(os.path.join(out, "api"), exist_ok=True)
+    with open(os.path.join(out, "api", "mobs.json.tmp"), "w", encoding="utf-8") as f:
+        json.dump({m["name"]: SITE_URL + mob_href(m) for m in mob_loot}, f, ensure_ascii=False, separators=(",", ":"))
+    os.replace(os.path.join(out, "api", "mobs.json.tmp"), os.path.join(out, "api", "mobs.json"))
 
     # ---- instances: every loot table by instance / group
     blocks = []

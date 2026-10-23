@@ -4651,3 +4651,13 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   - Every card and /mobs carry a "Very rough" notice (one player's tracker, few kills); all rates show as ~.
 - `style.css`: `.notice`, `.mob-drops`.
 - Mobs are matched by name (loot.json has no NPC IDs yet). Chests are not shown. Rebuilt /var/www/db.
+
+## Part FH — db.lokiy.dev: /api/mobs.json for lokiy.dev/loot's mob links (2026-10-23)
+
+- Lokiy wanted mob names on lokiy.dev/loot to open the mob's db.lokiy.dev page.
+- `gen_site.py` writes `/api/mobs.json`: {mob name: page URL} for every mob the loot tracker saw (boss -> its
+  `/loot/<table>` page, else `/mob/<slug>`; 212 mobs). `~/loot-sync/enrich.py` copies it into /loot's
+  `mob-info.json`.
+- `sync_db.sh` runs `~/loot-sync/enrich.py` after a successful rebuild, so a mob new in loot.json gets its link
+  once its page exists.
+- Backups: `gen_site.py.bak-2026-10-23f`, `sync_db.sh.bak-2026-10-23`. Rebuilt /var/www/db.
