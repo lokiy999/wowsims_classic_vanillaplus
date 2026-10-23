@@ -4661,3 +4661,13 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - `sync_db.sh` runs `~/loot-sync/enrich.py` after a successful rebuild, so a mob new in loot.json gets its link
   once its page exists.
 - Backups: `gen_site.py.bak-2026-10-23f`, `sync_db.sh.bak-2026-10-23`. Rebuilt /var/www/db.
+
+## Part FI — sync_db.sh: rebuild lokiy.dev/loot after an approved upload (2026-10-23)
+
+- Lokiy wanted approved LootTracker uploads (lokiy.dev/loot/upload, reviewed on lokiy.dev/admin/loot) to reach
+  the site automatically.
+- `sync_db.sh`: when `~/loot-upload/data/rebuild-requested` (written on approval) is newer than loot.json, it
+  first runs `~/loot-sync/build_loot.py` (LootTracker repo `tools/build_loot.py`: Lokiy's data plus approved
+  uploads, deduplicated by event) and then rebuilds db.lokiy.dev as before. A failed build is logged and tried
+  again on the next run.
+- Backup: `sync_db.sh.bak-2026-10-23b`. Tested by hand: the marker rebuilt loot.json, then db.lokiy.dev.
