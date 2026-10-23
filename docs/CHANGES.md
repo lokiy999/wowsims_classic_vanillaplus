@@ -4563,3 +4563,16 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   icons from `~/itemcache/items.json` with `wdb_tooltip.py`; the sim DB stays the fallback and gives random suffix
   stats. All 319 /loot items have a tooltip now (86 before). Details in LootTracker `HISTORY.md`.
 - `itemcache_sync.py` runs `enrich.py` after each rebuild, so a cache upload reaches /loot without a loot publish.
+
+## Part FC — db.lokiy.dev/api/items.json: the one item source for other sites (2026-10-23)
+
+- Lokiy: the sim's database must not be a fallback for /loot (Part FB); db.lokiy.dev is to be the only place item
+  data comes from, for everything.
+- `gen_site.py` writes `/api/items.json`: every item (14,386) with name, quality, icon URL (CDN, or db.lokiy.dev's
+  `/icons/` for server-made icons), tooltip lines with their colour class, custom flag and random affixes
+  `[suffix id, name, effects]` (`loot_sync.load_affix_ids()`, same Wowhead gear-planner data as the affix lists).
+  `line_class()` split out of `tooltip_html()`; the dps line is now white like in game (was green through GREEN's
+  "("). Icons: the icon LootTracker saved from the game is the last fallback (after AtlasLoot, item cache, Wowhead).
+- `~/loot-sync/enrich.py` (not in git) reads only that file: no sim DB, no item cache, no classicdb cache. /loot
+  tooltip text is identical to before for all 319 items; suffix stats per suffix ID now for 52 items (6 before).
+  The LootTracker page takes the icon URL from it only.

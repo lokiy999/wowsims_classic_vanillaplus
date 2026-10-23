@@ -15,6 +15,8 @@ and writes plain HTML pages (Caddy serves them from disk):
   /type/<type>.html       every item by type (item_types.py)
   /search.html            filter all items (search.js over /search.json; stats from item_stats.py)
   /items.json             search index; /tt/<id // 500>.json hover tooltips
+  /api/items.json         every item for other sites (lokiy.dev/loot): name, quality, icon URL, tooltip lines with
+                          their colour class, custom flag, random affixes. db.lokiy.dev is the only item source.
   /style.css, /site.js
 
 Scope (Lokiy 2026-10-04): custom items = item ids that do not exist in classic 1.12 (above 24283) plus the items
@@ -41,7 +43,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reworked import RECIPE, find_reworked, load_wowhead, norm  # noqa: E402
 from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
-from loot_sync import load_loot, load_random_affixes, load_rolls, merge_tiers, seen_affixes  # noqa: E402
+from loot_sync import (load_affix_ids, load_loot, load_random_affixes, load_rolls, merge_tiers,  # noqa: E402
+                       seen_affixes)
 from wdb_tooltip import Lookups, tooltip  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
@@ -125,11 +128,12 @@ def add_cache_items(items):
 
 def add_addon_items(items):
     """Items LootTracker saw that aren't in the VPlusItemDB dump (added to the server later): a basic entry
-    from loot.json (name, quality, bind) so every looted item gets a page."""
+    from loot.json (name, quality, bind) so every looted item gets a page. Returns {id: icon} the addon saved
+    from the game (the last icon fallback)."""
     try:
         seen = json.load(open("/var/www/lokiy/loot/loot.json", encoding="utf-8")).get("items", {})
     except (OSError, ValueError):
-        return
+        return {}
     binds = {"bop": "Binds when picked up", "boe": "Binds when equipped", "bou": "Binds when used",
              "quest": "Quest Item"}
     for k, v in seen.items():
@@ -139,6 +143,7 @@ def add_addon_items(items):
         lines = [binds[v["bind"]]] if v.get("bind") in binds else []
         lines.append("(Seen by LootTracker; full tooltip not in the item dump yet)")
         items[iid] = {"id": iid, "name": v["name"], "quality": v.get("quality", 1), "lines": lines}
+    return {int(k): v["icon"].lower() for k, v in seen.items() if v.get("icon")}
 
 
 def lua_string_expr(expr):
@@ -280,19 +285,28 @@ def rate_text(drops, kills, estimated):
 
 # --------------------------------------------------------------------------------------------- html
 
+def line_class(ln):
+    """Colour class of a tooltip line: tt-white, tt-grey, tt-green or tt-flavor."""
+    if ln.endswith(" damage per second)"):
+        return "tt-white"  # the game shows the dps line white; GREEN's "(" is meant for proc / set lines
+    if re.match(r"^\(\d+\) Set:", ln) or ln.startswith("  ") or re.match(r"^.+\(\d+/\d+\)$", ln):
+        return "tt-grey"
+    if ln.startswith(GREEN):
+        return "tt-green"
+    if ln.startswith('"'):
+        return "tt-flavor"
+    if ln.startswith(("Requires ", "Classes:", "Races:")):
+        return "tt-grey"
+    return "tt-white"
+
+
 def tooltip_html(item, mark=(), mark_cls="tt-new"):
     """mark: normalized lines to highlight (the changes against the other version of a reworked item)."""
     color = Q_COLOR.get(item["quality"], "#ffffff")
     name_cls = f' {mark_cls}' if norm(item["name"]) in mark else ""
     out = [f'<div class="tt-name{name_cls}" style="color:{color}">{esc(item["name"])}</div>']
     for ln in item["lines"]:
-        cls = "tt-white"
-        if re.match(r"^\(\d+\) Set:", ln) or ln.startswith("  ") or re.match(r"^.+\(\d+/\d+\)$", ln):
-            cls = "tt-grey"
-        elif ln.startswith(GREEN):
-            cls = "tt-green"
-        elif ln.startswith(('"', "Requires ", "Classes:", "Races:")):
-            cls = "tt-grey" if not ln.startswith('"') else "tt-flavor"
+        cls = line_class(ln)
         if mark and norm(ln) in mark:
             cls += " " + mark_cls
         out.append(f'<div class="{cls}">{esc(ln)}</div>')
@@ -368,7 +382,7 @@ def main():
 
     items = load_items()
     cache_icons = add_cache_items(items)
-    add_addon_items(items)
+    addon_icons = add_addon_items(items)
     names, cat_order = load_table_names()
     tables = load_loot_tables()
     codes = load_text_codes()
@@ -399,6 +413,8 @@ def main():
             icons[iid] = cache_icons[iid]
         elif iid not in icons and wowhead.get(iid, {}).get("icon"):
             icons[iid] = wowhead[iid]["icon"]
+        elif iid not in icons and addon_icons.get(iid):
+            icons[iid] = addon_icons[iid]
     loot_keys = [k for k in tables if any(r[0] in items for r in tables[k])]
 
     def table_label(key):
@@ -748,6 +764,25 @@ your filters, so you can share a search.</p></section>
         chunks.setdefault(i // 500, {})[i] = tooltip_html(items[i])
     with open(os.path.join(out, "items.json"), "w", encoding="utf-8") as f:
         json.dump(data, f, separators=(",", ":"))
+
+    # ---- data for other sites: every item, the one place they get item data from
+    affix_ids = load_affix_ids()
+    api = {}
+    for i in all_items:
+        it = items[i]
+        e = {"name": it["name"], "q": it["quality"], "lines": [[line_class(ln), ln] for ln in it["lines"]]}
+        if icons.get(i):
+            e["icon"] = icon_url(icons[i], "medium", absolute=True)
+        if is_custom(i):
+            e["custom"] = 1
+        if affix_ids.get(i):
+            e["affixes"] = affix_ids[i]
+        api[i] = e
+    os.makedirs(os.path.join(out, "api"), exist_ok=True)
+    tmp = os.path.join(out, "api", "items.json.tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(api, f, ensure_ascii=False, separators=(",", ":"))
+    os.replace(tmp, os.path.join(out, "api", "items.json"))
     for n, chunk in chunks.items():
         with open(os.path.join(out, "tt", f"{n}.json"), "w", encoding="utf-8") as f:
             json.dump(chunk, f, separators=(",", ":"))

@@ -120,6 +120,20 @@ def load_random_affixes():
     return out, stats, all_chances
 
 
+def load_affix_ids():
+    """{item_id: [[affix id, name, [effect lines]]]}: every random affix an item can roll, by the affix ID the game
+    puts in the item link (the LootTracker addon saves it as the drop's suffix)."""
+    text = open(GEARPLANNER, encoding="utf-8").read()
+    enchants = _page_data(text, "wow.gearPlanner.classic.randomEnchant")
+    out = {}
+    for item in _page_data(text, "wow.gearPlanner.classic.item").values():
+        rows = [[rid, enchants[str(rid)]["name"], enchants[str(rid)].get("effects", [])]
+                for rid in item.get("randomEnchants") or [] if enchants.get(str(rid), {}).get("name")]
+        if rows:
+            out[int(item["id"])] = sorted(rows)
+    return out
+
+
 def load_loot():
     """Lokiy's loot tracker: (seen affixes {item_id: {affix name: count}}, drops {item_id: [(source, drops, looted, kills, rate)]},
     generatedAt) or None when the file is missing."""
