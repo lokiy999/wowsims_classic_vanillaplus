@@ -102,6 +102,24 @@ def load_items():
     return items
 
 
+def add_addon_items(items):
+    """Items LootTracker saw that aren't in the VPlusItemDB dump (added to the server later): a basic entry
+    from loot.json (name, quality, bind) so every looted item gets a page."""
+    try:
+        seen = json.load(open("/var/www/lokiy/loot/loot.json", encoding="utf-8")).get("items", {})
+    except (OSError, ValueError):
+        return
+    binds = {"bop": "Binds when picked up", "boe": "Binds when equipped", "bou": "Binds when used",
+             "quest": "Quest Item"}
+    for k, v in seen.items():
+        iid = int(k)
+        if iid in items or not v.get("name"):
+            continue
+        lines = [binds[v["bind"]]] if v.get("bind") in binds else []
+        lines.append("(Seen by LootTracker; full tooltip not in the item dump yet)")
+        items[iid] = {"id": iid, "name": v["name"], "quality": v.get("quality", 1), "lines": lines}
+
+
 def lua_string_expr(expr):
     """AL["Trash Mobs"].." ("..BZ["Molten Core"]..")"  ->  Trash Mobs (Molten Core)"""
     parts = re.findall(r'\w+\["((?:[^"\\]|\\.)*)"\]|"((?:[^"\\]|\\.)*)"', expr)
@@ -328,6 +346,7 @@ def main():
     out = args.out
 
     items = load_items()
+    add_addon_items(items)
     names, cat_order = load_table_names()
     tables = load_loot_tables()
     codes = load_text_codes()
