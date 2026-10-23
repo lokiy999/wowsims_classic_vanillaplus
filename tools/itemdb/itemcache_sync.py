@@ -33,6 +33,7 @@ UPLOADS = os.path.join(HOME, "uploads")
 STORE = os.path.join(HOME, "items.json")
 CHANGES = os.path.join(HOME, "changes.jsonl")
 GEN_SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gen_site.py")
+ENRICH = os.path.expanduser("~/loot-sync/enrich.py")  # lokiy.dev/loot item-info.json (tooltips from this store)
 LOCK = "/tmp/db-sync.lock"  # shared with sync_db.sh, so two rebuilds never run at once
 
 
@@ -134,6 +135,9 @@ def main():
         if not args.no_build:
             print("Rebuilding db.lokiy.dev")
             subprocess.run(["flock", LOCK, sys.executable, GEN_SITE], check=True)
+            if os.path.exists(ENRICH):
+                print("Refreshing lokiy.dev/loot tooltips")
+                subprocess.run([sys.executable, ENRICH], check=True)
     else:
         print("No item changed")
     return 1 if failed else 0

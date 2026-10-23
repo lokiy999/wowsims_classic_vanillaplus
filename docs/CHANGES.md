@@ -4556,3 +4556,10 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - First import: 14,378 items (7 new, 14,386 pages). Between the Addon Tickering client's cache (2026-09-30) and the
   live one (2026-10-22) the server changed 228 items: 218 PvP items are no longer Unique, 8 names lost a broken `’`,
   26194 Golden Ceremonial Bloodletter and 80027 Talon of Tethis got a Use spell (34275).
+
+## Part FB — lokiy.dev/loot tooltips from the item cache (2026-10-23)
+
+- Lokiy: /loot should show the same item data. `~/loot-sync/enrich.py` (not in git) now renders its tooltips and
+  icons from `~/itemcache/items.json` with `wdb_tooltip.py`; the sim DB stays the fallback and gives random suffix
+  stats. All 319 /loot items have a tooltip now (86 before). Details in LootTracker `HISTORY.md`.
+- `itemcache_sync.py` runs `enrich.py` after each rebuild, so a cache upload reaches /loot without a loot publish.
