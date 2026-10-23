@@ -576,26 +576,33 @@ def main():
     # ---- loot table pages
     for key in loot_keys:
         name, cat = table_label(key)
-        rows = []
-        for iid, icon, label, _ in tables[key]:
-            if not iid:
-                header = clean_label(label, codes)
+        # items in item ID order under each sub-heading (Lokiy 2026-10-23); blank spacer rows are dropped
+        groups = [[None, []]]
+        for r in tables[key]:
+            if not r[0]:
+                header = clean_label(r[2], codes)
                 if header:
-                    rows.append(f'<li class="sub">{esc(header)}</li>')
-                continue
-            if iid in items:
-                rate = next((rate_text(n, k, est) for label, n, k, est in observed[iid] if label == name), "")
-                rate_html = f'<span class="rate" title="Observed drop rate in players\' combat logs">{rate}</span>' if rate else ""
-                tag, cls = "", ""
-                if is_custom(iid):
-                    tag, cls = '<span class="tag">new</span>', ' class="custom"'
-                elif iid in reworked:
-                    tag, cls = '<span class="tag">changed</span>', ' class="reworked"'
-                rows.append(f'<li{cls}>{item_link(items[iid], icons.get(iid, icon))}{tag}{rate_html}</li>')
+                    groups.append([header, []])
             else:
-                rows.append(f'<li><a class="item ext" href="https://www.wowhead.com/classic/item={iid}" rel="noopener">'
-                            f'{icon_img(icon, "small", "icon-s")}<span>{esc(label)}</span></a>'
-                            f'<span class="muted ext-note">Wowhead</span></li>')
+                groups[-1][1].append(r)
+        rows = []
+        for header, members in groups:
+            if header:
+                rows.append(f'<li class="sub">{esc(header)}</li>')
+            for iid, icon, label, _ in sorted(members, key=lambda r: r[0]):
+                if iid in items:
+                    rate = next((rate_text(n, k, est) for label, n, k, est in observed[iid] if label == name), "")
+                    rate_html = f'<span class="rate" title="Observed drop rate in players\' combat logs">{rate}</span>' if rate else ""
+                    tag, cls = "", ""
+                    if is_custom(iid):
+                        tag, cls = '<span class="tag">new</span>', ' class="custom"'
+                    elif iid in reworked:
+                        tag, cls = '<span class="tag">changed</span>', ' class="reworked"'
+                    rows.append(f'<li{cls}>{item_link(items[iid], icons.get(iid, icon))}{tag}{rate_html}</li>')
+                else:
+                    rows.append(f'<li><a class="item ext" href="https://www.wowhead.com/classic/item={iid}" rel="noopener">'
+                                f'{icon_img(icon, "small", "icon-s")}<span>{esc(label)}</span></a>'
+                                f'<span class="muted ext-note">Wowhead</span></li>')
         n_custom = sum(1 for r in tables[key] if is_custom(r[0]))
         n_rw = sum(1 for r in tables[key] if r[0] in reworked)
         counts = ", ".join(x for x in (f"{n_custom} new" if n_custom else "", f"{n_rw} changed" if n_rw else "") if x)

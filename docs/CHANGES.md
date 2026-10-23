@@ -4625,3 +4625,13 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
     db.lokiy.dev's lines either; 80027 Talon of Tethis is not in the sim DB.
   - `add_items.json` lost 16 entries already in the committed `db.json` (they were added by an earlier run; no
     effect on the DB).
+
+## Part FF — db.lokiy.dev loot pages list items in item ID order (2026-10-23)
+
+- Lokiy asked for the boss loot pages (e.g. /loot/SMBrigitte) to list their items by item ID.
+- `tools/itemdb/gen_site.py`: each loot table page sorts its items by item ID under each sub-heading ("New Items",
+  ...); the headings stay where AtlasLoot puts them. Blank spacer rows from AtlasLoot are dropped, so items on
+  either side of them sort together. Drops added from the loot tracker (Part FD) sort in with the rest
+  (26300 Hospitaller Codex now sits between 26298 and 26303 on Brigitte's page).
+- Only the /loot/<table> pages change; the index, reworked and instance pages keep their order.
+- Rebuilt /var/www/db.
