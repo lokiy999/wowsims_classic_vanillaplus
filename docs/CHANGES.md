@@ -4582,7 +4582,7 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - Lokiy: Hospitaller Codex (26300) dropped from Brigitte Abbendis and got an item page, but wasn't on
   `/loot/SMBrigitte`. AtlasLoot has no row for it, and the loot table pages only list AtlasLoot.
 - `gen_site.py` `add_tracked_drops()` (data: `loot_sync.load_mob_drops()` from loot.json): an item the tracker saw a
-  mob drop is added to that mob's loot table, under "Also seen dropping (Lokiy's loot tracker)", when it is rare+ and
+  mob drop is added to the end of that mob's loot table as an ordinary drop (Lokiy: no separate heading), when it is rare+ and
   in no AtlasLoot table at all. That keeps out trash loot (cloth, Troll Sweat, mojo, elemental reagents) and
   zone-wide drops that belong to another table (Primordial Hakkari Bijou, Pattern: Flarecore Wraps). The mob is
   matched by the table name; when several tables share it, by instance and the zones it was killed in. The item's

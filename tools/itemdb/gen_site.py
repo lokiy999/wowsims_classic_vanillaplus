@@ -52,7 +52,6 @@ ATLAS = os.path.join(CSV, "AtlasLoot")
 ITEMCACHE = os.path.expanduser("~/itemcache/items.json")
 SPELL_DB = "/var/www/lokiy/spells/db"
 CLASSIC_MAX_ITEM_ID = 24283
-TRACKED_HEADER = "Also seen dropping (Lokiy's loot tracker)"
 TRACKED_MIN_QUALITY = 3  # rare+: lower drops are mostly trade goods / trash loot every mob of the zone has
 SITE_NAME = "Vanilla Plus Database"
 SITE_URL = "https://db.lokiy.dev"
@@ -212,7 +211,8 @@ def load_loot_tables():
 
 def add_tracked_drops(tables, names, items):
     """Items Lokiy's loot tracker saw a boss drop that AtlasLoot has nowhere (new server items such as Hospitaller
-    Codex from Brigitte Abbendis) are added to that boss's loot table under TRACKED_HEADER. Only rare+ items that are
+    Codex from Brigitte Abbendis) are added to the end of that boss's loot table as ordinary drops (Lokiy 2026-10-23:
+    no separate heading). Only rare+ items that are
     in no table at all, so trash loot and items that belong to another table (zone-wide drops) stay out. The mob is
     matched by name; when several tables share the name, by the table's instance and the zones it was killed in.
     Returns {table key: [item ids added]}."""
@@ -234,7 +234,7 @@ def add_tracked_drops(tables, names, items):
         if new:
             added.setdefault(key, []).extend(new)
     for key, ids in added.items():
-        tables[key] = tables[key] + [(0, "", TRACKED_HEADER, False)] + [(i, "", items[i]["name"], False) for i in ids]
+        tables[key] = tables[key] + [(i, "", items[i]["name"], False) for i in ids]
     return added
 
 
