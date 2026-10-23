@@ -59,17 +59,6 @@ MANUAL_INCLUDE_IDS = {81010, 81011, 81012, 81013, 81014, 81015,
 RECIPE_PREFIXES = ("Plans:", "Pattern:", "Schematic:", "Formula:", "Recipe:", "Design:", "Manual:")
 
 
-def _dump_lines(body):
-    out = []
-    for ln in body.split("\n"):
-        m = re.match(r'^\t\t\t\t\[\d+\] = "((?:[^"\\]|\\.)*)",?$', ln)
-        if m:
-            s = m.group(1).replace('\\"', '"').replace("\\n", "\n").strip()
-            if s:
-                out.append(s)
-    return out
-
-
 def _raid_sourced(it):
     for s in it.get("sources", []):
         d = s.get("drop")
@@ -99,7 +88,7 @@ def _is_recipe(name):
 def main():
     pristine = sd.pristine_db()
     id_tables, atlas_names = sd.atlasloot()
-    blocks = sd.dump_blocks()
+    blocks = sd.item_lines()
     try:
         renum = {int(k): v for k, v in json.load(open(RENUMBER)).items()}
     except OSError:
@@ -151,11 +140,11 @@ def main():
             n_b += 1
 
     # dump items the sim DB doesn't have at all -> candidates to ADD
-    for iid, body in blocks.items():
+    for iid, lines in blocks.items():
         server_id = renum.get(iid, iid)
         if server_id in included or iid in pristine or server_id in pristine:
             continue
-        pit = pv.parse_item(_dump_lines(body))
+        pit = pv.parse_item(lines)
         name = pit.get("name", "")
         # (sm_old only applies to pristine items -- the dump carries no item level,
         #  and a dump-only SM item is the server's new lvl-60 version.)

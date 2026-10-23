@@ -4592,3 +4592,36 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   Berserker (Thekal, Venoxis, Arlokk, Mar'li).
 - Built with the committed `docs/parse_vplus.py`: the working copy (another session, sim switch) had dropped
   `parse_lua`, which `gen_site.py` imports; that session was told.
+
+## Part FE — the sim takes its item data from db.lokiy.dev (2026-10-23)
+
+- Lokiy: db.lokiy.dev is the only source of item data, for every project, no fallbacks. The sim was the last user
+  of the 2026-08-26 `CSV's/VPlusItemDB.lua` dump.
+- `docs/serverdata.py` `item_lines()` reads `/var/www/db/api/items.json` (Part FC; `VPLUS_ITEMS` overrides the path)
+  and gives each item as `[name, tooltip lines..., "Rarity: <quality>"]`, the same lines the dump had, so
+  `parse_item()` and the matching passes are unchanged. Used by `parse_vplus.py`, `gen_include.py`, `gen_phases.py`
+  (both had their own dump-line parser, removed) and `tools/gen_server_item_tooltips.py`. Icons of new items and
+  server item tooltips come from db.lokiy.dev's icon URLs (`parse_vplus.item_icons()`, CDN icons only) instead of
+  the AtlasLoot tables. `parse_lua()` stays in `parse_vplus.py` only for `tools/itemdb/gen_site.py`, which builds
+  db.lokiy.dev on top of the dump.
+- `serverdata.atlasloot()`: tables that open with two tabs (instances.en.lua: BWLRazorgore, BWLVaelastrasz,
+  ZGJeklik, ZGShared, AQ40Skeram ... AQ40Emperors) were not read at all. Found because the AQ ring 21707 Ring of
+  Swarming Thought, now in db.lokiy.dev, passed the AQ exclusion. Fixed; this also moves 26 items to their right
+  phase (Razorgore / Vaelastrasz drops 1 -> 5, e.g. The Untamed Blade, Spineshatter, Mind Quickening Gem; Jeklik
+  drops 1 -> 3).
+- Pipeline re-run and DB rebuilt (`make dist/classic/.dirstamp && make devserver`, sim restarted). Against the
+  previous build (3,687 -> 3,706 items):
+  - 19 new items, all Scarlet Monastery level-60 items the server added after the dump (26285 Scarlet Edge, 26300
+    Hospitaller Codex, 26382 Mograine's Might, 26397 Whitemane's High Boots, ...). 3 are in AtlasLoot and get
+    phase 6; the other 16 are in no loot table and land in phase 1 / ilvl 66 (TODO).
+  - 10330 Scarlet Leggings (the classic level-38 piece) is renumbered by name to the server's level-60 26345
+    Scarlet Leggings (phase 6), like the other reworked items (Rule 4). No preset used it.
+  - 241 tooltips: 218 PvP items are no longer Unique (182 lose only that line; the rest also list their full set);
+    the 5 Postmaster / 6 Warlord's Raiment pieces show (0/n) instead of the scanner's worn count; Alliance
+    insignias say "Requires Corporal" (was the Horde scanner's "Grunt"); her -> his; Arcanist Boots lists its set;
+    3 names lost the broken `’` in the tooltip (26320, 26331, 26368; the DB name field still has it). 6 enchant
+    formulas in the server item tooltips lose "Already known".
+  - No stats changed on included items. 26194 Golden Ceremonial Bloodletter's new Use spell (34275) is not in
+    db.lokiy.dev's lines either; 80027 Talon of Tethis is not in the sim DB.
+  - `add_items.json` lost 16 entries already in the committed `db.json` (they were added by an earlier run; no
+    effect on the DB).

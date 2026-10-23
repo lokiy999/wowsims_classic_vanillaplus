@@ -302,13 +302,22 @@ there is more to say.
 
 ## Item database site db.lokiy.dev (Parts EN-ET)
 
-- Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the sim could read
-  `~/itemcache/items.json` instead of the dump (`docs/parse_vplus.py`); the spells site shows food / drink totals
+- Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the spells site shows food / drink totals
   ($oN) as one tick and "hr" for hours (spell_changelog.py), `wdb_tooltip.py` corrects both on the item side.
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.
 - Drop chances: only the observed rates from the Chronicle logs; no server loot-table chances in the data we have.
+
+## Items from db.lokiy.dev (Part FE)
+
+- 16 new Scarlet Monastery items (26285 Scarlet Edge, 26382 Mograine's Might, 26397 Whitemane's High Boots, ...) are
+  in no AtlasLoot table, so `gen_phases.py` puts them in phase 1 / ilvl 66 instead of phase 6. db.lokiy.dev's loot
+  tables know some of their bosses from the loot tracker (Part FD); `gen_phases.py` could read those.
+- The sim DB's `unique` flag still comes from the Wowhead base data: the 218 PvP items the server made non-Unique
+  keep it (only matters for rings / trinkets / weapons).
+- 26194 Golden Ceremonial Bloodletter: the server added a Use spell (34275) that db.lokiy.dev's tooltip lines don't
+  show; check `wdb_tooltip.py` for it.
 
 ## Trinkets and items still open
 

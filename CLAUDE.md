@@ -11,8 +11,8 @@ read these two files first, before doing anything else:
   haven't been resolved yet. Check this before starting new work in case it's
   already related to something outstanding.
 
-When the user asks about items, check VPlusItemDB (the item database used by
-the VPlus pipeline) for new/updated items. When the user asks about icons or
+When the user asks about items, check db.lokiy.dev (`/var/www/db/api/items.json`, the only item source the
+VPlus pipeline reads since Part FE) for new/updated items. When the user asks about icons or
 drop sources for items, check Atlas/AtlasLoot.
 
 When you make a nontrivial change, append to `docs/CHANGES.md` (new dated

@@ -5,7 +5,7 @@ authoritative spec for the `docs/parse_vplus.py` / `docs/gen_*.py` / `gen_db`
 pipeline. If you port the project, this file plus the `CSV's/` inputs are what you
 need.
 
-_Last updated: 2026-09-12._
+_Last updated: 2026-10-23 (Part FE: item data from db.lokiy.dev instead of VPlusItemDB.lua)._
 
 ## Pipeline (run order)
 
@@ -99,12 +99,12 @@ is deterministic, or that `go test` passes), there's no browser substitute —
 that's `go build`/`go test` inside the `wowsims-classic` Docker image, covered
 in the pipeline section above and in "Determinism" below.
 
-## Input data (in `CSV's/`)
+## Input data (in `CSV's/`, plus db.lokiy.dev)
 
 | File | Role |
 |---|---|
 | `AtlasLoot/` (the server's own addon fork) | **Leading source for what exists and where it drops.** |
-| `VPlusItemDB.lua` | In-game tooltip dump. **Leading source for all stats / weapon damage.** Broad extract — contains far more than the server actually uses, so it is NOT an existence signal. |
+| db.lokiy.dev `/var/www/db/api/items.json` (`serverdata.item_lines()`, `VPLUS_ITEMS` overrides the path) | The server's tooltip lines (from the game client's item cache, built by `tools/itemdb/gen_site.py`). **Leading source for all stats / weapon damage.** Since Part FE (2026-10-23); before that the `VPlusItemDB.lua` tooltip dump of 2026-08-26, which db.lokiy.dev still uses as its base. Broad extract — contains far more than the server actually uses, so it is NOT an existence signal. |
 | `Items.xlsx` | Stat backup only (also a broad dump, ~8000 rows — not curated). |
 
 ## Rule 1 — Inclusion (does the item exist on the server?)
@@ -114,7 +114,7 @@ An item is included if **either**:
 - **(a)** it appears in a non-AQ/Naxx AtlasLoot table
   (`Instances/`, `Crafting/`, `Factions/`, `PvP/`, `Sets/`, `WorldBosses/`,
   `WorldEvents/`), **or**
-- **(b)** it is in `VPlusItemDB.lua` as an **equippable blue-or-better** item that
+- **(b)** it is in db.lokiy.dev's items as an **equippable blue-or-better** item that
   AtlasLoot does **not** tag as AQ/Naxx and that has **no raid-zone drop source**
   in the base data (zones 3428 / 3429 / 3456).
 
@@ -172,7 +172,7 @@ Phase 1.**
 
 ## Rule 2 — Stats
 
-`VPlusItemDB.lua` wins for every stat and for weapon min/max/speed. `Items.xlsx`
+db.lokiy.dev's items (until Part FE: `VPlusItemDB.lua`) win for every stat and for weapon min/max/speed. `Items.xlsx`
 only fills a gap when the dump has nothing. wowsims base data is used for nothing
 except items the dump also confirms unchanged.
 
@@ -343,7 +343,7 @@ Reliquary of Light (26428), Scorching Judgement (26286), Whitemane's Chapeau
 2. SM-only and `ilvl < 60`? → **exclude**.
 3. Not-yet-craftable (frost-resist sets) / Scourge Invasion / `STRATAtiesh`? → **exclude**.
 4. Renumber the item to its server ID (Rule 4).
-5. Stats from `VPlusItemDB.lua`, else `Items.xlsx`.
+5. Stats from db.lokiy.dev's items, else `Items.xlsx`.
 6. Phase = earliest bucket of its AtlasLoot tables (Rule 1(b)-only items with no
    table → Phase 1); crafted → P1; tier sets → P4; PvP sets → P1;
    Zandalar rep → P3.

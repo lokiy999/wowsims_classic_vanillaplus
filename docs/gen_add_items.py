@@ -41,7 +41,7 @@ def table_phase(name):
 
 
 def main():
-    lua = pv.parse_lua(pv.LUA)
+    lua = pv.sd.item_lines()
 
     # id -> set of AtlasLoot tables it appears in
     atlas = collections.defaultdict(set)

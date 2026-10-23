@@ -2,7 +2,7 @@
 
 See docs/private-server-item-rules.md for the ruleset these implement.
 
-  parse_vplus.py     -> custom_items.json + renumber.json  (stats + server IDs)
+  parse_vplus.py     -> custom_items.json + renumber.json  (stats + server IDs, from db.lokiy.dev's items)
   gen_include.py     -> included_items.json + add_items.json  (Rule 1 allowlist)
   gen_phases.py      -> item_phases.json  (Rule 3, 6-phase by drop location)
   gen_removed_items.py -> removed_items.json  (Rule 2/3 hard exclusions)
@@ -14,7 +14,9 @@ import re
 import subprocess
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LUA = os.path.join(REPO, "CSV's/VPlusItemDB.lua")
+# db.lokiy.dev's item list (tools/itemdb/gen_site.py), the only source of item data. VPLUS_ITEMS overrides the path.
+ITEMS_JSON = os.environ.get("VPLUS_ITEMS", "/var/www/db/api/items.json")
+QUALITY_NAMES = {0: "Poor", 1: "Common", 2: "Uncommon", 3: "Rare", 4: "Epic", 5: "Legendary"}
 ATLAS = os.path.join(REPO, "CSV's/AtlasLoot")
 DB_JSON = os.path.join(REPO, "assets/database/db.json")
 
@@ -32,24 +34,23 @@ def pristine_db():
 
 
 # ---------------------------------------------------------------------------
-# VPlusItemDB.lua  (the in-game tooltip dump)
+# db.lokiy.dev items (tooltip lines from the game client's item cache)
 # ---------------------------------------------------------------------------
 
-def dump_blocks():
-    """{item_id: raw tooltip text block} from the dump, largest block per id."""
-    txt = open(LUA, encoding="utf8").read()
-    parts = re.split(r'\n\t\t\t\[(\d+)\] = \{\n', txt)
+def item_lines():
+    """{item_id: [name, tooltip lines..., "Rarity: <quality>"]} from db.lokiy.dev's api/items.json.
+
+    Same line format as the old VPlusItemDB.lua dump (that parse_item() reads), with the Rarity line the dump ended
+    each item with."""
+    with open(ITEMS_JSON, encoding="utf8") as f:
+        items = json.load(f)
     out = {}
-    for i in range(1, len(parts), 2):
-        sid = int(parts[i])
-        body = parts[i + 1].split("\n\t\t\t}")[0]
-        if sid not in out or len(body) > len(out[sid]):
-            out[sid] = body
+    for iid, it in items.items():
+        lines = [it["name"]] + [text for _, text in it["lines"]]
+        if it.get("q") in QUALITY_NAMES:
+            lines.append("Rarity: " + QUALITY_NAMES[it["q"]])
+        out[int(iid)] = lines
     return out
-
-
-def dump_ids():
-    return set(dump_blocks())
 
 
 # ---------------------------------------------------------------------------
@@ -107,8 +108,9 @@ def atlasloot():
             continue
         is_wb = "WorldBosses" in path
         txt = open(path, encoding="utf8", errors="ignore").read()
-        # table name -> its body, so we can attribute ids to tables
-        for tm in re.finditer(r'\n\t([A-Za-z][A-Za-z0-9_]+) = \{\n(.*?)\n\t\};', txt, re.S):
+        # table name -> its body, so we can attribute ids to tables. Some tables open one tab deeper (instances.en.lua:
+        # BWLRazorgore, ZGJeklik, AQ40Skeram, ...) but still close with one tab.
+        for tm in re.finditer(r'\n\t\t?([A-Za-z][A-Za-z0-9_]+) = \{\n(.*?)\n\t\};', txt, re.S):
             tname = tm.group(1)
             if is_wb:
                 tname = "WB" + tname

@@ -2,9 +2,10 @@
 """Local (server-data) tooltips for the non-gear items the sim and UI show: consumables (potions, flasks,
 elixirs, food, mana gems, explosives), enchant items and other item icons.
 
-Gear items already carry the in-game tooltip from `CSV's/VPlusItemDB.lua` (docs/parse_vplus.py). Everything
+Gear items already carry the server tooltip from db.lokiy.dev (docs/parse_vplus.py). Everything
 else fell back to Wowhead's live tooltip. This collects the item ids referenced by the UI (TS), the sim (Go)
-and the DB item icons, takes each one's tooltip lines from the dump and writes
+and the DB item icons, takes each one's tooltip lines from db.lokiy.dev's api/items.json (until Part FE: the
+VPlusItemDB.lua dump) and writes
 assets/db_inputs/server_item_tooltips.json ({id: {name, icon, tooltip}}); gen_db uses it for those item
 icons. Name and icon only matter for server items Wowhead does not know (icon from the AtlasLoot tables).
 
@@ -22,7 +23,8 @@ import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(REPO, "docs"))
-from parse_vplus import atlasloot_icons, build_tooltip, parse_item, parse_lua  # noqa: E402
+import serverdata as sd  # noqa: E402
+from parse_vplus import build_tooltip, item_icons, parse_item  # noqa: E402
 
 GO_LINE_RE = re.compile(r"item_?id", re.I)
 INT_RE = re.compile(r"\b(\d{3,6})\b")
@@ -76,11 +78,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    dump = parse_lua(os.path.join(args.repo, "CSV's/VPlusItemDB.lua"))
-    cwd = os.getcwd()
-    os.chdir(args.repo)  # atlasloot_icons reads repo-relative paths
-    icons = atlasloot_icons()
-    os.chdir(cwd)
+    dump = sd.item_lines()
+    icons = item_icons()
     all_icons = all_atlasloot_icons(args.repo)
     out = {}
     for iid in sorted(collect_ids(args.repo)):

@@ -201,3 +201,4 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 ## Item cache (2026-10-23)
 
 - db.lokiy.dev updates from the game's itemcache.wdb, uploaded automatically from Lokiy's PC (Part FA).
+- The sim reads its item data from db.lokiy.dev's api/items.json instead of the VPlusItemDB.lua dump (Part FE).

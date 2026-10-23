@@ -4255,6 +4255,14 @@
 "zoneId": 2057,
 "npcId": 1853
 },
+"19339": {
+"zoneId": 2677,
+"npcId": 13020
+},
+"19340": {
+"zoneId": 2677,
+"npcId": 13020
+},
 "19341": {
 "zoneId": 2677,
 "npcId": 12017
@@ -4278,6 +4286,10 @@
 "19347": {
 "zoneId": 2677,
 "npcId": 14020
+},
+"19348": {
+"zoneId": 2677,
+"npcId": 13020
 },
 "19349": {
 "zoneId": 2677,
@@ -4342,6 +4354,10 @@
 "19368": {
 "zoneId": 2677,
 "npcId": 14601
+},
+"19371": {
+"zoneId": 2677,
+"npcId": 13020
 },
 "19373": {
 "zoneId": 2677,
@@ -4571,10 +4587,6 @@
 "zoneId": 1977,
 "otherName": "Trash"
 },
-"19727": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
 "19767": {
 "zoneId": 1977,
 "otherName": "Trash"
@@ -4586,42 +4598,6 @@
 "19802": {
 "zoneId": 1977,
 "npcId": 14834
-},
-"19813": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19814": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19815": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19816": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19817": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19818": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19819": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19820": {
-"zoneId": 1977,
-"otherName": "Trash"
-},
-"19821": {
-"zoneId": 1977,
-"otherName": "Trash"
 },
 "19831": {
 "zoneId": 491,

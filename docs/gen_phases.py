@@ -38,7 +38,7 @@ TIER_PHASE = 4
 def main():
     pristine = sd.pristine_db()
     id_tables, _ = sd.atlasloot()
-    blocks = sd.dump_blocks()
+    blocks = sd.item_lines()
 
     try:
         renum = {int(k): v for k, v in json.load(open(RENUMBER)).items()}
@@ -50,10 +50,10 @@ def main():
     # ilvl of 60 for dump-only items: the dump has no item level, and a dump-only
     # SM item is the server's new lvl-60 version (only pristine sub-60 SM gear is cut).
     meta = {i: (it.get("setName"), it.get("ilvl") or 0) for i, it in pristine.items()}
-    for i, body in blocks.items():
+    for i, lines in blocks.items():
         if i in meta:
             continue
-        pit = pv.parse_item(_lines(body))
+        pit = pv.parse_item(lines)
         meta[i] = (pit.get("setName"), 60)
 
     # Committed phases, used when the new run has no information (no tier set, no loot table): a renumbered piece
@@ -84,18 +84,6 @@ def main():
     json.dump({str(k): v for k, v in sorted(phases.items())}, open(OUT, "w"), indent=0)
     print(f"wrote {OUT}: {len(phases)} items  "
           f"{dict(sorted(collections.Counter(phases.values()).items()))}")
-
-
-def _lines(body):
-    import re
-    out = []
-    for ln in body.split("\n"):
-        m = re.match(r'^\t\t\t\t\[\d+\] = "((?:[^"\\]|\\.)*)",?$', ln)
-        if m:
-            s = m.group(1).replace('\\"', '"').replace("\\n", "\n").strip()
-            if s:
-                out.append(s)
-    return out
 
 
 if __name__ == "__main__":

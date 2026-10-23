@@ -1,11 +1,12 @@
-"""Parse CSV's/VPlusItemDB.lua (in-game tooltip dump for the private server) into
-item stat overrides and merge-ready item entries for the sim database.
+"""Parse db.lokiy.dev's items (api/items.json: the server's tooltip lines, from the game client's item cache) into
+item stat overrides and merge-ready item entries for the sim database. Until Part FD this read the
+CSV's/VPlusItemDB.lua tooltip dump of 2026-08-26; the lines have the same format.
 
 Output: assets/db_inputs/custom_items.json  -- an array of UIItem-shaped dicts
 (camelCase keys, matching assets/database/db.json). Consumed by tools/database/gen_db.
 
-The private server's item values are authoritative: for every item present in the
-dump we emit a COMPLETE 44-length stats array (so the merge fully replaces whatever
+The private server's item values are authoritative: for every item present in
+db.lokiy.dev we emit a COMPLETE 44-length stats array (so the merge fully replaces whatever
 the sim had) plus weapon damage/speed. Items not already in the sim DB are emitted
 with enough shape (name/type/quality/etc.) to be usable.
 """
@@ -15,24 +16,21 @@ import os
 import re
 import sys
 
-LUA = "CSV's/VPlusItemDB.lua"
+import serverdata as sd
+
 DB = "assets/database/db.json"
 OUT = "assets/db_inputs/custom_items.json"
 ADD_ITEMS_FILE = "assets/db_inputs/add_items.json"
-ATLASLOOT_SETS = "CSV's/AtlasLoot/Sets/sets.lua"
 
 
-def atlasloot_icons():
-    """{item_id: icon_string} from the AtlasLoot data tables, for new items."""
+def item_icons():
+    """{item_id: icon name} from db.lokiy.dev's icon URLs (Wowhead CDN ones only; the sim loads icons from there)."""
     icons = {}
-    for path in (ATLASLOOT_SETS, "CSV's/AtlasLoot/Instances/instances.en.lua"):
-        try:
-            txt = open(path, encoding="utf8", errors="ignore").read()
-        except OSError:
-            continue
-        for iid, icon in re.findall(r'\{\s*(\d+),\s*"([A-Za-z][^"]*)"', txt):
-            if icon and int(iid) not in icons:
-                icons[int(iid)] = icon.lower()
+    with open(sd.ITEMS_JSON, encoding="utf8") as f:
+        for iid, it in json.load(f).items():
+            m = re.match(r'^https://wow\.zamimg\.com/images/wow/icons/\w+/([^/.]+)\.jpg$', it.get("icon") or "")
+            if m:
+                icons[int(iid)] = m.group(1)
     return icons
 
 # sim/core/proto Stat indices
@@ -112,7 +110,10 @@ TIER1_SETS = {
 
 
 def parse_lua(path):
-    """Return {item_id: [tooltip line strings]}.
+    """Return {item_id: [tooltip line strings]} from the VPlusItemDB.lua dump (2026-08-26).
+
+    Only for tools/itemdb/gen_site.py, which builds db.lokiy.dev on top of the dump; the sim reads db.lokiy.dev's
+    items (serverdata.item_lines()).
 
     The dump repeats items across phase sections and (for reworked items) keeps
     both the old retail id and a new 25xxx/26xxx id under the same name. We keep,
@@ -377,8 +378,9 @@ def _entry_for(iid, lines):
 
 
 def main():
-    lua = parse_lua(LUA)
-    icons = atlasloot_icons()
+    # Named "lua" from the old VPlusItemDB.lua dump: {item_id: tooltip lines}.
+    lua = sd.item_lines()
+    icons = item_icons()
     # Match against the pristine (pre-removal) DB so overrides are generated for
     # items that a previous gen_db run stripped out (e.g. tier-2 sets).
     try:
