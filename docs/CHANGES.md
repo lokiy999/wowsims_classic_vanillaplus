@@ -4671,3 +4671,19 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   uploads, deduplicated by event) and then rebuilds db.lokiy.dev as before. A failed build is logged and tried
   again on the next run.
 - Backup: `sync_db.sh.bak-2026-10-23b`. Tested by hand: the marker rebuilt loot.json, then db.lokiy.dev.
+
+## Part FJ — db.lokiy.dev: server-made icons uploaded automatically (2026-10-24)
+
+- Lokiy asked whether something must be run to get new icons to the server. 12 of the 2,090 icons items use were on
+  neither the public icon CDN nor db.lokiy.dev (e.g. `inv_ring_sm_kassan01`, `stave_of_armageddon`): icons the
+  server made itself, in the client's `patch-3.MPQ`. The 42 of Part EO had been extracted by hand; nothing did it
+  since.
+- `itemcache_sync.py --missing-icons`: the icon names in `/api/items.json` the CDN doesn't have (one HEAD request
+  per new name, answers kept in `~/itemcache/cdn_icons.json`). `--rebuild`: rebuild db.lokiy.dev + lokiy.dev/loot.
+- ItemCacheSync's `upload_itemcache.py` (Lokiy's PC, run by `upload_itemcache.bat`) asks for them after every run,
+  takes them from the live client's patch MPQs (`patch-3` first, the one the game reads last), converts BLP -> JPG
+  56px + 18px like the others, uploads them to `CSV's/icons/` (data, not in git) and runs `--rebuild`. Does nothing
+  while no icon is missing.
+- `gen_site.py`: `ICON_DIRS` = `tools/itemdb/icons/` (the first 42, git) + `CSV's/icons/`; both are copied to
+  `/icons/`. First run: all 12 uploaded (Kassan's Signet, Armageddon's Stave, Sphere of Wild Wind ... show theirs).
+  `itemcache_sync.py` now has LF line endings (it was committed with CRLF).

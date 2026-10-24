@@ -61,9 +61,12 @@ QUALITY = {"Poor": 0, "Common": 1, "Uncommon": 2, "Rare": 3, "Epic": 4, "Legenda
 Q_COLOR = {0: "#9d9d9d", 1: "#ffffff", 2: "#1eff00", 3: "#0070dd", 4: "#a335ee", 5: "#ff8000", 6: "#e6cc80"}
 GREEN = ("Equip:", "Use:", "Chance on hit:", "(", "Set:")
 HERE = os.path.dirname(os.path.abspath(__file__))
-# Server-made icons extracted from the client's patch MPQs (tools/itemdb/icons/<name>.jpg 56px, <name>_s.jpg 18px);
-# everything else comes from the public icon CDN.
-LOCAL_ICONS = {f[:-4] for f in os.listdir(os.path.join(HERE, "icons")) if f.endswith(".jpg") and not f.endswith("_s.jpg")}
+# Server-made icons extracted from the client's patch MPQs (<name>.jpg 56px, <name>_s.jpg 18px): the first 42 by hand
+# in tools/itemdb/icons/ (git), the rest uploaded by Lokiy's PC to CSV's/icons/ (ItemCacheSync upload_itemcache.py,
+# asks itemcache_sync.py --missing-icons). Everything else comes from the public icon CDN.
+ICON_DIRS = [os.path.join(HERE, "icons"), os.path.join(os.path.dirname(os.path.dirname(HERE)), "CSV's", "icons")]
+LOCAL_ICONS = {f[:-4] for d in ICON_DIRS if os.path.isdir(d) for f in os.listdir(d)
+               if f.endswith(".jpg") and not f.endswith("_s.jpg")}
 # Typos in the server's AtlasLoot icon names.
 ICON_ALIAS = {
     "inv_brancer_11": "inv_bracer_11",
@@ -925,7 +928,9 @@ your filters, so you can share a search.</p></section>
     for asset in ("style.css", "site.js", "search.js"):
         shutil.copy(os.path.join(HERE, asset), os.path.join(out, asset))
     shutil.rmtree(os.path.join(out, "icons"), ignore_errors=True)
-    shutil.copytree(os.path.join(HERE, "icons"), os.path.join(out, "icons"))
+    for d in ICON_DIRS:
+        if os.path.isdir(d):
+            shutil.copytree(d, os.path.join(out, "icons"), dirs_exist_ok=True)
 
     print(f"{len(all_items)} items ({len(custom)} custom, {len(reworked)} reworked), {len(loot_keys)} loot tables, "
           f"{n_nosrc} custom / {n_rw_nosrc} reworked without source -> {out}")

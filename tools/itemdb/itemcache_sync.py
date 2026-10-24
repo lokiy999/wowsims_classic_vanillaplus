@@ -3,6 +3,8 @@
 
     python3 itemcache_sync.py              # process ~/itemcache/incoming/*.wdb
     python3 itemcache_sync.py --no-build   # merge only
+    python3 itemcache_sync.py --missing-icons  # icon names db.lokiy.dev uses that neither the CDN nor it has
+    python3 itemcache_sync.py --rebuild    # rebuild db.lokiy.dev and lokiy.dev/loot (after uploading icons)
 
 Lokiy's PC uploads each client's WDB/itemcache.wdb to ~/itemcache/incoming/<client>_<file mtime>.wdb
 (ItemCacheSync/upload_itemcache.py). Files are merged oldest first, so the newest copy of an item wins.
@@ -23,6 +25,9 @@ import re
 import shutil
 import subprocess
 import sys
+import urllib.error
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from wdb_items import read_wdb  # noqa: E402
@@ -35,6 +40,9 @@ CHANGES = os.path.join(HOME, "changes.jsonl")
 GEN_SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gen_site.py")
 ENRICH = os.path.expanduser("~/loot-sync/enrich.py")  # lokiy.dev/loot item-info.json (tooltips from this store)
 LOCK = "/tmp/db-sync.lock"  # shared with sync_db.sh, so two rebuilds never run at once
+DB_API = "/var/www/db/api/items.json"
+CDN_PREFIX = "https://wow.zamimg.com/images/wow/icons/medium/"
+CDN_SEEN = os.path.join(HOME, "cdn_icons.json")  # {icon name: True if the CDN has it}; each name is checked once
 
 
 def load_store():
@@ -72,10 +80,57 @@ def merge(store, items, mtime):
     return log
 
 
+def rebuild():
+    print("Rebuilding db.lokiy.dev")
+    subprocess.run(["flock", LOCK, sys.executable, GEN_SITE], check=True)
+    if os.path.exists(ENRICH):
+        print("Refreshing lokiy.dev/loot tooltips")
+        subprocess.run([sys.executable, ENRICH], check=True)
+
+
+def on_cdn(name):
+    req = urllib.request.Request(CDN_PREFIX + name + ".jpg", method="HEAD")
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return r.status == 200
+    except urllib.error.HTTPError as e:
+        return False if e.code == 404 else None
+    except OSError:
+        return None  # network trouble: ask again next time
+
+
+def missing_icons():
+    """Icon names items on db.lokiy.dev use that the public CDN doesn't have and db.lokiy.dev doesn't host yet."""
+    with open(DB_API, encoding="utf-8") as fh:
+        names = {v["icon"][len(CDN_PREFIX):-4] for v in json.load(fh).values()
+                 if v.get("icon", "").startswith(CDN_PREFIX)}
+    try:
+        with open(CDN_SEEN, encoding="utf-8") as fh:
+            seen = json.load(fh)
+    except (OSError, ValueError):
+        seen = {}
+    todo = sorted(n for n in names if n not in seen)
+    with ThreadPoolExecutor(16) as pool:
+        for name, ok in zip(todo, pool.map(on_cdn, todo)):
+            if ok is not None:
+                seen[name] = ok
+    with open(CDN_SEEN, "w", encoding="utf-8") as fh:
+        json.dump(seen, fh, sort_keys=True)
+    return sorted(n for n in names if seen.get(n) is False)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--no-build", action="store_true", help="don't rebuild db.lokiy.dev")
+    ap.add_argument("--missing-icons", action="store_true", help="print icon names the site can't show, one per line")
+    ap.add_argument("--rebuild", action="store_true", help="only rebuild db.lokiy.dev and lokiy.dev/loot")
     args = ap.parse_args()
+    if args.missing_icons:
+        print("\n".join(missing_icons()))
+        return 0
+    if args.rebuild:
+        rebuild()
+        return 0
 
     files = []
     for path in glob.glob(os.path.join(INCOMING, "*.wdb")):
@@ -133,11 +188,7 @@ def main():
             print(f"  ... {len(log) - 20} more in {CHANGES}")
         print(f"Store: {len(store['items'])} items")
         if not args.no_build:
-            print("Rebuilding db.lokiy.dev")
-            subprocess.run(["flock", LOCK, sys.executable, GEN_SITE], check=True)
-            if os.path.exists(ENRICH):
-                print("Refreshing lokiy.dev/loot tooltips")
-                subprocess.run([sys.executable, ENRICH], check=True)
+            rebuild()
     else:
         print("No item changed")
     return 1 if failed else 0
