@@ -4794,3 +4794,12 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   rate: items nobody wanted are missing.
 - New backup: copy the CSV to `~/webdkp/backup/`, run `webdkp_awards.py` (with `--fetch` for the web lists), commit
   `webdkp_awards.json`, rebuild.
+
+## Part FO — random suffixes from the WebDKP awards (2026-10-24)
+
+- Lokiy (via the hub chat): show the suffixes the guild awards were written down with (e.g. 75 Ragnaros Cores, 17
+  different suffixes) on the item pages.
+- `webdkp_awards.py` keeps the suffix it cuts off as a 5th field of the award (`"of the Owl"`).
+- `gen_site.py`: the item page's "Random affixes" list adds those suffixes with an "awarded N×" tag (next to the loot
+  tracker's "seen N×"), and the item counts as having affixes in the search. Stats stay "stats unknown" when neither
+  Wowhead nor the loot tracker has the suffix's values. Today: Ragnaros Core (75 awards) and Lunar Wand (1).

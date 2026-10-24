@@ -310,13 +310,16 @@ def load_dkp_awards(sources, names):
     """Guild raid loot awards from WebDKP (tools/itemdb/webdkp_awards.json, from webdkp_awards.py), by item:
     {item id: {zone: [awards, first date, last date]}}, plus the file's source list. The webdkp.com lists (2021-22)
     have no zone: such an award gets the item's raid from AtlasLoot when its tables are in exactly one raid, else
-    "Zone not recorded"."""
+    "Zone not recorded". Also {item id: {random suffix: awards}} for random-suffix items awarded with their suffix."""
     path = os.path.join(HERE, "webdkp_awards.json")
     if not os.path.exists(path):
-        return {}, {}
+        return {}, {}, {}
     data = json.load(open(path, encoding="utf-8"))
-    by_item = {}
-    for iid, day, zone, _ in data["awards"]:
+    by_item, suffixes = {}, {}
+    for iid, day, zone, _, *suffix in data["awards"]:
+        if suffix:
+            s = suffixes.setdefault(iid, {})
+            s[suffix[0]] = s.get(suffix[0], 0) + 1
         zone = DKP_ZONES.get(zone, zone)
         if not zone:
             raids = {names.get(k, ("", ""))[1] for k in sources.get(iid, [])} & DKP_RAIDS
@@ -324,7 +327,7 @@ def load_dkp_awards(sources, names):
         z = by_item.setdefault(iid, {}).setdefault(zone, [0, day, day])
         z[0] += 1
         z[1], z[2] = min(z[1], day), max(z[2], day)
-    return by_item, data["sources"]
+    return by_item, data["sources"], suffixes
 
 
 # --------------------------------------------------------------------------------------------- observed drops
@@ -575,7 +578,7 @@ def main():
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
     # guild raid loot awards (WebDKP)
-    dkp, dkp_sources = load_dkp_awards(sources, names)
+    dkp, dkp_sources, dkp_suffixes = load_dkp_awards(sources, names)
     dkp_note = ('<p class="muted small">Items raid leaders gave out for DKP ('
                 + ", ".join(f'{esc(s)} {v["first"][:4]}-{v["last"][:4]}' for s, v in dkp_sources.items())
                 + '), from WebDKP. Shows that and when an item dropped there, not every drop: items nobody wanted '
@@ -664,31 +667,36 @@ def main():
                          f'<th>Zone</th><th>Awards</th><th>First</th><th>Last</th></tr></thead><tbody>{trs}</tbody></table>'
                          f'{dkp_note}</section>')
         seen = seen_affixes(it["name"], loot_names.get(iid, {}))
-        if affixes.get(iid) or seen:
+        awarded = dkp_suffixes.get(iid, {})
+        if affixes.get(iid) or seen or awarded:
             groups = {}
             for name, eff in affixes.get(iid, []):
                 groups.setdefault(name, []).append(eff)
-            for name in seen:
+            for name in list(seen) + list(awarded):
                 groups.setdefault(name, [])
             chances = affix_chances.get(iid, {})
             lis = []
-            for name in sorted(groups, key=lambda n: (-chances.get(n, -1), -seen.get(n, 0), n)):
+            for name in sorted(groups, key=lambda n: (-chances.get(n, -1), -seen.get(n, 0) - awarded.get(n, 0), n)):
                 effs = esc(merge_tiers(groups[name])) or '<span class="muted">stats unknown</span>'
                 tag = f'<span class="tag">seen {seen[name]}&times;</span>' if name in seen else ""
+                if name in awarded:
+                    tag += f'<span class="tag">awarded {awarded[name]}&times;</span>'
                 rolls = loot_rolls.get(iid, {}).get(f'{it["name"]} {name}', {})
                 if rolls:  # the exact tiers seen, e.g. "rolled +15 Arcane Resistance" (or "+14 ... 1x, +15 ... 2x")
                     tag += ('<span class="muted"> rolled ' + esc(", ".join(r if len(rolls) == 1 else f"{r} {n}x"
                                                                      for r, n in sorted(rolls.items()))) + '</span>')
                 pct = (f'<span class="rate">{chances[name]:g}%</span>' if name in chances
                        else f'<span class="rate muted">&lt;{min(chances.values()):g}%</span>' if chances else "")
-                lis.append(f'<li class="{"seen" if name in seen else ""}"><span class="affix" style="color:{color}">{esc(it["name"])} '
+                lis.append(f'<li class="{"seen" if name in seen or name in awarded else ""}"><span class="affix" style="color:{color}">{esc(it["name"])} '
                            f'<b>{esc(name)}</b></span>{tag}{pct}<span class="muted affix-stats">{effs}</span></li>')
             chance_note = (" Roll chances from Wowhead; it only lists affixes it has seen drop, the others are rarer "
                            "(shown as &lt; the lowest listed chance)." if chances else "")
             src_html += (f'<section class="card affixes"><h2>Random affixes</h2><ul class="affix-list">{"".join(lis)}</ul>'
                          f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); an affix with several '
                          f'values has tiers (12-13 = any value in between, 15/17 = one of those).{chance_note} "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s '
-                         f'loot tracker</a>, matched by name; "rolled" = the exact value, for drops logged since the addon saves it.</p></section>')
+                         f'loot tracker</a>, matched by name; "rolled" = the exact value, for drops logged since the addon saves it.'
+                         f'{" &quot;Awarded&quot; = given out in guild raids with this suffix (WebDKP, see Guild loot awards)." if awarded else ""}'
+                         f'</p></section>')
         if rw:
             classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}
             top_html = f"""<section class="card changes">
@@ -935,7 +943,7 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
         ic = ic[len(cdn):-4] if ic.startswith(cdn) else ic
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
                       info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
-                      1 if affixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
+                      1 if affixes.get(i) or dkp_suffixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
                       affix_stats.get(i, 0)])
     with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
         json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,

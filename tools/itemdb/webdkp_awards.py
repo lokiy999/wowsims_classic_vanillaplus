@@ -8,7 +8,8 @@ Inputs (in ~/webdkp/, not in git: they hold player names):
                           (one page a second, pages already saved are kept, except page 1 which holds the newest)
 Output tools/itemdb/webdkp_awards.json (no player names), read by gen_site.py:
   {"updated": "...", "sources": {source: {"awards": n, "first": date, "last": date}},
-   "awards": [[item_id, "YYYY-MM-DD", zone, source], ...],        # zone "" when the source doesn't say
+   "awards": [[item_id, "YYYY-MM-DD", zone, source(, suffix)], ...],  # zone "" when the source doesn't say;
+                                                                    # suffix ("of the Owl") for random-suffix items
    "unmatched": {name: n}}                                          # award names that are no item (or a typo)
 An award is the item a raid leader gave a player for DKP, so it shows an item dropped there and roughly how often,
 not every drop (items nobody wanted aren't in it). Names are matched to db.lokiy.dev's items (api/items.json):
@@ -117,18 +118,19 @@ def name_index():
 
 
 def match(name, by_name):
+    """(item id, random suffix or "") for an award name, or (None, "")."""
     name = NOTE_RE.sub("", name.strip())
     name = ALIASES.get(name, name).replace("[!]", ",").strip()
     for cand in (name, QTY_RE.sub("", name)):
         if cand.lower() in by_name:
-            return by_name[cand.lower()]
+            return by_name[cand.lower()], ""
     # random suffix: "<item> of the Eagle" / "<item> of Spirit"
     m = re.match(r"(.+?) of (?:the )?\w+(?: \w+)?$", name)
     while m:
         if m.group(1).lower() in by_name:
-            return by_name[m.group(1).lower()]
+            return by_name[m.group(1).lower()], name[len(m.group(1)) + 1:]
         m = re.match(r"(.+?) of (?:the )?\w+(?: \w+)?$", m.group(1))
-    return None
+    return None, ""
 
 
 def main():
@@ -149,12 +151,12 @@ def main():
             if key in seen:
                 continue
             seen.add(key)
-            iid = match(name, by_name)
+            iid, suffix = match(name, by_name)
             if iid is None:
                 unmatched[name] += 1
                 continue
             day = datetime.fromtimestamp(t, timezone.utc).date().isoformat()
-            awards.append([iid, day, zone, source])
+            awards.append([iid, day, zone, source] + ([suffix] if suffix else []))
             s = stats.setdefault(source, {"awards": 0, "first": day, "last": day})
             s["awards"] += 1
             s["first"], s["last"] = min(s["first"], day), max(s["last"], day)
