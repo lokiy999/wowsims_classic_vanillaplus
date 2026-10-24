@@ -8,7 +8,7 @@ Inputs (in ~/webdkp/, not in git: they hold player names):
                           (one page a second, pages already saved are kept, except page 1 which holds the newest)
 Output tools/itemdb/webdkp_awards.json (no player names), read by gen_site.py:
   {"updated": "...", "sources": {source: {"awards": n, "first": date, "last": date}},
-   "awards": [[item_id, "YYYY-MM-DD", zone, source(, suffix)], ...],  # zone "" when the source doesn't say;
+   "awards": [[item_id, "YYYY-MM-DD HH:MM", zone, source(, suffix)], ...],  # UTC; zone "" when not given;
                                                                     # suffix ("of the Owl") for random-suffix items
    "unmatched": {name: n}}                                          # award names that are no item (or a typo)
 An award is the item a raid leader gave a player for DKP, so it shows an item dropped there and roughly how often,
@@ -96,7 +96,7 @@ def read_pages(source):
 
 def read_csv(path):
     """[(name, player, unix time, zone)] of the item awards in a WebDKP backup (times are the raid leader's clock,
-    read as UTC; only the date is kept)."""
+    read as UTC)."""
     rows, section = [], ""
     with open(path, encoding="utf-8", errors="replace", newline="") as f:
         for p in csv.reader(f):
@@ -155,8 +155,9 @@ def main():
             if iid is None:
                 unmatched[name] += 1
                 continue
-            day = datetime.fromtimestamp(t, timezone.utc).date().isoformat()
-            awards.append([iid, day, zone, source] + ([suffix] if suffix else []))
+            when = datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%d %H:%M")
+            day = when[:10]
+            awards.append([iid, when, zone, source] + ([suffix] if suffix else []))
             s = stats.setdefault(source, {"awards": 0, "first": day, "last": day})
             s["awards"] += 1
             s["first"], s["last"] = min(s["first"], day), max(s["last"], day)

@@ -21,8 +21,7 @@ and writes plain HTML pages (Caddy serves them from disk):
   /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
                           instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
                           sources (wowhead_sources.json) for what AtlasLoot doesn't cover. The sim's only source data.
-                          "webdkp": guild raid loot awards per item (webdkp_awards.json): count, first / last date,
-                          count per zone.
+                          "webdkp": guild raid loot awards per item (webdkp_awards.json): count, first / last date.
   /style.css, /site.js
 
 Scope (Lokiy 2026-10-04): custom items = item ids that do not exist in classic 1.12 (above 24283) plus the items
@@ -40,7 +39,7 @@ import os
 import re
 import shutil
 import sys
-from datetime import date
+from datetime import date, datetime
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(REPO, "docs"))
@@ -304,30 +303,62 @@ def add_tracked_drops(tables, names, items):
 DKP_ZONES = {"The Molten Core": "Molten Core"}  # WebDKP's zone name -> AtlasLoot's instance name
 DKP_RAIDS = {"Molten Core", "Blackwing Lair", "Onyxia's Lair", "Zul'Gurub", "Ruins of Ahn'Qiraj",
              "Temple of Ahn'Qiraj", "Naxxramas", "World Bosses"}
+DKP_RAID_GAP = 12 * 3600  # awards of one guild less than 12 h apart are one raid
+# Majordomo only comes after these bosses' runes are doused: every Ragnaros kill means they died in that lockout
+MC_RUNE_BOSSES = ("MCMagmadar", "MCGehennas", "MCGarr", "MCShazzrah", "MCGeddon", "MCGolemagg", "MCSulfuron",
+                  "MCMajordomo")
 
 
-def load_dkp_awards(sources, names):
-    """Guild raid loot awards from WebDKP (tools/itemdb/webdkp_awards.json, from webdkp_awards.py), by item:
-    {item id: {zone: [awards, first date, last date]}}, plus the file's source list. The webdkp.com lists (2021-22)
-    have no zone: such an award gets the item's raid from AtlasLoot when its tables are in exactly one raid, else
-    "Zone not recorded". Also {item id: {random suffix: awards}} for random-suffix items awarded with their suffix."""
+def load_dkp_awards(tables, names):
+    """Guild raid loot awards from WebDKP (tools/itemdb/webdkp_awards.json, from webdkp_awards.py).
+
+    Returns ({item id: [(label, awards, kills, True)]} rows for the Observed drops table, the file's source list,
+    {item id: {random suffix: awards}}, {item id: {"n", "first", "last"}} for api/sources.json).
+    Kills are worked out from the awards: a boss was killed in a raid (one guild's awards less than 12 h apart) in
+    which an item only that boss drops (in no other raid table) was awarded; an MC rune boss also in every raid with
+    a Ragnaros kill. A low bound: a kill where nobody took any of the boss's own items isn't seen, and a boss without
+    own items has no kill count. An item of one boss table is credited to that boss, an item several bosses drop to
+    all of them together (label "A / B", kills = their kills added up)."""
     path = os.path.join(HERE, "webdkp_awards.json")
     if not os.path.exists(path):
-        return {}, {}, {}
+        return {}, {}, {}, {}
     data = json.load(open(path, encoding="utf-8"))
-    by_item, suffixes = {}, {}
-    for iid, day, zone, _, *suffix in data["awards"]:
+    raid_keys = {k for k, (nm, cat) in names.items() if cat in DKP_RAIDS and k in tables
+                 and not nm.startswith("Trash")}
+    where = {}
+    for key in raid_keys:
+        for r in tables[key]:
+            if r[0]:
+                where.setdefault(r[0], set()).add(key)
+    own = {}
+    for iid, keys in where.items():
+        if len(keys) == 1:
+            own.setdefault(next(iter(keys)), set()).add(iid)
+    suffixes, api, raids, last = {}, {}, [], {}
+    for iid, when, zone, source, *suffix in sorted(data["awards"], key=lambda a: (a[3], a[1])):
         if suffix:
             s = suffixes.setdefault(iid, {})
             s[suffix[0]] = s.get(suffix[0], 0) + 1
-        zone = DKP_ZONES.get(zone, zone)
-        if not zone:
-            raids = {names.get(k, ("", ""))[1] for k in sources.get(iid, [])} & DKP_RAIDS
-            zone = raids.pop() if len(raids) == 1 else "Zone not recorded"
-        z = by_item.setdefault(iid, {}).setdefault(zone, [0, day, day])
-        z[0] += 1
-        z[1], z[2] = min(z[1], day), max(z[2], day)
-    return by_item, data["sources"], suffixes
+        a = api.setdefault(iid, {"n": 0, "first": when[:10], "last": when[:10]})
+        a["n"] += 1
+        a["first"], a["last"] = min(a["first"], when[:10]), max(a["last"], when[:10])
+        t = datetime.strptime(when, "%Y-%m-%d %H:%M").timestamp()
+        if source not in last or t - last[source] > DKP_RAID_GAP:
+            raids.append(set())
+        last[source] = t
+        raids[-1].add(iid)
+    kills = {key: {n for n, r in enumerate(raids) if r & items} for key, items in own.items()}
+    for key in MC_RUNE_BOSSES:
+        if key in raid_keys:
+            kills[key] = kills.get(key, set()) | kills.get("MCRagnaros", set())
+    rows = {}
+    for iid, a in api.items():
+        keys = where.get(iid)
+        if not keys:
+            continue
+        label = " / ".join(names[k][0] for k in sorted(keys, key=lambda k: names[k][0]))
+        rows[iid] = [(f"{label} (guild loot)", a["n"], sum(len(kills.get(k, ())) for k in keys), True)]
+    return rows, data["sources"], suffixes, api
 
 
 # --------------------------------------------------------------------------------------------- observed drops
@@ -577,12 +608,12 @@ def main():
                  + 'Lokiy opened).</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
-    # guild raid loot awards (WebDKP)
-    dkp, dkp_sources, dkp_suffixes = load_dkp_awards(sources, names)
-    dkp_note = ('<p class="muted small">Items raid leaders gave out for DKP ('
+    # guild raid loot awards (WebDKP): extra rows in the Observed drops table
+    dkp, dkp_sources, dkp_suffixes, dkp_api = load_dkp_awards(tables, names)
+    dkp_note = ('<p class="muted small">"Guild loot" = items raid leaders gave out for DKP ('
                 + ", ".join(f'{esc(s)} {v["first"][:4]}-{v["last"][:4]}' for s, v in dkp_sources.items())
-                + '), from WebDKP. Shows that and when an item dropped there, not every drop: items nobody wanted '
-                + 'are missing. The 2021-22 lists have no zone; it is taken from AtlasLoot.</p>')
+                + ', from WebDKP). Kills = raids in which an item only that boss drops was given out (Molten Core '
+                + 'bosses also count every Ragnaros kill). Both are low bounds: items nobody wanted are missing.</p>')
 
     # every mob / boss Lokiy's loot tracker saw: its drops on the boss's loot table page, else on its own /mob page
     mob_loot = load_mob_loot()
@@ -648,11 +679,12 @@ def main():
             src_html = f'<section class="card"><h2>Source</h2><ul class="sources">{"".join(lis)}</ul></section>'
         else:
             src_html = '<section class="card"><h2>Source</h2><p class="muted">No known drop source yet.</p></section>'
-        if observed[iid]:
+        if observed[iid] or dkp.get(iid):
             trs = "".join(f'<tr><td>{esc(label)}</td><td>{n}</td><td>{k}</td><td class="rate">{rate_text(n, k, est)}</td></tr>'
-                          for label, n, k, est in observed[iid])
+                          for label, n, k, est in observed[iid] + dkp.get(iid, []))
+            notes = (obs_note if observed[iid] else "") + (dkp_note if dkp.get(iid) else "")
             src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
-                         f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{obs_note}</section>')
+                         f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{notes}</section>')
         if loot_drops.get(iid):
             trs = "".join(f'<tr><td>{esc(src)}</td><td>{n}</td><td>{lt}</td><td>{k}</td><td class="rate">'
                           f'{(f"{min(r, 1) * 100:.0f}%" if r >= 0.1 else f"{r * 100:.1f}%") if r is not None else ""}</td></tr>'
@@ -660,13 +692,7 @@ def main():
             src_html += (f'<section class="card obs"><h2>Lokiy\'s loot</h2><table class="obs-table"><thead><tr>'
                          f'<th>Source</th><th>Drops</th><th>Looted</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>'
                          f'{loot_note}</section>')
-        if dkp.get(iid):
-            trs = "".join(f'<tr><td>{esc(zone)}</td><td>{n}</td><td>{first}</td><td>{last}</td></tr>'
-                          for zone, (n, first, last) in sorted(dkp[iid].items(), key=lambda z: -z[1][0]))
-            src_html += (f'<section class="card obs"><h2>Guild loot awards</h2><table class="obs-table"><thead><tr>'
-                         f'<th>Zone</th><th>Awards</th><th>First</th><th>Last</th></tr></thead><tbody>{trs}</tbody></table>'
-                         f'{dkp_note}</section>')
-        seen = seen_affixes(it["name"], loot_names.get(iid, {}))
+        seen =seen_affixes(it["name"], loot_names.get(iid, {}))
         awarded = dkp_suffixes.get(iid, {})
         if affixes.get(iid) or seen or awarded:
             groups = {}
@@ -695,7 +721,7 @@ def main():
                          f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); an affix with several '
                          f'values has tiers (12-13 = any value in between, 15/17 = one of those).{chance_note} "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s '
                          f'loot tracker</a>, matched by name; "rolled" = the exact value, for drops logged since the addon saves it.'
-                         f'{" &quot;Awarded&quot; = given out in guild raids with this suffix (WebDKP, see Guild loot awards)." if awarded else ""}'
+                         f'{" &quot;Awarded&quot; = given out in guild raids with this suffix (WebDKP, the guild loot rows above)." if awarded else ""}'
                          f'</p></section>')
         if rw:
             classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}
@@ -1017,10 +1043,7 @@ your filters, so you can share a search.</p></section>
     os.replace(tmp, os.path.join(out, "api", "items.json"))
     # ---- where items come from, for other projects (the sim reads only this): AtlasLoot tables incl. the loot
     # tracker's drops, then the Wowhead classic sources (sim gen_db -dumpWowheadSources, UIItemSource JSON by item id)
-    src_api = {"tables": {}, "wowhead": {}, "webdkp": {
-        i: {"n": sum(z[0] for z in zs.values()), "first": min(z[1] for z in zs.values()),
-            "last": max(z[2] for z in zs.values()), "zones": {zone: z[0] for zone, z in zs.items()}}
-        for i, zs in dkp.items() if i in items}}
+    src_api = {"tables": {}, "wowhead": {}, "webdkp": {i: a for i, a in dkp_api.items() if i in items}}
     for key, rows in tables.items():
         name, cat = names.get(key, ("", "Other"))
         src_api["tables"][key] = {"name": name, "instance": cat, "group": table_groups.get(key, ""),

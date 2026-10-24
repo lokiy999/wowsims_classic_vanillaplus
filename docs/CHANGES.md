@@ -4803,3 +4803,16 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - `gen_site.py`: the item page's "Random affixes" list adds those suffixes with an "awarded N×" tag (next to the loot
   tracker's "seen N×"), and the item counts as having affixes in the search. Stats stay "stats unknown" when neither
   Wowhead nor the loot tracker has the suffix's values. Today: Ragnaros Core (75 awards) and Lunar Wand (1).
+
+## Part FP — WebDKP awards as observed drops with kill counts (2026-10-24)
+
+- Lokiy (via the hub chat): the separate "Guild loot awards" card isn't needed; put the awards under the observed
+  drops, with kills worked out from them.
+- `webdkp_awards.json` keeps the time of each award (`YYYY-MM-DD HH:MM`, UTC) instead of only the day.
+- `gen_site.py` `load_dkp_awards()`: one guild's awards less than 12 h apart are one raid; a boss counts as killed in
+  a raid in which an item only it drops (in no other raid table) was given out; the MC rune bosses and Majordomo also
+  in every raid with a Ragnaros kill (Majordomo only comes after the runes). Each item gets an "<boss> (guild loot)"
+  row in the item page's "Observed drops" table: awards, kills, rate (always marked ~). An item several bosses drop
+  gets one row for all of them, with their kills added up. Bosses without own items have no kill count.
+- Today: Ragnaros 75 kills, Baron Geddon 95, Majordomo 88, Onyxia 92, Nefarian 1 (2024-06-22).
+- The "Guild loot awards" card (Part FN) is gone; `api/sources.json` `webdkp` keeps the count and first / last date.
