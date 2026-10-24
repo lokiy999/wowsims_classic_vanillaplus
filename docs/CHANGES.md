@@ -4736,3 +4736,26 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
     Gloves: npc 4831 -> 204068, the only Lady Sarevess in the sim's NPC list (a Season of Discovery copy, like the
     ~60 other boss links the sim already had, e.g. Ghamoo-ra, Aku'mai, Thermaplugg).
   - Byte-identical tooltips and stats; `remap_presets.py` not needed (renumbering unchanged, 173).
+
+## Part FL — sim.lokiy.dev rebuilds itself when db.lokiy.dev's item or source data changes (2026-10-24)
+
+- Lokiy: "have sync_db.sh run the sim item pipeline and redeploy the sim when db.lokiy.dev's items or sources change"
+  (after Part FK new drops reached the database by themselves, but the sim only on a hand-run pipeline).
+- New `tools/itemdb/sync_sim.sh`, started in the background (own lock `/tmp/sim-sync.lock`, not the database's) by
+  `sync_db.sh` after a database rebuild and by `itemcache_sync.py`'s rebuild (item cache uploads skip `sync_db.sh`).
+  - Does nothing unless the checksum of `/var/www/db/api/items.json` + `sources.json` differs from the one the sim
+    was last built from (`~/loot-sync/sim-built.sha`), or a run already failed on it (`sim-failed.sha`).
+  - Does nothing while a tracked file in the repo has uncommitted changes (someone's unfinished work or a hand-run
+    pipeline); logged, and tried again on the next database rebuild.
+  - Runs the pipeline (`parse_vplus`, `gen_include`, `parse_vplus`, `gen_phases`, `gen_sources`, `gen_db`), then
+    `sim_check.py`: no deploy when the item count drops by more than 1% or 30 items, or more than 200 items lose
+    their stats or sources; nothing to do when no item changed.
+  - Builds (`make dist/classic/.dirstamp && make devserver`, the server embeds the item DB), restarts the sim (kills
+    the main PID, systemd restarts it) and waits for it to answer on `http://127.0.0.1:3333/classic/`. If it
+    doesn't, the previous binary and data files are put back and the sim restarted again.
+  - Commits the generated files ("Item data from db.lokiy.dev (auto, sync_sim.sh)", the check's summary as body)
+    and pushes. Log: `~/loot-sync/sim-sync.log`; pipeline / build output in `/tmp/sim-sync-*.log`.
+  - `DRY_RUN=1` stops after the check, `FORCE=1` runs on unchanged data, `SIM_HEALTH_URL` overrides the check URL.
+- Not rebuilt: `lib.wasm` (the in-browser sim, last built 2026-09-30). sim.lokiy.dev runs without `--wasm`, so the
+  UI uses the server's sim; it would need a rebuild on every item change if that is ever switched.
+- Backups: `sync_db.sh.bak-2026-10-24`, `itemcache_sync.py.bak-2026-10-24`.

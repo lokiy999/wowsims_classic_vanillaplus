@@ -39,6 +39,7 @@ STORE = os.path.join(HOME, "items.json")
 CHANGES = os.path.join(HOME, "changes.jsonl")
 GEN_SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gen_site.py")
 ENRICH = os.path.expanduser("~/loot-sync/enrich.py")  # lokiy.dev/loot item-info.json (tooltips from this store)
+SYNC_SIM = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync_sim.sh")  # sim.lokiy.dev
 LOCK = "/tmp/db-sync.lock"  # shared with sync_db.sh, so two rebuilds never run at once
 DB_API = "/var/www/db/api/items.json"
 CDN_PREFIX = "https://wow.zamimg.com/images/wow/icons/medium/"
@@ -86,6 +87,8 @@ def rebuild():
     if os.path.exists(ENRICH):
         print("Refreshing lokiy.dev/loot tooltips")
         subprocess.run([sys.executable, ENRICH], check=True)
+    # sim.lokiy.dev: rebuilt in the background when the item or source data changed
+    subprocess.Popen([SYNC_SIM], start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 def on_cdn(name):

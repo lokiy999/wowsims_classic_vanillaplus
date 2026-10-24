@@ -25,6 +25,10 @@ go run ./tools/database/gen_db -outDir=./assets -gen=db
 python docs/remap_presets.py     # rewrite ui/*/gear_sets/*.gear.json through renumber.json
 ```
 
+Since Part FL this runs by itself: `tools/itemdb/sync_sim.sh` reruns the pipeline, checks, builds, restarts and
+commits whenever db.lokiy.dev's `api/items.json` or `api/sources.json` changes (log `~/loot-sync/sim-sync.log`).
+Run it by hand the same way, or `DRY_RUN=1 FORCE=1 tools/itemdb/sync_sim.sh` to see what a run would change.
+
 `docs/serverdata.py` reads db.lokiy.dev's `api/items.json` and `api/sources.json`, the pipeline's only item and
 source data (Parts FE, FK).
 `docs/gen_add_items.py` and `docs/gen_removed_items.py` are superseded by

@@ -28,6 +28,8 @@ touch "$STAMP.new"
 if python3 /opt/wowsims-classic/tools/itemdb/gen_site.py >>"$LOG" 2>&1; then
 	mv "$STAMP.new" "$STAMP"
 	python3 /home/lokiy/loot-sync/enrich.py >>"$LOG" 2>&1  # lokiy.dev/loot: links to new mob / item pages
+	# sim.lokiy.dev: rebuilt in the background when the item or source data changed (without this lock)
+	nohup /opt/wowsims-classic/tools/itemdb/sync_sim.sh 9>&- >/dev/null 2>&1 &
 	echo "$(date -u '+%F %T') rebuilt after loot.json change" >>"$LOG"
 else
 	rm -f "$STAMP.new"
