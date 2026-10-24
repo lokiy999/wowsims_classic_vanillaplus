@@ -298,7 +298,7 @@ def add_tracked_drops(tables, names, items):
     return added
 
 
-# --------------------------------------------------------------------------------------------- guild loot awards
+# --------------------------------------------------------------------------------------------- raid loot awards
 
 DKP_ZONES = {"The Molten Core": "Molten Core"}  # WebDKP's zone name -> AtlasLoot's instance name
 DKP_RAIDS = {"Molten Core", "Blackwing Lair", "Onyxia's Lair", "Zul'Gurub", "Ruins of Ahn'Qiraj",
@@ -357,7 +357,7 @@ def load_dkp_awards(tables, names):
         if not keys:
             continue
         label = " / ".join(names[k][0] for k in sorted(keys, key=lambda k: names[k][0]))
-        rows[iid] = [(f"{label} (guild loot)", a["n"], sum(len(kills.get(k, ())) for k in keys), True)]
+        rows[iid] = [(label, a["n"], sum(len(kills.get(k, ())) for k in keys), True)]
     return rows, data["sources"], suffixes, api
 
 
@@ -608,12 +608,22 @@ def main():
                  + 'Lokiy opened).</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
-    # guild raid loot awards (WebDKP): extra rows in the Observed drops table
+    # raid loot awards (WebDKP), added to the observed drops: a source in both gets one row with drops and kills
+    # added up (the logs and the awards are different kills: awards end 2025-04, the logs start 2026-07)
     dkp, dkp_sources, dkp_suffixes, dkp_api = load_dkp_awards(tables, names)
-    dkp_note = ('<p class="muted small">"Guild loot" = items raid leaders gave out for DKP ('
+    in_logs = {i for i, rows in observed.items() if rows}
+    for i, rows in dkp.items():
+        if i not in observed:
+            continue
+        merged = {label: [n, k, est] for label, n, k, est in observed[i]}
+        for label, n, k, est in rows:
+            m = merged.setdefault(label, [0, 0, est])
+            m[0], m[1], m[2] = m[0] + n, m[1] + k, m[2] or est
+        observed[i] = [(label, n, k, est) for label, (n, k, est) in sorted(merged.items(), key=lambda kv: -kv[1][0])]
+    dkp_note = ('<p class="muted small">Counted too: items raid leaders gave out for DKP ('
                 + ", ".join(f'{esc(s)} {v["first"][:4]}-{v["last"][:4]}' for s, v in dkp_sources.items())
-                + ', from WebDKP). Kills = raids in which an item only that boss drops was given out (Molten Core '
-                + 'bosses also count every Ragnaros kill). Both are low bounds: items nobody wanted are missing.</p>')
+                + ', from WebDKP), with kills = raids in which an item only that boss drops was given out (Molten Core '
+                + 'bosses also count every Ragnaros kill). These are low bounds: items nobody wanted are missing.</p>')
 
     # every mob / boss Lokiy's loot tracker saw: its drops on the boss's loot table page, else on its own /mob page
     mob_loot = load_mob_loot()
@@ -679,10 +689,10 @@ def main():
             src_html = f'<section class="card"><h2>Source</h2><ul class="sources">{"".join(lis)}</ul></section>'
         else:
             src_html = '<section class="card"><h2>Source</h2><p class="muted">No known drop source yet.</p></section>'
-        if observed[iid] or dkp.get(iid):
+        if observed[iid]:
             trs = "".join(f'<tr><td>{esc(label)}</td><td>{n}</td><td>{k}</td><td class="rate">{rate_text(n, k, est)}</td></tr>'
-                          for label, n, k, est in observed[iid] + dkp.get(iid, []))
-            notes = (obs_note if observed[iid] else "") + (dkp_note if dkp.get(iid) else "")
+                          for label, n, k, est in observed[iid])
+            notes = (obs_note if iid in in_logs else "") + (dkp_note if dkp.get(iid) else "")
             src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
                          f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{notes}</section>')
         if loot_drops.get(iid):
@@ -721,7 +731,7 @@ def main():
                          f'<p class="muted small">Possible affixes from WoW Classic data (Wowhead); an affix with several '
                          f'values has tiers (12-13 = any value in between, 15/17 = one of those).{chance_note} "Seen" = looted in <a href="https://lokiy.dev/loot/">Lokiy\'s '
                          f'loot tracker</a>, matched by name; "rolled" = the exact value, for drops logged since the addon saves it.'
-                         f'{" &quot;Awarded&quot; = given out in guild raids with this suffix (WebDKP, the guild loot rows above)." if awarded else ""}'
+                         f'{" &quot;Awarded&quot; = given out in raids with this suffix (WebDKP)." if awarded else ""}'
                          f'</p></section>')
         if rw:
             classic_item = {"name": rw["classic_name"], "quality": it["quality"], "lines": rw["classic"]}

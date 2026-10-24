@@ -4816,3 +4816,12 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   gets one row for all of them, with their kills added up. Bosses without own items have no kill count.
 - Today: Ragnaros 75 kills, Baron Geddon 95, Majordomo 88, Onyxia 92, Nefarian 1 (2024-06-22).
 - The "Guild loot awards" card (Part FN) is gone; `api/sources.json` `webdkp` keeps the count and first / last date.
+
+## Part FQ — WebDKP awards counted in the observed drops, no separate rows (2026-10-24)
+
+- Lokiy (via the hub chat): drop the "(guild loot)" label; whether a drop came from a guild doesn't matter, list it
+  under the observed drops.
+- `gen_site.py`: the award rows are merged into the combat-log rows: one row per source (boss), drops and kills added
+  up (the logs and the awards are different kills: awards end 2025-04, the logs start 2026-07). Loot table pages,
+  which show the observed rate per boss, use the merged numbers too. The note under the table names both inputs;
+  the combat-log note only shows when the item has log data.
