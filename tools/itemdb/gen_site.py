@@ -21,6 +21,8 @@ and writes plain HTML pages (Caddy serves them from disk):
   /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
                           instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
                           sources (wowhead_sources.json) for what AtlasLoot doesn't cover. The sim's only source data.
+                          "webdkp": guild raid loot awards per item (webdkp_awards.json): count, first / last date,
+                          count per zone.
   /style.css, /site.js
 
 Scope (Lokiy 2026-10-04): custom items = item ids that do not exist in classic 1.12 (above 24283) plus the items
@@ -297,6 +299,34 @@ def add_tracked_drops(tables, names, items):
     return added
 
 
+# --------------------------------------------------------------------------------------------- guild loot awards
+
+DKP_ZONES = {"The Molten Core": "Molten Core"}  # WebDKP's zone name -> AtlasLoot's instance name
+DKP_RAIDS = {"Molten Core", "Blackwing Lair", "Onyxia's Lair", "Zul'Gurub", "Ruins of Ahn'Qiraj",
+             "Temple of Ahn'Qiraj", "Naxxramas", "World Bosses"}
+
+
+def load_dkp_awards(sources, names):
+    """Guild raid loot awards from WebDKP (tools/itemdb/webdkp_awards.json, from webdkp_awards.py), by item:
+    {item id: {zone: [awards, first date, last date]}}, plus the file's source list. The webdkp.com lists (2021-22)
+    have no zone: such an award gets the item's raid from AtlasLoot when its tables are in exactly one raid, else
+    "Zone not recorded"."""
+    path = os.path.join(HERE, "webdkp_awards.json")
+    if not os.path.exists(path):
+        return {}, {}
+    data = json.load(open(path, encoding="utf-8"))
+    by_item = {}
+    for iid, day, zone, _ in data["awards"]:
+        zone = DKP_ZONES.get(zone, zone)
+        if not zone:
+            raids = {names.get(k, ("", ""))[1] for k in sources.get(iid, [])} & DKP_RAIDS
+            zone = raids.pop() if len(raids) == 1 else "Zone not recorded"
+        z = by_item.setdefault(iid, {}).setdefault(zone, [0, day, day])
+        z[0] += 1
+        z[1], z[2] = min(z[1], day), max(z[2], day)
+    return by_item, data["sources"]
+
+
 # --------------------------------------------------------------------------------------------- observed drops
 
 def norm_zone(z):
@@ -544,6 +574,12 @@ def main():
                  + 'Lokiy opened).</p>')
     obs_note = (f'<p class="muted small">From {obs["logs"]} players\' combat logs. Rate = drops / kills seen in those logs. '
                 f'<b>~</b> = estimate (few kills, a guessed source, or a rate that looks too high).</p>')
+    # guild raid loot awards (WebDKP)
+    dkp, dkp_sources = load_dkp_awards(sources, names)
+    dkp_note = ('<p class="muted small">Items raid leaders gave out for DKP ('
+                + ", ".join(f'{esc(s)} {v["first"][:4]}-{v["last"][:4]}' for s, v in dkp_sources.items())
+                + '), from WebDKP. Shows that and when an item dropped there, not every drop: items nobody wanted '
+                + 'are missing. The 2021-22 lists have no zone; it is taken from AtlasLoot.</p>')
 
     # every mob / boss Lokiy's loot tracker saw: its drops on the boss's loot table page, else on its own /mob page
     mob_loot = load_mob_loot()
@@ -621,6 +657,12 @@ def main():
             src_html += (f'<section class="card obs"><h2>Lokiy\'s loot</h2><table class="obs-table"><thead><tr>'
                          f'<th>Source</th><th>Drops</th><th>Looted</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>'
                          f'{loot_note}</section>')
+        if dkp.get(iid):
+            trs = "".join(f'<tr><td>{esc(zone)}</td><td>{n}</td><td>{first}</td><td>{last}</td></tr>'
+                          for zone, (n, first, last) in sorted(dkp[iid].items(), key=lambda z: -z[1][0]))
+            src_html += (f'<section class="card obs"><h2>Guild loot awards</h2><table class="obs-table"><thead><tr>'
+                         f'<th>Zone</th><th>Awards</th><th>First</th><th>Last</th></tr></thead><tbody>{trs}</tbody></table>'
+                         f'{dkp_note}</section>')
         seen = seen_affixes(it["name"], loot_names.get(iid, {}))
         if affixes.get(iid) or seen:
             groups = {}
@@ -967,7 +1009,10 @@ your filters, so you can share a search.</p></section>
     os.replace(tmp, os.path.join(out, "api", "items.json"))
     # ---- where items come from, for other projects (the sim reads only this): AtlasLoot tables incl. the loot
     # tracker's drops, then the Wowhead classic sources (sim gen_db -dumpWowheadSources, UIItemSource JSON by item id)
-    src_api = {"tables": {}, "wowhead": {}}
+    src_api = {"tables": {}, "wowhead": {}, "webdkp": {
+        i: {"n": sum(z[0] for z in zs.values()), "first": min(z[1] for z in zs.values()),
+            "last": max(z[2] for z in zs.values()), "zones": {zone: z[0] for zone, z in zs.items()}}
+        for i, zs in dkp.items() if i in items}}
     for key, rows in tables.items():
         name, cat = names.get(key, ("", "Other"))
         src_api["tables"][key] = {"name": name, "instance": cat, "group": table_groups.get(key, ""),

@@ -4775,3 +4775,22 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - `rebuild()` now also starts `sync_sim.sh` in the background, like `sync_db.sh` does after a build.
 - Tested: the live client's cache uploaded through the service, picked up by `sync_db.sh`, status shown (no item
   new or changed); a non-cache file is refused.
+
+## Part FN — guild raid loot awards from WebDKP on db.lokiy.dev (2026-10-24)
+
+- Lokiy (via the hub chat): use the guilds' WebDKP data as a dated loot source: his addon backup (Cope, 2022-10 ..
+  2025-04) and the two public webdkp.com loot lists (VanillaPlus 2021-07 .. 2022-07, VanillaPlus Horde 2021-10 ..
+  2022-04; public pages, no admin access needed).
+- `tools/itemdb/webdkp_awards.py` (new): reads `~/webdkp/backup/*.csv` and the saved pages `~/webdkp/pages/` (not in
+  git: they hold player names), `--fetch` downloads the lists first (one page a second; saved pages are kept, page 1
+  is always fetched). Matches the award names to db.lokiy.dev items (`api/items.json`): `[!]` = comma, notes in
+  brackets and `x3` dropped, random suffixes cut off, `ALIASES` for typos. Writes `webdkp_awards.json` (no player
+  names): `[item, date, zone, source]` per award, plus the unmatched names. 6,889 of 6,947 awards matched; the rest
+  are AQ / ZG formulas the server has no item for and non-items.
+- `gen_site.py`: item pages get a "Guild loot awards" card (zone, awards, first / last date). The webdkp.com lists
+  have no zone, so it is taken from the item's AtlasLoot raid when that is one raid. `api/sources.json` gets a
+  `webdkp` key ({item: n, first, last, zones}); the sim reads only `tables` / `wowhead`, so it is unaffected.
+- An award is an item a raid leader handed out, so this shows that and when an item dropped somewhere, not a drop
+  rate: items nobody wanted are missing.
+- New backup: copy the CSV to `~/webdkp/backup/`, run `webdkp_awards.py` (with `--fetch` for the web lists), commit
+  `webdkp_awards.json`, rebuild.
