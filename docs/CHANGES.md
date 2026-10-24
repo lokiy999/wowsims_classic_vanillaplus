@@ -4759,3 +4759,19 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - Not rebuilt: `lib.wasm` (the in-browser sim, last built 2026-09-30). sim.lokiy.dev runs without `--wasm`, so the
   UI uses the server's sim; it would need a rebuild on every item change if that is ever switched.
 - Backups: `sync_db.sh.bak-2026-10-24`, `itemcache_sync.py.bak-2026-10-24`.
+
+## Part FM — item cache upload on lokiy.dev/admin/upload (2026-10-24)
+
+- Lokiy (via the hub chat): upload `WDB\itemcache.wdb` in the browser after playing instead of running
+  ItemCacheSync's `upload_itemcache.bat`; admin only.
+- The page and its API are in the LootTracker upload service (`~/loot-upload/server.py`, `tools/upload` in the
+  LootTracker repo), behind the /admin password: `POST /admin/loot/api/itemcache` checks the file is a WoW cache and
+  keeps it in `~/loot-upload/data/itemcache/incoming/web_<file time>.wdb`. The service is sandboxed to its data
+  folder, so it can't merge or rebuild itself.
+- `itemcache_sync.py --pickup` (new): moves those files to `~/itemcache/incoming/`, runs the normal merge + rebuild
+  and writes `~/loot-upload/data/itemcache/status.json` (time, files, exit code, output, the new / changed items),
+  which the page shows. `sync_db.sh` (cron, every 5 minutes) calls it first, before its own lock; it takes the
+  build lock itself. Lokiy OK'd the cron script change (2026-10-24).
+- `rebuild()` now also starts `sync_sim.sh` in the background, like `sync_db.sh` does after a build.
+- Tested: the live client's cache uploaded through the service, picked up by `sync_db.sh`, status shown (no item
+  new or changed); a non-cache file is refused.

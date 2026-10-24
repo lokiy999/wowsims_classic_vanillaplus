@@ -5,6 +5,11 @@
     python3 itemcache_sync.py --no-build   # merge only
     python3 itemcache_sync.py --missing-icons  # icon names db.lokiy.dev uses that neither the CDN nor it has
     python3 itemcache_sync.py --rebuild    # rebuild db.lokiy.dev and lokiy.dev/loot (after uploading icons)
+    python3 itemcache_sync.py --pickup     # take uploads from lokiy.dev/admin/upload (run by sync_db.sh)
+
+Uploads: Lokiy uploads itemcache.wdb on lokiy.dev/admin/upload; the upload service (~/loot-upload, sandboxed to its
+data folder) keeps it in PICKUP. --pickup moves it to incoming/, runs the merge + rebuild and writes STATUS (time,
+files, exit code, output, the new / changed items) for that page.
 
 Lokiy's PC uploads each client's WDB/itemcache.wdb to ~/itemcache/incoming/<client>_<file mtime>.wdb
 (ItemCacheSync/upload_itemcache.py). Files are merged oldest first, so the newest copy of an item wins.
@@ -17,6 +22,7 @@ Lokiy's PC uploads each client's WDB/itemcache.wdb to ~/itemcache/incoming/<clie
 """
 
 import argparse
+import fcntl
 import datetime
 import glob
 import json
@@ -42,6 +48,9 @@ ENRICH = os.path.expanduser("~/loot-sync/enrich.py")  # lokiy.dev/loot item-info
 SYNC_SIM = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync_sim.sh")  # sim.lokiy.dev
 LOCK = "/tmp/db-sync.lock"  # shared with sync_db.sh, so two rebuilds never run at once
 DB_API = "/var/www/db/api/items.json"
+PICKUP = os.path.expanduser("~/loot-upload/data/itemcache/incoming")
+STATUS = os.path.expanduser("~/loot-upload/data/itemcache/status.json")
+SYNC_SIM = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync_sim.sh")
 CDN_PREFIX = "https://wow.zamimg.com/images/wow/icons/medium/"
 CDN_SEEN = os.path.join(HOME, "cdn_icons.json")  # {icon name: True if the CDN has it}; each name is checked once
 
@@ -87,6 +96,40 @@ def rebuild():
     if os.path.exists(ENRICH):
         print("Refreshing lokiy.dev/loot tooltips")
         subprocess.run([sys.executable, ENRICH], check=True)
+    if os.path.exists(SYNC_SIM):  # sim.lokiy.dev: rebuilt in the background when its item data changed
+        print("sim.lokiy.dev sync started")
+        subprocess.Popen([SYNC_SIM], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+
+
+def pickup():
+    """Hand uploads from lokiy.dev/admin/upload to the normal run and write the result for the page."""
+    if not os.path.isdir(PICKUP):
+        return 0
+    with open("/tmp/itemcache-pickup.lock", "w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            return 0  # another pickup is running
+        files = sorted(n for n in os.listdir(PICKUP) if n.endswith(".wdb"))
+        if not files:
+            return 0
+        os.makedirs(INCOMING, exist_ok=True)
+        for n in files:
+            shutil.move(os.path.join(PICKUP, n), os.path.join(INCOMING, n))
+        before = sum(1 for _ in open(CHANGES, encoding="utf-8")) if os.path.exists(CHANGES) else 0
+        res = subprocess.run([sys.executable, os.path.abspath(__file__)], capture_output=True, text=True)
+        changes = []
+        if os.path.exists(CHANGES):
+            with open(CHANGES, encoding="utf-8") as fh:
+                changes = [json.loads(ln) for i, ln in enumerate(fh) if i >= before and ln.strip()]
+        status = {"at": int(datetime.datetime.now().timestamp()), "files": files, "code": res.returncode,
+                  "output": (res.stdout + res.stderr).strip().splitlines()[-60:], "changes": changes}
+        tmp = STATUS + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump(status, fh, ensure_ascii=False)
+        os.replace(tmp, STATUS)
+        print(f"pickup: {', '.join(files)} -> exit {res.returncode}, {len(changes)} new / changed items")
+        return res.returncode
     # sim.lokiy.dev: rebuilt in the background when the item or source data changed
     subprocess.Popen([SYNC_SIM], start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
@@ -127,7 +170,10 @@ def main():
     ap.add_argument("--no-build", action="store_true", help="don't rebuild db.lokiy.dev")
     ap.add_argument("--missing-icons", action="store_true", help="print icon names the site can't show, one per line")
     ap.add_argument("--rebuild", action="store_true", help="only rebuild db.lokiy.dev and lokiy.dev/loot")
+    ap.add_argument("--pickup", action="store_true", help="take uploads from lokiy.dev/admin/upload")
     args = ap.parse_args()
+    if args.pickup:
+        return pickup()
     if args.missing_icons:
         print("\n".join(missing_icons()))
         return 0
