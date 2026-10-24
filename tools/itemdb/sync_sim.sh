@@ -89,7 +89,7 @@ if ! restart_sim; then
 	log "restarted sim doesn't answer $HEALTH: putting the previous version back"
 	reset_generated
 	make dist/classic/.dirstamp >/dev/null 2>&1
-	cp -p /tmp/wowsimclassic.prev wowsimclassic
+	cp -p /tmp/wowsimclassic.prev wowsimclassic.new && mv -f wowsimclassic.new wowsimclassic  # a running binary can't be overwritten
 	restart_sim && log "previous version running again" || log "PREVIOUS VERSION DOESN'T ANSWER EITHER"
 	echo "$SHA" >"$FAILED"
 	exit 1
