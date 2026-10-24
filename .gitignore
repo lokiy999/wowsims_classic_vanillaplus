@@ -53,3 +53,6 @@ wowsimsod*.so
 wowsimsod*.dll
 wowsimsod*.h
 .vscode/launch.json
+
+# Hand-edit backups (file.bak-YYYY-MM-DD) stay beside the file, not in git
+*.bak-*
