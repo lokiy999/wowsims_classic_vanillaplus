@@ -1,9 +1,9 @@
 """Rule 1 (inclusion) from docs/private-server-item-rules.md.
 
 An item is on the server if EITHER
-  (a) it appears in a non-AQ/Naxx AtlasLoot table, OR
-  (b) it is in VPlusItemDB.lua as an equippable blue-or-better item that AtlasLoot
-      does not tag AQ/Naxx and that has no raid-zone drop source in the base data.
+  (a) it appears in a non-AQ/Naxx loot table of db.lokiy.dev (AtlasLoot + loot tracker), OR
+  (b) it is in db.lokiy.dev as an equippable blue-or-better item that no AQ/Naxx table
+      lists and that has no raid-zone drop source in db.lokiy.dev's Wowhead sources.
 
 Writes (server IDs -- i.e. after docs/parse_vplus.py's renumber map):
   assets/db_inputs/included_items.json  = [id, ...]      allowlist; gen_db drops the rest
@@ -59,18 +59,18 @@ MANUAL_INCLUDE_IDS = {81010, 81011, 81012, 81013, 81014, 81015,
 RECIPE_PREFIXES = ("Plans:", "Pattern:", "Schematic:", "Formula:", "Recipe:", "Design:", "Manual:")
 
 
-def _raid_sourced(it):
-    for s in it.get("sources", []):
+def _raid_sourced(sources):
+    for s in sources:
         d = s.get("drop")
         if d and d.get("zoneId") in RAID_ZONES:
             return True
     return False
 
 
-def _alterac_valley(iid, it):
+def _alterac_valley(iid, sources):
     if iid in AV_EXTRA_IDS:
         return True
-    for s in it.get("sources", []):
+    for s in sources:
         if s.get("rep", {}).get("repFactionId") in AV_REP_FACTIONS:
             return True
     return False
@@ -87,12 +87,16 @@ def _is_recipe(name):
 
 def main():
     pristine = sd.pristine_db()
-    id_tables, atlas_names = sd.atlasloot()
+    id_tables, atlas_names = sd.loot_tables()
+    wowhead = sd.wowhead_sources()
     blocks = sd.item_lines()
     try:
         renum = {int(k): v for k, v in json.load(open(RENUMBER)).items()}
     except OSError:
         renum = {}
+
+    def sources_of(iid):
+        return wowhead.get(renum.get(iid, iid)) or wowhead.get(iid) or []
 
     def tables_of(iid):
         return id_tables.get(iid, set()) | id_tables.get(renum.get(iid, iid), set())
@@ -124,7 +128,8 @@ def main():
     for iid, it in pristine.items():
         name = it.get("name", "")
         server_id = renum.get(iid, iid)
-        if _frost_resist(name) or _is_recipe(name) or sm_old(iid, it.get("ilvl")) or _alterac_valley(iid, it) or naxx(iid):
+        if (_frost_resist(name) or _is_recipe(name) or sm_old(iid, it.get("ilvl")) or _alterac_valley(iid, sources_of(iid))
+                or naxx(iid)):
             continue
         if in_atlas(iid, name):
             included.add(server_id)
@@ -135,7 +140,7 @@ def main():
                 and (it.get("quality") or 0) >= 3
                 and it.get("type")
                 and not atlas_aqnaxx_only(iid)
-                and (iid in renum_targets or not _raid_sourced(it))):
+                and (iid in renum_targets or not _raid_sourced(sources_of(iid)))):
             included.add(server_id)
             n_b += 1
 
@@ -174,7 +179,8 @@ def main():
             if sid in included or atlas_aqnaxx_only(iid) or naxx(iid):
                 continue
             pit_it = pristine.get(iid) or pristine.get(sid)
-            if pit_it and (_raid_sourced(pit_it) or _alterac_valley(iid, pit_it) or _is_recipe(pit_it.get("name", ""))):
+            if pit_it and (_raid_sourced(sources_of(iid)) or _alterac_valley(iid, sources_of(iid))
+                           or _is_recipe(pit_it.get("name", ""))):
                 continue
             if iid in AV_EXTRA_IDS:
                 continue

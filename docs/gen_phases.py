@@ -1,4 +1,4 @@
-"""Assign every included item a phase from WHERE IT DROPS (AtlasLoot data).
+"""Assign every included item a phase from WHERE IT DROPS (db.lokiy.dev's loot tables).
 
 See docs/private-server-item-rules.md. Six phases, earliest drop location wins:
 
@@ -37,7 +37,7 @@ TIER_PHASE = 4
 
 def main():
     pristine = sd.pristine_db()
-    id_tables, _ = sd.atlasloot()
+    id_tables, _ = sd.loot_tables()
     blocks = sd.item_lines()
 
     try:

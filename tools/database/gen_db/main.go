@@ -17,6 +17,7 @@ import (
 	_ "github.com/wowsims/classic/sim/encounters" // Needed for preset encounters.
 	"github.com/wowsims/classic/tools"
 	"github.com/wowsims/classic/tools/database"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 // To do a full re-scrape, delete the previous output file first.
@@ -52,6 +53,7 @@ var minId = flag.Int("minid", 1, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 31000, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'wotlk-items', and 'wago-db2-items'")
+var dumpWowheadSources = flag.String("dumpWowheadSources", "", "With -gen=db: also write every item's Wowhead / upstream sources (after the renumbering) to this file. It is db.lokiy.dev's Wowhead input (tools/itemdb/wowhead_sources.json); the sim itself never uses them.")
 
 func main() {
 	flag.Parse()
@@ -152,6 +154,27 @@ func main() {
 
 	db.MergeItems(database.ItemOverrides)
 
+	if *dumpWowheadSources != "" {
+		out := map[string][]json.RawMessage{}
+		for id, item := range db.Items {
+			for _, src := range item.Sources {
+				b, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(src)
+				if err != nil {
+					panic(err)
+				}
+				out[strconv.Itoa(int(id))] = append(out[strconv.Itoa(int(id))], b)
+			}
+		}
+		b, err := json.Marshal(out)
+		if err != nil {
+			panic(err)
+		}
+		if err := os.WriteFile(*dumpWowheadSources, b, 0644); err != nil {
+			panic(err)
+		}
+		fmt.Printf("Wrote the Wowhead sources of %d items to %s\n", len(out), *dumpWowheadSources)
+	}
+
 	// Private-server item values (stats + weapon damage) parsed from the in-game
 	// tooltip dump via docs/parse_vplus.py. Authoritative: fully replaces stats.
 	customItemsPath := fmt.Sprintf("%s/custom_items.json", inputsDir)
@@ -223,27 +246,31 @@ func main() {
 		fmt.Printf("Loaded %d location-based item phases\n", len(locationPhases))
 	}
 
-	// Loot source (drop location shown in the UI), matched against the private
-	// server's own AtlasLoot fork. From docs/gen_sources.py. Full replacement of
-	// item.Sources (proto merge only appends, so this can't be done via MergeItem).
-	type sourceOverride struct {
-		ZoneId    int32  `json:"zoneId"`
-		NpcId     int32  `json:"npcId"`
-		OtherName string `json:"otherName"`
-	}
-	itemSources := map[int32]sourceOverride{}
+	// Item sources (shown in the UI) come only from db.lokiy.dev (docs/gen_sources.py -> item_sources.json): every
+	// item's sources are replaced by that list, and an item it has none for gets none. The Wowhead / AtlasLoot
+	// sources merged above are never shown.
 	sourcesPath := fmt.Sprintf("%s/item_sources.json", inputsDir)
 	if _, err := os.Stat(sourcesPath); err == nil {
-		raw := map[string]sourceOverride{}
+		raw := map[string][]json.RawMessage{}
 		if err := json.Unmarshal([]byte(tools.ReadFile(sourcesPath)), &raw); err != nil {
 			panic(err)
 		}
-		for k, v := range raw {
+		itemSources := map[int32][]*proto.UIItemSource{}
+		for k, list := range raw {
 			id, _ := strconv.Atoi(k)
-			itemSources[int32(id)] = v
+			for _, b := range list {
+				src := &proto.UIItemSource{}
+				if err := protojson.Unmarshal(b, src); err != nil {
+					panic(err)
+				}
+				itemSources[int32(id)] = append(itemSources[int32(id)], src)
+			}
+		}
+		for id, item := range db.Items {
+			item.Sources = itemSources[id]
 		}
 		db.MergeZone(&proto.UIZone{Id: 900001, Name: "World Boss", Expansion: proto.Expansion_ExpansionVanilla})
-		fmt.Printf("Loaded %d AtlasLoot-matched item sources\n", len(itemSources))
+		fmt.Printf("Loaded the db.lokiy.dev sources of %d items\n", len(itemSources))
 	}
 
 	db.MergeEnchants(database.EnchantOverrides)
@@ -310,17 +337,6 @@ func main() {
 			} else {
 				item.Ilvl = smBaseIlvl
 			}
-		}
-
-		if src, ok := itemSources[item.Id]; ok {
-			drop := &proto.DropSource{ZoneId: src.ZoneId}
-			if src.NpcId != 0 {
-				drop.NpcId = src.NpcId
-			}
-			if src.OtherName != "" {
-				drop.OtherName = src.OtherName
-			}
-			item.Sources = []*proto.UIItemSource{{Source: &proto.UIItemSource_Drop{Drop: drop}}}
 		}
 
 		// Tier and Dungeon 2 Set items don't all have class restrictions

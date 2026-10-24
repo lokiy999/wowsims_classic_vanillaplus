@@ -4687,3 +4687,52 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
 - `gen_site.py`: `ICON_DIRS` = `tools/itemdb/icons/` (the first 42, git) + `CSV's/icons/`; both are copied to
   `/icons/`. First run: all 12 uploaded (Kassan's Signet, Armageddon's Stave, Sphere of Wild Wind ... show theirs).
   `itemcache_sync.py` now has LF line endings (it was committed with CRLF).
+
+## Part FK — the sim takes its source data (drops, phases, inclusion) from db.lokiy.dev (2026-10-24)
+
+- Lokiy: all drop info comes from the database; the database is fed by its own sources (AtlasLoot, the loot
+  tracker, ...); the sim reads only the database and never takes any other source. Part FE moved the item data
+  (tooltips, stats); the source data was still read by the sim itself: its own AtlasLoot parse in `serverdata.py`
+  (inclusion, phases, drop sources) and the Wowhead / upstream sources `gen_db` merges (crafted, quest, vendor, rep
+  and ~800 drops). Lokiy chose to feed Wowhead's classic sources into the database rather than drop them.
+- **db.lokiy.dev (`tools/itemdb/gen_site.py`)**
+  - The AtlasLoot loader missed 82 tables: the ones that open one tab deeper (BWLRazorgore, BWLVaelastrasz, the
+    AQ40 bosses), the ones written `BWLKrixix ={` (Krixix, Baelog, Balzaphon, Lorekeeper Polkelt), rows ending in
+    `};` (Stockade trash, Lord Blackwood), and all crafting tables (rows name the recipe spell, `"s2329"`, or the
+    enchanting spell, `"e14293"`; `craft_items()` maps them to the made item through `Core/Spells.lua`, rows that
+    make no item are left out, and their spell icon is not used as the item's). 640 loot tables now (558 before):
+    Razorgore, Vaelastrasz, Krixix and the professions have pages. `api/items.json` unchanged except 26221 Guide:
+    Elementium Smelting, whose icon now comes from the Krixix table (inv_misc_book_08).
+  - `MANUAL_DROPS`: drops neither AtlasLoot nor the tracker has, from Lokiy. Only 26231 Cloak of Untold Secrets
+    (Krixix, 2026-09-25), moved here from the sim's `gen_sources.py` `MANUAL_SOURCES`.
+  - New `/api/sources.json`: `{"tables": {key: {name, instance, group (AtlasLoot folder), items: [[id, name]]}},
+    "wowhead": {id: [UIItemSource]}}`. The tables include the loot tracker's drops (Part FD) and the manual ones.
+    `wowhead` is `tools/itemdb/wowhead_sources.json`, a snapshot of the Wowhead / upstream sources of 4,923 items
+    keyed by server id, written once by `gen_db -dumpWowheadSources=...` (after the renumbering, before the
+    allowlist). Classic Wowhead data doesn't change, so it is not regenerated on every build.
+- **Sim**
+  - `serverdata.py`: `atlasloot()` (own AtlasLoot parse) replaced by `loot_tables()`, `table_info()` and
+    `wowhead_sources()`, all reading `api/sources.json` (`VPLUS_SOURCES` overrides the path). `gen_include.py`,
+    `gen_phases.py` and `gen_sources.py` use them; `gen_include.py`'s raid-zone / Alterac Valley checks use the
+    database's Wowhead sources instead of the committed `db.json`'s. `gen_server_item_tooltips.py` no longer falls
+    back to AtlasLoot icons (it changed none of its 205 icons).
+  - `gen_sources.py` writes every item's full source list (`{id: [UIItemSource]}`): a loot-table drop when the
+    item is in an instance / world-boss table, else the database's Wowhead sources. A boss table with no NPC match
+    now gets the table's name (`otherName`), unless Wowhead has another source for the item: a drop outside the
+    raids the server lacks (AQ20/AQ40/Naxx) or a non-drop one (so quest tomes, crafted plans and classic bosses the
+    name match misses keep Wowhead's). On a name clash the lowest NPC id wins.
+  - `gen_db`: every item's `sources` are replaced by `item_sources.json` before the filters (an item with none
+    gets none), so no Wowhead / upstream-AtlasLoot source reaches the UI any more.
+- Pipeline re-run, sim rebuilt and restarted. Against Part FE's build (3,706 -> 3,709 items):
+  - +3: 23124 Staff of Balzaphon, 23125 Chains of the Lich (the Balzaphon table; Lord Blackwood's Scourge Invasion
+    items were already in), 26330 Kassan's Signet (SM Vishas, from the loot tracker).
+  - 4 enchanting wands (11287-11290) stay in: before they were only matched by name, now by their `e` rows.
+  - Phases: the 9 Krixix items 1 -> 5 (incl. 26231 Cloak of Untold Secrets), 26300 Hospitaller Codex and 26348
+    Champion's Broken Tooth 1 -> 6 (loot tracker drops).
+  - Sources: 77 items that had none now show their boss: the server's own bosses (BWL Elementium Decapitator /
+    Krixix, ZG Azus / Nameless Hermit, MC trash, LBRS / UBRS custom items, SM Brigitte / Michael / Doan / Fairbanks
+    / Whitemane / Vishas) and 17223 Thunderstrike (Sulfuron). 776 Vendetta, 862 Runed Ring, 872 Rockslicer lose
+    Wowhead's duplicate entry (their tables are read now; ids below 1000 were skipped before). 888 Naga Battle
+    Gloves: npc 4831 -> 204068, the only Lady Sarevess in the sim's NPC list (a Season of Discovery copy, like the
+    ~60 other boss links the sim already had, e.g. Ghamoo-ra, Aku'mai, Thermaplugg).
+  - Byte-identical tooltips and stats; `remap_presets.py` not needed (renumbering unchanged, 173).

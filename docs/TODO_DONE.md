@@ -202,3 +202,10 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 
 - db.lokiy.dev updates from the game's itemcache.wdb, uploaded automatically from Lokiy's PC (Part FA).
 - The sim reads its item data from db.lokiy.dev's api/items.json instead of the VPlusItemDB.lua dump (Part FE).
+
+## Source data (2026-10-24)
+
+- The sim reads its source data (inclusion, phases, drop sources, crafted / quest / vendor / rep sources) only from
+  db.lokiy.dev's api/sources.json; its own AtlasLoot parse and the Wowhead / upstream sources are gone (Part FK).
+- `private-server-item-rules.md` "Known implementation wrinkles" no longer says `gen_phases.py` only scans
+  `Instances/` (Part FK).

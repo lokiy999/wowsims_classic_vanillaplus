@@ -1,17 +1,21 @@
-"""Set each item's displayed loot source (drop location) from the server's own
-AtlasLoot fork (CSV's/AtlasLoot), rather than whatever the generic upstream
-wowsims retail-AtlasLoot/wowhead data attached.
+"""Set every item's sources (where it drops / comes from, shown in the UI) from db.lokiy.dev, the only source data
+(api/sources.json, serverdata.SOURCES_JSON).
 
-Scope: dungeon/raid instance tables and world-boss tables (the vast majority of
-"where does this drop" questions). Crafting/Factions/PvP sources are left as-is.
+An item in one of its loot tables (the server's AtlasLoot fork, plus the drops Lokiy's loot tracker saw) gets that
+drop: dungeon/raid instance and world-boss tables. Everything else (crafted, quest, vendor, reputation, and drops no
+loot table maps to an NPC) gets db.lokiy.dev's Wowhead classic sources. An item with neither gets no source.
 
 Boss identification never invents an NPC id: it matches the AtlasLoot table name
 against the sim DB's existing (wowhead-derived) NPC roster by name, so the
-Wowhead NPC link keeps working. When no confident match exists, it falls back to
-a prettified name with no clickable link.
+Wowhead NPC link keeps working (on a name clash the lowest id, i.e. the classic NPC
+rather than a Season of Discovery copy). When no confident match exists, a world boss
+falls back to a prettified name with no clickable link; an instance boss to the
+table's name in db.lokiy.dev (e.g. "Master Elemental Shaper Krixix", the server's own
+bosses) unless the Wowhead sources have another source: a drop outside the raids the
+server doesn't have (AQ20, AQ40, Naxxramas) or a non-drop one (quest tomes, crafted plans).
 
-Writes assets/db_inputs/item_sources.json = {server_id: {zoneId, npcId?, otherName?}}.
-gen_db applies this as a full replacement of the item's `sources` (last wins).
+Writes assets/db_inputs/item_sources.json = {server_id: [UIItemSource, ...]} (db.json's camelCase JSON).
+gen_db replaces every item's `sources` with it.
 """
 import json
 import os
@@ -60,6 +64,10 @@ ZONE_PREFIXES = [
     ("ZG", 1977), ("ZulGurub", 1977),
 ]
 
+# Wowhead zones of the raids the server doesn't have: a Wowhead drop there is no source (e.g. 26231 Cloak of Untold
+# Secrets, AQ40 Fankriss in classic, BWL Krixix on the server).
+CUT_ZONES = {3428, 3429, 3456}
+
 TRASH_RE = re.compile(r'(Trash\d*|RANDOMBOSSDROPS|Ent)$')
 
 # WorldBosses/ table names -> clean display name. Several bosses have more than
@@ -90,14 +98,8 @@ def zone_for_table(tname):
     return None, None
 
 
-# item id -> source, for items missing from the AtlasLoot copy (answers from the user).
-MANUAL_SOURCES = {
-    26231: {"zoneId": 2677, "otherName": "Master Elemental Shaper Krixix"},  # Cloak of Untold Secrets (2026-09-25)
-}
-
-
 def main():
-    id_tables, _ = sd.atlasloot()
+    id_tables, _ = sd.loot_tables()
     renum = {}
     try:
         renum = {int(k): v for k, v in json.load(open(RENUMBER)).items()}
@@ -108,7 +110,9 @@ def main():
     except OSError:
         phases = {}
 
-    npcs = json.load(open(DB_JSON))["npcs"]
+    npcs = sorted(json.load(open(DB_JSON))["npcs"], key=lambda n: n["id"])
+    info = sd.table_info()
+    wowhead = sd.wowhead_sources()
     npc_by_norm = {}
     for n in npcs:
         npc_by_norm.setdefault(_norm(n["name"]), n)
@@ -179,19 +183,29 @@ def main():
             out[server_id] = {"zoneId": zid, "otherName": "Trash"}
             continue
 
-        # Only override when the boss name matches a known NPC (real id + zone +
-        # working Wowhead link). A non-boss table label ("Tome", "Druid" class-set
-        # reward, ...) with no NPC match is left alone rather than guessing.
+        # A boss name that matches a known NPC gets its real id + zone + working Wowhead
+        # link. Otherwise the server's own boss (Krixix, Brigitte Abbendis, ...) gets the
+        # table's name, but only from an instance table and when the Wowhead sources have
+        # nothing else: a non-boss label ("Tome", "Druid" class-set reward, crafted plans)
+        # or a classic boss the name match missed keeps Wowhead's.
         npc = best_npc(_norm(boss_slug))
         if npc:
             out[server_id] = {"zoneId": npc["zoneId"] or zid, "npcId": npc["id"]}
+            continue
+        name, group = info.get(chosen, ("", ""))
+        wh = wowhead.get(server_id, [])
+        if name and group == "Instances" and not any(
+                "drop" not in s or s["drop"].get("zoneId") not in CUT_ZONES for s in wh):
+            out[server_id] = {"zoneId": zid, "otherName": name}
 
-    # Sources the AtlasLoot copy does not list, given by the user.
-    out.update(MANUAL_SOURCES)
-    json.dump({str(k): v for k, v in sorted(out.items())}, open(OUT, "w"), indent=0)
     matched_npc = sum(1 for v in out.values() if "npcId" in v)
-    print(f"wrote {OUT}: {len(out)} item sources ({matched_npc} matched a known NPC, "
-          f"{len(out) - matched_npc} fell back to a plain name)")
+    n_tables = len(out)
+    sources = {k: [{"drop": v}] for k, v in out.items()}
+    for iid, srcs in wowhead.items():
+        sources.setdefault(iid, srcs)
+    json.dump({str(k): v for k, v in sorted(sources.items())}, open(OUT, "w"), indent=0)
+    print(f"wrote {OUT}: {len(sources)} items, {n_tables} from the loot tables ({matched_npc} matched a known NPC, "
+          f"{n_tables - matched_npc} a plain name), {len(sources) - n_tables} from the Wowhead sources")
 
 
 if __name__ == "__main__":

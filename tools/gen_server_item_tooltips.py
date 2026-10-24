@@ -7,7 +7,7 @@ else fell back to Wowhead's live tooltip. This collects the item ids referenced 
 and the DB item icons, takes each one's tooltip lines from db.lokiy.dev's api/items.json (until Part FE: the
 VPlusItemDB.lua dump) and writes
 assets/db_inputs/server_item_tooltips.json ({id: {name, icon, tooltip}}); gen_db uses it for those item
-icons. Name and icon only matter for server items Wowhead does not know (icon from the AtlasLoot tables).
+icons. Name and icon only matter for server items Wowhead does not know (icon from db.lokiy.dev).
 
 Usage:
   python tools/gen_server_item_tooltips.py [--dry-run]
@@ -33,18 +33,6 @@ TS_RES = [re.compile(r"fromItemId\(\s*(\d+)"), re.compile(r"itemId:\s*(\d+)")]
 ICON_OVERRIDES = {
     34323: "inv_potion_21",  # Flask of Indomitable Might
 }
-ATLAS_ICON_RE = re.compile(r'\{\s*(\d+),\s*"([A-Za-z][^"]*)"')
-
-
-def all_atlasloot_icons(repo):
-    """{item_id: icon} from every AtlasLoot table, incl. the crafting lists (Core/Spells.lua), for server
-    items Wowhead does not know."""
-    icons = {}
-    for p in sorted(glob.glob(os.path.join(repo, "CSV's/AtlasLoot/**/*.lua"), recursive=True)):
-        txt = open(p, encoding="utf8", errors="ignore").read()
-        for iid, icon in ATLAS_ICON_RE.findall(txt):
-            icons.setdefault(int(iid), icon.lower())
-    return icons
 EXTRA_RE = re.compile(r"var ExtraItemIcons = \[\]int32\{(.*?)\n\}", re.S)
 
 
@@ -80,7 +68,6 @@ def main():
 
     dump = sd.item_lines()
     icons = item_icons()
-    all_icons = all_atlasloot_icons(args.repo)
     out = {}
     for iid in sorted(collect_ids(args.repo)):
         full = dump.get(iid) or []
@@ -89,7 +76,7 @@ def main():
             continue
         out[str(iid)] = {
             "name": lines[0],
-            "icon": ICON_OVERRIDES.get(iid) or icons.get(iid) or all_icons.get(iid, ""),
+            "icon": ICON_OVERRIDES.get(iid) or icons.get(iid, ""),
             "tooltip": build_tooltip(lines, parse_item(full).get("quality")),
         }
 

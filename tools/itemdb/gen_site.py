@@ -18,6 +18,9 @@ and writes plain HTML pages (Caddy serves them from disk):
   /api/items.json         every item for other sites (lokiy.dev/loot): name, quality, icon URL, tooltip lines with
                           their colour class, custom flag, random affixes. db.lokiy.dev is the only item source.
   /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there)
+  /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
+                          instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
+                          sources (wowhead_sources.json) for what AtlasLoot doesn't cover. The sim's only source data.
   /style.css, /site.js
 
 Scope (Lokiy 2026-10-04): custom items = item ids that do not exist in classic 1.12 (above 24283) plus the items
@@ -195,22 +198,48 @@ def clean_label(s, codes):
     return re.sub(r"\s+", " ", s).strip(" ,")
 
 
+def craft_items():
+    """{spell id: crafted item id} from AtlasLoot's Core/Spells.lua (crafting rows name the recipe spell, "s2329", or
+    the enchanting spell, "e14293", whose made item is ["item"])."""
+    txt = open(os.path.join(ATLAS, "Core", "Spells.lua"), encoding="utf-8", errors="replace").read()
+    out = {}
+    for m in re.finditer(r'\[(\d+)\]\s*=\s*\{(.*?)\n\t*\}', txt, re.S):
+        c = re.search(r'\["(?:craftItem|item)"\]\s*=\s*(\d+)', m.group(2))
+        if c:
+            out[int(m.group(1))] = int(c.group(1))
+    return out
+
+
 def load_loot_tables():
-    """{table_key: [(item_id, icon, display_name, is_new)]} in AtlasLoot order (id 0 rows are spacers / headers)."""
-    tables = {}
+    """({table_key: [(item_id, icon, display_name, is_new)]} in AtlasLoot order (id 0 rows are spacers / headers),
+    {table_key: AtlasLoot folder (Instances, WorldBosses, Crafting, ...)}).
+
+    Some tables open one tab deeper (BWLRazorgore, AQ40Skeram, ...) or without spaces ("BWLKrixix ={"), and some rows
+    end in ";". Crafting rows name the
+    recipe spell ("s2329", "e14293"): they get the crafted item (no icon: theirs is the spell's), and are left out when
+    it makes none (enchants)."""
+    craft = craft_items()
+    tables, groups = {}, {}
     for path in sorted(glob.glob(os.path.join(ATLAS, "**", "*.lua"), recursive=True)):
         rel = os.path.relpath(path, ATLAS)
         if rel.startswith(("Locale", "TableRegister", "Core", "Libs")):
             continue
         txt = open(path, encoding="utf-8", errors="replace").read()
-        for m in re.finditer(r'^\t(\w+) = \{\n(.*?)^\t\},?', txt, re.M | re.S):
+        for m in re.finditer(r'^\t\t?(\w+) ?= ?\{\n(.*?)^\t\},?', txt, re.M | re.S):
             rows = []
-            for e in re.finditer(r'\{\s*(\d+),\s*"([^"]*)",\s*"([^"]*)"(.*?)\},?\s*$', m.group(2), re.M):
-                rows.append((int(e.group(1)), e.group(2).lower(), re.sub(r"^=q\d=", "", e.group(3)),
-                             bool(re.search(r'"N"\s*,?\s*$', e.group(4).strip()))))
-            if any(r[0] for r in rows):
-                tables.setdefault(m.group(1), rows)
-    return tables
+            for e in re.finditer(r'\{\s*"?([se]?)(\d+)"?,\s*"([^"]*)",\s*"([^"]*)"(.*?)\}[,;]?\s*$', m.group(2), re.M):
+                iid = int(e.group(2))
+                if e.group(1):
+                    iid = craft.get(iid)
+                    if not iid:
+                        continue
+                # a crafting row's icon is the recipe spell's, not the item's
+                rows.append((iid, "" if e.group(1) else e.group(3).lower(), re.sub(r"^=q\d=", "", e.group(4)),
+                             bool(re.search(r'"N"\s*,?\s*$', e.group(5).strip()))))
+            if any(r[0] for r in rows) and m.group(1) not in tables:
+                tables[m.group(1)] = rows
+                groups[m.group(1)] = rel.split(os.sep)[0]
+    return tables, groups
 
 
 def tables_by_name(names, tables):
@@ -229,6 +258,20 @@ def mob_table(by_name, mob, zones):
     if len(keys) > 1:
         keys = [(k, c) for k, c in keys if c in zones]
     return keys[0][0] if len(keys) == 1 else None
+
+
+# Drops that neither AtlasLoot nor the loot tracker has, from Lokiy: {table key: [item ids]}. Added to the end of the
+# table like the tracked drops.
+MANUAL_DROPS = {
+    "BWLKrixix": [26231],  # Cloak of Untold Secrets (2026-09-25)
+}
+
+
+def add_manual_drops(tables, items):
+    for key, ids in MANUAL_DROPS.items():
+        have = {r[0] for r in tables.get(key, [])}
+        tables[key] = tables.get(key, []) + [(i, "", items[i]["name"], False) for i in ids
+                                             if i in items and i not in have]
 
 
 def add_tracked_drops(tables, names, items):
@@ -430,8 +473,9 @@ def main():
     cache_icons = add_cache_items(items)
     addon_icons = add_addon_items(items)
     names, cat_order = load_table_names()
-    tables = load_loot_tables()
+    tables, table_groups = load_loot_tables()
     tracked = add_tracked_drops(tables, names, items)
+    add_manual_drops(tables, items)
     codes = load_text_codes()
     wowhead = load_wowhead()
 
@@ -921,6 +965,21 @@ your filters, so you can share a search.</p></section>
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(api, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(tmp, os.path.join(out, "api", "items.json"))
+    # ---- where items come from, for other projects (the sim reads only this): AtlasLoot tables incl. the loot
+    # tracker's drops, then the Wowhead classic sources (sim gen_db -dumpWowheadSources, UIItemSource JSON by item id)
+    src_api = {"tables": {}, "wowhead": {}}
+    for key, rows in tables.items():
+        name, cat = names.get(key, ("", "Other"))
+        src_api["tables"][key] = {"name": name, "instance": cat, "group": table_groups.get(key, ""),
+                                  "items": [[r[0], r[2]] for r in rows if r[0]]}
+    wowhead_sources = os.path.join(HERE, "wowhead_sources.json")
+    if os.path.exists(wowhead_sources):
+        with open(wowhead_sources, encoding="utf-8") as f:
+            src_api["wowhead"] = json.load(f)
+    tmp = os.path.join(out, "api", "sources.json.tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(src_api, f, ensure_ascii=False, separators=(",", ":"))
+    os.replace(tmp, os.path.join(out, "api", "sources.json"))
     for n, chunk in chunks.items():
         with open(os.path.join(out, "tt", f"{n}.json"), "w", encoding="utf-8") as f:
             json.dump(chunk, f, separators=(",", ":"))

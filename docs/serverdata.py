@@ -5,9 +5,12 @@ See docs/private-server-item-rules.md for the ruleset these implement.
   parse_vplus.py     -> custom_items.json + renumber.json  (stats + server IDs, from db.lokiy.dev's items)
   gen_include.py     -> included_items.json + add_items.json  (Rule 1 allowlist)
   gen_phases.py      -> item_phases.json  (Rule 3, 6-phase by drop location)
+  gen_sources.py     -> item_sources.json  (every item's sources, from db.lokiy.dev's)
   gen_removed_items.py -> removed_items.json  (Rule 2/3 hard exclusions)
+
+Item data and source data come only from db.lokiy.dev (api/items.json, api/sources.json): the sim reads no AtlasLoot,
+Wowhead or other copy of its own.
 """
-import glob
 import json
 import os
 import re
@@ -16,8 +19,10 @@ import subprocess
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # db.lokiy.dev's item list (tools/itemdb/gen_site.py), the only source of item data. VPLUS_ITEMS overrides the path.
 ITEMS_JSON = os.environ.get("VPLUS_ITEMS", "/var/www/db/api/items.json")
+# db.lokiy.dev's item sources (tools/itemdb/gen_site.py): its AtlasLoot tables, with the drops the loot tracker added,
+# and the Wowhead classic sources. The only source data. VPLUS_SOURCES overrides the path.
+SOURCES_JSON = os.environ.get("VPLUS_SOURCES", "/var/www/db/api/sources.json")
 QUALITY_NAMES = {0: "Poor", 1: "Common", 2: "Uncommon", 3: "Rare", 4: "Epic", 5: "Legendary"}
-ATLAS = os.path.join(REPO, "CSV's/AtlasLoot")
 DB_JSON = os.path.join(REPO, "assets/database/db.json")
 
 # ---------------------------------------------------------------------------
@@ -54,7 +59,7 @@ def item_lines():
 
 
 # ---------------------------------------------------------------------------
-# AtlasLoot addon data
+# db.lokiy.dev item sources
 # ---------------------------------------------------------------------------
 
 # Tables we never read: AQ20 / AQ40 / Naxxramas, the Atiesh (Naxx questline) frame
@@ -81,57 +86,39 @@ def table_bucket(t):
     return 1  # every 5-man dungeon, Crafting, PvP, WorldEvents, non-ZG Factions
 
 
-def _craft_item_map():
-    """AtlasLoot Crafting rows use spell ids; resolve to the crafted item id."""
-    txt = open(os.path.join(ATLAS, "Core/Spells.lua"), encoding="utf8", errors="ignore").read()
-    out = {}
-    for m in re.finditer(r'\[(\d+)\]\s*=\s*\{(.*?)\n\t*\}', txt, re.S):
-        cm = re.search(r'\["craftItem"\]\s*=\s*(\d+)', m.group(2))
-        if cm:
-            out[m.group(1)] = int(cm.group(1))
-    return out
+def _sources():
+    with open(SOURCES_JSON, encoding="utf8") as f:
+        return json.load(f)
 
 
-def atlasloot():
-    """Returns (id_tables, names).
+def loot_tables():
+    """Returns (id_tables, names) from db.lokiy.dev's loot tables (AtlasLoot's, plus the loot tracker's drops).
 
       id_tables : {item_id: set(table_name)}   -- every table an item appears in
-      names     : set(lower-case item names AtlasLoot lists)  -- for name matching
+      names     : set(lower-case item names the tables list)  -- for name matching
 
     WorldBosses tables get a synthetic 'WB' prefix so they bucket to phase 2.
     """
-    craft = _craft_item_map()
     id_tables = {}
     names = set()
-    for path in glob.glob(ATLAS + "/**/*.lua", recursive=True):
-        if any(x in path for x in ("/Core/", "/Libs/", "/Tooltips/", "TableRegister")):
-            continue
-        is_wb = "WorldBosses" in path
-        txt = open(path, encoding="utf8", errors="ignore").read()
-        # table name -> its body, so we can attribute ids to tables. Some tables open one tab deeper (instances.en.lua:
-        # BWLRazorgore, ZGJeklik, AQ40Skeram, ...) but still close with one tab.
-        for tm in re.finditer(r'\n\t\t?([A-Za-z][A-Za-z0-9_]+) = \{\n(.*?)\n\t\};', txt, re.S):
-            tname = tm.group(1)
-            if is_wb:
-                tname = "WB" + tname
-            body = tm.group(2)
-            row_ids = set()
-            for rm in re.finditer(r'\{\s*"?(s?\d{3,6})"?\s*,\s*"[A-Za-z]', body):
-                tok = rm.group(1)
-                if tok.startswith("s"):
-                    it = craft.get(tok[1:])
-                    if it:
-                        row_ids.add(it)
-                else:
-                    v = int(tok)
-                    if 1000 <= v <= 99999:
-                        row_ids.add(v)
-            for i in row_ids:
-                id_tables.setdefault(i, set()).add(tname)
-            if table_bucket(tname) is not None:   # skip AQ/Naxx/Scourge names
-                for nm in re.findall(r'=q\d+=([^"]+?)"', body):
-                    names.add(nm.strip().lower())
+    for key, t in _sources()["tables"].items():
+        tname = "WB" + key if t["group"] == "WorldBosses" else key
+        for iid, name in t["items"]:
+            id_tables.setdefault(iid, set()).add(tname)
+            if name and table_bucket(tname) is not None:   # skip AQ/Naxx/Scourge names
+                names.add(name.strip().lower())
     return id_tables, names
+
+
+def table_info():
+    """{table_name ('WB' prefix like loot_tables()): (display name, AtlasLoot folder)} of db.lokiy.dev's loot tables."""
+    return {("WB" + key if t["group"] == "WorldBosses" else key): (t["name"], t["group"])
+            for key, t in _sources()["tables"].items()}
+
+
+def wowhead_sources():
+    """{item_id: [UIItemSource dicts]}: db.lokiy.dev's Wowhead classic sources, for what its loot tables don't cover."""
+    return {int(k): v for k, v in _sources()["wowhead"].items()}
 
 
 def wb_prefix_ok(t):

@@ -25,7 +25,8 @@ go run ./tools/database/gen_db -outDir=./assets -gen=db
 python docs/remap_presets.py     # rewrite ui/*/gear_sets/*.gear.json through renumber.json
 ```
 
-`docs/serverdata.py` holds the shared AtlasLoot / dump parsing.
+`docs/serverdata.py` reads db.lokiy.dev's `api/items.json` and `api/sources.json`, the pipeline's only item and
+source data (Parts FE, FK).
 `docs/gen_add_items.py` and `docs/gen_removed_items.py` are superseded by
 `gen_include.py` (kept for reference; not run). `removed_items.json` is now `[]`.
 The Go side (`tools/database/gen_db/`) stays under `tools/` — it's not one of
@@ -103,7 +104,7 @@ in the pipeline section above and in "Determinism" below.
 
 | File | Role |
 |---|---|
-| `AtlasLoot/` (the server's own addon fork) | **Leading source for what exists and where it drops.** |
+| db.lokiy.dev `/var/www/db/api/sources.json` (`serverdata.loot_tables()` / `table_info()` / `wowhead_sources()`, `VPLUS_SOURCES` overrides the path) | **Leading source for what exists and where it drops** (Part FK, 2026-10-24): the server's own AtlasLoot fork (`CSV's/AtlasLoot`, read by `tools/itemdb/gen_site.py`) with the drops the loot tracker saw and Lokiy's manual ones, plus Wowhead's classic sources (`tools/itemdb/wowhead_sources.json`) for what AtlasLoot doesn't cover. The sim reads no AtlasLoot or Wowhead source data of its own. |
 | db.lokiy.dev `/var/www/db/api/items.json` (`serverdata.item_lines()`, `VPLUS_ITEMS` overrides the path) | The server's tooltip lines (from the game client's item cache, built by `tools/itemdb/gen_site.py`). **Leading source for all stats / weapon damage.** Since Part FE (2026-10-23); before that the `VPlusItemDB.lua` tooltip dump of 2026-08-26, which db.lokiy.dev still uses as its base. Broad extract — contains far more than the server actually uses, so it is NOT an existence signal. |
 | `Items.xlsx` | Stat backup only (also a broad dump, ~8000 rows — not curated). |
 
@@ -372,14 +373,14 @@ linger as duplicates.
 
 ## Rule 5 — Loot source (per user 2026-09-11)
 
-The "Source" shown in the item picker is set from the server's own AtlasLoot fork,
-not the generic upstream wowsims retail-AtlasLoot data (`assets/db_inputs/atlasloot_db.json`,
-fetched from a different, unrelated GitHub repo and still used as a fallback for
-items this rule skips).
+The "Source" shown in the item picker comes only from db.lokiy.dev (`api/sources.json`, Part FK): its loot tables
+(the server's AtlasLoot fork + loot tracker drops) first, its Wowhead classic sources for everything else. `gen_db`
+replaces every item's sources with `item_sources.json`, so the generic upstream data (`atlasloot_db.json`, the Wowhead
+gear planner) never shows; an item db.lokiy.dev has no source for shows none.
 
 `docs/gen_sources.py`:
-- Scope: `Instances/` (dungeons + raids) and `WorldBosses/`. `Crafting/`/`Factions/`/
-  `PvP/` sources are left as whatever they already were — out of scope for now.
+- Scope: `Instances/` (dungeons + raids) and `WorldBosses/` tables. Crafted, quest, vendor and reputation sources
+  come from db.lokiy.dev's Wowhead sources.
 - For each item, picks the AtlasLoot table matching its own assigned phase
   (preferring a named boss table over a `*Trash*` table), maps the table's prefix
   to a real vanilla zone id (`ZONE_PREFIXES`, ordered longest-prefix-first so e.g.
@@ -388,21 +389,20 @@ items this rule skips).
   match the boss name against the sim DB's **existing** NPC roster (`db.json` npcs,
   itself wowhead-derived) by normalized name (exact, or substring with the shorter
   string covering ≥50% of the longer one, only for names ≥6 chars).
-- **Never invents an NPC id.** If no confident NPC match is found, the item's
-  existing source is left untouched — this is what keeps ambiguous/non-boss table
-  labels (a class-set reward table, a named loot bundle like `DMTome`) from
-  producing a wrong zone.
+- **Never invents an NPC id.** On a name clash the lowest id (the classic NPC) wins. If no confident NPC match is
+  found, an instance table's item gets the table's db.lokiy.dev name as `otherName` (the server's own bosses:
+  Krixix, Brigitte Abbendis, ...) — unless db.lokiy.dev's Wowhead sources have another source for it (a drop
+  outside AQ20/AQ40/Naxx, or a quest / crafted / vendor / rep source), which it keeps. That keeps non-boss table
+  labels (a class-set reward table, a named loot bundle like `DMTome`, crafted plans) from producing a wrong source.
 - Trash-suffixed tables (`*Trash`, `*Trash1/2`, `*RANDOMBOSSDROPS`) get
   `zone + otherName: "Trash"`, no NPC lookup.
 - World bosses get a minted display-only zone (id `900001`, name "World Boss" —
   not a real WoW zone id, registered via `db.MergeZone` in `gen_db`) and a small
   hand-verified name alias table (`WB_NAMES`) since none of these bosses exist in
   the NPC ground truth (no current item referenced them with a real npc id before).
-- Output `assets/db_inputs/item_sources.json` = `{server_id: {zoneId, npcId?,
-  otherName?}}`. `gen_db` applies it as a **full replacement** of `item.Sources`
-  (proto merge only appends repeated fields, so this must be set directly, like
-  the phase overrides) — must run after the renumber/phase loads, inside the
-  same per-item loop, and after `db.MergeZone` registers zone `900001`.
+- Output `assets/db_inputs/item_sources.json` = `{server_id: [UIItemSource, ...]}` (db.json's camelCase JSON).
+  `gen_db` replaces **every** item's `item.Sources` with it right after loading it, before the filters (proto merge
+  only appends repeated fields, so this must be set directly), and registers zone `900001`.
 
 ### Determinism
 
@@ -431,8 +431,8 @@ fixed (2026-09-12):
 
 ## Known implementation wrinkles
 
-- `gen_phases.py` goes through `serverdata.atlasloot()`, which covers all seven AtlasLoot folders (`Instances/`,
-  `Crafting/`, `Factions/`, `PvP/`, `WorldBosses/`, `WorldEvents/`, `Sets/`). (It used to scan only `Instances/`.)
+- `gen_phases.py` goes through `serverdata.loot_tables()` (db.lokiy.dev), which covers all seven AtlasLoot folders
+  (`Instances/`, `Crafting/`, `Factions/`, `PvP/`, `WorldBosses/`, `WorldEvents/`, `Sets/`).
 - `gen_phases.py` table-prefix match: the Naxx prefix is `NAX`, not `NAXX`.
 - Custom sets (Talonclaw, Ursoc, Cataclysm, Stonefury, Righteous) have coded set bonuses in
   `sim/*/item_sets_pve.go` since 2026-09-13 (CHANGES.md Part C).

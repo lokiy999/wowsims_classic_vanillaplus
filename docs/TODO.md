@@ -216,10 +216,11 @@ the sim.
   have no AtlasLoot raid source on this server. Fine unless the server raids that content.
 - Why the generic Wowhead-derived pipeline failed to tag `setName` for some items without a `custom_items.json`
   override was never diagnosed (patched item by item: Righteous Boots, Cenarion Armor, Striker's Garb, ...).
-- AtlasLoot-based loot sources only cover dungeons, raids and world bosses; `Crafting/`, `Factions/` and `PvP/` sources
-  keep the generic (retail) data. Correcting those is a separate follow-up.
-- `docs/private-server-item-rules.md` "Known implementation wrinkles" still says `gen_phases.py` "only scans
-  `Instances/`"; it now goes through `serverdata.atlasloot()` and covers all seven AtlasLoot folders.
+- Loot-table sources only cover dungeons, raids and world bosses; crafted, faction, PvP, quest and vendor sources are
+  db.lokiy.dev's Wowhead classic ones (Part FK). The database could build those from its AtlasLoot `Crafting/`,
+  `Factions/` and `PvP/` tables instead.
+- The sim's NPC list (Wowhead-derived) links about 60 boss drops to Season of Discovery NPC ids (Ghamoo-ra, Aku'mai,
+  Thermaplugg, Lady Sarevess ...) where only that copy exists. NPC ids from db.lokiy.dev would fix it.
 
 ## Class notes still open (from the 2026-09-19/20 audits; checked against the code 2026-09-29, Part DO)
 
@@ -311,9 +312,10 @@ there is more to say.
 
 ## Items from db.lokiy.dev (Part FE)
 
-- 16 new Scarlet Monastery items (26285 Scarlet Edge, 26382 Mograine's Might, 26397 Whitemane's High Boots, ...) are
-  in no AtlasLoot table, so `gen_phases.py` puts them in phase 1 / ilvl 66 instead of phase 6. db.lokiy.dev's loot
-  tables know some of their bosses from the loot tracker (Part FD); `gen_phases.py` could read those.
+- 14 new Scarlet Monastery items (26285 Scarlet Edge, 26382 Mograine's Might, 26397 Whitemane's High Boots, ...) are
+  in no loot table, so `gen_phases.py` puts them in phase 1 / ilvl 66 instead of phase 6. Since Part FK the sim reads
+  db.lokiy.dev's loot tables, so each one moves to phase 6 with its boss as soon as the loot tracker sees it drop
+  (26300 Hospitaller Codex, 26348 Champion's Broken Tooth and 26330 Kassan's Signet already did).
 - The sim DB's `unique` flag still comes from the Wowhead base data: the 218 PvP items the server made non-Unique
   keep it (only matters for rings / trinkets / weapons).
 - 26194 Golden Ceremonial Bloodletter: the server added a Use spell (34275) that db.lokiy.dev's tooltip lines don't
