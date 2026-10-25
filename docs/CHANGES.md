@@ -5019,3 +5019,15 @@ suffix lists pooled per item cache group with the loot tracker's drops, Wowhead'
   tracker-only ones (1,689 items).
 - Search: unchanged (stat filter from Wowhead's affix stats, "has random affixes" now also counts tracker-only
   suffixes; 1,689 items).
+
+## Part GD — db.lokiy.dev: Wowhead affix lists shared within an item cache group (2026-10-25)
+
+Lokiy (via the hub): items of one randomProperty group roll from the same server list, so share Wowhead's lists too,
+not only the loot tracker's suffixes.
+- `Affixes.borrowed()`: an item with no Wowhead list takes the lists of the other items in its group; an item with a
+  list takes only the suffixes whose name was awarded (WebDKP) or seen (loot tracker) but is missing from its own
+  list. Item pages tag those "from its group (<item>)" (linked) and show no chance for them (Wowhead's chances are
+  per item and aren't copied). api/items.json "affixes" includes them; the search's "has random affixes" too.
+- Effect today: only 17982 Ragnaros Core gains (1 -> 55 suffixes, from 10795 Drakeclaw Band, group 3486); its 16
+  awarded names had "stats unknown" and now show their tiers (e.g. of the Owl +9-10 Intellect, +9-10 Spirit). Every
+  other item in a group already has its own Wowhead list, and no awarded / seen name is missing from one.

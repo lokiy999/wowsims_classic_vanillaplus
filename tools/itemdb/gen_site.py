@@ -637,6 +637,10 @@ def main():
     # pooled per item cache group (affixes.py)
     affix_ids = load_affix_ids()
     afx = Affixes({i: [r[0] for r in rows] for i, rows in affix_ids.items()})
+
+    def afx_rows_of(i):  # with the suffix names awarded / seen on the item, for borrowing from its group
+        wanted = set(seen_affixes(items[i]["name"], loot_names.get(i, {}))) | set(dkp_suffixes.get(i, {}))
+        return afx.rows(i, wanted)
     loot_rolls = load_rolls()
     loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
                  + (f', updated {date.fromtimestamp(loot_time).isoformat()}' if loot_time else '')
@@ -741,13 +745,15 @@ def main():
                          f'{loot_note}</section>')
         seen =seen_affixes(it["name"], loot_names.get(iid, {}))
         awarded = dkp_suffixes.get(iid, {})
-        afx_rows = afx.rows(iid)
+        afx_rows = afx_rows_of(iid)
         if afx_rows or seen or awarded:
-            groups, group_seen, only_seen = {}, {}, {}
-            for sid, name, effs, n_item, n_group, from_wh in afx_rows:
+            groups, group_seen, only_seen, donor = {}, {}, {}, {}
+            for sid, name, effs, n_item, n_group, from_wh, from_item in afx_rows:
                 groups.setdefault(name, []).append(", ".join(effs))
                 group_seen[name] = group_seen.get(name, 0) + n_group - n_item  # on other items of its group
-                only_seen[name] = only_seen.get(name, True) and not from_wh
+                only_seen[name] = only_seen.get(name, True) and not from_wh and not from_item
+                if from_item and not from_wh:
+                    donor.setdefault(name, from_item)
             for name in list(seen) + list(awarded):
                 groups.setdefault(name, [])
             chances = affix_chances.get(iid, {})
@@ -762,12 +768,18 @@ def main():
                             f'{group_seen[name]}&times; on its group</span>')
                 if only_seen.get(name):
                     tag += '<span class="tag" title="Not in Wowhead\'s list for this item">seen on Vanilla+</span>'
+                if name in donor and name not in chances:
+                    d = items.get(donor[name], {"name": str(donor[name])})
+                    tag += (f'<span class="tag" title="Not in Wowhead\'s list for this item: from the list of an item that '
+                            f'rolls from the same server list">from its group (<a href="/item/{donor[name]}">'
+                            f'{esc(d["name"])}</a>)</span>')
                 rolls = loot_rolls.get(iid, {}).get(f'{it["name"]} {name}', {})
                 if rolls:  # the exact tiers seen, e.g. "rolled +15 Arcane Resistance" (or "+14 ... 1x, +15 ... 2x")
                     tag += ('<span class="muted"> rolled ' + esc(", ".join(r if len(rolls) == 1 else f"{r} {n}x"
                                                                      for r, n in sorted(rolls.items()))) + '</span>')
                 pct = (f'<span class="rate">{chances[name]:g}%</span>' if name in chances
-                       else f'<span class="rate muted">&lt;{min(chances.values()):g}%</span>' if chances else "")
+                       else f'<span class="rate muted">&lt;{min(chances.values()):g}%</span>' if chances and name not in donor
+                       else "")
                 lis.append(f'<li class="{"seen" if name in seen or name in awarded or group_seen.get(name) else ""}"><span class="affix" style="color:{color}">{esc(it["name"])} '
                            f'<b>{esc(name)}</b></span>{tag}{pct}<span class="muted affix-stats">{effs}</span></li>')
             chance_note = (" Roll chances from Wowhead; it only lists affixes it has seen drop, the others are rarer "
@@ -1077,7 +1089,7 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
         ic = icon_url(icons.get(i), "small")  # /icons/<name>_s.jpg
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
                       info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
-                      1 if affixes.get(i) or afx.rows(i) or dkp_suffixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
+                      1 if affixes.get(i) or afx_rows_of(i) or dkp_suffixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
                       affix_stats.get(i, 0)])
     with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
         json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,
@@ -1140,8 +1152,9 @@ your filters, so you can share a search.</p></section>
             e["icon"] = icon_url(icons[i], "medium", absolute=True)
         if is_custom(i):
             e["custom"] = 1
-        if afx.rows(i):  # [[suffix id, name, [effect lines]]] from the DBCs, incl. the ones only seen on Vanilla+
-            e["affixes"] = [[sid, name, effs] for sid, name, effs, *_ in afx.rows(i)]
+        rows_i = afx_rows_of(i)
+        if rows_i:  # [[suffix id, name, [effect lines]]] from the DBCs, incl. tracker-seen and group-borrowed ones
+            e["affixes"] = [[sid, name, effs] for sid, name, effs, *_ in rows_i]
         api[i] = e
     os.makedirs(os.path.join(out, "api"), exist_ok=True)
     tmp = os.path.join(out, "api", "items.json.tmp")

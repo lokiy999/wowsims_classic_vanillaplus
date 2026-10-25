@@ -7,7 +7,10 @@
 - Which suffixes an item can roll is server-side (not in the client): Wowhead's per-item lists for classic items,
   plus every suffix Lokiy's loot tracker saw (loot.json recentDrops[].suffix), pooled per item cache group
   (~/itemcache/items.json item.randomProperty: the items of one group roll from the same list).
-- Chances stay Wowhead's (affix_chances.json); our own counts are shown next to them ("seen N×").
+  An item with no Wowhead list (or missing an awarded / seen suffix name) also takes the Wowhead list of another item
+  in its group, marked "from its group (<item>)" (Part GD).
+- Chances stay Wowhead's (affix_chances.json), per item only (not copied to group-borrowed suffixes); our own counts
+  are shown next to them ("seen N×").
 """
 import json
 import os
@@ -99,15 +102,42 @@ class Affixes:
             self.items[iid] = {sid: (self.seen.get(iid, {}).get(sid, 0), pooled.get(sid, 0)) for sid in ids
                                if sid in self.suffixes}
         self.wowhead = {iid: set(v) for iid, v in wowhead_ids.items()}
+        self.members = members
+        self.group_seen = group_seen
 
-    def rows(self, iid):
-        """[(suffix id, name, effects, seen on item, seen in group, from Wowhead)] to show for the item: the V+-only
-        suffixes without a display name only once seen."""
+    def borrowed(self, iid, wanted=()):
+        """{suffix id: donor item id}: suffixes from Wowhead's lists of the other items in this item's randomProperty
+        group (they roll from the same server list; Lokiy 2026-10-25). All of them when the item has no Wowhead list
+        of its own, else only those whose name is in `wanted` (awarded / seen names its own list misses)."""
+        g = self.groups.get(iid)
+        if not g:
+            return {}
+        own = self.items.get(iid, {})
+        mine = self.wowhead.get(iid)
+        out = {}
+        for m in sorted(self.members.get(g, [])):
+            if m == iid:
+                continue
+            for sid in sorted(self.wowhead.get(m, ())):
+                if sid in own or sid in out or sid not in self.suffixes:
+                    continue
+                if not mine or self.suffixes[sid]["name"] in wanted:
+                    out[sid] = m
+        return out
+
+    def rows(self, iid, wanted=()):
+        """[(suffix id, name, effects, seen on item, seen in group, from Wowhead, borrowed from item id or None)] to
+        show for the item: the V+-only suffixes without a display name only once seen."""
+        entries = dict(self.items.get(iid, {}))
+        donors = self.borrowed(iid, wanted)
+        pooled = self.group_seen.get(("g", self.groups[iid]), {}) if donors else {}
+        for sid in donors:
+            entries[sid] = (0, pooled.get(sid, 0))
         out = []
-        for sid, (n_item, n_group) in sorted(self.items.get(iid, {}).items()):
+        for sid, (n_item, n_group) in sorted(entries.items()):
             s = self.suffixes[sid]
             if not s["name"] and not n_group:
                 continue
             name = s["name"] or f'"{s["label"]}" (new on Vanilla+)'
-            out.append((sid, name, s["effects"], n_item, n_group, sid in self.wowhead.get(iid, ())))
+            out.append((sid, name, s["effects"], n_item, n_group, sid in self.wowhead.get(iid, ()), donors.get(sid)))
         return out
