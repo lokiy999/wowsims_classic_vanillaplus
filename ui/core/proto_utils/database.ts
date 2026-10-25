@@ -1,6 +1,7 @@
 import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { Class, EquipmentSpec, ItemRandomSuffix, ItemSlot, ItemSpec, ItemSwap, PresetEncounter, PresetTarget, SimDatabase } from '../proto/common.js';
 import { IconData, UIDatabase, UIEnchant as Enchant, UIFaction as Faction, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
+import { loadDbIcons } from '../db_icons.js';
 import { distinct } from '../utils.js';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
@@ -21,13 +22,13 @@ export class Database {
 	static get(): Promise<Database> {
 		if (Database.loadPromise == null) {
 			if (READ_JSON) {
-				Database.loadPromise = fetch(dbUrlJson)
-					.then(response => response.json())
-					.then(json => new Database(UIDatabase.fromJson(json)));
+				Database.loadPromise = Promise.all([fetch(dbUrlJson).then(response => response.json()), loadDbIcons()]).then(
+					([json]) => new Database(UIDatabase.fromJson(json)),
+				);
 			} else {
-				Database.loadPromise = fetch(dbUrlBin)
-					.then(response => response.arrayBuffer())
-					.then(buffer => new Database(UIDatabase.fromBinary(new Uint8Array(buffer))));
+				Database.loadPromise = Promise.all([fetch(dbUrlBin).then(response => response.arrayBuffer()), loadDbIcons()]).then(
+					([buffer]) => new Database(UIDatabase.fromBinary(new Uint8Array(buffer))),
+				);
 			}
 		}
 		return Database.loadPromise;

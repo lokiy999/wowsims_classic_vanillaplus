@@ -1,3 +1,4 @@
+import { iconUrl } from '../db_icons';
 import { REPO_NAME } from '../constants/other.js';
 import { Player } from '../player.js';
 import { Player as PlayerProto, ResourceType } from '../proto/api.js';
@@ -235,25 +236,25 @@ export const classIcons: Record<Class, string> = {
 };
 
 export const titleIcons: Record<Spec, string> = {
-	[Spec.SpecBalanceDruid]: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_starfall.jpg',
-	[Spec.SpecFeralDruid]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_catform.jpg',
-	[Spec.SpecFeralTankDruid]: 'https://wow.zamimg.com/images/wow/icons/large/ability_racial_bearform.jpg',
-	[Spec.SpecRestorationDruid]: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingtouch.jpg',
-	[Spec.SpecElementalShaman]: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg',
+	[Spec.SpecBalanceDruid]: 'https://db.lokiy.dev/icons/spell_nature_starfall.jpg',
+	[Spec.SpecFeralDruid]: 'https://db.lokiy.dev/icons/ability_druid_catform.jpg',
+	[Spec.SpecFeralTankDruid]: 'https://db.lokiy.dev/icons/ability_racial_bearform.jpg',
+	[Spec.SpecRestorationDruid]: 'https://db.lokiy.dev/icons/spell_nature_healingtouch.jpg',
+	[Spec.SpecElementalShaman]: 'https://db.lokiy.dev/icons/spell_nature_lightning.jpg',
 	[Spec.SpecEnhancementShaman]: 'https://wow.zamimg.com/images/wow/icons/large/ability_shaman_stormstrike.jpg',
-	[Spec.SpecRestorationShaman]: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_magicimmunity.jpg',
-	[Spec.SpecTankShaman]: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_lavaflow.jpg',
+	[Spec.SpecRestorationShaman]: 'https://db.lokiy.dev/icons/spell_nature_magicimmunity.jpg',
+	[Spec.SpecTankShaman]: 'https://db.lokiy.dev/icons/spell_shaman_lavaflow.jpg',
 	[Spec.SpecHunter]: 'https://wow.zamimg.com/images/wow/icons/large/class_hunter.jpg',
 	[Spec.SpecMage]: 'https://wow.zamimg.com/images/wow/icons/large/class_mage.jpg',
 	[Spec.SpecRogue]: 'https://wow.zamimg.com/images/wow/icons/large/class_rogue.jpg',
-	[Spec.SpecHolyPaladin]: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holybolt.jpg',
-	[Spec.SpecProtectionPaladin]: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_devotionaura.jpg',
-	[Spec.SpecRetributionPaladin]: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_auraoflight.jpg',
+	[Spec.SpecHolyPaladin]: 'https://db.lokiy.dev/icons/spell_holy_holybolt.jpg',
+	[Spec.SpecProtectionPaladin]: 'https://db.lokiy.dev/icons/spell_holy_devotionaura.jpg',
+	[Spec.SpecRetributionPaladin]: 'https://db.lokiy.dev/icons/spell_holy_auraoflight.jpg',
 	[Spec.SpecHealingPriest]: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_guardianspirit.jpg',
 	[Spec.SpecShadowPriest]: 'https://wow.zamimg.com/images/wow/icons/large/class_priest.jpg',
 	[Spec.SpecWarlock]: 'https://wow.zamimg.com/images/wow/icons/large/class_warlock.jpg',
 	[Spec.SpecWarrior]: 'https://wow.zamimg.com/images/wow/icons/large/class_warrior.jpg',
-	[Spec.SpecTankWarrior]: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg',
+	[Spec.SpecTankWarrior]: 'https://db.lokiy.dev/icons/ability_warrior_defensivestance.jpg',
 };
 
 export const raidSimIcon = '/classic/assets/img/raid_icon.png';
@@ -288,7 +289,7 @@ enum IconSizes {
 export function getSpecIcon(klass: Class, specNumber: number, size: IconSizes = IconSizes.Medium): string {
 	const fileName = talentTreeIcons[klass][specNumber];
 
-	return `https://wow.zamimg.com/images/wow/icons/${size}/${fileName}`;
+	return iconUrl(fileName, size);
 }
 
 // Returns the icon for a given spec based on talent point allocation.
@@ -300,7 +301,7 @@ export function getTalentTreeIcon(spec: Spec, talentsString: string, size: IconS
 
 	const fileName = talentTreeIcons[specToClass[spec]][specNumber];
 
-	return `https://wow.zamimg.com/images/wow/icons/${size}/${fileName}`;
+	return iconUrl(fileName, size);
 }
 
 // Gets the URL for the individual sim corresponding to the given spec.

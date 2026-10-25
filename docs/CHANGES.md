@@ -4863,3 +4863,31 @@ for what's still missing. Everything also in api/sources.json.
   back to wow.zamimg.com: an unknown icon name gets the local question mark. `ICON_URL` is gone; the onerror
   fallbacks, the favicon and the search index use `/icons/...`; `site.js` / `search.js` build `/icons/<name>_s.jpg`.
   No wow.zamimg.com URL is left under /var/www/db.
+
+## Part FR — sim.lokiy.dev: item links and icons from db.lokiy.dev (2026-10-25)
+
+- Lokiy (hub docs/PLAN.md "Website-only item pipeline"): sim item links, tooltips and icons from db.lokiy.dev,
+  Wowhead only where our own data is missing. Spell / talent links and tooltips stay on Wowhead (db.lokiy.dev spell
+  pages are on hold, 2026-10-25).
+- **Item links** (`action_id.ts`): `makeItemUrl()` -> `https://db.lokiy.dev/item/<id>` for every item with a local
+  tooltip (3,669 of the sim's 3,709 items and all 209 consumable / enchant items: those tooltips are built from
+  db.lokiy.dev's `api/items.json` lines by the item pipeline). The other 40 (PvP rank pieces, Scourge Invasion and
+  a few BWL items db.lokiy.dev doesn't have) keep Wowhead's link and tooltip. Items with a local tooltip had no link
+  at all before (`setWowheadHref` skipped them, `attachLocalTippy` removed it); they now link to db.lokiy.dev and
+  keep the local tooltip. The item list's "dropped by" / "sold by" links go to the db.lokiy.dev page
+  (`makeItemSourceUrl()`, Wowhead's `#dropped-by` / `#sold-by` tabs only for Wowhead links). NPC / zone / quest /
+  spell links stay on Wowhead.
+- **Item tooltips**: already local (server tooltip lines via the pipeline, Parts EI, FE); unchanged. Not shown:
+  random suffix stats ("of the Eagle") in the local tooltip.
+- **Icons**: every icon of the client is on db.lokiy.dev (`/icons/<name>.jpg` 56 px, `<name>_s.jpg` 18 px).
+  New `tools/gen_db_icons.py` writes `assets/database/db_icons.json` (the 4,107 names it has, from
+  `/var/www/db/icons`); `ui/core/db_icons.ts` loads it with the database (`Database.get()`) and `iconUrl()` gives the
+  db.lokiy.dev URL for those, Wowhead's CDN for the rest (50 Season of Discovery / later-expansion spell icons the
+  sim DB names, e.g. ability_warlock_haunt). Used by `ActionId.makeIconUrl()` (items, spells, buffs) and the spec /
+  talent tree icons. 70 hard-coded Wowhead icon URLs in `ui/` (buffs, pets, resources, homepage) point at
+  db.lokiy.dev; 28 stay on Wowhead (class_* icons, 13 hunter pet families, a few later icons it doesn't have).
+  Medium (36 px) icons now get the 56 px file; every icon element scales it (`background-size: cover` / sized img).
+  Talent tree backgrounds and the item-list source markers (boss / quest / faction gifs) stay on Wowhead.
+- `sync_sim.sh` also runs `gen_db_icons.py` and treats `db_icons.json` as a generated file.
+- Checked on sim.lokiy.dev (warrior): 204 of 224 icons from db.lokiy.dev, all load (56 px); item picker and gear
+  slot links go to db.lokiy.dev/item/<id>, clicking a gear slot still opens the picker.

@@ -20,7 +20,8 @@ FAILED=$STATE/sim-failed.sha  # data a run failed on (not retried)
 HEALTH=${SIM_HEALTH_URL:-http://127.0.0.1:3333/classic/}
 GENERATED="assets/database/db.bin assets/database/db.json assets/database/leftover_db.bin assets/database/leftover_db.json
  assets/db_inputs/custom_items.json assets/db_inputs/renumber.json assets/db_inputs/included_items.json
- assets/db_inputs/add_items.json assets/db_inputs/item_phases.json assets/db_inputs/item_sources.json"
+ assets/db_inputs/add_items.json assets/db_inputs/item_phases.json assets/db_inputs/item_sources.json
+ assets/database/db_icons.json"
 export PATH=$HOME/.nvm/versions/node/v20.20.2/bin:$PATH:/usr/local/go/bin:$HOME/go/bin
 
 exec 8>/tmp/sim-sync.lock
@@ -53,7 +54,7 @@ log "data $SHA: building the sim"
 {
 	python3 docs/parse_vplus.py && python3 docs/gen_include.py && python3 docs/parse_vplus.py &&
 		python3 docs/gen_phases.py && python3 docs/gen_sources.py &&
-		go run ./tools/database/gen_db -outDir=./assets -gen=db
+		go run ./tools/database/gen_db -outDir=./assets -gen=db && python3 tools/gen_db_icons.py
 } >/tmp/sim-sync-pipeline.log 2>&1 || fail "pipeline, see /tmp/sim-sync-pipeline.log"
 
 SUMMARY=$(python3 tools/itemdb/sim_check.py)
