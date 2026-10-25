@@ -4954,3 +4954,20 @@ BoEs:
   (from Wowhead) is shown (`OUTSIDE_SM`).
 - 5819 Sunblaze Coif and 5756 Sliverblade drop only inside SM: stay marked as old SM items.
 - 380 items marked now. Rebuilt /var/www/db.
+
+## Part FY — db.lokiy.dev: World Boss Shared Loot (2026-10-25)
+
+Lokiy: "make the world bosses a set: Lord Kazzak, Kurinnaxx, Lady Hederine and Azuregos. The class books and
+enchants share their drop rates between them."
+- New loot table `WBSharedLoot` "World Boss Shared Loot" (World Bosses group, `item_sources.add_shared_world_boss_loot`):
+  the 27 AQ class books (all of AtlasLoot's AQ20ClassBooks, which is gone now) and Formula: Enchant Gloves - Threat
+  (20726) / Fire Power (20729) / Healing Power (20730) (moved out of AQEnchants; the other AQ formulas stay there).
+- Their item pages: source "World bosses: Lord Kazzak, Kurinnaxx, Lady Hederine, Azuregos (shared loot)" (from Lokiy,
+  linking the table). The table page names the four bosses; the four boss pages (KKazzak, WBKurinnaxx, Hederine,
+  AAzuregos) link to it.
+- Drop rates (WebDKP guild awards): the shared table's kills = every raid with a kill of any of the four bosses
+  (seen through their own items) or an award of a shared item; e.g. Codex of Greater Heal V 35 awards / 174 kills
+  ~20%. As before a low bound on kills (a kill where nobody took any item isn't seen), so the rates are upper bounds;
+  the 30 rates add up to ~4 items per kill.
+- api/sources.json: table `WBSharedLoot` instead of `AQ20ClassBooks` (the sim's gen_sources.py shows a "WB" table
+  as a world boss drop; its name prettifies to "Shared Loot" unless WB_NAMES gets an entry).

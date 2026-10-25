@@ -54,7 +54,8 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import Lookups, tooltip  # noqa: E402
-from item_sources import CUT_TEXT, FROM_LABEL, TO_CHECK, TYPE_LABEL, Sources  # noqa: E402
+from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
+                          Sources, add_shared_world_boss_loot)
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -351,6 +352,8 @@ def load_dkp_awards(tables, names):
         last[source] = t
         raids[-1].add(iid)
     kills = {key: {n for n, r in enumerate(raids) if r & items} for key, items in own.items()}
+    if SHARED_WB_KEY in raid_keys:  # one loot set the four world bosses share: rates over all their kills
+        kills[SHARED_WB_KEY] = kills.get(SHARED_WB_KEY, set()).union(*(kills.get(k, set()) for k, _ in SHARED_WB_BOSSES))
     for key in MC_RUNE_BOSSES:
         if key in raid_keys:
             kills[key] = kills.get(key, set()) | kills.get("MCRagnaros", set())
@@ -563,6 +566,7 @@ def main():
     tables, table_groups = load_loot_tables()
     tracked = add_tracked_drops(tables, names, items)
     add_manual_drops(tables, items)
+    add_shared_world_boss_loot(tables, names, table_groups, items)
     codes = load_text_codes()
     wowhead = load_wowhead()
 
@@ -790,6 +794,17 @@ def main():
             f.write(page(it["name"], body, description=desc, image=icon_url(icon, "large", absolute=True),
                          color=color, path=f"/item/{iid}"))
 
+    def shared_note(key):
+        boss_links = ", ".join(f'<a href="/loot/{k}">{esc(n)}</a>' for k, n in SHARED_WB_BOSSES)
+        if key == SHARED_WB_KEY:
+            return (f'<p class="notice">One loot set that {boss_links} share (Lokiy): each of them can drop these, and '
+                    f'the drop rates are shared between them, so a rate here counts every kill of all four bosses '
+                    f'(guild raid awards, WebDKP).</p>')
+        if key in dict(SHARED_WB_BOSSES):
+            return (f'<p class="notice">Also drops the <a href="/loot/{SHARED_WB_KEY}">World Boss Shared Loot</a> '
+                    f'(the AQ class books and three glove formulas), shared with {boss_links}.</p>')
+        return ""
+
     # ---- loot table pages
     for key in loot_keys:
         name, cat = table_label(key)
@@ -833,6 +848,7 @@ def main():
   <h1>{esc(name)}</h1>
   {f'<p class="notice nos-banner"><b>Not on Vanilla+.</b> {esc(CUT_TEXT[srcs.cut_table(key)])}</p>' if srcs.cut_table(key) else ''}
   <p class="muted">{counts} {kills_note}</p>
+  {shared_note(key)}
   <ul class="loot">{''.join(rows)}</ul>
   {''.join(mob_drops_html(m, f"Drops seen from {m['name']}") for m in loot_key_mobs.get(key, []))}
 </article>"""

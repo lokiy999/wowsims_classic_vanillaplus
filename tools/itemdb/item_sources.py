@@ -64,11 +64,18 @@ FORCE_IDS = {
 LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer"}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
-    "Formula: Enchant Gloves - Threat": ("World bosses", "world boss"),
-    "Formula: Enchant Gloves - Fire Power": ("World bosses", "world boss"),
-    "Formula: Enchant Gloves - Healing Power": ("World bosses", "world boss"),
     "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
 }
+# Lokiy 2026-10-25: the AQ class books and three glove formulas are one loot set that the four world bosses share
+# (their drop rates are shared between them): its own loot table, built by add_shared_world_boss_loot()
+SHARED_WB_KEY = "WBSharedLoot"
+SHARED_WB_NAME = "World Boss Shared Loot"
+SHARED_WB_BOSSES = [("KKazzak", "Lord Kazzak"), ("WBKurinnaxx", "Kurinnaxx"), ("Hederine", "Lady Hederine"),
+                    ("AAzuregos", "Azuregos")]
+SHARED_WB_TABLES = ["AQ20ClassBooks"]  # every item of these tables moves to the shared table
+SHARED_WB_ITEMS = ["Formula: Enchant Gloves - Threat", "Formula: Enchant Gloves - Fire Power",
+                   "Formula: Enchant Gloves - Healing Power"]
+SHARED_WB_TEXT = "World bosses: " + ", ".join(n for _, n in SHARED_WB_BOSSES) + " (shared loot)"
 # Old SM blue BoEs that Wowhead Classic also shows dropping outside the instance (checked 2026-10-25, Lokiy: "blue
 # BoEs from SM could be obtainable"): on Vanilla+, with that source. Sunblaze Coif and Sliverblade drop only in SM.
 OUTSIDE_SM = {
@@ -76,7 +83,6 @@ OUTSIDE_SM = {
     7754: "Tirisfal Glades - Scarlet Augur, Scarlet Preserver, Scarlet Disciple, Scarlet Scout (outside Scarlet "
           "Monastery)",
 }
-WORLD_BOSS_TABLES = {"AQ20ClassBooks"}  # Lokiy 2026-10-25: all AQ class books drop from world bosses
 # The old Scarlet Monastery 5-man's loot (Lokiy 2026-10-25: every non-level-60 SM item is unobtainable): its trash
 # tables, and items whose Wowhead sources are all drops there (zone 796)
 OLD_SM_TABLES = {"SMATrash", "SMCTrash", "SMGTrash", "SMLTrash"}
@@ -193,6 +199,29 @@ def set_info(item):
     return name, tuple(sorted(bonuses))
 
 
+def add_shared_world_boss_loot(tables, names, table_groups, items):
+    """The shared world boss loot table (Lokiy 2026-10-25): the AQ class books (SHARED_WB_TABLES) and the glove
+    formulas (SHARED_WB_ITEMS) move out of their AtlasLoot tables into SHARED_WB_KEY, in the World Bosses group."""
+    rows = []
+    for key in SHARED_WB_TABLES:
+        rows.append((0, "", "Class books", False))
+        rows += [r for r in tables.get(key, []) if r[0]]
+    by_name = {it["name"]: iid for iid, it in items.items()}
+    formulas = [by_name[n] for n in SHARED_WB_ITEMS if n in by_name]
+    if formulas:
+        rows.append((0, "", "Enchanting formulas", False))
+        rows += [(i, "", items[i]["name"], False) for i in formulas]
+    moved = {r[0] for r in rows if r[0]}
+    for key in list(tables):
+        tables[key] = [r for r in tables[key] if r[0] not in moved]
+        if not any(r[0] for r in tables[key]):
+            del tables[key]
+    tables[SHARED_WB_KEY] = rows
+    names[SHARED_WB_KEY] = (SHARED_WB_NAME, "World Bosses")
+    table_groups[SHARED_WB_KEY] = "WorldBosses"
+    return moved
+
+
 class Sources:
     def __init__(self, items, tables, names, table_groups, loot_drops):
         """items {id: item}, tables {key: rows}, names {key: (name, instance)}, table_groups {key: group},
@@ -216,8 +245,6 @@ class Sources:
     def table_type(self, key):
         name, inst = self.names.get(key, ("", "Other"))
         group = self.groups.get(key, "")
-        if key in WORLD_BOSS_TABLES:
-            return "world boss"
         if group == "Instances":
             return "raid" if inst in RAIDS else "dungeon" if inst not in ("Other", "Keys", "Miscellaneous") else "other"
         if group == "Sets":
@@ -231,7 +258,7 @@ class Sources:
             return "AV"
         if key in BROOD_TABLES:
             return "Brood"
-        if inst in CUT_INSTANCES and name != KURINNAXX and key not in WORLD_BOSS_TABLES:
+        if inst in CUT_INSTANCES and name != KURINNAXX:
             return CUT_INSTANCES[inst]
         return None
 
@@ -320,16 +347,16 @@ class Sources:
                     break
             if why:
                 mark(iid, CUT_TEXT[why[0]], "Wowhead sources only, all in " + ", ".join(sorted(set(why))), force=True)
-        self.lokiy_source = {}  # item id -> (text, type[, from]): LOKIY_ON_SERVER / WORLD_BOSS_TABLES / OUTSIDE_SM
-        for name, src in LOKIY_ON_SERVER.items():
+        # item id -> (text, type, from, href): LOKIY_ON_SERVER / the shared world boss loot / OUTSIDE_SM
+        self.lokiy_source = {}
+        for name, (text, kind) in LOKIY_ON_SERVER.items():
             for iid in by_name.get(name, []):
-                self.lokiy_source[iid] = src
-        for key in WORLD_BOSS_TABLES:
-            for r in self.tables.get(key, []):
-                if r[0]:
-                    self.lokiy_source[r[0]] = ("World bosses", "world boss")
+                self.lokiy_source[iid] = (text, kind, "lokiy", None)
+        for r in self.tables.get(SHARED_WB_KEY, []):
+            if r[0]:
+                self.lokiy_source[r[0]] = (SHARED_WB_TEXT, "world boss", "lokiy", f"/loot/{SHARED_WB_KEY}")
         for iid, text in OUTSIDE_SM.items():
-            self.lokiy_source[iid] = (text, "drop", "wowhead")
+            self.lokiy_source[iid] = (text, "drop", "wowhead", None)
         for iid in self.lokiy_source:
             reasons.pop(iid, None)
             rule.pop(iid, None)
@@ -343,8 +370,8 @@ class Sources:
     def sources(self, iid):
         """[{"text", "type", "from", "href"?}] for this item, from the first layer that has any."""
         if iid in self.lokiy_source:
-            text, kind, *frm = self.lokiy_source[iid]
-            return [{"text": text, "type": kind, "from": frm[0] if frm else "lokiy"}]
+            text, kind, frm, href = self.lokiy_source[iid]
+            return [{"text": text, "type": kind, "from": frm, **({"href": href} if href else {})}]
         keys = self.item_tables.get(iid, [])
         wb = self.workbook["sources"].get(str(iid))
         if keys and not (wb and all(self.groups.get(k) == "Sets" for k in keys)):
