@@ -21,6 +21,9 @@ and writes plain HTML pages (Caddy serves them from disk):
   /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
                           instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
                           sources (wowhead_sources.json) for what AtlasLoot doesn't cover. The sim's only source data.
+                          "items": every item's sources by layer (item_sources.py: AtlasLoot, the item workbook, the
+                          loot tracker, pfQuest, Wowhead), each {"text", "type", "from"}; "notOnServer": {item id:
+                          why} for items not on Vanilla+ (AQ, Naxxramas, Alterac Valley, Tier 2, ...).
                           "webdkp": guild raid loot awards per item (webdkp_awards.json): count, first / last date.
   /style.css, /site.js
 
@@ -51,6 +54,7 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import Lookups, tooltip  # noqa: E402
+from item_sources import CUT_TEXT, FROM_LABEL, TYPE_LABEL, Sources  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -60,7 +64,6 @@ CLASSIC_MAX_ITEM_ID = 24283
 TRACKED_MIN_QUALITY = 3  # rare+: lower drops are mostly trade goods / trash loot every mob of the zone has
 SITE_NAME = "Vanilla Plus Database"
 SITE_URL = "https://db.lokiy.dev"
-ICON_URL = "https://wow.zamimg.com/images/wow/icons/{size}/{icon}.jpg"
 QUALITY = {"Poor": 0, "Common": 1, "Uncommon": 2, "Rare": 3, "Epic": 4, "Legendary": 5, "Artifact": 6}
 Q_COLOR = {0: "#9d9d9d", 1: "#ffffff", 2: "#1eff00", 3: "#0070dd", 4: "#a335ee", 5: "#ff8000", 6: "#e6cc80"}
 GREEN = ("Equip:", "Use:", "Chance on hit:", "(", "Set:")
@@ -94,9 +97,9 @@ def slug(s):
 def icon_url(icon, size="large", absolute=False):
     icon = ICON_ALIAS.get(icon, icon or "inv_misc_questionmark")
     local = icon.replace(" ", "_")
-    if local in LOCAL_ICONS:
-        return f"{SITE_URL if absolute else ''}/icons/{local}{'_s' if size == 'small' else ''}.jpg"
-    return ICON_URL.format(size=size, icon=icon)
+    if local not in LOCAL_ICONS:  # every client icon is local (Part FS); an unknown name gets the question mark
+        local = "inv_misc_questionmark"
+    return f"{SITE_URL if absolute else ''}/icons/{local}{'_s' if size == 'small' else ''}.jpg"
 
 
 # --------------------------------------------------------------------------------------------- data
@@ -468,7 +471,7 @@ def tooltip_html(item, mark=(), mark_cls="tt-new"):
 
 def icon_img(icon, size="medium", cls="icon"):
     # An icon that is neither local nor on the CDN falls back to the question mark.
-    fallback = ICON_URL.format(size=size, icon="inv_misc_questionmark")
+    fallback = icon_url("inv_misc_questionmark", size)
     return (f'<img class="{cls}" src="{esc(icon_url(icon, size))}" alt="" loading="lazy" '
             f'width="36" height="36" onerror="this.onerror=null;this.src=\'{fallback}\'">')
 
@@ -493,7 +496,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} - {SITE_NAME}</title>
 {chr(10).join(og)}
-<link rel="icon" href="{ICON_URL.format(size='small', icon='inv_misc_book_09')}">
+<link rel="icon" href="{icon_url('inv_misc_book_09', 'small')}">
 <link rel="stylesheet" href="/style.css">
 {extra_head}
 </head>
@@ -519,10 +522,29 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 """
 
 
+NOT_ON_SERVER = {}  # item id -> why it isn't on Vanilla+ (item_sources.py), set by main()
+
+
 def item_link(item, icon):
     color = Q_COLOR.get(item["quality"], "#ffffff")
-    return (f'<a class="item" href="/item/{item["id"]}" data-item="{item["id"]}">{icon_img(icon, "small", "icon-s")}'
-            f'<span style="color:{color}">{esc(item["name"])}</span></a>')
+    nos = NOT_ON_SERVER.get(item["id"])
+    cls, title = (' nos', f' title="Not on Vanilla+: {esc(nos)}"') if nos else ("", "")
+    return (f'<a class="item{cls}" href="/item/{item["id"]}" data-item="{item["id"]}"{title}>'
+            f'{icon_img(icon, "small", "icon-s")}<span style="color:{color}">{esc(item["name"])}</span></a>')
+
+
+def sources_html(srcs):
+    """The Source card's list: each source with its type and, unless AtlasLoot, where it came from."""
+    lis = []
+    for e in srcs:
+        text = esc(e["text"])
+        if e.get("href"):
+            rel = ' rel="noopener"' if e["href"].startswith("http") else ""
+            text = f'<a href="{esc(e["href"])}"{rel}>{text}</a>'
+        frm = "" if e["from"] == "atlasloot" else f' <span class="muted src-from">{esc(FROM_LABEL[e["from"]])}</span>'
+        lis.append(f'<li><span class="src-type t-{e["type"].replace(" ", "-")}">{esc(TYPE_LABEL.get(e["type"], e["type"]))}'
+                   f'</span> {text}{frm}</li>')
+    return f'<ul class="sources typed">{"".join(lis)}</ul>'
 
 
 # --------------------------------------------------------------------------------------------- build
@@ -599,6 +621,11 @@ def main():
     # Lokiy's loot tracker (lokiy.dev/loot) and the possible random affixes per item
     loot = load_loot()
     loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
+    # where each item comes from (AtlasLoot, item workbook, loot tracker, pfQuest, Wowhead) and what isn't on Vanilla+
+    srcs = Sources(items, tables, names, table_groups, loot_drops)
+    NOT_ON_SERVER.clear()
+    NOT_ON_SERVER.update(srcs.not_on_server)
+    item_srcs = {i: srcs.sources(i) for i in all_items}
     affixes, affix_stats, affix_chances = load_random_affixes()
     loot_rolls = load_rolls()
     loot_note = ('<p class="muted small">From <a href="https://lokiy.dev/loot/">Lokiy\'s loot tracker</a>'
@@ -680,15 +707,15 @@ def main():
         icon = icons.get(iid, "inv_misc_questionmark")
         color = Q_COLOR.get(it["quality"], "#ffffff")
         page_key, section = types[iid]
-        if sources.get(iid):
-            lis = []
-            for key in sources[iid]:
-                name, cat = table_label(key)
-                where = f' <span class="muted">({esc(cat)})</span>' if cat and cat != "Other" and cat not in name else ""
-                lis.append(f'<li><a href="/loot/{key}">{esc(name)}</a>{where}</li>')
-            src_html = f'<section class="card"><h2>Source</h2><ul class="sources">{"".join(lis)}</ul></section>'
+        nos = NOT_ON_SERVER.get(iid)
+        nos_html = f'<p class="notice nos-banner"><b>Not on Vanilla+.</b> {esc(nos)}</p>' if nos else ""
+        if item_srcs[iid]:
+            weak = item_srcs[iid][0]["from"] in ("pfquest", "wowhead")
+            src_html = (f'<section class="card"><h2>Source</h2>{nos_html}{sources_html(item_srcs[iid])}'
+                        + ('<p class="muted small">Classic data: not checked against Vanilla+ yet.</p>' if weak else "")
+                        + '</section>')
         else:
-            src_html = '<section class="card"><h2>Source</h2><p class="muted">No known drop source yet.</p></section>'
+            src_html = f'<section class="card"><h2>Source</h2>{nos_html}<p class="muted">No known source yet.</p></section>'
         if observed[iid]:
             trs = "".join(f'<tr><td>{esc(label)}</td><td>{n}</td><td>{k}</td><td class="rate">{rate_text(n, k, est)}</td></tr>'
                           for label, n, k, est in observed[iid])
@@ -803,6 +830,7 @@ def main():
 <article>
   <div class="crumbs"><a href="/instances">Instances</a>{' / ' + esc(cat) if cat and cat != 'Other' else ''}</div>
   <h1>{esc(name)}</h1>
+  {f'<p class="notice nos-banner"><b>Not on Vanilla+.</b> {esc(CUT_TEXT[srcs.cut_table(key)])}</p>' if srcs.cut_table(key) else ''}
   <p class="muted">{counts} {kills_note}</p>
   <ul class="loot">{''.join(rows)}</ul>
   {''.join(mob_drops_html(m, f"Drops seen from {m['name']}") for m in loot_key_mobs.get(key, []))}
@@ -831,11 +859,13 @@ def main():
                     tbl.append(f'<div class="table"><h3><a href="/loot/{key}">{esc(name)}</a></h3><ul class="loot">{"".join(links)}</ul></div>')
             if tbl:
                 blocks.append(f'<section class="cat" data-cat><h2>{esc(cat)}</h2>{"".join(tbl)}</section>')
-        nosrc = [items[i] for i in browsable if wanted(i) and not sources.get(i)]
-        if nosrc:
-            nosrc.sort(key=lambda it: (-it["quality"], it["name"]))
-            blocks.append('<section class="cat" data-cat><h2>No known drop source</h2><div class="table wide"><ul class="loot cols">'
-                          + "".join(f'<li>{item_link(it, icons.get(it["id"]))}</li>' for it in nosrc) + "</ul></div></section>")
+        other = [items[i] for i in browsable if wanted(i) and not sources.get(i) and item_srcs[i]]
+        nosrc = [items[i] for i in browsable if wanted(i) and not sources.get(i) and not item_srcs[i]]
+        for title, lst in (("Other sources", other), ("No known source", nosrc)):
+            if lst:
+                lst.sort(key=lambda it: (-it["quality"], it["name"]))
+                blocks.append(f'<section class="cat" data-cat><h2>{title}</h2><div class="table wide"><ul class="loot cols">'
+                              + "".join(f'<li>{item_link(it, icons.get(it["id"]))}</li>' for it in lst) + "</ul></div></section>")
         return "".join(blocks), len(nosrc)
 
     type_counts = {}
@@ -923,6 +953,8 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
             name, _ = table_label(key)
             n_new = sum(1 for r in tables[key] if is_custom(r[0]) or r[0] in reworked)
             badge = f' <span class="tag">{n_new} new/changed</span>' if n_new else ""
+            if srcs.cut_table(key):
+                badge += ' <span class="tag nos-tag">not on Vanilla+</span>'
             lis.append(f'<li><a href="/loot/{key}">{esc(name)}</a>{badge}</li>')
         blocks.append(f'<section class="cat"><h2>{esc(cat)}</h2><ul class="loot cols wide-list">{"".join(lis)}</ul></section>')
     body = f"""
@@ -974,9 +1006,7 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
         info = parse_stats(it, pk, sec)
         status = 3 if is_custom(i) else 2 if i in reworked else 0 if kind(i).endswith("same as classic") else 1
         cats = sorted({cat_idx[table_label(k)[1]] for k in sources.get(i, []) if table_label(k)[1] in cat_idx})
-        ic = icon_url(icons.get(i), "small")  # CDN icons as their bare name, local ones as /icons/<name>_s.jpg
-        cdn = ICON_URL.split("{icon}")[0].format(size="small")
-        ic = ic[len(cdn):-4] if ic.startswith(cdn) else ic
+        ic = icon_url(icons.get(i), "small")  # /icons/<name>_s.jpg
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
                       info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
                       1 if affixes.get(i) or dkp_suffixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
@@ -1053,7 +1083,10 @@ your filters, so you can share a search.</p></section>
     os.replace(tmp, os.path.join(out, "api", "items.json"))
     # ---- where items come from, for other projects (the sim reads only this): AtlasLoot tables incl. the loot
     # tracker's drops, then the Wowhead classic sources (sim gen_db -dumpWowheadSources, UIItemSource JSON by item id)
-    src_api = {"tables": {}, "wowhead": {}, "webdkp": {i: a for i, a in dkp_api.items() if i in items}}
+    src_api = {"tables": {}, "wowhead": {}, "webdkp": {i: a for i, a in dkp_api.items() if i in items},
+               "items": {i: [{k: v for k, v in e.items() if k != "href" or not v.startswith("/")} for e in item_srcs[i]]
+                         for i in all_items if item_srcs[i]},
+               "notOnServer": dict(sorted(NOT_ON_SERVER.items()))}
     for key, rows in tables.items():
         name, cat = names.get(key, ("", "Other"))
         src_api["tables"][key] = {"name": name, "instance": cat, "group": table_groups.get(key, ""),
@@ -1079,6 +1112,13 @@ your filters, so you can share a search.</p></section>
 
     print(f"{len(all_items)} items ({len(custom)} custom, {len(reworked)} reworked), {len(loot_keys)} loot tables, "
           f"{n_nosrc} custom / {n_rw_nosrc} reworked without source -> {out}")
+    by_from = {}
+    for i in all_items:
+        f = item_srcs[i][0]["from"] if item_srcs[i] else "none"
+        by_from[f] = by_from.get(f, 0) + 1
+    print(f"sources by layer: {by_from}; {len(NOT_ON_SERVER)} items not on Vanilla+")
+    for iid, why in srcs.conflicts:
+        print(f"  not marked (the loot tracker saw it drop): {iid} {items[iid]['name']}: {why}")
 
 
 if __name__ == "__main__":

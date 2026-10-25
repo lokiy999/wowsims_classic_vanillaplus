@@ -4825,3 +4825,41 @@ tables, 154 items without a known source. Regenerate after a data update: `pytho
   up (the logs and the awards are different kills: awards end 2025-04, the logs start 2026-07). Loot table pages,
   which show the observed rate per boss, use the merged numbers too. The note under the table names both inputs;
   the combat-log note only shows when the item has log data.
+
+## Part FR — db.lokiy.dev: item sources by layer and items not on Vanilla+ (2026-10-25)
+
+Lokiy (via the hub, hub PLAN Phase 3 + "Website-only item pipeline" Sources): import the Item Database workbook's
+Source column once, mark items that aren't on Vanilla+, fill the rest from pfQuest and the loot tracker, Wowhead only
+for what's still missing. Everything also in api/sources.json.
+
+- `import_workbook.py` (run once 2026-10-25, stdlib only): Item Template.xlsx -> `workbook_sources.json`: 3,264
+  Source cells with their type from the cell colour (raid / dungeon / world boss / reputation / crafting / PvP /
+  quest / world drop, + event / container / rare mob / other for the few typed by text), the 77-row Removed Items
+  sheet and the Unknown Source IDs. The workbook isn't maintained after this; db.lokiy.dev is the source of truth.
+- `import_pfquest.py` (run once): pfQuest 7.0.1's classic data (PC `data\pfquest`) -> `pfquest_sources.json`:
+  9,831 items with NPC drops (classic chance), vendors, objects, + NPC / zone names for the Wowhead sources.
+- `item_sources.py`: every item's sources from the first layer that has any: AtlasLoot tables (incl. tracker drops)
+  -> the workbook (also when AtlasLoot only has set tables: it knows the tier set's raid / token) -> Lokiy's loot
+  tracker -> pfQuest -> Wowhead. Each source {text, type, from}. Scarlet Monastery tables count as raid.
+  Now: 4,594 AtlasLoot, 852 workbook, 359 tracker, 5,655 pfQuest, 979 Wowhead, 1,948 none.
+- Not on Vanilla+ (marked, not hidden; 452 items): AQ20 / AQ40 / Naxxramas tables (incl. their Sets) except
+  Kurinnaxx (world boss), AQ_T3_REMOVE_NAMES (~130 names) + Atiesh / Splinter of Atiesh, Alterac Valley (AV
+  reputation tables), the Brood of Nozdormu ring, Ashbringer, the Warglaives, the Removed Items sheet (by name; where
+  a classic and a server item share a name, the classic one), Tier 2 (Lokiy 2026-10-25: not on the server yet; by
+  tooltip set name: Wrath, Transcendence, Judgement, Stormrage, Ten Storms, Netherwind, Nemesis; Dragonstalker /
+  Bloodfang stay T1), and Wowhead-only items whose every source is AQ / Naxx / AV. An item the loot tracker has seen
+  drop is never marked (printed as a conflict; none today). Malfurion's Signet Ring (a source fix in the sheet) and
+  Flintrock Shoulders (the sheet's name is only a server item, 26318) are not marked.
+- Pages: item pages show the sources with a type tag and where they came from ("classic data (pfQuest)", "from
+  Wowhead", with a "not checked against Vanilla+" note) and a red "Not on Vanilla+" banner with the reason; item links
+  everywhere are dimmed with "not on V+"; AQ / Naxx / AV / Brood loot table pages get the banner, /instances a tag;
+  the browse pages split "Other sources" from "No known source".
+- api/sources.json: + "items" {item id: [{text, type, from, href (external only)}]} and "notOnServer" {item id: why}.
+  The existing keys are unchanged (docs/gen_sources.py reads tables / wowhead as before).
+
+## Part FS — db.lokiy.dev: icons only from db.lokiy.dev (2026-10-25)
+
+- The hub extracted every client icon to `CSV's/icons/` (hub ItemCacheSync Part 06), so `icon_url()` no longer falls
+  back to wow.zamimg.com: an unknown icon name gets the local question mark. `ICON_URL` is gone; the onerror
+  fallbacks, the favicon and the search index use `/icons/...`; `site.js` / `search.js` build `/icons/<name>_s.jpg`.
+  No wow.zamimg.com URL is left under /var/www/db.

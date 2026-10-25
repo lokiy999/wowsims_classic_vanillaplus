@@ -111,6 +111,22 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .obs-table th { color: var(--muted); font-weight: 600; font-size: .85rem; }
 .notice { border-left: 3px solid #e6a23c; background: rgba(230, 162, 60, .1); padding: 8px 12px; border-radius: 4px; margin: 8px 0; font-size: .9rem; }
 .mob-drops { margin-top: 20px; }
+.sources.typed { list-style: none; padding-left: 0; }
+.sources.typed li { margin: 3px 0; }
+.src-type { display: inline-block; min-width: 84px; font-size: .75rem; padding: 1px 6px; margin-right: 6px; border-radius: 3px;
+	background: var(--border); color: var(--muted); text-align: center; }
+.t-raid, .t-world-boss { background: rgba(163, 53, 238, .25); color: #c88cf5; }
+.t-dungeon { background: rgba(98, 121, 152, .3); color: #a9bcd6; }
+.t-reputation { background: rgba(95, 230, 93, .18); color: #8ce88a; }
+.t-crafting { background: rgba(230, 204, 128, .2); color: #e6cc80; }
+.t-pvp { background: rgba(255, 128, 0, .2); color: #ffa64d; }
+.t-quest { background: rgba(255, 255, 0, .14); color: #f0e68c; }
+.t-world-drop, .t-drop { background: rgba(0, 112, 255, .2); color: #6fa8ff; }
+.src-from { font-size: .8rem; }
+.nos-banner { border-left-color: #d9534f; background: rgba(217, 83, 79, .12); }
+.item.nos { opacity: .55; }
+.item.nos::after { content: "not on V+"; font-size: .7rem; margin-left: 6px; color: #e07b78; white-space: nowrap; }
+.nos-tag { background: rgba(217, 83, 79, .2); color: #e07b78; }
 .rate { color: var(--accent); font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 8px; font-size: .9rem; }
 
 .section-title { margin: 8px 0 12px; }
