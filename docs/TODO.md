@@ -315,9 +315,7 @@ there is more to say.
   answered; unmarked).
 All on db.lokiy.dev/removed "To check" (Part FV).
 - World Boss Shared Loot (Parts FY, GA): Formula: Enchant Gloves - Living Power (spell 34347) is the 8th glove formula
-  (WebDKP: awarded once) but its item ID isn't known: add it when the item cache sees it. Ask Lokiy whether the other
-  AQ formulas the guild was awarded (Enchant Cloak - Stealth / Dodge / Subtlety, Enchant Weapon - Spell Power) are
-  world boss drops too.
+  (WebDKP: awarded once) but its item ID isn't known: add it when the item cache sees it.
 
 ## Items from db.lokiy.dev (Part FE)
 

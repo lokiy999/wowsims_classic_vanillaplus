@@ -79,7 +79,11 @@ SHARED_WB_TABLES = ["AQ20ClassBooks"]  # every item of these tables moves to the
 SHARED_WB_ITEMS = {20726: "Formula: Enchant Gloves - Threat", 20729: "Formula: Enchant Gloves - Fire Power",
                    20730: "Formula: Enchant Gloves - Healing Power", 20727: "Formula: Enchant Gloves - Shadow Power",
                    20728: "Formula: Enchant Gloves - Frost Power", 20731: "Formula: Enchant Gloves - Superior Agility",
-                   26021: "Formula: Enchant Gloves - Arcane Power"}
+                   26021: "Formula: Enchant Gloves - Arcane Power",
+                   # the AQ cloak formulas too (Lokiy 2026-10-25: "cloak yes, spellpower no"): 20734 / 20736 were
+                   # in AtlasLoot's AQEnchants, 20735 (AQ40 in classic) nowhere
+                   20734: "Formula: Enchant Cloak - Stealth", 20735: "Formula: Enchant Cloak - Subtlety",
+                   20736: "Formula: Enchant Cloak - Dodge"}
 SHARED_WB_TEXT = "World bosses: " + ", ".join(n for _, n in SHARED_WB_BOSSES) + " (shared loot)"
 # Old SM blue BoEs that Wowhead Classic also shows dropping outside the instance (checked 2026-10-25, Lokiy: "blue
 # BoEs from SM could be obtainable"): on Vanilla+, with that source. Sunblaze Coif and Sliverblade drop only in SM.

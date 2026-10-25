@@ -4991,3 +4991,11 @@ data): Shadow Power (7 awards), Superior Agility (6), Frost Power (4), Arcane Po
 - The four not in the item data show as rows with a Wowhead link (26021, a server item, has no Wowhead page) until
   the item cache sees them; then they get their own pages and DKP rates.
 - The 8th, Enchant Gloves - Living Power (spell 34347), has no known formula item ID: TODO.
+
+## Part GB — World Boss Shared Loot: the AQ cloak formulas too (2026-10-25)
+
+Lokiy: "cloak yes, spellpower no".
+- Formula: Enchant Cloak - Stealth (20734), Subtlety (20735) and Dodge (20736) are in the shared world boss loot
+  (37 items now: 27 class books, 7 glove and 3 cloak formulas). AtlasLoot's AQEnchants table was left empty and is
+  gone. None of the three is in the item data yet (Wowhead rows until the item cache sees them).
+- Formula: Enchant Weapon - Spell Power is not world boss loot (not added; it isn't in the item data either).
