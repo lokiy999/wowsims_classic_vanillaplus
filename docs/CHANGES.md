@@ -5174,7 +5174,9 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Now 10,183 NPC pages; 392/409 tracker mobs and 304 boss tables matched, 68 names not matched.
 - Next: DungeonJournal's export (creature ids from the CSV GUIDs for every logged boss / trash mob) feeds the same file.
 
-## Part GL — sim.lokiy.dev: NPC links to db.lokiy.dev (2026-10-25)
+## Part GM — sim.lokiy.dev: NPC links to db.lokiy.dev (2026-10-25)
+
+(Committed as "Part GL" in 7e4593b85; renumbered because the database change took GL first.)
 
 - Lokiy (via the hub): NPC links to db.lokiy.dev's NPC pages (Part GK), Wowhead only for NPCs it doesn't have.
 - New `tools/gen_db_npcs.py` (run by `sync_sim.sh`, which now also triggers on `api/npcs.json` / `api/mobs.json`):
