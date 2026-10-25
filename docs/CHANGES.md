@@ -5126,3 +5126,11 @@ range / cast time / cooldown, so 2,192 sim tooltips lost those lines.
   spells get no cast / range. The four new fields are left out when empty; the existing keys (name, rank, icon,
   desc, tip, status) stay in every entry as before.
 - Counts: cast 19,104, range 11,306, cost 2,673, cd 1,979. api/spells.json 4.9 -> 5.5 MB.
+
+## Part GJ — sim spell tooltips: cost, range, cast time, cooldown (2026-10-25)
+
+- db.lokiy.dev's `api/spells.json` has the cost / range / cast / cooldown lines since Part GI (the Database chat, after
+  Part GH noted the sim tooltips had lost them). `gen_db_spells.py` puts them in the tooltip like the game does:
+  name, rank, "30 Mana ... 35 yd range", "1.5 sec cast ... 5 min cooldown", description, buff text (the right part
+  floats right; a line with only one part shows just that).
+- Deployed by `sync_sim.sh` itself (its trigger includes `spells.json`): the first real run of its commit + push step.
