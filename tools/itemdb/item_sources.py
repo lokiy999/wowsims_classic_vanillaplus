@@ -69,6 +69,13 @@ LOKIY_ON_SERVER = {
     "Formula: Enchant Gloves - Healing Power": ("World bosses", "world boss"),
     "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
 }
+# Old SM blue BoEs that Wowhead Classic also shows dropping outside the instance (checked 2026-10-25, Lokiy: "blue
+# BoEs from SM could be obtainable"): on Vanilla+, with that source. Sunblaze Coif and Sliverblade drop only in SM.
+OUTSIDE_SM = {
+    7728: "Tirisfal Glades - Scarlet Disciple, Scarlet Augur (outside Scarlet Monastery)",
+    7754: "Tirisfal Glades - Scarlet Augur, Scarlet Preserver, Scarlet Disciple, Scarlet Scout (outside Scarlet "
+          "Monastery)",
+}
 WORLD_BOSS_TABLES = {"AQ20ClassBooks"}  # Lokiy 2026-10-25: all AQ class books drop from world bosses
 # The old Scarlet Monastery 5-man's loot (Lokiy 2026-10-25: every non-level-60 SM item is unobtainable): its trash
 # tables, and items whose Wowhead sources are all drops there (zone 796)
@@ -80,7 +87,6 @@ TO_CHECK = {
     22191: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
     22196: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
     21176: "Not answered yet: the AQ40 mount crystal (AtlasLoot also lists it outside AQ40).",
-    2277: "Old Scarlet Monastery? Wowhead lists only SM drops, but the workbook says World Drop (level 31-38).",
 }
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)
@@ -314,7 +320,7 @@ class Sources:
                     break
             if why:
                 mark(iid, CUT_TEXT[why[0]], "Wowhead sources only, all in " + ", ".join(sorted(set(why))), force=True)
-        self.lokiy_source = {}  # item id -> (text, type) from LOKIY_ON_SERVER / WORLD_BOSS_TABLES
+        self.lokiy_source = {}  # item id -> (text, type[, from]): LOKIY_ON_SERVER / WORLD_BOSS_TABLES / OUTSIDE_SM
         for name, src in LOKIY_ON_SERVER.items():
             for iid in by_name.get(name, []):
                 self.lokiy_source[iid] = src
@@ -322,6 +328,8 @@ class Sources:
             for r in self.tables.get(key, []):
                 if r[0]:
                     self.lokiy_source[r[0]] = ("World bosses", "world boss")
+        for iid, text in OUTSIDE_SM.items():
+            self.lokiy_source[iid] = (text, "drop", "wowhead")
         for iid in self.lokiy_source:
             reasons.pop(iid, None)
             rule.pop(iid, None)
@@ -335,8 +343,8 @@ class Sources:
     def sources(self, iid):
         """[{"text", "type", "from", "href"?}] for this item, from the first layer that has any."""
         if iid in self.lokiy_source:
-            text, kind = self.lokiy_source[iid]
-            return [{"text": text, "type": kind, "from": "lokiy"}]
+            text, kind, *frm = self.lokiy_source[iid]
+            return [{"text": text, "type": kind, "from": frm[0] if frm else "lokiy"}]
         keys = self.item_tables.get(iid, [])
         wb = self.workbook["sources"].get(str(iid))
         if keys and not (wb and all(self.groups.get(k) == "Sets" for k in keys)):

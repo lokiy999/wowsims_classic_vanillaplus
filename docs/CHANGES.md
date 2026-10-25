@@ -4941,3 +4941,16 @@ Lokiy (in the Database chat), after checking /removed:
   (level 60) is untouched. Necromancer Leggings (2277: Wowhead only SM drops, but the workbook says World Drop 31-38)
   is not marked: added to `TO_CHECK` (/removed "To check").
 - 382 items marked now (was 412). Rebuilt /var/www/db.
+
+## Part FX — db.lokiy.dev: old SM blue BoEs checked on Wowhead Classic (2026-10-25)
+
+Lokiy: "check wowhead. blue boes from sm could be obtainable." Wowhead Classic's "Dropped by" for the five old SM blue
+BoEs:
+- 2277 Necromancer Leggings: a world drop (Magram Mauler, Syndicate Conjuror, Drysnap Pincer, Darkmist Lurker) and
+  chests / Iron Lockboxes: on Vanilla+ (it was only on the to-check list; removed from `TO_CHECK` and TODO.md, its
+  source stays the workbook's World Drop 31-38).
+- 7728 Beguiler Robes (Scarlet Disciple / Augur) and 7754 Harbinger Boots (Scarlet Augur / Preserver / Disciple /
+  Scout) also drop from the Scarlet mobs in Tirisfal Glades, outside the instance: no longer marked; that source
+  (from Wowhead) is shown (`OUTSIDE_SM`).
+- 5819 Sunblaze Coif and 5756 Sliverblade drop only inside SM: stay marked as old SM items.
+- 380 items marked now. Rebuilt /var/www/db.
