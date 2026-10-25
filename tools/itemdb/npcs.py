@@ -39,6 +39,30 @@ def load_npcs():
     return {int(k): v for k, v in raw.items() if not JUNK.search(v["name"])}
 
 
+def load_journal():
+    """{creature id: [(raid name, entry, kind, boss name)]} from DungeonJournal's export (dungeonjournal.json, uploaded
+    by its tools/export_json.py): kind = "boss", "add" (boss = the boss it belongs to) or "trash" (Part GN)."""
+    path = os.path.join(HERE, "dungeonjournal.json")
+    if not os.path.exists(path):
+        return {}, {}
+    data = json.load(open(path, encoding="utf-8"))
+    out = {}
+
+    def put(raid, e, kind, boss=""):
+        for nid in e.get("npcIds") or ([e["npcId"]] if e.get("npcId") else []):
+            out.setdefault(int(nid), []).append((raid, e, kind, boss))
+
+    for r in data.get("raids", []):
+        for b in r.get("bosses", []):
+            put(r["name"], b, "boss")
+            for a in b.get("adds", []):
+                put(r["name"], a, "add", b["name"])
+        for t in r.get("trash", []):
+            if not t.get("separator"):
+                put(r["name"], t, "trash")
+    return out, data.get("flags", {})
+
+
 class NpcMatcher:
     def __init__(self, npcs, logged=None):
         self.npcs = npcs

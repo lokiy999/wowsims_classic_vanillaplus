@@ -23,7 +23,8 @@ and writes plain HTML pages (Caddy serves them from disk):
                           cost / range / cast / cd tooltip lines (empty fields left out)
   (items no Vanilla+ client has seen: classic Wowhead tooltips, tagged "not seen on Vanilla+ yet", api flag
    "classicOnly"; add_classic_items, Part GF)
-  /npc/<id>.html          every NPC pfQuest knows (npcs.py): level, rank, zone, Lokiy's loot, its AtlasLoot table,
+  /npc/<id>.html          every NPC pfQuest knows (npcs.py): level, rank, zone, DungeonJournal abilities / adds /
+                          tactics (dungeonjournal.json, uploaded by DungeonJournal), Lokiy's loot, its AtlasLoot table,
                           classic drops / vendor items (pfQuest); /npcs.html a search over /npcs.json
   /api/npcs.json          {creature id: {name, level, zone, boss, url}}
   /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there;
@@ -64,7 +65,7 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
-from npcs import RANKS, NpcMatcher, load_logged, load_npcs  # noqa: E402
+from npcs import RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
 from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
@@ -604,6 +605,8 @@ def sources_html(srcs):
         if e.get("href"):
             rel = ' rel="noopener"' if e["href"].startswith("http") else ""
             text = f'<a href="{esc(e["href"])}"{rel}>{text}</a>'
+        if e.get("npc"):
+            text += f' <a class="src-npc" href="{esc(e["npc"])}">NPC</a>'
         frm = "" if e["from"] == "atlasloot" else f' <span class="muted src-from">{esc(FROM_LABEL[e["from"]])}</span>'
         lis.append(f'<li><span class="src-type t-{e["type"].replace(" ", "-")}">{esc(TYPE_LABEL.get(e["type"], e["type"]))}'
                    f'</span> {text}{frm}</li>')
@@ -769,6 +772,95 @@ def main():
         if m["name"] in mob_npc:
             npc_mob[mob_npc[m["name"]]] = m
 
+    spells = load_spells()  # also for the NPC pages' abilities (Part GN)
+
+    # DungeonJournal's abilities / tactics (npcs.load_journal; Part GN), on the NPC pages
+    journal, journal_flags = load_journal()
+
+    def journal_icon(path):
+        base = (path or "").replace("/", "\\").split("\\")
+        if len(base) < 2 or base[-2].lower() != "icons" or base[-1].lower() == "temp" or "AddOns" in base:
+            return "inv_misc_questionmark"
+        return base[-1].lower()
+
+    def ability_html(a):
+        if a.get("separator"):
+            return f'<li class="dj-sep">{esc(a["name"])}</li>'
+        sid = a.get("spellId")
+        nm = esc(a["name"])
+        if sid and sid in spells:
+            nm = f'<a href="/spell/{sid}">{nm}</a>'
+        tags = "".join(f'<span class="tag">{esc(x)}</span> ' for x in
+                       ([a["school"]] if a.get("school") else []) + [r.capitalize() for r in a.get("roles", [])])
+        warn = '<b class="dj-warn" title="Important">!</b> ' if a.get("warning") else ""
+        lines = "".join(f'<p>{esc(ln)}</p>' for ln in a.get("lines", []))
+        return (f'<li>{icon_img(journal_icon(a.get("icon")), "small", "icon-s")} {warn}<b>{nm}</b> {tags}'
+                f'<div class="dj-lines">{lines}</div></li>')
+
+    def add_li(a):
+        nm = esc(a["name"])
+        if a.get("npcId"):
+            nm = f'<a href="/npc/{a["npcId"]}">{nm}</a>'
+        return f'<li>{nm}{" x" + str(a["count"]) if a.get("count") else ""}</li>'
+
+    def tactic_li(ln):
+        if isinstance(ln, str):
+            return f'<li>{esc(ln)}</li>'
+        if ln.get("separator"):
+            return f'</ul><h3>{esc(ln.get("name", ""))}</h3><ul class="dj-tactics">'
+        text = esc(ln.get("text", "").replace("{boss}: ", ""))
+        return f'<li><b class="dj-warn">!</b> <b>{text}</b></li>' if ln.get("warning") else f'<li>{text}</li>'
+
+    def journal_html(nid):
+        parts = []
+        for raid, e, kind, boss in journal.get(nid, []):
+            flags = " ".join(f'<span class="tag" title="{esc(journal_flags.get(f, {}).get("desc", ""))}">'
+                             f'{esc(journal_flags.get(f, {}).get("name", f))}</span>' for f in e.get("flags", []))
+            st = e.get("stats") or {}
+            stats = " &middot; ".join(f'{k.capitalize()} {v}' for k, v in st.items())
+            where = f'{esc(raid)}' + (f' &middot; add of {esc(boss)}' if boss else "")
+            head = (f'<p class="muted small">{where}{" &middot; " + stats if stats else ""}</p>'
+                    + (f'<p>{flags}</p>' if flags else ""))
+            if e.get("lines"):
+                head += "".join(f'<p>{esc(ln)}</p>' for ln in e["lines"])
+            abil = "".join(ability_html(a) for a in e.get("abilities", []))
+            if abil:
+                parts.append(f'<section class="card dj"><h2>Abilities</h2>{head}<ul class="dj-abilities">{abil}</ul></section>')
+            elif head:
+                parts.append(f'<section class="card dj"><h2>Encounter</h2>{head}</section>')
+            adds = [a for a in e.get("adds", []) if a.get("name") and not a.get("separator")]
+            if adds:
+                lis = "".join(add_li(a) for a in adds)
+                parts.append(f'<section class="card"><h2>Adds</h2><ul class="loot">{lis}</ul></section>')
+            t = e.get("tactics")
+            if t and (t.get("lines") or t.get("resistances")):
+                res = ", ".join(f'{v} {k.capitalize()}' for k, v in (t.get("resistances") or {}).items())
+                lis = "".join(tactic_li(ln) for ln in t.get("lines", []))
+                parts.append(f'<section class="card dj"><h2>Tactics</h2>'
+                             + (f'<p><b>Resistance:</b> {res}</p>' if res else "")
+                             + f'<ul class="dj-tactics">{lis}</ul></section>')
+        if parts:
+            parts.append('<p class="muted small">Abilities and tactics from the <a href="https://github.com/lokiy999/'
+                         'DungeonJournal" rel="noopener">DungeonJournal</a> addon.</p>')
+        return parts
+
+    # item sources: db.lokiy.dev's NPC pages instead of Wowhead's, and the NPC behind a loot table (Part GN)
+    WH_NPC = "https://www.wowhead.com/classic/npc="
+
+    def local_source(e):
+        e = dict(e)
+        h = e.get("href", "")
+        if h.startswith(WH_NPC) and h[len(WH_NPC):].isdigit() and int(h[len(WH_NPC):]) in npcs:
+            e["href"] = f"/npc/{h[len(WH_NPC):]}"
+        elif h.startswith("/loot/") and h[6:] in table_npc:
+            e["npc"] = f"/npc/{table_npc[h[6:]]}"
+        elif not h and e["from"] == "tracker" and e["text"].startswith("Drops from ") and e["text"][11:] in mob_npc:
+            e["href"] = f"/npc/{mob_npc[e['text'][11:]]}"
+        return e
+
+    def src_cell(src):
+        return f'<a href="/npc/{mob_npc[src]}">{esc(src)}</a>' if src in mob_npc else esc(src)
+
     def mob_href(m):
         if m["name"] in mob_npc:
             return f'/npc/{mob_npc[m["name"]]}'
@@ -821,7 +913,7 @@ def main():
                         'It is replaced by the server\'s own data as soon as an item cache upload contains it.</p>')
         if item_srcs[iid]:
             weak = item_srcs[iid][0]["from"] in ("pfquest", "wowhead")
-            src_html = (f'<section class="card"><h2>Source</h2>{nos_html}{sources_html(item_srcs[iid])}'
+            src_html = (f'<section class="card"><h2>Source</h2>{nos_html}{sources_html([local_source(e) for e in item_srcs[iid]])}'
                         + ('<p class="muted small">Classic data: not checked against Vanilla+ yet.</p>' if weak else "")
                         + '</section>')
         else:
@@ -833,7 +925,7 @@ def main():
             src_html += (f'<section class="card obs"><h2>Observed drops</h2><table class="obs-table"><thead><tr><th>Source</th>'
                          f'<th>Drops</th><th>Kills</th><th>Rate</th></tr></thead><tbody>{trs}</tbody></table>{notes}</section>')
         if loot_drops.get(iid):
-            trs = "".join(f'<tr><td>{esc(src)}</td><td>{n}</td><td>{lt}</td><td>{k}</td><td class="rate">'
+            trs = "".join(f'<tr><td>{src_cell(src)}</td><td>{n}</td><td>{lt}</td><td>{k}</td><td class="rate">'
                           f'{(f"{min(r, 1) * 100:.0f}%" if r >= 0.1 else f"{r * 100:.1f}%") if r is not None else ""}</td></tr>'
                           for src, n, lt, k, r in loot_drops[iid])
             src_html += (f'<section class="card obs"><h2>Lokiy\'s loot</h2><table class="obs-table"><thead><tr>'
@@ -1116,7 +1208,7 @@ or their own page.</p>{rough_note}</section>
         zone = n["zone"] or (main_zone(m) if m and m["zones"] else "") or (table_label(keys[0])[1] if keys else "")
         level = n["lvl"] or (m["level"] if m else "")
         info = " &middot; ".join(esc(x) for x in (f"Level {level}" if level else "", rank, zone) if x)
-        parts = []
+        parts = journal_html(nid)
         if m:
             parts.append(mob_drops_html(m, "Lokiy's loot"))
         for key in keys:
@@ -1196,8 +1288,7 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
     with open(os.path.join(out, "npcs.html"), "w", encoding="utf-8") as f:
         f.write(page("NPCs", body, path="/npcs", description=f"{len(npc_api)} NPCs on Vanilla Plus."))
 
-    # ---- spell pages, the spell search and api/spells.json (spells.py; Part GE)
-    spells = load_spells()
+    # ---- spell pages, the spell search and api/spells.json (spells.py; Part GE); spells loaded above
     spell_items = {}  # spell id -> [(item id, how: "Use" / "Equip" / ...)]
     for iid in all_items:
         for ln, sid in items[iid].get("spell_lines", {}).items():
@@ -1355,7 +1446,7 @@ Wowhead sources that are all in cut content. An item Lokiy's loot tracker has se
     def unseen_row(iid):
         it = items[iid]
         srcs_html = "; ".join((f'<a href="{esc(e["href"])}">{esc(e["text"])}</a>' if e.get("href", "").startswith("/")
-                               else esc(e["text"])) for e in item_srcs[iid][:3]) or '<span class="muted">unknown</span>'
+                               else esc(e["text"])) for e in map(local_source, item_srcs[iid][:3])) or '<span class="muted">unknown</span>'
         lv = " / ".join(x for x in (f'ilvl {it.get("ilvl")}' if it.get("ilvl") else "",
                                     f'req {req_level(it)}' if req_level(it) else "") if x)
         return (f'<tr><td><a class="item" href="/item/{iid}" data-item="{iid}">'

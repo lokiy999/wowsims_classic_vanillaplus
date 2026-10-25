@@ -5188,3 +5188,21 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   the world bosses, ...); "Trash", Nameless Hermit, Elementium Decapitator Mk III, Sothos and Jarien's Heirlooms
   still link to the item page.
 - Zone / quest / faction links stay on Wowhead. Built and deployed; not yet checked in a browser.
+  (Hub, later that day: the live sim loads `db_npcs.json` (10,183 ids, 724 names); the gear picker itself
+  wasn't opened.)
+
+## Part GN — db.lokiy.dev: boss abilities / tactics on NPC pages; item sources link NPC pages (2026-10-25)
+
+- Lokiy (via the hub): nice boss pages for the sim. `npcs.load_journal()` reads DungeonJournal's export
+  `tools/itemdb/dungeonjournal.json` (uploaded by DungeonJournal `tools/export_json.py --upload`; git-ignored, so an
+  upload never blocks `sync_sim.sh`). Every boss, add and trash mob with a creature id (`npcId` / `npcIds`) gets on its
+  `/npc/<id>` page: raid, armor / resistances, flags (tauntable, damage schools, immunities), **Abilities** (icon,
+  school and role tags, ! for warnings, linked to `/spell/<id>` when db.lokiy.dev has that spell), **Adds** (linked
+  to their own NPC page) and **Tactics** (resistances, Pre-pull / Adds / Mechanics lists). 219 NPC pages.
+  `load_spells()` now runs before the NPC pages.
+- Item pages: sources that linked an NPC to Wowhead (pfQuest / Wowhead drops, vendors) link to `/npc/<id>`; AtlasLoot
+  boss tables get an "NPC" link next to the table; "Lokiy's loot" rows and tracker sources link the mob's NPC page.
+  Item pages with a Wowhead NPC link: 3,132 -> 15. Same on /unseen. `api/sources.json` unchanged (the links are
+  rewritten for the pages only).
+- Checked in a browser (Lucifron, /npc/12118). Backups `gen_site.py.bak-2026-10-25l`, `npcs.py.bak-2026-10-25`,
+  `style.css.bak-2026-10-25l`.

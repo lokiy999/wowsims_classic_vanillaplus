@@ -247,3 +247,15 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 	.obs { grid-column: auto; }
 	h1 { font-size: 1.35rem; }
 }
+
+/* NPC pages: DungeonJournal abilities / tactics (Part GN) */
+.dj-abilities, .dj-tactics { list-style: none; padding: 0; margin: .4rem 0; }
+.dj-abilities > li { padding: .45rem 0; border-top: 1px solid rgba(255,255,255,.07); }
+.dj-abilities > li:first-child { border-top: 0; }
+.dj-abilities .icon-s { vertical-align: middle; width: 18px; height: 18px; }
+.dj-lines p { margin: .2rem 0 0 1.6rem; }
+.dj-sep { font-weight: 600; color: var(--accent); padding-top: .8rem !important; }
+.dj-warn { color: #ff5c5c; }
+.dj-tactics li { margin: .25rem 0 .25rem 1rem; list-style: disc; }
+.dj h3 { font-size: .95rem; margin: .8rem 0 .2rem; }
+.src-npc { font-size: .75rem; margin-left: .3rem; }

@@ -56,3 +56,6 @@ wowsimsod*.h
 
 # Hand-edit backups (file.bak-YYYY-MM-DD) stay beside the file, not in git
 *.bak-*
+
+# DungeonJournal export, uploaded by its tools/export_json.py --upload (read by gen_site.py, Part GN)
+tools/itemdb/dungeonjournal.json
