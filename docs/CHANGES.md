@@ -5087,3 +5087,31 @@ Lokiy (via the hub): a page for the classic items no Vanilla+ client has seen (P
   the line is green and the set-bonus rule (Part FU) sees the classic tier pieces: 144 old 3/5/8 pieces (18 classic
   T1 / T2 sets x 8) are now marked not on Vanilla+. Of the 711 unseen items 285 remain on /unseen, 426 are marked;
   /removed lists 806.
+
+## Part GH — sim.lokiy.dev: spell links, names, icons and tooltips from db.lokiy.dev (2026-10-25)
+
+- Lokiy's plan (via the hub): db.lokiy.dev spell pages are live (Part GE), so the sim's spell and talent links and
+  tooltips leave Wowhead; Wowhead only for spells db.lokiy.dev doesn't have.
+- New `tools/gen_db_spells.py` (run by `sync_sim.sh` before `gen_db`): from db.lokiy.dev's `api/spells.json`
+  (25,146 spells) it writes `assets/database/db_spell_ids.json` (the ids it has) and `assets/spells/<id // 1000>.json`
+  (name, icon, rank, buff flag and a tooltip in the sim's local layout: name, rank, description, "Buff:" text).
+- `gen_db` (`applyDbSpells`): every DB spell icon db.lokiy.dev has (4,319 of 4,806) takes that name, icon, rank and
+  tooltip; 2,192 tooltips change (server values, e.g. Mend Pet "30 health every 2 sec"; the copies from Wowhead's
+  tooltip CSV also had cost / range / cast time lines, which db.lokiy.dev's data doesn't carry). The other 487
+  (Season of Discovery / later ids) keep Wowhead's. The Spell.csv-based tooltips (`gen_server_spell_tooltips.py`)
+  are overwritten for every spell db.lokiy.dev has; the script still collects the spell ids gen_db lists.
+- UI (`ui/core/db_spells.ts`, loaded with the database): `makeSpellUrl()` -> `https://db.lokiy.dev/spell/<id>` for
+  every spell it has; `Database.getSpellIconData()` takes the DB's entry, else db.lokiy.dev's block file (same
+  origin, only for spells the DB doesn't list), else Wowhead's tooltip API; `hasLocalSpellTooltip()` is true for
+  every db.lokiy.dev spell, and `setWowheadDataset()` attaches our tooltip first, so the results tables, timeline,
+  rotation and logs show it too. Talents link to their db.lokiy.dev spell page (their tooltips stay the talent
+  config's descriptions).
+- `tooltips.js` stays: Wowhead still renders the tooltips of what db.lokiy.dev lacks (23202 Libram of Divinity, the
+  487 spells above, enchant spells it doesn't have).
+- **db.lokiy.dev's classic-only items (Part GF)**: their tooltip lines now give 39 more sim items a local tooltip
+  and db.lokiy.dev link (3,708 of 3,709; only 23202 Libram of Divinity left). They are no sign an item is on the
+  server: `serverdata.classic_only_ids()`; `gen_include.py` Rule 1(b) and `gen_phases.py` skip them. Without that,
+  the pipeline would have added 129 classic-only items to the sim and moved the Scarlet set (26341-26346) to
+  phase 1 (classic 10328 etc. renumber onto them and sit in the "SCARLET" set table).
+- Checked on sim.lokiy.dev (mage): 113 spell links and all 60 talents go to db.lokiy.dev, no Wowhead tooltip
+  requests, no spell block downloads on page load.

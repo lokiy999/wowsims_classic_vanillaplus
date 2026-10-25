@@ -373,6 +373,12 @@ func main() {
 	}
 
 	db.MergeSpellIcons(database.SpellIconoverrides)
+
+	// Spells db.lokiy.dev has: its name, icon, rank and tooltip (tools/gen_db_spells.py -> assets/spells/, from its
+	// api/spells.json), the only spell data source. The others (Season of Discovery / later spells) keep Wowhead's.
+	if n := applyDbSpells(db, fmt.Sprintf("%s/spells", *outDir)); n > 0 {
+		fmt.Printf("Spell data of %d spells from db.lokiy.dev\n", n)
+	}
 	db.MergeItemIcons(database.ItemIconoverrides)
 
 	// Non-gear items (consumables, enchant items, ...) with their in-game tooltip from the server dump
@@ -400,6 +406,45 @@ func main() {
 }
 
 // Filters out entities which shouldn't be included anywhere.
+// applyDbSpells replaces every DB spell icon db.lokiy.dev has with its data from the assets/spells/<id / 1000>.json
+// blocks tools/gen_db_spells.py writes. Returns how many it replaced.
+func applyDbSpells(db *database.WowDatabase, dir string) int {
+	type dbSpell struct {
+		Name    string `json:"name"`
+		Icon    string `json:"icon"`
+		Rank    int32  `json:"rank"`
+		HasBuff bool   `json:"hasBuff"`
+		Tooltip string `json:"tooltip"`
+	}
+	blocks := map[int32]map[string]dbSpell{}
+	n := 0
+	for id, icon := range db.SpellIcons {
+		block, ok := blocks[id/1000]
+		if !ok {
+			block = map[string]dbSpell{}
+			if raw, err := os.ReadFile(fmt.Sprintf("%s/%d.json", dir, id/1000)); err == nil {
+				if err := json.Unmarshal(raw, &block); err != nil {
+					panic(err)
+				}
+			}
+			blocks[id/1000] = block
+		}
+		s, ok := block[strconv.Itoa(int(id))]
+		if !ok {
+			continue
+		}
+		icon.Name = s.Name
+		if s.Icon != "" {
+			icon.Icon = s.Icon
+		}
+		icon.Rank = s.Rank
+		icon.HasBuff = s.HasBuff
+		icon.Tooltip = s.Tooltip
+		n++
+	}
+	return n
+}
+
 func ApplyGlobalFilters(db *database.WowDatabase) {
 	db.Items = core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		if _, ok := database.ItemDenyList[item.Id]; ok {

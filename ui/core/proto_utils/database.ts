@@ -2,6 +2,7 @@ import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { Class, EquipmentSpec, ItemRandomSuffix, ItemSlot, ItemSpec, ItemSwap, PresetEncounter, PresetTarget, SimDatabase } from '../proto/common.js';
 import { IconData, UIDatabase, UIEnchant as Enchant, UIFaction as Faction, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
 import { loadDbIcons } from '../db_icons.js';
+import { getDbSpell, isDbSpell, loadDbSpellIds } from '../db_spells.js';
 import { distinct } from '../utils.js';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
@@ -22,11 +23,11 @@ export class Database {
 	static get(): Promise<Database> {
 		if (Database.loadPromise == null) {
 			if (READ_JSON) {
-				Database.loadPromise = Promise.all([fetch(dbUrlJson).then(response => response.json()), loadDbIcons()]).then(
+				Database.loadPromise = Promise.all([fetch(dbUrlJson).then(response => response.json()), loadDbIcons(), loadDbSpellIds()]).then(
 					([json]) => new Database(UIDatabase.fromJson(json)),
 				);
 			} else {
-				Database.loadPromise = Promise.all([fetch(dbUrlBin).then(response => response.arrayBuffer()), loadDbIcons()]).then(
+				Database.loadPromise = Promise.all([fetch(dbUrlBin).then(response => response.arrayBuffer()), loadDbIcons(), loadDbSpellIds()]).then(
 					([buffer]) => new Database(UIDatabase.fromBinary(new Uint8Array(buffer))),
 				);
 			}
@@ -88,7 +89,7 @@ export class Database {
 		return !!Database.instance?.itemIconsSync.get(itemId)?.tooltip;
 	}
 	static hasLocalSpellTooltip(spellId: number): boolean {
-		return !!Database.instance?.localSpellTooltipIds.has(spellId);
+		return isDbSpell(spellId) || !!Database.instance?.localSpellTooltipIds.has(spellId);
 	}
 	static localItemTooltip(itemId: number): string {
 		const itemTooltip = Database.instance?.items.get(itemId)?.tooltip;
@@ -256,20 +257,18 @@ export class Database {
 		return await db.itemIcons[itemId];
 	}
 
+	// The DB's spell icons (db.lokiy.dev's data for every spell it has, gen_db), else db.lokiy.dev's spell blocks
+	// (db_spells.ts) for spells the DB doesn't list, else Wowhead's.
 	static async getSpellIconData(spellId: number): Promise<IconData> {
 		const db = await Database.get();
 		if (!db.spellIcons[spellId]) {
-			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId);
+			db.spellIcons[spellId] = getDbSpell(spellId).then(data => data ?? Database.getWowheadSpellTooltipData(spellId));
 		}
 		return await db.spellIcons[spellId];
 	}
 
 	static async getSpellRankData(spellId: number): Promise<IconData> {
-		const db = await Database.get();
-		if (!db.spellIcons[spellId]) {
-			db.spellIcons[spellId] = Database.getWowheadSpellTooltipData(spellId);
-		}
-		return await db.spellIcons[spellId];
+		return Database.getSpellIconData(spellId);
 	}
 
 	private static async getWowheadItemTooltipData(id: number): Promise<IconData> {

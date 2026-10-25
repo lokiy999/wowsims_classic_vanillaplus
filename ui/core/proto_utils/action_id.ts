@@ -6,6 +6,7 @@ import { ResourceType } from '../proto/api';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common';
 import { IconData, UIItem as Item } from '../proto/ui';
 import { iconUrl } from '../db_icons';
+import { DB_SPELL_URL, isDbSpell } from '../db_spells';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';
 
@@ -179,7 +180,9 @@ export class ActionId {
 		const url = ActionId.makeItemUrl(id);
 		return url.startsWith(DB_ITEM_URL) ? url : `${url}#${wowheadTab}`;
 	}
+	// Spell page: db.lokiy.dev for every spell it has, Wowhead only for the others.
 	static makeSpellUrl(id: number): string {
+		if (isDbSpell(id)) return `${DB_SPELL_URL}${id}`;
 		const langPrefix = getWowheadLanguagePrefix();
 		const showBuff = spellIDsToShowBuffs.has(id);
 
@@ -217,6 +220,8 @@ export class ActionId {
 	}
 
 	async setWowheadDataset(elem: HTMLElement, params?: Omit<WowheadTooltipItemParams, 'itemId'> | Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		// Our own tooltip (db.lokiy.dev's data) wherever there is one; Wowhead's only for the rest.
+		if (await this.trySetLocalTooltip(elem)) return;
 		(this.itemId
 			? ActionId.makeItemTooltipData(this.itemId, params)
 			: ActionId.makeSpellTooltipData(this.spellIdTooltipOverride || this.spellId, params)
@@ -259,6 +264,7 @@ export class ActionId {
 		}
 		if (!data.tooltip) return false;
 		this.attachLocalTippy(elem, data.tooltip);
+		if (elem instanceof HTMLAnchorElement && isDbSpell(spellId)) elem.href = ActionId.makeSpellUrl(spellId);
 		return true;
 	}
 

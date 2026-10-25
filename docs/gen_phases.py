@@ -38,7 +38,10 @@ TIER_PHASE = 4
 def main():
     pristine = sd.pristine_db()
     id_tables, _ = sd.loot_tables()
-    blocks = sd.item_lines()
+    # db.lokiy.dev's classic-only items (not seen on Vanilla+) don't get phased: a renumbered piece's classic copy
+    # would phase the server item by the classic loot tables (e.g. 10328 -> 26346 Scarlet Chestpiece).
+    classic_only = sd.classic_only_ids()
+    blocks = {k: v for k, v in sd.item_lines().items() if k not in classic_only}
 
     try:
         renum = {int(k): v for k, v in json.load(open(RENUMBER)).items()}

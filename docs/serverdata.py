@@ -58,6 +58,13 @@ def item_lines():
     return out
 
 
+def classic_only_ids():
+    """Ids of the classic items db.lokiy.dev lists that no Vanilla+ client has seen yet ("classicOnly"): their lines are
+    usable (tooltips, links), but they are no sign that the item exists on the server."""
+    with open(ITEMS_JSON, encoding="utf8") as f:
+        return {int(iid) for iid, it in json.load(f).items() if it.get("classicOnly")}
+
+
 # ---------------------------------------------------------------------------
 # db.lokiy.dev item sources
 # ---------------------------------------------------------------------------

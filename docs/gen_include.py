@@ -89,7 +89,9 @@ def main():
     pristine = sd.pristine_db()
     id_tables, atlas_names = sd.loot_tables()
     wowhead = sd.wowhead_sources()
-    blocks = sd.item_lines()
+    # Rule 1(b) needs the item seen on Vanilla+: db.lokiy.dev's classic-only items don't count.
+    classic_only = sd.classic_only_ids()
+    blocks = {k: v for k, v in sd.item_lines().items() if k not in classic_only}
     try:
         renum = {int(k): v for k, v in json.load(open(RENUMBER)).items()}
     except OSError:

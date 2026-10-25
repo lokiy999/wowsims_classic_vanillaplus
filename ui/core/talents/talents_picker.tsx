@@ -1,3 +1,4 @@
+import { isDbSpell } from '../db_spells.js';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -528,6 +529,7 @@ class TalentPicker<TalentsProto> extends Component {
 					// Custom talent - Wowhead has no data for this spell id, so render a local tooltip.
 					this.rootElem.removeAttribute('href');
 					this.rootElem.dataset.disableWowheadTouchTooltip = 'true';
+					if (isDbSpell(spellId)) (this.rootElem as HTMLAnchorElement).href = ActionId.makeSpellUrl(spellId);
 					this.updateLocalTooltip(actionId.name || String(this.config.fieldName), Math.max(1, newPoints));
 				} else {
 					actionId.trySetLocalTooltip(this.rootElem).then(hasLocal => {

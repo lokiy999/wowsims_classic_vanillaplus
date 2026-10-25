@@ -37791,6 +37791,78 @@
 }
 }
 ],
+"20726": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20727": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20728": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20729": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20730": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20731": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20734": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20735": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"20736": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
 "20949": [
 {
 "drop": {
@@ -38291,6 +38363,14 @@
 }
 }
 ],
+"21214": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
 "21242": [
 {
 "quest": {
@@ -38352,6 +38432,214 @@
 "crafted": {
 "profession": 8,
 "spellId": 26279
+}
+}
+],
+"21279": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21280": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21281": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21282": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21283": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21284": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21285": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21287": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21288": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21289": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21290": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21291": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21292": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21293": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21294": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21295": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21296": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21297": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21298": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21299": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21300": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21302": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21303": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21304": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21306": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
+}
+}
+],
+"21307": [
+{
+"drop": {
+"zoneId": 900001,
+"otherName": "W B Shared Loot"
 }
 }
 ],
@@ -46227,7 +46515,7 @@
 {
 "drop": {
 "zoneId": 900001,
-"otherName": "Azuregos"
+"otherName": "W B Shared Loot"
 }
 }
 ],
