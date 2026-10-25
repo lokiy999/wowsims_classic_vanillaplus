@@ -1158,11 +1158,11 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
     with open(os.path.join(out, "spells.html"), "w", encoding="utf-8") as f:
         f.write(page("Spells", body, path="/spells", description=f"All {len(spells)} Vanilla Plus spells."))
     api_spells = {}
-    for sid, sp in spells.items():  # empty fields left out to keep the file small
+    for sid, sp in spells.items():
         e = {"name": sp["name"], "rank": sp["rank"], "icon": icon_url(sp["icon"], "medium", absolute=True)
              if sp["icon"] else "", "desc": sp["desc"], "tip": sp["tip"], "status": sp["status"]}
-        e.update(tooltip_lines(sp["fields"]))  # cost / range / cast / cd, game-style text (Part GH)
-        api_spells[sid] = {k: v for k, v in e.items() if v or k == "name"}
+        e.update(tooltip_lines(sp["fields"]))  # cost / range / cast / cd, game-style text, only when set (Part GI)
+        api_spells[sid] = e
     os.makedirs(os.path.join(out, "api"), exist_ok=True)
     with open(os.path.join(out, "api", "spells.json.tmp"), "w", encoding="utf-8") as f:
         json.dump(api_spells, f, ensure_ascii=False, separators=(",", ":"))
