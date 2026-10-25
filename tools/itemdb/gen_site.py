@@ -23,7 +23,11 @@ and writes plain HTML pages (Caddy serves them from disk):
                           cost / range / cast / cd tooltip lines (empty fields left out)
   (items no Vanilla+ client has seen: classic Wowhead tooltips, tagged "not seen on Vanilla+ yet", api flag
    "classicOnly"; add_classic_items, Part GF)
-  /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there)
+  /npc/<id>.html          every NPC pfQuest knows (npcs.py): level, rank, zone, Lokiy's loot, its AtlasLoot table,
+                          classic drops / vendor items (pfQuest); /npcs.html a search over /npcs.json
+  /api/npcs.json          {creature id: {name, level, zone, boss, url}}
+  /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there;
+                          /npc/<id> when the name matched a creature id)
   /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
                           instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
                           sources (wowhead_sources.json) for what AtlasLoot doesn't cover. The sim's only source data.
@@ -60,6 +64,7 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
+from npcs import RANKS, NpcMatcher, load_npcs  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
 from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
@@ -561,7 +566,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/spells">Spells</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/unseen">Unseen</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/spells">Spells</a><a href="/instances">Instances</a><a href="/npcs">NPCs</a><a href="/unseen">Unseen</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -735,7 +740,34 @@ def main():
         if m["name"] in mob_key:
             loot_key_mobs.setdefault(mob_key[m["name"]], []).append(m)
 
+    # creature ids (npcs.py, Part GJ): the tracker's mobs and AtlasLoot's boss tables only know names
+    npcs = load_npcs()
+    matcher = NpcMatcher(npcs)
+    mob_npc = {}
+    for m in mob_loot:
+        nid = matcher.match(m["name"], list(m["zones"]), [r[0] for r in m["items"]])
+        if nid:
+            mob_npc[m["name"]] = nid
+    table_npc = {}  # boss loot table key -> creature id
+    for key in loot_keys:
+        nm, cat = names.get(key, ("", "Other"))
+        if (not nm or table_groups.get(key) not in ("Instances", "WorldBosses") or key == SHARED_WB_KEY
+                or re.match(r"^(Trash|Random|.* Sets?$)", nm)):
+            continue
+        nid = matcher.match(re.sub(r"\s*\((Rare|.*Scourge Invasion.*)\)$", "", nm), [cat],
+                            [r[0] for r in tables[key] if r[0]])
+        if nid:
+            table_npc.setdefault(key, nid)
+    npc_tables, npc_mob = {}, {}
+    for key, nid in table_npc.items():
+        npc_tables.setdefault(nid, []).append(key)
+    for m in mob_loot:
+        if m["name"] in mob_npc:
+            npc_mob[mob_npc[m["name"]]] = m
+
     def mob_href(m):
+        if m["name"] in mob_npc:
+            return f'/npc/{mob_npc[m["name"]]}'
         return f'/loot/{mob_key[m["name"]]}' if m["name"] in mob_key else f'/mob/{slug(m["name"])}'
 
     def mob_rate(r):
@@ -766,7 +798,7 @@ def main():
                 f'from every corpse), else drops per looted corpse. ~ = estimate.</p></section>')
 
     # clean output (only our generated files)
-    for sub in ("item", "loot", "type", "tt", "mob", "spell"):
+    for sub in ("item", "loot", "type", "tt", "mob", "spell", "npc"):
         shutil.rmtree(os.path.join(out, sub), ignore_errors=True)
         os.makedirs(os.path.join(out, sub), exist_ok=True)
 
@@ -938,6 +970,7 @@ def main():
   {f'<p class="notice nos-banner"><b>Not on Vanilla+.</b> {esc(CUT_TEXT[srcs.cut_table(key)])}</p>' if srcs.cut_table(key) else ''}
   <p class="muted">{counts} {kills_note}</p>
   {shared_note(key)}
+  {f'<p class="muted">NPC: <a href="/npc/{table_npc[key]}">{esc(npcs[table_npc[key]]["name"])}</a></p>' if key in table_npc else ''}
   <ul class="loot">{''.join(rows)}</ul>
   {''.join(mob_drops_html(m, f"Drops seen from {m['name']}") for m in loot_key_mobs.get(key, []))}
 </article>"""
@@ -1018,6 +1051,14 @@ def main():
     by_zone = {}
     for m in mob_loot:
         by_zone.setdefault(main_zone(m), []).append(m)
+        if m["name"] in mob_npc:  # the page moved to /npc/<id> (Part GJ): keep the old address working
+            target = f'/npc/{mob_npc[m["name"]]}'
+            with open(os.path.join(out, "mob", f"{slug(m['name'])}.html"), "w", encoding="utf-8") as f:
+                f.write(page(m["name"], f'<p>Moved to <a href="{target}">{esc(m["name"])}</a>.</p>',
+                             path=f"/mob/{slug(m['name'])}",
+                             extra_head=f'<meta http-equiv="refresh" content="0; url={target}">'
+                                        f'<link rel="canonical" href="{SITE_URL}{target}">'))
+            continue
         if m["name"] in mob_key:
             continue
         info = ", ".join(x for x in (f'Level {m["level"]}' if m["level"] else "",
@@ -1041,7 +1082,8 @@ def main():
     body = f"""
 <section class="intro"><h1>Mobs &amp; bosses</h1>
 <p class="muted">Every mob and boss <a href="https://lokiy.dev/loot/">Lokiy's loot tracker</a> has seen, with what
-it dropped. Bosses link to their loot table.</p>{rough_note}</section>
+it dropped. Mobs link to their <a href="/npcs">NPC page</a> when their creature ID is known, else to their loot table
+or their own page.</p>{rough_note}</section>
 {"".join(blocks)}"""
     with open(os.path.join(out, "mobs.html"), "w", encoding="utf-8") as f:
         f.write(page("Mobs", body, path="/mobs", description="Vanilla Plus mobs and bosses and their drops (very rough)."))
@@ -1050,6 +1092,104 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
     with open(os.path.join(out, "api", "mobs.json.tmp"), "w", encoding="utf-8") as f:
         json.dump({m["name"]: SITE_URL + mob_href(m) for m in mob_loot}, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(os.path.join(out, "api", "mobs.json.tmp"), os.path.join(out, "api", "mobs.json"))
+
+    # ---- NPC pages /npc/<creature id>, the NPC search and api/npcs.json (npcs.py; Part GJ)
+    def item_cell(i):
+        if i in items:
+            return item_link(items[i], icons.get(i, "inv_misc_questionmark"))
+        w = wowhead.get(i, {"name": f"Item {i}", "quality": 1})
+        return (f'<a class="item ext" href="https://www.wowhead.com/classic/item={i}" rel="noopener">'
+                f'<span style="color:{Q_COLOR.get(w["quality"] or 1, "#ffffff")}">{esc(w["name"])}</span></a>')
+
+    npc_api, npc_index = {}, []
+    for nid, n in sorted(npcs.items()):
+        m = npc_mob.get(nid)
+        keys = npc_tables.get(nid, [])
+        rank = RANKS.get(n.get("rank"), "")
+        boss = n.get("rank") == 3 or bool(keys) or (m and m["elite"] == "boss")
+        if boss and not rank:
+            rank = "Boss"
+        zone = n["zone"] or (main_zone(m) if m and m["zones"] else "") or (table_label(keys[0])[1] if keys else "")
+        level = n["lvl"] or (m["level"] if m else "")
+        info = " &middot; ".join(esc(x) for x in (f"Level {level}" if level else "", rank, zone) if x)
+        parts = []
+        if m:
+            parts.append(mob_drops_html(m, "Lokiy's loot"))
+        for key in keys:
+            lis = "".join(f'<li>{item_cell(r[0])}</li>' for r in tables[key] if r[0])
+            parts.append(f'<section class="card"><h2>Loot table: <a href="/loot/{key}">{esc(table_label(key)[0])}</a></h2>'
+                         f'<ul class="loot">{lis}</ul></section>')
+        drops = n.get("drops", [])
+        if drops:
+            trs = "".join(f'<tr><td>{item_cell(i)}</td><td class="rate">{c:g}%</td></tr>' for i, c in drops[:80])
+            more = f'<p class="muted small">{len(drops) - 80} more with lower chances.</p>' if len(drops) > 80 else ""
+            parts.append(f'<section class="card"><h2>Classic drops</h2><table class="obs-table"><thead><tr><th>Item</th>'
+                         f'<th>Chance</th></tr></thead><tbody>{trs}</tbody></table>{more}<p class="muted small">Classic '
+                         f'1.12 data (pfQuest / vmangos), not checked against Vanilla+; shared world-drop pools and '
+                         f'raid loot tables aren\'t listed here.</p></section>')
+        if n.get("sells"):
+            lis = "".join(f'<li>{item_cell(i)}</li>' for i in n["sells"][:150])
+            parts.append(f'<section class="card"><h2>Sells</h2><ul class="loot cols">{lis}</ul>'
+                         f'<p class="muted small">Classic 1.12 data (pfQuest).</p></section>')
+        body = f"""
+<article>
+  <div class="crumbs"><a href="/npcs">NPCs</a>{' / ' + esc(zone) if zone else ''}</div>
+  <h1>{esc(n['name'])}</h1>
+  <p class="muted">{info}{' &middot; ' if info else ''}NPC {nid} &middot;
+  <a href="https://www.wowhead.com/classic/npc={nid}" rel="noopener">Wowhead</a></p>
+  {''.join(parts) or '<p class="muted">No loot or vendor data.</p>'}
+</article>"""
+        with open(os.path.join(out, "npc", f"{nid}.html"), "w", encoding="utf-8") as f:
+            f.write(page(n["name"], body, path=f"/npc/{nid}",
+                         description=f"{n['name']}" + (f", level {level}" if level else "") + (f", {zone}" if zone else "")
+                         + " on Vanilla Plus."))
+        npc_api[nid] = {"name": n["name"], "level": level, "zone": zone, "boss": bool(boss), "url": f"{SITE_URL}/npc/{nid}"}
+        npc_index.append([nid, n["name"], level, zone, rank, 1 if (m or keys or drops) else 0])
+    with open(os.path.join(out, "npcs.json"), "w", encoding="utf-8") as f:
+        json.dump(npc_index, f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(out, "api", "npcs.json.tmp"), "w", encoding="utf-8") as f:
+        json.dump(npc_api, f, ensure_ascii=False, separators=(",", ":"))
+    os.replace(os.path.join(out, "api", "npcs.json.tmp"), os.path.join(out, "api", "npcs.json"))
+    unmatched = "".join(f'<li>{esc(nm)} <span class="muted">{esc(why)}</span></li>'
+                        for nm, why in sorted(matcher.unmatched.items()))
+    body = f"""
+<section class="intro"><h1>NPCs</h1>
+<p class="muted">{len(npc_api)} NPCs by creature ID, from pfQuest's classic data (level, rank, zone, classic drops and
+vendor items), with <a href="https://lokiy.dev/loot/">Lokiy's loot tracker</a> and the AtlasLoot boss tables where the
+name matched one creature ID. The loot tracker's mobs by zone: <a href="/mobs">Mobs</a>.</p>
+<form class="spell-search" onsubmit="return false">
+  <input id="nq" type="search" placeholder="Name or ID..." autocomplete="off">
+  <select id="nr"><option value="">Any rank</option><option>Boss</option><option>Elite</option><option>Rare elite</option><option>Rare</option></select>
+  <label class="muted"><input id="nl" type="checkbox"> with loot data</label>
+</form></section>
+<section class="card"><p class="muted small" id="ncount"></p><ul class="loot" id="nlist"></ul></section>
+<section class="card"><details><summary><h2 style="display:inline">Names not matched to a creature ID
+<span class="muted">{len(matcher.unmatched)}</span></h2></summary><p class="muted small">Loot tracker mobs and AtlasLoot
+tables whose name isn't one pfQuest NPC: Vanilla+'s own NPCs, other names, or several NPCs of that name with no zone or
+drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot cols">{unmatched}</ul></details></section>
+<script>
+(async () => {{
+  const all = await (await fetch('/npcs.json')).json();
+  const $ = id => document.getElementById(id), MAX = 300;
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({{'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}})[c]);
+  const p = new URLSearchParams(location.search);
+  $('nq').value = p.get('q') || ''; $('nr').value = p.get('rank') || ''; $('nl').checked = p.get('loot') === '1';
+  function show() {{
+    const q = $('nq').value.trim().toLowerCase(), r = $('nr').value, l = $('nl').checked;
+    const hits = all.filter(n => (!r || n[4] === r) && (!l || n[5])
+      && (!q || String(n[0]) === q || n[1].toLowerCase().includes(q) || n[3].toLowerCase().includes(q)));
+    $('ncount').textContent = `${{hits.length}} NPCs` + (hits.length > MAX ? ` (first ${{MAX}} shown)` : '');
+    $('nlist').innerHTML = hits.slice(0, MAX).map(n => `<li><a href="/npc/${{n[0]}}">${{esc(n[1])}}</a> <span class="muted">`
+      + [n[2] ? 'Level ' + n[2] : '', n[4], n[3], '#' + n[0]].filter(Boolean).map(esc).join(' · ') + '</span></li>').join('');
+    const u = new URLSearchParams(); if (q) u.set('q', q); if (r) u.set('rank', r); if (l) u.set('loot', '1');
+    history.replaceState(null, '', u.toString() ? '?' + u : location.pathname);
+  }}
+  ['nq', 'nr', 'nl'].forEach(id => $(id).addEventListener('input', show));
+  show();
+}})();
+</script>"""
+    with open(os.path.join(out, "npcs.html"), "w", encoding="utf-8") as f:
+        f.write(page("NPCs", body, path="/npcs", description=f"{len(npc_api)} NPCs on Vanilla Plus."))
 
     # ---- spell pages, the spell search and api/spells.json (spells.py; Part GE)
     spells = load_spells()
@@ -1430,6 +1570,8 @@ your filters, so you can share a search.</p></section>
         by_from[f] = by_from.get(f, 0) + 1
     print(f"{len(classic_only)} classic items not seen on Vanilla+ yet added "
           f"({sum(1 for i in classic_only if types[i][0] in ('weapons', 'ranged', 'cloth', 'leather', 'mail', 'plate', 'accessories', 'shields'))} gear)")
+    print(f"{len(npc_api)} NPC pages; matched {len(mob_npc)}/{len(mob_loot)} tracker mobs, {len(table_npc)} boss tables; "
+          f"{len(matcher.unmatched)} names not matched")
     print(f"sources by layer: {by_from}; {len(NOT_ON_SERVER)} items not on Vanilla+; {len(spells)} spells "
           f"({n_status}), {len(spell_items)} used by items")
     for iid, why in srcs.conflicts:

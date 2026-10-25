@@ -5134,3 +5134,28 @@ range / cast time / cooldown, so 2,192 sim tooltips lost those lines.
   name, rank, "30 Mana ... 35 yd range", "1.5 sec cast ... 5 min cooldown", description, buff text (the right part
   floats right; a line with only one part shows just that).
 - Deployed by `sync_sim.sh` itself (its trigger includes `spells.json`): the first real run of its commit + push step.
+
+## Part GK — db.lokiy.dev: NPC pages (2026-10-25)
+
+Lokiy (via the hub; hub PLAN "NPC / boss pages", "IDs everywhere"): db.lokiy.dev/npc/<creature id> so the sim,
+/loot and DungeonJournal can link NPCs there instead of Wowhead.
+- `import_pfquest.py` also writes `pfquest_npcs.json` (re-run on pfQuest 7.0.1; pfquest_sources.json unchanged):
+  10,385 units with name, level, rank (elite / rare elite / boss / rare), faction, zone, direct drops with the classic
+  chance and vendor items. (Raid boss loot and world-drop pools are pfQuest reference tables: left out.)
+- `npcs.py`: loads it without junk units (GM waypoints, triggers, DND...), and `NpcMatcher` maps a name to a creature
+  id only on evidence: a unique name, else the one in the right zone, else the one pfQuest says drops the items seen;
+  everything else is reported, not guessed.
+- Matched: 387 of the loot tracker's 409 mobs, 297 AtlasLoot boss tables. 77 names not matched (listed folded on
+  /npcs): Vanilla+'s own / renamed NPCs (Brigitte Abbendis, Loksey, Doan, Fairbanks, Sally Whitemane, Renault
+  Mograine, ...), table names that aren't NPCs (Keys, Librams, chests...), a few player names in the tracker data.
+- `/npc/<id>` (10,148 pages, ~108 MB): level, rank, zone (pfQuest, else the tracker's / AtlasLoot's instance),
+  Lokiy's loot (tracker kills / drops / rates, as on the /mob pages), the AtlasLoot loot table(s), classic drops
+  (pfQuest, top 80 by chance, marked classic) and vendor items, a Wowhead link. Abilities / Tactics come when the
+  DungeonJournal export lands.
+- Migration: /mob/<name> of a matched mob redirects to /npc/<id> (meta refresh + canonical); unmatched (Vanilla+)
+  mobs keep their /mob page. Boss /loot/<table> pages link their NPC. /mobs and api/mobs.json point to /npc/<id> when
+  the id is known (api/mobs.json keeps its {name: URL} format for lokiy.dev/loot; the id is in the URL).
+- `/npcs`: search by name / id / zone, rank filter, "with loot data"; "NPCs" replaces "Mobs" in the nav (/npcs links
+  /mobs). `api/npcs.json`: {creature id: {name, level, zone, boss, url}} (1.2 MB).
+- Open for Lokiy: the SM raid bosses that kept a classic name match the classic creature (e.g. Herod -> 3975, a level
+  40 classic NPC); if Vanilla+ made new creatures for them, those links point to the classic one.

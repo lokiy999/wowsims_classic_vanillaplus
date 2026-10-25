@@ -10,6 +10,10 @@ level of those NPCs, "vendors": [[npc id, name, zone]], "objects": [[object id, 
 [name, zone]}, "zones": {area id: name}}; drops by chance, at most MAX_LIST of each. Drops through a reference loot
 table (pfQuest "R", shared world-drop pools) count in "n" without a chance. "npcs" / "zones" name the NPCs and zones
 of the Wowhead sources.
+
+Also writes pfquest_npcs.json (Part GJ, db.lokiy.dev's /npc/<id> pages): {npc id: {"name", "lvl" ("60" / "60-61"),
+"zone", "rank" (1 elite, 2 rare elite, 3 boss, 4 rare), "fac" ("A" / "H" / "AH": friendly to), "drops": [[item id,
+chance %]] (direct drops only, by chance), "sells": [item ids]}} for every unit with a name.
 """
 import json
 import os
@@ -120,6 +124,37 @@ def main(folder):
                   ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     print(f"{len(out)} items: {sum('drops' in r for r in out.values())} with NPC drops, "
           f"{sum('vendors' in r for r in out.values())} sold, {sum('objects' in r for r in out.values())} in objects")
+
+    # per NPC, for db.lokiy.dev's /npc/<id> pages (Part GJ): every unit with a name, its level, rank, faction, zone,
+    # every item it drops (classic chance %) and sells
+    by_npc = {}
+    for iid, e in items.items():
+        if not isinstance(e, dict):
+            continue
+        for u, chance in (e.get("U") or {}).items():
+            by_npc.setdefault(u, {"drops": [], "sells": []})["drops"].append([iid, chance])
+        for u in (e.get("V") or {}):
+            by_npc.setdefault(u, {"drops": [], "sells": []})["sells"].append(iid)
+    npc_out = {}
+    for u, name in unit_names.items():
+        if not isinstance(u, int) or not name:
+            continue
+        unit = units.get(u) or {}
+        rec = {"name": name, "lvl": str(unit.get("lvl", "")), "zone": zone(unit)}
+        if unit.get("rnk"):
+            rec["rank"] = int(unit["rnk"])
+        if unit.get("fac"):
+            rec["fac"] = unit["fac"]
+        d = by_npc.get(u, {})
+        if d.get("drops"):
+            rec["drops"] = sorted(d["drops"], key=lambda r: (-r[1], r[0]))
+        if d.get("sells"):
+            rec["sells"] = sorted(d["sells"])
+        npc_out[str(u)] = rec
+    with open(os.path.join(HERE, "pfquest_npcs.json"), "w", encoding="utf-8") as f:
+        json.dump(npc_out, f, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    print(f"{len(npc_out)} NPCs: {sum('drops' in r for r in npc_out.values())} drop items, "
+          f"{sum('sells' in r for r in npc_out.values())} sell items")
 
 
 if __name__ == "__main__":
