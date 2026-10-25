@@ -5206,3 +5206,28 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   rewritten for the pages only).
 - Checked in a browser (Lucifron, /npc/12118). Backups `gen_site.py.bak-2026-10-25l`, `npcs.py.bak-2026-10-25`,
   `style.css.bak-2026-10-25l`.
+
+## Part GO — db.lokiy.dev: quest and zone pages; sim quest links (2026-10-25)
+
+- Lokiy (via the hub): zone / quest pages so the sim needs Wowhead even less.
+- `import_pfquest.py` also writes `pfquest_quests.json` (committed, re-run only for a new pfQuest version; it was run
+  from a copy of the hub's `data\pfquest`, pfQuest 7.0.1): 4,264 classic quests with title, objective text,
+  description, level / required level, race / class masks, profession, prerequisites, exclusive quests, start / end
+  (NPCs, objects, items) and what they need (items, NPCs, objects, items handed out), plus zone and object names.
+  `pfquest_npcs.json` gains `zid` (the zone's area id).
+- New `tools/itemdb/quests.py`, called by `gen_site.py`:
+  - `/quest/<id>` (4,261; pfQuest's 3 test quests left out): objectives, start and end, rewards (items whose
+    Wowhead source is that quest: 503 quests), quest chain (requires / leads to / can't be done with), description
+    ($B / $N / $C / $R / $G turned into text), a "classic data, not checked against Vanilla+" note.
+  - `/zone/<id>` (76): loot tables, bosses, quests (by where they start), NPCs. NPCs by their NPC page's zone (instance
+    NPCs have no map position in pfQuest); loot-table names matched with `ZONE_ALIASES` (Lower Blackrock Spire ->
+    Blackrock Spire, Dire Maul (East) -> Dire Maul, ...).
+  - `/quests` (search by name / zone / id, side, level), `/zones`, `api/quests.json`, `api/zones.json`; "Quests" and
+    "Zones" in the nav.
+  - NPC pages: a Quests card (starts / ends) and the zone in the crumbs links `/zone/<id>`. Item pages: a Quests card
+    (starts / needed for / handed out by / reward from); quest sources link `/quest/<id>` instead of Wowhead (item
+    pages with a Wowhead quest link: 959 -> 1). `api/sources.json` unchanged.
+- Sim: `tools/gen_db_npcs.py` adds `"quests"` (ids with a page) to `assets/database/db_npcs.json`; `ui/core/db_npcs.ts`
+  `dbQuestUrl()`; `ActionId.makeQuestUrl()` goes to db.lokiy.dev, Wowhead only for quests it lacks. `sync_sim.sh` also
+  rebuilds when `api/quests.json` changes. Zone / faction names in the sim aren't links, so nothing else to move.
+- Backups `gen_site.py.bak-2026-10-25m`, `import_pfquest.py.bak-2026-10-25`.

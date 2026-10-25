@@ -1,7 +1,7 @@
 #!/bin/bash
 # Rebuild and redeploy sim.lokiy.dev when db.lokiy.dev's item data (/api/items.json), source data
 # (/api/sources.json) or spell data (/api/spells.json, since Part GH) or NPC pages (/api/npcs.json + mobs.json, since
-# Part GL) changed since the sim was last built from them (Lokiy 2026-10-24, CHANGES.md Part FL).
+# Part GL; quests.json since Part GO) changed since the sim was last built from them (Lokiy 2026-10-24, CHANGES.md Part FL).
 # Started in the background by sync_db.sh and itemcache_sync.py after they rebuild db.lokiy.dev.
 #
 # Runs the item pipeline (docs/private-server-item-rules.md), checks the result (sim_check.py), builds the sim,
@@ -31,7 +31,8 @@ flock -n 8 || exit 0
 cd "$REPO" || exit 1
 log() { echo "$(date -u '+%F %T') $*" >>"$LOG"; }
 
-SHA=$(cat "$DB_API/items.json" "$DB_API/sources.json" "$DB_API/spells.json" "$DB_API/npcs.json" "$DB_API/mobs.json" | sha256sum | cut -c1-16)
+SHA=$(cat "$DB_API/items.json" "$DB_API/sources.json" "$DB_API/spells.json" "$DB_API/npcs.json" "$DB_API/mobs.json" \
+	"$DB_API/quests.json" 2>/dev/null | sha256sum | cut -c1-16)
 if [ -z "$FORCE" ]; then
 	[ "$SHA" = "$(cat "$BUILT" 2>/dev/null)" ] && exit 0
 	[ "$SHA" = "$(cat "$FAILED" 2>/dev/null)" ] && exit 0

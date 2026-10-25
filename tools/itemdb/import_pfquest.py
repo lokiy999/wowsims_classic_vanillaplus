@@ -13,7 +13,14 @@ of the Wowhead sources.
 
 Also writes pfquest_npcs.json (Part GJ, db.lokiy.dev's /npc/<id> pages): {npc id: {"name", "lvl" ("60" / "60-61"),
 "zone", "rank" (1 elite, 2 rare elite, 3 boss, 4 rare), "fac" ("A" / "H" / "AH": friendly to), "drops": [[item id,
-chance %]] (direct drops only, by chance), "sells": [item ids]}} for every unit with a name.
+chance %]] (direct drops only, by chance), "sells": [item ids]}} for every unit with a name. Since Part GO also
+"zid" (the zone's area id, for /zone/<id>).
+
+And pfquest_quests.json (Part GO, db.lokiy.dev's /quest/<id> and /zone/<id> pages): {quest id: {"name", "goal"
+(objective text), "desc", "lvl", "min", "race" / "class" (bit masks), "skill" (profession id), "pre" (quest ids
+before it), "close" (quests it rules out), "event", "start" / "end" / "needs": {"U": npc ids, "O": object ids,
+"I": item ids, "IR": items it hands out, "A": area triggers}}} for every quest with a title and a start or end, plus
+"zones": {area id: name} and "objects": {object id: name} for the ones the quests use.
 """
 import json
 import os
@@ -83,10 +90,13 @@ def main(folder):
     obj_names = load(os.path.join("enUS", "objects.lua"))[("objects", "enUS")]
     zone_names = load(os.path.join("enUS", "zones.lua"))[("zones", "enUS")]
 
-    def zone(entry):
+    def zone_id(entry):
         coords = (entry or {}).get("coords") or []
         zs = Counter(c[2] for c in (coords.values() if isinstance(coords, dict) else coords) if len(c) > 2)
-        return zone_names.get(zs.most_common(1)[0][0], "") if zs else ""
+        return zs.most_common(1)[0][0] if zs else None
+
+    def zone(entry):
+        return zone_names.get(zone_id(entry), "")
 
     def level(uid):
         lv = re.findall(r"\d+", str((units.get(uid) or {}).get("lvl", "")))
@@ -141,6 +151,8 @@ def main(folder):
             continue
         unit = units.get(u) or {}
         rec = {"name": name, "lvl": str(unit.get("lvl", "")), "zone": zone(unit)}
+        if zone_id(unit) in zone_names:
+            rec["zid"] = zone_id(unit)
         if unit.get("rnk"):
             rec["rank"] = int(unit["rnk"])
         if unit.get("fac"):
@@ -155,6 +167,29 @@ def main(folder):
         json.dump(npc_out, f, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     print(f"{len(npc_out)} NPCs: {sum('drops' in r for r in npc_out.values())} drop items, "
           f"{sum('sells' in r for r in npc_out.values())} sell items")
+
+    # quests, for db.lokiy.dev's /quest/<id> pages (Part GO)
+    quests = load("quests.lua")[("quests", "data")]
+    qtext = load(os.path.join("enUS", "quests.lua"))[("quests", "enUS")]
+    q_out, used_objects = {}, set()
+    for qid, q in quests.items():
+        t = qtext.get(qid) or {}
+        if not isinstance(qid, int) or not isinstance(q, dict) or not t.get("T") or not (q.get("start") or q.get("end")):
+            continue
+        rec = {"name": t["T"], "goal": t.get("O", ""), "desc": t.get("D", "")}
+        for k in ("lvl", "min", "race", "class", "skill", "pre", "close", "event"):
+            if q.get(k):
+                rec[k] = q[k]
+        for k, to in (("start", "start"), ("end", "end"), ("obj", "needs")):
+            if q.get(k):
+                rec[to] = {kind: sorted(set(ids)) for kind, ids in q[k].items() if ids}
+                used_objects |= set(rec[to].get("O", []))
+        q_out[str(qid)] = rec
+    with open(os.path.join(HERE, "pfquest_quests.json"), "w", encoding="utf-8") as f:
+        json.dump({"quests": q_out, "zones": {str(z): n for z, n in zone_names.items()},
+                   "objects": {str(o): obj_names[o] for o in sorted(used_objects) if obj_names.get(o)}}, f,
+                  ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    print(f"{len(q_out)} quests")
 
 
 if __name__ == "__main__":
