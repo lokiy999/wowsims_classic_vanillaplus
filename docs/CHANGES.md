@@ -4976,3 +4976,6 @@ enchants share their drop rates between them."
 
 - `docs/gen_sources.py` WB_NAMES: db.lokiy.dev's `WBSharedLoot` table (Part FY) shows as "Kazzak, Kurinnaxx,
   Hederine, Azuregos (shared loot)" in the World Boss zone (was the prettified table name "Shared Loot").
+- No effect on the deployed sim yet: none of the 30 shared items (class books, formulas) is in the sim's item DB (gear
+  only). A `DRY_RUN=1 FORCE=1 sync_sim.sh` with today's db.lokiy.dev data (Parts FR-FY) also changed nothing: 3,709
+  items, 0 phase / 0 source changes, so nothing was deployed.
