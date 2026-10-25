@@ -29,11 +29,22 @@ def text(s):
     return html.escape(s.strip(), quote=False).replace("\n", "<br />")
 
 
+def pair(left, right):
+    """One tooltip line with a left and a right part, like the game's "30 Mana ... 35 yd range"."""
+    if left and right:
+        return f'{text(left)}<span style="float:right;margin-left:1em">{text(right)}</span>'
+    return text(left or right)
+
+
 def tooltip(s):
-    """Same layout as the sim's other local spell tooltips: name, rank, description, buff text."""
+    """Same layout as the game's spell tooltip: name, rank, cost + range, cast time + cooldown (api/spells.json since
+    Part GI), description, buff text."""
     parts = [f'<b class="whtt-name">{text(s["name"])}</b>']
     if s.get("rank"):
         parts.append(text(s["rank"]))
+    for left, right in ((s.get("cost"), s.get("range") and s["range"] + " range"), (s.get("cast"), s.get("cd"))):
+        if left or right:
+            parts.append(pair(left, right))
     if s.get("desc"):
         parts.append(text(s["desc"]))
     out = "<br />".join(parts)
