@@ -314,6 +314,10 @@ there is more to say.
   Tunic (22191) and Thick Obsidian Breastplate (22196) (unsure; unmarked), Black Qiraji Resonating Crystal (21176, not
   answered; unmarked).
 All on db.lokiy.dev/removed "To check" (Part FV).
+- World Boss Shared Loot (Parts FY, GA): Formula: Enchant Gloves - Living Power (spell 34347) is the 8th glove formula
+  (WebDKP: awarded once) but its item ID isn't known: add it when the item cache sees it. Ask Lokiy whether the other
+  AQ formulas the guild was awarded (Enchant Cloak - Stealth / Dodge / Subtlety, Enchant Weapon - Spell Power) are
+  world boss drops too.
 
 ## Items from db.lokiy.dev (Part FE)
 

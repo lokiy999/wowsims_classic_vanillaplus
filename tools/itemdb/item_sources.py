@@ -73,8 +73,13 @@ SHARED_WB_NAME = "World Boss Shared Loot"
 SHARED_WB_BOSSES = [("KKazzak", "Lord Kazzak"), ("WBKurinnaxx", "Kurinnaxx"), ("Hederine", "Lady Hederine"),
                     ("AAzuregos", "Azuregos")]
 SHARED_WB_TABLES = ["AQ20ClassBooks"]  # every item of these tables moves to the shared table
-SHARED_WB_ITEMS = ["Formula: Enchant Gloves - Threat", "Formula: Enchant Gloves - Fire Power",
-                   "Formula: Enchant Gloves - Healing Power"]
+# the glove formulas by item ID: AtlasLoot has 20727 / 20728 / 20731 in AQ20 and 26021 (a Vanilla+ formula) on
+# Azuregos; those four aren't in the item data yet (WebDKP awards name them). Enchant Gloves - Living Power (spell
+# 34347) is the 8th; its formula's item ID isn't known yet.
+SHARED_WB_ITEMS = {20726: "Formula: Enchant Gloves - Threat", 20729: "Formula: Enchant Gloves - Fire Power",
+                   20730: "Formula: Enchant Gloves - Healing Power", 20727: "Formula: Enchant Gloves - Shadow Power",
+                   20728: "Formula: Enchant Gloves - Frost Power", 20731: "Formula: Enchant Gloves - Superior Agility",
+                   26021: "Formula: Enchant Gloves - Arcane Power"}
 SHARED_WB_TEXT = "World bosses: " + ", ".join(n for _, n in SHARED_WB_BOSSES) + " (shared loot)"
 # Old SM blue BoEs that Wowhead Classic also shows dropping outside the instance (checked 2026-10-25, Lokiy: "blue
 # BoEs from SM could be obtainable"): on Vanilla+, with that source. Sunblaze Coif and Sliverblade drop only in SM.
@@ -206,11 +211,9 @@ def add_shared_world_boss_loot(tables, names, table_groups, items):
     for key in SHARED_WB_TABLES:
         rows.append((0, "", "Class books", False))
         rows += [r for r in tables.get(key, []) if r[0]]
-    by_name = {it["name"]: iid for iid, it in items.items()}
-    formulas = [by_name[n] for n in SHARED_WB_ITEMS if n in by_name]
-    if formulas:
-        rows.append((0, "", "Enchanting formulas", False))
-        rows += [(i, "", items[i]["name"], False) for i in formulas]
+    known = {r[0]: r for rows_ in tables.values() for r in rows_ if r[0]}  # AtlasLoot's row (with its icon)
+    rows.append((0, "", "Enchanting formulas", False))
+    rows += [known.get(i, (i, "inv_misc_note_01", name, False)) for i, name in sorted(SHARED_WB_ITEMS.items())]
     moved = {r[0] for r in rows if r[0]}
     for key in list(tables):
         tables[key] = [r for r in tables[key] if r[0] not in moved]

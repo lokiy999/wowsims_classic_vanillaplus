@@ -4979,3 +4979,15 @@ enchants share their drop rates between them."
 - No effect on the deployed sim yet: none of the 30 shared items (class books, formulas) is in the sim's item DB (gear
   only). A `DRY_RUN=1 FORCE=1 sync_sim.sh` with today's db.lokiy.dev data (Parts FR-FY) also changed nothing: 3,709
   items, 0 phase / 0 source changes, so nothing was deployed.
+
+## Part GA — World Boss Shared Loot: every known AQ glove formula (2026-10-25)
+
+Lokiy: "there should be more AQ glove enchants? 7 or 8?" There are 8; the shared world boss loot (Part FY) had only
+the 3 in the item data. The guild's WebDKP awards name the others (unmatched there because they aren't in the item
+data): Shadow Power (7 awards), Superior Agility (6), Frost Power (4), Arcane Power (2), Living Power (1).
+- `SHARED_WB_ITEMS` is now by item ID: Threat 20726, Shadow Power 20727, Frost Power 20728, Fire Power 20729,
+  Healing Power 20730, Superior Agility 20731 (AtlasLoot AQ20 "AQEnchants") and Arcane Power 26021 (a Vanilla+
+  formula, AtlasLoot had it on Azuregos only). All moved into WBSharedLoot; AQEnchants keeps the two cloak formulas.
+- The four not in the item data show as rows with a Wowhead link (26021, a server item, has no Wowhead page) until
+  the item cache sees them; then they get their own pages and DKP rates.
+- The 8th, Enchant Gloves - Living Power (spell 34347), has no known formula item ID: TODO.
