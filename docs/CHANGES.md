@@ -4864,7 +4864,7 @@ for what's still missing. Everything also in api/sources.json.
   fallbacks, the favicon and the search index use `/icons/...`; `site.js` / `search.js` build `/icons/<name>_s.jpg`.
   No wow.zamimg.com URL is left under /var/www/db.
 
-## Part FR — sim.lokiy.dev: item links and icons from db.lokiy.dev (2026-10-25)
+## Part FT — sim.lokiy.dev: item links and icons from db.lokiy.dev (2026-10-25; committed as "Part FR", a1cdd33bd)
 
 - Lokiy (hub docs/PLAN.md "Website-only item pipeline"): sim item links, tooltips and icons from db.lokiy.dev,
   Wowhead only where our own data is missing. Spell / talent links and tooltips stay on Wowhead (db.lokiy.dev spell
