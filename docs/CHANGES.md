@@ -5115,3 +5115,14 @@ Lokiy (via the hub): a page for the classic items no Vanilla+ client has seen (P
   phase 1 (classic 10328 etc. renumber onto them and sit in the "SCARLET" set table).
 - Checked on sim.lokiy.dev (mage): 113 spell links and all 60 talents go to db.lokiy.dev, no Wowhead tooltip
   requests, no spell block downloads on page load.
+
+## Part GI — api/spells.json: cost, range, cast time, cooldown (2026-10-25)
+
+The Simulator chat (via the hub): the sim reads spell tooltips from api/spells.json since Part GH, which had no cost /
+range / cast time / cooldown, so 2,192 sim tooltips lost those lines.
+- `spells.tooltip_lines()`: from the same readable fields the spell pages show (the spell-changelog's describe_spell),
+  as game-style text: "cost" ("30 Mana", or "10% of base mana"), "range" ("35 yd"; none for Self), "cast"
+  ("1.5 sec cast" / "Instant"), "cd" ("5 min cooldown", the spell's cooldown, else its category cooldown). Passive
+  spells get no cast / range. Empty fields are left out of every entry (also rank / tip / desc / icon / status when
+  empty; "name" is always there).
+- Counts: cast 19,104, range 11,306, cost 2,673, cd 1,979. api/spells.json 4.9 -> 5.1 MB.

@@ -19,7 +19,8 @@ and writes plain HTML pages (Caddy serves them from disk):
                           their colour class, custom flag, random affixes. db.lokiy.dev is the only item source.
   /spell/<id>.html        every Vanilla+ spell (spells.py: lokiy.dev/spells' database, its classic.json diff against
                           stock 1.12.1), the items that use it; /spells.html a search over /spells.json
-  /api/spells.json        every spell: name, rank, icon, description, buff text, status (new / changed / same)
+  /api/spells.json        every spell: name, rank, icon, description, buff text, status (new / changed / same),
+                          cost / range / cast / cd tooltip lines (empty fields left out)
   (items no Vanilla+ client has seen: classic Wowhead tooltips, tagged "not seen on Vanilla+ yet", api flag
    "classicOnly"; add_classic_items, Part GF)
   /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there)
@@ -59,7 +60,7 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
-from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells  # noqa: E402
+from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
 from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
                           Sources, add_shared_world_boss_loot)
@@ -1156,9 +1157,12 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
 </script>"""
     with open(os.path.join(out, "spells.html"), "w", encoding="utf-8") as f:
         f.write(page("Spells", body, path="/spells", description=f"All {len(spells)} Vanilla Plus spells."))
-    api_spells = {sid: {"name": sp["name"], "rank": sp["rank"], "icon": icon_url(sp["icon"], "medium", absolute=True)
-                        if sp["icon"] else "", "desc": sp["desc"], "tip": sp["tip"], "status": sp["status"]}
-                  for sid, sp in spells.items()}
+    api_spells = {}
+    for sid, sp in spells.items():  # empty fields left out to keep the file small
+        e = {"name": sp["name"], "rank": sp["rank"], "icon": icon_url(sp["icon"], "medium", absolute=True)
+             if sp["icon"] else "", "desc": sp["desc"], "tip": sp["tip"], "status": sp["status"]}
+        e.update(tooltip_lines(sp["fields"]))  # cost / range / cast / cd, game-style text (Part GH)
+        api_spells[sid] = {k: v for k, v in e.items() if v or k == "name"}
     os.makedirs(os.path.join(out, "api"), exist_ok=True)
     with open(os.path.join(out, "api", "spells.json.tmp"), "w", encoding="utf-8") as f:
         json.dump(api_spells, f, ensure_ascii=False, separators=(",", ":"))

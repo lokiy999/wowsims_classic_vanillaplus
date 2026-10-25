@@ -56,3 +56,24 @@ def link_tokens(text, item_names):
     text = ITEM_TOKEN.sub(lambda m: f'<a href="/item/{m.group(1)}">{item_names.get(int(m.group(1)), "Item " + m.group(1))}</a>',
                           text)
     return ENCHANT_TOKEN.sub("", text)
+
+
+def tooltip_lines(fields):
+    """The spell tooltip's cost / range / cast / cooldown lines as game-style text, for api/spells.json (Part GH):
+    {"cost": "90 Mana", "range": "30 yd", "cast": "1.5 sec cast" / "Instant", "cd": "1 min cooldown"}; empty ones
+    left out (no range for Self, no cast / range for passive spells)."""
+    f = dict(fields)
+    out = {}
+    cost = f.get("Cost") or (f"{f['Cost (% of base mana)']} of base mana" if f.get("Cost (% of base mana)") else "")
+    if cost:
+        out["cost"] = cost
+    if "Passive" not in (f.get("Attributes") or ""):
+        if f.get("Range") and f["Range"] != "Self":
+            out["range"] = f["Range"]
+        cast = f.get("Cast time")
+        if cast:
+            out["cast"] = cast if cast == "Instant" else f"{cast} cast"
+    cd = f.get("Cooldown") or f.get("Category cooldown")
+    if cd:
+        out["cd"] = f"{cd} cooldown"
+    return out
