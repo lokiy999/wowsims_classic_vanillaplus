@@ -64,7 +64,7 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
-from npcs import RANKS, NpcMatcher, load_npcs  # noqa: E402
+from npcs import RANKS, NpcMatcher, load_logged, load_npcs  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
 from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
@@ -742,7 +742,11 @@ def main():
 
     # creature ids (npcs.py, Part GJ): the tracker's mobs and AtlasLoot's boss tables only know names
     npcs = load_npcs()
-    matcher = NpcMatcher(npcs)
+    logged = load_logged()  # creature ids from combat logs; Vanilla+'s own ones get a page of their own (Part GL)
+    for nid, r in logged.items():
+        if nid not in npcs:
+            npcs[nid] = {"name": r["name"], "lvl": "", "zone": r["zone"], "vplus": True, **({"rank": 3} if r.get("boss") else {})}
+    matcher = NpcMatcher(npcs, logged)
     mob_npc = {}
     for m in mob_loot:
         nid = matcher.match(m["name"], list(m["zones"]), [r[0] for r in m["items"]])
@@ -1136,7 +1140,8 @@ or their own page.</p>{rough_note}</section>
   <div class="crumbs"><a href="/npcs">NPCs</a>{' / ' + esc(zone) if zone else ''}</div>
   <h1>{esc(n['name'])}</h1>
   <p class="muted">{info}{' &middot; ' if info else ''}NPC {nid} &middot;
-  <a href="https://www.wowhead.com/classic/npc={nid}" rel="noopener">Wowhead</a></p>
+  {'<span class="tag">Vanilla+ NPC</span> creature ID from combat logs' if n.get('vplus') else
+   f'<a href="https://www.wowhead.com/classic/npc={nid}" rel="noopener">Wowhead</a>'}</p>
   {''.join(parts) or '<p class="muted">No loot or vendor data.</p>'}
 </article>"""
         with open(os.path.join(out, "npc", f"{nid}.html"), "w", encoding="utf-8") as f:

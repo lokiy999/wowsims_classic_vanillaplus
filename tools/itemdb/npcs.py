@@ -20,6 +20,16 @@ def norm_zone(z):
     return re.sub(r"\s*\(.*?\)\s*|^(lower|upper)\s+", "", (z or "").lower()).strip()
 
 
+def load_logged():
+    """{creature id: {"name", "zone", "boss"?, "aliases"?}}: creature ids seen in combat logs (logged_npcs.json).
+    They beat a pfQuest name match; the ones pfQuest doesn't have (Vanilla+'s own, e.g. the SM raid 25200-25264) get
+    their own /npc page from our data (Part GL)."""
+    path = os.path.join(HERE, "logged_npcs.json")
+    if not os.path.exists(path):
+        return {}
+    return {int(k): v for k, v in json.load(open(path, encoding="utf-8"))["npcs"].items()}
+
+
 def load_npcs():
     """{creature id: {"name", "lvl", "zone", "rank", "fac", "drops": [[item, %]], "sells": [items]}} without junk."""
     path = os.path.join(HERE, "pfquest_npcs.json")
@@ -30,15 +40,32 @@ def load_npcs():
 
 
 class NpcMatcher:
-    def __init__(self, npcs):
+    def __init__(self, npcs, logged=None):
         self.npcs = npcs
         self.by_name = {}
         for nid, n in npcs.items():
-            self.by_name.setdefault(n["name"].lower(), []).append(nid)
+            if not n.get("vplus"):
+                self.by_name.setdefault(n["name"].lower(), []).append(nid)
+        self.logged = {}  # (name, zone) -> [creature ids seen in combat logs]
+        for nid, r in (logged or {}).items():
+            for nm in [r["name"]] + r.get("aliases", []):
+                self.logged.setdefault((nm.lower(), norm_zone(r["zone"])), []).append(nid)
         self.unmatched = {}  # name -> why (for Lokiy)
 
     def match(self, name, zones=(), items=()):
-        """The creature id of an NPC known by name, or None (and the reason in self.unmatched)."""
+        """The creature id of an NPC known by name, or None (and the reason in self.unmatched). A creature id from a
+        combat log in that zone comes first, then pfQuest."""
+        if not zones:  # no zone known (e.g. a tracked mob nobody looted): a name only one logged creature has
+            ids = {i for (nm, _), v in self.logged.items() if nm == (name or "").lower() for i in v}
+            if len(ids) == 1:
+                return ids.pop()
+        for z in zones:
+            ids = self.logged.get(((name or "").lower(), norm_zone(z)), [])
+            if len(ids) == 1:
+                return ids[0]
+            if ids:
+                self.unmatched[name] = f"several creatures of this name in the {z} combat logs ({', '.join(map(str, ids))})"
+                return None
         cands = self.by_name.get((name or "").lower(), [])
         if not cands:
             self.unmatched[name] = "not in pfQuest (a Vanilla+ NPC, or named differently)"

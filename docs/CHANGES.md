@@ -5159,3 +5159,17 @@ Lokiy (via the hub; hub PLAN "NPC / boss pages", "IDs everywhere"): db.lokiy.dev
   /mobs). `api/npcs.json`: {creature id: {name, level, zone, boss, url}} (1.2 MB).
 - Open for Lokiy: the SM raid bosses that kept a classic name match the classic creature (e.g. Herod -> 3975, a level
   40 classic NPC); if Vanilla+ made new creatures for them, those links point to the classic one.
+
+## Part GL — db.lokiy.dev: creature ids from combat logs; the SM raid's own NPCs (2026-10-25)
+
+The hub (from DungeonJournal's SM combat-log CSVs): Vanilla+'s SM raid uses new creatures 25200-25264, so Part GK's
+name matches to classic SM NPCs (Herod -> 3975) were wrong.
+- `logged_npcs.json`: creature ids seen in combat logs (name, zone, boss, aliases): the SM raid's 35 named ones.
+- `NpcMatcher`: a logged creature of that name in that zone comes first (also by name alone when the tracker knows no
+  zone and only one logged creature has the name); pfQuest only after. Two logged Scarlet Sharpshooters (25230,
+  25233): reported, not guessed.
+- Logged creatures pfQuest doesn't know get /npc/<id> pages ("Vanilla+ NPC, creature ID from combat logs", no Wowhead
+  link): Lokiy's loot + their AtlasLoot table. Classic SM NPC pages (3975 ...) stay as classic data; Scarlet mobs
+  outside the instance keep their classic ids.
+- Now 10,183 NPC pages; 392/409 tracker mobs and 304 boss tables matched, 68 names not matched.
+- Next: DungeonJournal's export (creature ids from the CSV GUIDs for every logged boss / trash mob) feeds the same file.
