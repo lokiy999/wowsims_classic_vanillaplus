@@ -160,12 +160,23 @@ export class ActionId {
 		}
 	}
 
+	// Item page: db.lokiy.dev for every item it has (the ones with a local tooltip, built from its data), Wowhead only
+	// where our data is missing.
 	static makeItemUrl(id: number, randomSuffixId?: number): string {
+		if (Database.hasLocalItemTooltip(id)) return ActionId.makeDbItemUrl(id);
 		const langPrefix = getWowheadLanguagePrefix();
 		const url = new URL(`https://wowhead.com/classic/${langPrefix}item=${id}`);
 		url.searchParams.set('level', String(MAX_CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		return url.toString();
+	}
+	static makeDbItemUrl(id: number): string {
+		return `${DB_ITEM_URL}${id}`;
+	}
+	// Item page section listing where it drops / who sells it (Wowhead's tabs; db.lokiy.dev shows it on the page).
+	static makeItemSourceUrl(id: number, wowheadTab: 'dropped-by' | 'sold-by'): string {
+		const url = ActionId.makeItemUrl(id);
+		return url.startsWith(DB_ITEM_URL) ? url : `${url}#${wowheadTab}`;
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -197,8 +208,7 @@ export class ActionId {
 
 	setWowheadHref(elem: HTMLAnchorElement) {
 		if (this.itemId) {
-			// Item has private-server values baked into the local DB -> use a local tooltip, no Wowhead link.
-			if (Database.hasLocalItemTooltip(this.itemId)) return;
+			// db.lokiy.dev's page when it has the item, else Wowhead's.
 			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId);
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellIdTooltipOverride || this.spellId);
@@ -232,6 +242,8 @@ export class ActionId {
 			const tooltip = Database.localItemTooltip(this.itemId);
 			if (!tooltip) return false;
 			this.attachLocalTippy(elem, transform ? transform(tooltip) : tooltip);
+			// The tooltip comes from db.lokiy.dev's data, so the link goes to its item page.
+			if (elem instanceof HTMLAnchorElement) elem.href = ActionId.makeDbItemUrl(this.itemId);
 			return true;
 		}
 		if (!this.spellId) return false;
@@ -624,6 +636,8 @@ const spellIDsToShowBuffs = new Set([
 	24907, // https://www.wowhead.com/classic/spell=24907/moonkin-aura
 	24932, // https://www.wowhead.com/classic/spell=24932/leader-of-the-pack
 ]);
+
+export const DB_ITEM_URL = 'https://db.lokiy.dev/item/';
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 

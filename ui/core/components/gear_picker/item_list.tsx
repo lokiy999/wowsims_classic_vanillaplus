@@ -597,7 +597,7 @@ export default class ItemList<T extends ItemListType> {
 		if (!item.sources || item.sources.length == 0) {
 			if (item.randomSuffixOptions.length) {
 				return makeAnchor(
-					`${ActionId.makeItemUrl(item.id)}#dropped-by`,
+					ActionId.makeItemSourceUrl(item.id, 'dropped-by'),
 					<div className="d-flex align-items-center">
 						{this.getDropSourceIcon()}
 						<span>World Drop</span>
@@ -651,7 +651,7 @@ export default class ItemList<T extends ItemListType> {
 				);
 			}
 			return makeAnchor(
-				`${ActionId.makeItemUrl(item.id)}#dropped-by`,
+				ActionId.makeItemSourceUrl(item.id, 'dropped-by'),
 				<div className="d-flex">
 					{this.getDropSourceIcon()}
 					<span>Multiple Sources</span>
@@ -710,7 +710,7 @@ export default class ItemList<T extends ItemListType> {
 				);
 			} else {
 				return makeAnchor(
-					`${ActionId.makeItemUrl(item.id)}#sold-by`,
+					ActionId.makeItemSourceUrl(item.id, 'sold-by'),
 					<div className="d-flex">
 						{this.getVendorSourceIcon()}
 						<span>Vendor</span>
