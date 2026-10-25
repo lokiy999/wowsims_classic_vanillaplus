@@ -129,6 +129,8 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .removed-table td.rule { text-align: left; font-size: .82rem; }
 .removed-table th:last-child { text-align: left; }
 .removed-table td:nth-child(2) { color: var(--muted); }
+.unseen-table td:nth-child(3), .unseen-table td:nth-child(4) { text-align: left; white-space: nowrap; font-size: .82rem; }
+.unseen-table th { text-align: left; }
 .removed-toc { columns: 2 320px; margin: 10px 0 0; padding-left: 18px; }
 .spell-tt { max-width: 420px; margin: 0 0 16px; }
 .tt-gold { color: #ffd100; }

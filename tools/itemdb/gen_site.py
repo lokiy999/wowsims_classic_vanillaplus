@@ -155,9 +155,11 @@ def add_classic_items(items, wowhead, tables):
             continue
         if DEV_ITEM.search(w["name"]) or CLASSIC_JUNK.search(w["name"]):
             continue
-        lines = [ln for ln in w["lines"][1:] if not WOWHEAD_ONLY_LINES.match(ln)]
+        # (Wowhead writes "(3) Set :"; the game and the set-bonus rule in item_sources.py use "(3) Set:")
+        lines = [re.sub(r"^\((\d+)\) Set :", r"(\1) Set:", ln) for ln in w["lines"][1:] if not WOWHEAD_ONLY_LINES.match(ln)]
+        ilvl = next((int(ln.split()[-1]) for ln in w["lines"] if re.match(r"^Item Level \d+$", ln)), 0)
         items[iid] = {"id": iid, "name": w["name"], "quality": w["quality"] if w["quality"] is not None else 1,
-                      "lines": lines, "classic_only": True}
+                      "lines": lines, "classic_only": True, "ilvl": ilvl}
         added.append(iid)
     return added
 
@@ -558,7 +560,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/spells">Spells</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/spells">Spells</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/unseen">Unseen</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -567,7 +569,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 {body}
 </main>
 <footer>Vanilla Plus items, from the server's item data and AtlasLoot. Updated {date.today().isoformat()}.
-&middot; <a href="/removed">Items not on Vanilla+</a>
+&middot; <a href="/unseen">Items not seen on Vanilla+ yet</a> &middot; <a href="/removed">Items not on Vanilla+</a>
 &middot; Part of <a href="https://lokiy.dev">lokiy.dev</a>: <a href="https://sim.lokiy.dev">Sim</a>,
 <a href="https://calc.lokiy.dev">Calculators</a>, <a href="https://addons.lokiy.dev">Addons</a>,
 <a href="https://collection.lokiy.dev">Collection</a></footer>
@@ -1195,6 +1197,58 @@ Wowhead sources that are all in cut content. An item Lokiy's loot tracker has se
         f.write(page("Not on Vanilla+", body, path="/removed",
                      description=f"{len(NOT_ON_SERVER)} items that aren't on Vanilla Plus, by reason."))
 
+    # ---- /unseen: classic items no Vanilla+ client has seen yet (Part GG), by where they come from
+    UNSEEN_ORDER = ["raid", "world boss", "dungeon", "rare mob", "drop", "world drop", "container", "quest", "vendor",
+                    "crafting", "reputation", "pvp", "event", "set", "other", "none"]
+    req_level = lambda it: next((int(m.group(1)) for ln in it["lines"] for m in [re.match(r"^Requires Level (\d+)$", ln)]
+                                 if m), 0)
+
+    def unseen_row(iid):
+        it = items[iid]
+        srcs_html = "; ".join((f'<a href="{esc(e["href"])}">{esc(e["text"])}</a>' if e.get("href", "").startswith("/")
+                               else esc(e["text"])) for e in item_srcs[iid][:3]) or '<span class="muted">unknown</span>'
+        lv = " / ".join(x for x in (f'ilvl {it.get("ilvl")}' if it.get("ilvl") else "",
+                                    f'req {req_level(it)}' if req_level(it) else "") if x)
+        return (f'<tr><td><a class="item" href="/item/{iid}" data-item="{iid}">'
+                f'{icon_img(icons.get(iid, "inv_misc_questionmark"), "small", "icon-s")}'
+                f'<span style="color:{Q_COLOR.get(it["quality"], "#ffffff")}">{esc(it["name"])}</span></a></td>'
+                f'<td>{iid}</td><td class="muted">{lv}</td><td class="muted">{esc(types[iid][1])}</td>'
+                f'<td class="rule">{srcs_html}</td></tr>')
+
+    unseen = [i for i in classic_only if i not in NOT_ON_SERVER]
+    unseen_groups = {}
+    for i in unseen:
+        unseen_groups.setdefault(item_srcs[i][0]["type"] if item_srcs[i] else "none", []).append(i)
+    head = '<thead><tr><th>Item</th><th>ID</th><th>Level</th><th>Type</th><th>Source</th></tr></thead>'
+    toc, blocks = [], []
+    for kind_ in sorted(unseen_groups, key=lambda k: UNSEEN_ORDER.index(k) if k in UNSEEN_ORDER else 99):
+        ids = sorted(unseen_groups[kind_], key=lambda i: (-items[i]["quality"], items[i]["name"]))
+        label = "No known source" if kind_ == "none" else TYPE_LABEL.get(kind_, kind_.capitalize())
+        anchor = slug(label)
+        toc.append(f'<li><a href="#{anchor}">{esc(label)}</a> <span class="muted">{len(ids)}</span></li>')
+        blocks.append(f'<section class="card" id="{anchor}"><h2>{esc(label)} <span class="muted">{len(ids)}</span></h2>'
+                      f'<table class="obs-table removed-table unseen-table">{head}'
+                      f'<tbody>{"".join(unseen_row(i) for i in ids)}</tbody></table></section>')
+    cut = sorted((i for i in classic_only if i in NOT_ON_SERVER), key=lambda i: (-items[i]["quality"], items[i]["name"]))
+    if cut:
+        blocks.append(f'<section class="card"><details><summary><h2 style="display:inline">Also not seen, but not on '
+                      f'Vanilla+ <span class="muted">{len(cut)}</span></h2></summary><p class="muted small">Classic items of '
+                      f'content that isn\'t on the server (reasons on <a href="/removed">Not on Vanilla+</a>).</p>'
+                      f'<table class="obs-table removed-table unseen-table">{head}'
+                      f'<tbody>{"".join(unseen_row(i) for i in cut)}</tbody></table></details></section>')
+    body = f"""
+<section class="intro"><h1>Not seen on Vanilla+ yet</h1>
+<p class="muted">{len(unseen)} classic items that exist on the server (Lokiy: a classic item is on Vanilla+ unless it's
+marked <a href="/removed">not on Vanilla+</a>) but are in no uploaded item cache yet, so nobody's client has seen them
+on Vanilla+. Their tooltips are classic 1.12 (Wowhead) and may differ on the server. An item leaves this page as
+soon as someone's item cache (<a href="https://lokiy.dev/admin/upload">lokiy.dev/admin/upload</a>) contains it.
+Grouped by where it comes from; also in the <a href="/search?st=unseen">search</a>.</p>
+<ul class="removed-toc">{''.join(toc)}</ul></section>
+{''.join(blocks)}"""
+    with open(os.path.join(out, "unseen.html"), "w", encoding="utf-8") as f:
+        f.write(page("Not seen on Vanilla+ yet", body, path="/unseen",
+                     description=f"{len(unseen)} classic items not seen on Vanilla Plus yet, by source."))
+
     # ---- instances: every loot table by instance / group
     blocks = []
     for cat in cats_all:
@@ -1255,7 +1309,8 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
         it = items[i]
         pk, sec = types[i]
         info = parse_stats(it, pk, sec)
-        status = 3 if is_custom(i) else 2 if i in reworked else 0 if kind(i).endswith("same as classic") else 1
+        status = (4 if i in classic_only else 3 if is_custom(i) else 2 if i in reworked
+                  else 0 if kind(i).endswith("same as classic") else 1)
         cats = sorted({cat_idx[table_label(k)[1]] for k in sources.get(i, []) if table_label(k)[1] in cat_idx})
         ic = icon_url(icons.get(i), "small")  # /icons/<name>_s.jpg
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
@@ -1278,7 +1333,7 @@ your filters, so you can share a search.</p></section>
   <label>Usable by<select name="cls"></select></label>
   <label>Required level<span class="range"><input name="lmin" type="number" min="0" max="60" placeholder="min" aria-label="Minimum level"><span class="muted">-</span><input name="lmax" type="number" min="0" max="60" placeholder="max" aria-label="Maximum level"></span></label>
   <label>Binds<select name="bind"></select></label>
-  <label>Vanilla Plus<select name="st"><option value="">Any</option><option value="vp">New or changed</option><option value="new">New items</option><option value="changed">Changed from classic</option><option value="same">Same as classic</option></select></label>
+  <label>Vanilla Plus<select name="st"><option value="">Any</option><option value="vp">New or changed</option><option value="new">New items</option><option value="changed">Changed from classic</option><option value="same">Same as classic</option><option value="unseen">Not seen on Vanilla+ yet</option></select></label>
   <label>Drops in<select name="src"></select></label>
   <label>Random affixes<select name="ra"><option value="">Any</option><option value="1">Has random affixes</option><option value="0">No random affixes</option></select></label>
   <fieldset class="f-stats"><legend>Stats (item has the stat, at least the value)</legend><div id="stat-rows"></div>

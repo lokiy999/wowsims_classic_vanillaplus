@@ -4,7 +4,7 @@
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const QN = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
-	const STATUS = { 0: 'same as classic', 1: 'classic', 2: 'changed', 3: 'new' };
+	const STATUS = { 0: 'same as classic', 1: 'classic', 2: 'changed', 3: 'new', 4: 'not seen on V+ yet' };
 	const BIND = { bop: 'Binds when picked up', boe: 'Binds when equipped', bou: 'Binds when used', quest: 'Quest item' };
 	const PER_PAGE = 50;
 	const ZAM = n => `/icons/${n}_s.jpg`;
@@ -116,7 +116,8 @@
 			if (bind && (bind === 'none' ? b : b !== bind)) return false;
 			if (st === 'new' && status !== 3) return false;
 			if (st === 'changed' && status !== 2) return false;
-			if (st === 'vp' && status < 2) return false;
+			if (st === 'vp' && status !== 2 && status !== 3) return false;
+			if (st === 'unseen' && status !== 4) return false;
 			if (st === 'same' && status !== 0) return false;
 			if (src >= 0 && !(cats && cats.includes(src))) return false;
 			if (ra !== '' && String(affix || 0) !== ra) return false;

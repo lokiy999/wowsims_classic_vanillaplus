@@ -5070,3 +5070,20 @@ item no client has cached was missing. Rule: a classic item exists on Vanilla+ u
 - Sim: 39 of its 3,709 items were missing and are now classicOnly items (none marked not on Vanilla+); one is still
   missing, 23202 Libram of Divinity (no classic source in our data).
 - The shared world boss loot's 7 formulas not in the item data before now have item pages (sources by Lokiy: 37).
+
+## Part GG — db.lokiy.dev/unseen: classic items not seen on Vanilla+ yet (2026-10-25)
+
+Lokiy (via the hub): a page for the classic items no Vanilla+ client has seen (Part GF).
+- `/unseen` (gen_site.py, every rebuild): every classicOnly item not marked not-on-Vanilla+, grouped by where it
+  comes from (the type of its first source: raid, world boss, dungeon, drop, world drop, container, quest, vendor,
+  event, set, no known source) with counts and a table of contents; by quality then name. Each row: icon +
+  quality-coloured link, ID, item level / required level, type, up to 3 sources. The marked ones are folded at the
+  bottom ("Also not seen, but not on Vanilla+", link to /removed). Intro: they exist on the server but no item cache
+  upload has them; classic tooltips; they leave the page once an upload (lokiy.dev/admin/upload) contains them.
+  "Unseen" in the nav, a footer link.
+- Search: status 4 = not seen on Vanilla+ yet; "Vanilla Plus" select option "Not seen on Vanilla+ yet"
+  (`/search?st=unseen`, 711), tag in the results; "New or changed" now means status 2 or 3 only. search.js stays CRLF.
+- Fix: Wowhead writes set bonuses as "(3) Set :"; add_classic_items normalises them to "(3) Set:" (game format), so
+  the line is green and the set-bonus rule (Part FU) sees the classic tier pieces: 144 old 3/5/8 pieces (18 classic
+  T1 / T2 sets x 8) are now marked not on Vanilla+. Of the 711 unseen items 285 remain on /unseen, 426 are marked;
+  /removed lists 806.
