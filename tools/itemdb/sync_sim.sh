@@ -63,7 +63,12 @@ RC=$?
 echo "$SUMMARY" >>"$LOG"
 case $RC in
 	1) fail "check" ;;
-	2) log "no item changes, nothing to deploy"; reset_generated; echo "$SHA" >"$BUILT"; exit 0 ;;
+	2)
+		# no item changed; spell data (db_spell_ids.json, assets/spells, spell icons in db.json) may have
+		if [ -z "$(git status --porcelain -- $GENERATED)" ]; then
+			log "no changes, nothing to deploy"; reset_generated; echo "$SHA" >"$BUILT"; exit 0
+		fi
+		log "no item changes, but spell / icon data changed" ;;
 	0) ;;
 	*) fail "check crashed" ;;
 esac
