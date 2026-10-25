@@ -61,7 +61,11 @@ FORCE_IDS = {
     18584: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
 }
 # Lokiy's answers (2026-10-25): not on Vanilla+ by name
-LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer"}
+LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer",
+                       # Lokiy 2026-10-25 (from the to-check list): unavailable; their plans with them
+                       "Obsidian Mail Tunic", "Plans: Obsidian Mail Tunic",
+                       "Thick Obsidian Breastplate", "Plans: Thick Obsidian Breastplate",
+                       "Black Qiraji Resonating Crystal"}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
     "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
@@ -99,9 +103,6 @@ SM_ZONE = 796
 # deliberately not marked yet, for Lokiy to check (/removed lists them on top)
 TO_CHECK = {
     26318: "On the workbook's Removed Items sheet (\"not present\"), but the only item with the name is the server's own.",
-    22191: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
-    22196: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
-    21176: "Not answered yet: the AQ40 mount crystal (AtlasLoot also lists it outside AQ40).",
 }
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)

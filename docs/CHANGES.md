@@ -5231,3 +5231,9 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   `dbQuestUrl()`; `ActionId.makeQuestUrl()` goes to db.lokiy.dev, Wowhead only for quests it lacks. `sync_sim.sh` also
   rebuilds when `api/quests.json` changes. Zone / faction names in the sim aren't links, so nothing else to move.
 - Backups `gen_site.py.bak-2026-10-25m`, `import_pfquest.py.bak-2026-10-25`.
+
+## Part GP — Obsidian Mail Tunic, Thick Obsidian Breastplate, Black Qiraji Resonating Crystal not on Vanilla+ (2026-10-25)
+
+- Lokiy (via the hub): 22191, 21176 and 22196 are unavailable. Off the to-check list into `LOKIY_NOT_ON_SERVER`
+  (`item_sources.py`), with Plans: Obsidian Mail Tunic (22221) and Plans: Thick Obsidian Breastplate (22222, already
+  marked as AQ40), like Black Grasp's plans. /removed: 806 -> 810. To check now: only Flintrock Shoulders (26318).
