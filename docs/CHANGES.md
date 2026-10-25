@@ -4910,3 +4910,17 @@ Lokiy's answers (via the hub) to the Part FR questions.
   (confirmed). Flintrock Shoulders, Obsidian Mail Tunic, Thick Obsidian Breastplate and the Black Qiraji Resonating
   Crystal: unmarked, in TODO.md.
 - 412 items marked now. Rebuilt /var/www/db.
+
+## Part FV — db.lokiy.dev/removed: every item not on Vanilla+, for Lokiy to check (2026-10-25)
+
+Lokiy (via the hub): a page that lists every "not on Vanilla+" item, so the marks can be checked (TODO.md "check all
+marks later").
+- `/removed` (gen_site.py): all marked items (412 today) grouped by reason with the count per group and a table of
+  contents; each row the icon + item link in its quality colour, the item ID and **"Marked by"**: the rule that marked
+  it (the AtlasLoot table(s), the workbook's AQ / Naxxramas names list, the Removed Items sheet row, the set-bonus rule
+  with the set name, Lokiy's answer, the fixed Ashbringer / Warglaives list, or "Wowhead sources only").
+- On top, "To check: not marked yet": `item_sources.TO_CHECK` (Flintrock Shoulders 26318, Obsidian Mail Tunic 22191,
+  Thick Obsidian Breastplate 22196, Black Qiraji Resonating Crystal 21176) with why each is open.
+- `item_sources.py` keeps `mark_rule` (item id -> rule) next to the reasons. Black Grasp's reason reads "Not on
+  Vanilla+ (Lokiy)."
+- Linked from the nav ("Not on V+"), the footer and /instances.

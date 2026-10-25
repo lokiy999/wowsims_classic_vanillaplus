@@ -60,6 +60,13 @@ FORCE_IDS = {
 }
 # Lokiy's answers (2026-10-25): not on Vanilla+ by name
 LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer"}
+# deliberately not marked yet, for Lokiy to check (/removed lists them on top)
+TO_CHECK = {
+    26318: "On the workbook's Removed Items sheet (\"not present\"), but the only item with the name is the server's own.",
+    22191: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
+    22196: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
+    21176: "Not answered yet: the AQ40 mount crystal (AtlasLoot also lists it outside AQ40).",
+}
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)
 
@@ -181,6 +188,7 @@ class Sources:
                 if r[0] and key not in self.item_tables.setdefault(r[0], []):
                     self.item_tables[r[0]].append(key)
         self.conflicts = []  # (item id, reason): marked by a rule, but the loot tracker saw it drop
+        self.mark_rule = {}  # item id -> which rule marked it (shown on /removed, to trace a wrong mark)
         self.not_on_server = self._not_on_server()
 
     # ---- table types
@@ -206,7 +214,12 @@ class Sources:
 
     # ---- not on Vanilla+
     def _not_on_server(self):
-        reasons = {}
+        reasons, rule = {}, self.mark_rule
+
+        def mark(iid, text, why, force=False):
+            if force or iid not in reasons:
+                reasons[iid], rule[iid] = text, why
+
         by_name = {}
         for iid, it in self.items.items():
             by_name.setdefault(it["name"], []).append(iid)
@@ -214,10 +227,10 @@ class Sources:
             keys = self.item_tables.get(iid, [])
             cuts = [self.cut_table(k) for k in keys]
             if keys and all(cuts):
-                reasons[iid] = CUT_TEXT[cuts[0]]
+                mark(iid, CUT_TEXT[cuts[0]], "AtlasLoot table: " + ", ".join(keys), force=True)
         for name in AQ_T3_REMOVE_NAMES:
             for iid in by_name.get(name, []):
-                reasons.setdefault(iid, CUT_TEXT["AQ/Naxx"])
+                mark(iid, CUT_TEXT["AQ/Naxx"], "Names list (workbook AQ_T3_REMOVE_NAMES)")
         for row in self.workbook["removed"]:
             name, src, note = (row + [None, None, None])[:3]
             name = re.sub(r"\s*\[\d+\]$", "", name or "")
@@ -233,13 +246,13 @@ class Sources:
                     "Removed from Vanilla+ (the classic Scarlet Monastery item)." if "Scarlet" in (src or "") or
                     (src or "").startswith("SM") else "Removed from Vanilla+.")
             for iid in ids:
-                reasons.setdefault(iid, text)
+                mark(iid, text, f"Workbook Removed Items sheet: {row[0]} ({src})")
         for iid, text in FORCE_IDS.items():
             if iid in self.items:
-                reasons[iid] = text
+                mark(iid, text, "Fixed list (workbook FORCE_NOVELTY_IDS)", force=True)
         for name in LOKIY_NOT_ON_SERVER:
             for iid in by_name.get(name, []):
-                reasons.setdefault(iid, "Not on Vanilla+.")
+                mark(iid, "Not on Vanilla+ (Lokiy).", "Lokiy's answer, 2026-10-25")
         # a set that exists twice: the version with 2/4/6/8-piece bonuses is Vanilla+'s, the 3/5/8 one the old one
         sets = {}
         for iid, it in self.items.items():
@@ -253,7 +266,7 @@ class Sources:
             word = name.split()[-1] if name.startswith("The ") else name.split()[0]
             if word in new_words or (" of " in name and name.split(" of ")[-1] in new_words):
                 for iid in versions.get((3, 5, 8), []):
-                    reasons.setdefault(iid, CUT_TEXT["old set"])
+                    mark(iid, CUT_TEXT["old set"], f"Set-bonus rule: {name} with 3/5/8-piece bonuses")
         # Wowhead-only items whose every Wowhead source is cut content (no table, workbook or tracker source)
         for sid, srcs in self.wowhead.items():
             iid = int(sid)
@@ -271,10 +284,11 @@ class Sources:
                     why = []
                     break
             if why:
-                reasons[iid] = CUT_TEXT[why[0]]
+                mark(iid, CUT_TEXT[why[0]], "Wowhead sources only, all in " + ", ".join(sorted(set(why))), force=True)
         for iid in list(reasons):
             if self.loot_drops.get(iid):
                 self.conflicts.append((iid, reasons.pop(iid)))
+                rule.pop(iid, None)
         return reasons
 
     # ---- sources

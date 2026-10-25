@@ -54,7 +54,7 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import Lookups, tooltip  # noqa: E402
-from item_sources import CUT_TEXT, FROM_LABEL, TYPE_LABEL, Sources  # noqa: E402
+from item_sources import CUT_TEXT, FROM_LABEL, TO_CHECK, TYPE_LABEL, Sources  # noqa: E402
 
 CSV = os.path.join(REPO, "CSV's")
 ATLAS = os.path.join(CSV, "AtlasLoot")
@@ -504,7 +504,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -513,6 +513,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 {body}
 </main>
 <footer>Vanilla Plus items, from the server's item data and AtlasLoot. Updated {date.today().isoformat()}.
+&middot; <a href="/removed">Items not on Vanilla+</a>
 &middot; Part of <a href="https://lokiy.dev">lokiy.dev</a>: <a href="https://sim.lokiy.dev">Sim</a>,
 <a href="https://calc.lokiy.dev">Calculators</a>, <a href="https://addons.lokiy.dev">Addons</a>,
 <a href="https://collection.lokiy.dev">Collection</a></footer>
@@ -945,6 +946,39 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
         json.dump({m["name"]: SITE_URL + mob_href(m) for m in mob_loot}, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(os.path.join(out, "api", "mobs.json.tmp"), os.path.join(out, "api", "mobs.json"))
 
+    # ---- /removed: every item marked "not on Vanilla+", by reason, with the rule that marked it (for Lokiy to check)
+    def removed_row(iid, why):
+        it = items[iid]
+        return (f'<tr><td><a class="item" href="/item/{iid}" data-item="{iid}">'
+                f'{icon_img(icons.get(iid, "inv_misc_questionmark"), "small", "icon-s")}'
+                f'<span style="color:{Q_COLOR.get(it["quality"], "#ffffff")}">{esc(it["name"])}</span></a></td>'
+                f'<td>{iid}</td><td class="muted rule">{esc(why)}</td></tr>')
+
+    by_reason = {}
+    for iid, text in NOT_ON_SERVER.items():
+        by_reason.setdefault(text, []).append(iid)
+    head = '<thead><tr><th>Item</th><th>ID</th><th>Marked by</th></tr></thead>'
+    check = "".join(removed_row(i, why) for i, why in TO_CHECK.items() if i in items)
+    blocks = [f'<section class="card"><h2>To check: not marked yet ({len(TO_CHECK)})</h2>'
+              f'<table class="obs-table removed-table">{head}<tbody>{check}</tbody></table></section>']
+    toc = []
+    for n, (text, ids) in enumerate(sorted(by_reason.items(), key=lambda kv: (-len(kv[1]), kv[0]))):
+        rows = "".join(removed_row(i, srcs.mark_rule.get(i, "")) for i in sorted(ids))
+        toc.append(f'<li><a href="#r{n}">{esc(text)}</a> <span class="muted">{len(ids)}</span></li>')
+        blocks.append(f'<section class="card" id="r{n}"><h2>{esc(text)} <span class="muted">{len(ids)}</span></h2>'
+                      f'<table class="obs-table removed-table">{head}<tbody>{rows}</tbody></table></section>')
+    body = f"""
+<section class="intro"><h1>Items not on Vanilla+</h1>
+<p class="muted">Every item the database marks "not on Vanilla+" ({len(NOT_ON_SERVER)}), grouped by reason. "Marked by" is
+the rule that marked it: an AtlasLoot table of content that isn't on the server, the workbook's AQ / Naxxramas names
+list or Removed Items sheet, the set-bonus rule (the 3/5/8 version of a set is the old one), Lokiy's answers, or
+Wowhead sources that are all in cut content. An item Lokiy's loot tracker has seen drop is never marked.</p>
+<ul class="removed-toc">{''.join(toc)}</ul></section>
+{''.join(blocks)}"""
+    with open(os.path.join(out, "removed.html"), "w", encoding="utf-8") as f:
+        f.write(page("Not on Vanilla+", body, path="/removed",
+                     description=f"{len(NOT_ON_SERVER)} items that aren't on Vanilla Plus, by reason."))
+
     # ---- instances: every loot table by instance / group
     blocks = []
     for cat in cats_all:
@@ -959,7 +993,8 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
         blocks.append(f'<section class="cat"><h2>{esc(cat)}</h2><ul class="loot cols wide-list">{"".join(lis)}</ul></section>')
     body = f"""
 <section class="intro"><h1>Instances &amp; loot tables</h1>
-<p class="muted">Every AtlasLoot table of the server. The tag counts the new and changed items in it.</p></section>
+<p class="muted">Every AtlasLoot table of the server. The tag counts the new and changed items in it.
+Items of content that isn't on the server are listed on <a href="/removed">Not on Vanilla+</a>.</p></section>
 {''.join(blocks)}"""
     with open(os.path.join(out, "instances.html"), "w", encoding="utf-8") as f:
         f.write(page("Instances", body, path="/instances", description="Vanilla Plus loot tables by instance and boss."))

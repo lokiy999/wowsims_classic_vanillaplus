@@ -126,6 +126,10 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .nos-banner { border-left-color: #d9534f; background: rgba(217, 83, 79, .12); }
 .item.nos { opacity: .55; }
 .item.nos::after { content: "not on V+"; font-size: .7rem; margin-left: 6px; color: #e07b78; white-space: nowrap; }
+.removed-table td.rule { text-align: left; font-size: .82rem; }
+.removed-table th:last-child { text-align: left; }
+.removed-table td:nth-child(2) { color: var(--muted); }
+.removed-toc { columns: 2 320px; margin: 10px 0 0; padding-left: 18px; }
 .nos-tag { background: rgba(217, 83, 79, .2); color: #e07b78; }
 .rate { color: var(--accent); font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 8px; font-size: .9rem; }
 
