@@ -1,6 +1,7 @@
 #!/bin/bash
 # Rebuild and redeploy sim.lokiy.dev when db.lokiy.dev's item data (/api/items.json), source data
-# (/api/sources.json) or spell data (/api/spells.json, since Part GH) changed since the sim was last built from them (Lokiy 2026-10-24, CHANGES.md Part FL).
+# (/api/sources.json) or spell data (/api/spells.json, since Part GH) or NPC pages (/api/npcs.json + mobs.json, since
+# Part GL) changed since the sim was last built from them (Lokiy 2026-10-24, CHANGES.md Part FL).
 # Started in the background by sync_db.sh and itemcache_sync.py after they rebuild db.lokiy.dev.
 #
 # Runs the item pipeline (docs/private-server-item-rules.md), checks the result (sim_check.py), builds the sim,
@@ -21,7 +22,8 @@ HEALTH=${SIM_HEALTH_URL:-http://127.0.0.1:3333/classic/}
 GENERATED="assets/database/db.bin assets/database/db.json assets/database/leftover_db.bin assets/database/leftover_db.json
  assets/db_inputs/custom_items.json assets/db_inputs/renumber.json assets/db_inputs/included_items.json
  assets/db_inputs/add_items.json assets/db_inputs/item_phases.json assets/db_inputs/item_sources.json
- assets/database/db_icons.json assets/database/db_spell_ids.json assets/spells"
+ assets/database/db_icons.json assets/database/db_spell_ids.json assets/spells
+ assets/database/db_npcs.json"
 export PATH=$HOME/.nvm/versions/node/v20.20.2/bin:$PATH:/usr/local/go/bin:$HOME/go/bin
 
 exec 8>/tmp/sim-sync.lock
@@ -29,7 +31,7 @@ flock -n 8 || exit 0
 cd "$REPO" || exit 1
 log() { echo "$(date -u '+%F %T') $*" >>"$LOG"; }
 
-SHA=$(cat "$DB_API/items.json" "$DB_API/sources.json" "$DB_API/spells.json" | sha256sum | cut -c1-16)
+SHA=$(cat "$DB_API/items.json" "$DB_API/sources.json" "$DB_API/spells.json" "$DB_API/npcs.json" "$DB_API/mobs.json" | sha256sum | cut -c1-16)
 if [ -z "$FORCE" ]; then
 	[ "$SHA" = "$(cat "$BUILT" 2>/dev/null)" ] && exit 0
 	[ "$SHA" = "$(cat "$FAILED" 2>/dev/null)" ] && exit 0
@@ -55,7 +57,7 @@ log "data $SHA: building the sim"
 	python3 docs/parse_vplus.py && python3 docs/gen_include.py && python3 docs/parse_vplus.py &&
 		python3 docs/gen_phases.py && python3 docs/gen_sources.py &&
 		python3 tools/gen_db_spells.py && go run ./tools/database/gen_db -outDir=./assets -gen=db &&
-		python3 tools/gen_db_icons.py
+		python3 tools/gen_db_icons.py && python3 tools/gen_db_npcs.py
 } >/tmp/sim-sync-pipeline.log 2>&1 || fail "pipeline, see /tmp/sim-sync-pipeline.log"
 
 SUMMARY=$(python3 tools/itemdb/sim_check.py)

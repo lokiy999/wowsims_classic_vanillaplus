@@ -5173,3 +5173,16 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   outside the instance keep their classic ids.
 - Now 10,183 NPC pages; 392/409 tracker mobs and 304 boss tables matched, 68 names not matched.
 - Next: DungeonJournal's export (creature ids from the CSV GUIDs for every logged boss / trash mob) feeds the same file.
+
+## Part GL — sim.lokiy.dev: NPC links to db.lokiy.dev (2026-10-25)
+
+- Lokiy (via the hub): NPC links to db.lokiy.dev's NPC pages (Part GK), Wowhead only for NPCs it doesn't have.
+- New `tools/gen_db_npcs.py` (run by `sync_sim.sh`, which now also triggers on `api/npcs.json` / `api/mobs.json`):
+  `assets/database/db_npcs.json` = page paths by creature id (10,183) and by name (724: its uniquely named bosses
+  plus `api/mobs.json`, incl. Vanilla+-only mobs), taken as db.lokiy.dev gives them.
+- `ui/core/db_npcs.ts` (loaded with the database): `ActionId.makeNpcUrl()` -> db.lokiy.dev page ("dropped by" bosses,
+  "sold by" vendors; 276 of the sim's 304 NPC ids, the rest are Season of Discovery ids / objects and stay on
+  Wowhead). Bosses shown by name only link to their page by name: 26 of 31 (Krixix, Brigitte Abbendis, Sulfuron,
+  the world bosses, ...); "Trash", Nameless Hermit, Elementium Decapitator Mk III, Sothos and Jarien's Heirlooms
+  still link to the item page.
+- Zone / quest / faction links stay on Wowhead. Built and deployed; not yet checked in a browser.

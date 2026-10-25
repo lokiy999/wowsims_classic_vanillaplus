@@ -1,3 +1,4 @@
+import { dbNpcUrlByName } from '../../db_npcs.js';
 import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
@@ -638,8 +639,9 @@ export default class ItemList<T extends ItemListType> {
 					</div>,
 				);
 			} else if (zone) {
+				// A boss shown by name only (no creature id): its db.lokiy.dev page when it has one, else the item's.
 				return makeAnchor(
-					ActionId.makeItemUrl(item.id),
+					(src.otherName && dbNpcUrlByName(src.otherName)) || ActionId.makeItemUrl(item.id),
 					<div className="d-flex">
 						{this.getDropSourceIcon()}
 						<span>
