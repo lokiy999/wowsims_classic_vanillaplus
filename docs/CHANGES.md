@@ -5125,4 +5125,4 @@ range / cast time / cooldown, so 2,192 sim tooltips lost those lines.
   ("1.5 sec cast" / "Instant"), "cd" ("5 min cooldown", the spell's cooldown, else its category cooldown). Passive
   spells get no cast / range. The four new fields are left out when empty; the existing keys (name, rank, icon,
   desc, tip, status) stay in every entry as before.
-- Counts: cast 19,104, range 11,306, cost 2,673, cd 1,979. api/spells.json 4.9 -> 5.1 MB.
+- Counts: cast 19,104, range 11,306, cost 2,673, cd 1,979. api/spells.json 4.9 -> 5.5 MB.
