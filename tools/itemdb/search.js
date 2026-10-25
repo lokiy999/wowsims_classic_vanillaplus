@@ -7,7 +7,7 @@
 	const STATUS = { 0: 'same as classic', 1: 'classic', 2: 'changed', 3: 'new' };
 	const BIND = { bop: 'Binds when picked up', boe: 'Binds when equipped', bou: 'Binds when used', quest: 'Quest item' };
 	const PER_PAGE = 50;
-	const ZAM = n => `https://wow.zamimg.com/images/wow/icons/small/${n}.jpg`;
+	const ZAM = n => `/icons/${n}_s.jpg`;
 	const $ = id => document.getElementById(id);
 	const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 	const form = $('filters');

@@ -2,7 +2,7 @@
 // c?: 1 if new, r?: 1 if reworked}], hover tooltips in /tt/<id // 500>.json {id: html}
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
-	const ICON = icon => `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
+	const ICON = icon => `/icons/${icon}_s.jpg`;
 	let dataPromise = null;
 	const loadData = () => {
 		if (!dataPromise) {
