@@ -4999,3 +4999,23 @@ Lokiy: "cloak yes, spellpower no".
   (37 items now: 27 class books, 7 glove and 3 cloak formulas). AtlasLoot's AQEnchants table was left empty and is
   gone. None of the three is in the item data yet (Wowhead rows until the item cache sees them).
 - Formula: Enchant Weapon - Spell Power is not world boss loot (not added; it isn't in the item data either).
+
+## Part GC — db.lokiy.dev: random affixes from the server's own data (2026-10-25)
+
+Lokiy (via the hub; hub PLAN "Affixes from the Patch 3 DBCs"): affix names and values from the server's DBCs, the
+suffix lists pooled per item cache group with the loot tracker's drops, Wowhead's chances kept.
+- `tools/itemdb/dbc/`: ItemRandomProperties.dbc and SpellItemEnchantment.dbc from the hub's `data\dbc` (Patch 3
+  client). `affixes.py` reads them (WDBC: suffix id, internal name, 5 enchant ids, display name; enchant text = field
+  13): 2,049 suffixes. Checked against Wowhead's randomEnchant table: all 46,059 rows whose suffix exists match
+  exactly; 15 Wowhead suffix ids (2315-2337, 44 rows) aren't in the server's DBC (later Classic) and are dropped. The 37
+  suffixes new on Vanilla+ (2165-2201, no display name) are kept and only shown once a drop has one.
+- Which suffixes an item can roll: Wowhead's per-item list + every suffix the loot tracker saw
+  (loot.json recentDrops[].suffix, 95 drops) on that item or on another item of the same item cache group
+  (~/itemcache/items.json item.randomProperty: 1,692 items in 773 groups). 39 item/suffix pairs come only from the
+  tracker; 1 item (17982 Ragnaros Core) has no Wowhead list at all.
+- Item pages: values from the DBCs (tiers merged as before: 12-13, 15/17); Wowhead's chance stays; new tags "N× on its
+  group" (seen on other items of the group) and "seen on Vanilla+" (not in Wowhead's list). "Seen N×" (by name),
+  "rolled" and "awarded" unchanged. api/items.json "affixes" = [suffix id, name, effects] from the DBCs incl. the
+  tracker-only ones (1,689 items).
+- Search: unchanged (stat filter from Wowhead's affix stats, "has random affixes" now also counts tracker-only
+  suffixes; 1,689 items).
