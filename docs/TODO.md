@@ -312,7 +312,8 @@ there is more to say.
 - "Not on Vanilla+" marks (Parts FR / FU, Lokiy 2026-10-25: mark, not hide, for now): check all 412 marks later.
   Still open from Lokiy: Flintrock Shoulders (26318, on the workbook's Removed Items sheet; unmarked), Obsidian Mail
   Tunic (22191) and Thick Obsidian Breastplate (22196) (unsure; unmarked), Black Qiraji Resonating Crystal (21176, not
-  answered; unmarked).
+  answered; unmarked), Necromancer Leggings (2277: Wowhead only SM drops, workbook World Drop 31-38; unmarked).
+All on db.lokiy.dev/removed "To check" (Part FV).
 
 ## Items from db.lokiy.dev (Part FE)
 

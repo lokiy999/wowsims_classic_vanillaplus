@@ -4924,3 +4924,20 @@ marks later").
 - `item_sources.py` keeps `mark_rule` (item id -> rule) next to the reasons. Black Grasp's reason reads "Not on
   Vanilla+ (Lokiy)."
 - Linked from the nav ("Not on V+"), the footer and /instances.
+
+## Part FW — db.lokiy.dev: Lokiy's corrections to the "not on Vanilla+" marks (2026-10-25)
+
+Lokiy (in the Database chat), after checking /removed:
+- "Formula: Enchant Gloves - Threat / Fire Power / Healing Power" and **all AQ class books** (the AQ20ClassBooks
+  table, 27) drop from **world bosses**: no longer marked; their source is "World bosses" (from "Lokiy"), the class
+  book table is typed world boss and no longer counts as AQ20 (`LOKIY_ON_SERVER`, `WORLD_BOSS_TABLES`).
+- **The Lobotomizer** (19324, on the workbook's Removed Items sheet as Alterac Valley) dropped once from **Lord
+  Valthalak in UBRS**: no longer marked; source "Upper Blackrock Spire - Lord Valthalak (seen once)".
+- **Every non-level-60 item of the old Scarlet Monastery** (the classic 5-man) is unobtainable; a BoE that dropped
+  back then may still exist on the server (maybe one, maybe none). New rule: green+ items under level 60 in the old SM
+  trash tables (SMATrash / SMCTrash / SMGTrash / SMLTrash), or whose only sources are Wowhead drops in SM (zone 796)
+  with no workbook source. Marked: 5819 Sunblaze Coif, 7728 Beguiler Robes, 7754 Harbinger Boots, 5756 Sliverblade
+  + the Removed Items sheet's 7720 / 7726, all with the new "old Scarlet Monastery" reason. The server's own SM loot
+  (level 60) is untouched. Necromancer Leggings (2277: Wowhead only SM drops, but the workbook says World Drop 31-38)
+  is not marked: added to `TO_CHECK` (/removed "To check").
+- 382 items marked now (was 412). Rebuilt /var/www/db.

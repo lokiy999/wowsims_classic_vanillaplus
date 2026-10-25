@@ -41,6 +41,8 @@ CUT_TEXT = {"AQ20": "Ruins of Ahn'Qiraj (AQ20) is not on Vanilla+.",
             "Naxxramas": "Naxxramas is not on Vanilla+.",
             "AV": "Alterac Valley is not on Vanilla+.",
             "Brood": "The Brood of Nozdormu ring (an AQ40 reputation) is not on Vanilla+.",
+            "old SM": "An item of the old Scarlet Monastery (the classic 5-man; on Vanilla+ it is a level 60 raid). It "
+                      "can't drop anymore; a BoE that dropped back then may still exist on the server, but maybe none.",
             "old set": "The old (classic) version of this set, with 3/5/8-piece bonuses. Vanilla+ has its own "
                        "Tier 1 version with 2/4/6/8-piece bonuses.",
             "AQ/Naxx": "From AQ20, AQ40 or Naxxramas, which are not on Vanilla+."}
@@ -60,12 +62,25 @@ FORCE_IDS = {
 }
 # Lokiy's answers (2026-10-25): not on Vanilla+ by name
 LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer"}
+# Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
+LOKIY_ON_SERVER = {
+    "Formula: Enchant Gloves - Threat": ("World bosses", "world boss"),
+    "Formula: Enchant Gloves - Fire Power": ("World bosses", "world boss"),
+    "Formula: Enchant Gloves - Healing Power": ("World bosses", "world boss"),
+    "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
+}
+WORLD_BOSS_TABLES = {"AQ20ClassBooks"}  # Lokiy 2026-10-25: all AQ class books drop from world bosses
+# The old Scarlet Monastery 5-man's loot (Lokiy 2026-10-25: every non-level-60 SM item is unobtainable): its trash
+# tables, and items whose Wowhead sources are all drops there (zone 796)
+OLD_SM_TABLES = {"SMATrash", "SMCTrash", "SMGTrash", "SMLTrash"}
+SM_ZONE = 796
 # deliberately not marked yet, for Lokiy to check (/removed lists them on top)
 TO_CHECK = {
     26318: "On the workbook's Removed Items sheet (\"not present\"), but the only item with the name is the server's own.",
     22191: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
     22196: "Lokiy unsure: an Obsidian craft (Ossirian's plans and AQ20 shards).",
     21176: "Not answered yet: the AQ40 mount crystal (AtlasLoot also lists it outside AQ40).",
+    2277: "Old Scarlet Monastery? Wowhead lists only SM drops, but the workbook says World Drop (level 31-38).",
 }
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)
@@ -146,7 +161,7 @@ TYPE_LABEL = {"raid": "Raid", "dungeon": "Dungeon", "world boss": "World boss", 
               "crafting": "Crafted", "pvp": "PvP", "quest": "Quest", "world drop": "World drop", "drop": "Drop",
               "vendor": "Vendor", "container": "Container", "event": "Event", "set": "Set", "rare mob": "Rare mob",
               "other": "Other"}
-FROM_LABEL = {"atlasloot": "AtlasLoot", "workbook": "item workbook", "tracker": "Lokiy's loot tracker",
+FROM_LABEL = {"lokiy": "Lokiy", "atlasloot": "AtlasLoot", "workbook": "item workbook", "tracker": "Lokiy's loot tracker",
               "pfquest": "classic data (pfQuest)", "wowhead": "from Wowhead"}
 
 
@@ -195,6 +210,8 @@ class Sources:
     def table_type(self, key):
         name, inst = self.names.get(key, ("", "Other"))
         group = self.groups.get(key, "")
+        if key in WORLD_BOSS_TABLES:
+            return "world boss"
         if group == "Instances":
             return "raid" if inst in RAIDS else "dungeon" if inst not in ("Other", "Keys", "Miscellaneous") else "other"
         if group == "Sets":
@@ -208,7 +225,7 @@ class Sources:
             return "AV"
         if key in BROOD_TABLES:
             return "Brood"
-        if inst in CUT_INSTANCES and name != KURINNAXX:
+        if inst in CUT_INSTANCES and name != KURINNAXX and key not in WORLD_BOSS_TABLES:
             return CUT_INSTANCES[inst]
         return None
 
@@ -243,8 +260,8 @@ class Sources:
                 continue  # only a server item has the name: the row can't mean it (reported to Lokiy)
             text = ("Alterac Valley is not on Vanilla+." if "Alterac" in (src or "") else
                     CUT_TEXT["Brood"] if "Nozdormu" in (src or "") else
-                    "Removed from Vanilla+ (the classic Scarlet Monastery item)." if "Scarlet" in (src or "") or
-                    (src or "").startswith("SM") else "Removed from Vanilla+.")
+                    CUT_TEXT["old SM"] if "Scarlet" in (src or "") or (src or "").startswith("SM") else
+                    "Removed from Vanilla+.")
             for iid in ids:
                 mark(iid, text, f"Workbook Removed Items sheet: {row[0]} ({src})")
         for iid, text in FORCE_IDS.items():
@@ -267,6 +284,18 @@ class Sources:
             if word in new_words or (" of " in name and name.split(" of ")[-1] in new_words):
                 for iid in versions.get((3, 5, 8), []):
                     mark(iid, CUT_TEXT["old set"], f"Set-bonus rule: {name} with 3/5/8-piece bonuses")
+        for iid, it in self.items.items():
+            level = next((int(m.group(1)) for ln in it.get("lines", []) for m in [re.match(r"Requires Level (\d+)", ln)]
+                          if m), 0)
+            if level >= 60 or it.get("quality", 0) < 2:
+                continue
+            keys = set(self.item_tables.get(iid, []))
+            wh = self.wowhead.get(str(iid), [])
+            if keys & OLD_SM_TABLES:
+                mark(iid, CUT_TEXT["old SM"], "Old Scarlet Monastery rule (Lokiy 2026-10-25): " +
+                     ", ".join(sorted(keys & OLD_SM_TABLES)))
+            elif not keys and str(iid) not in self.workbook["sources"] and wh and all(x.get("drop", {}).get("zoneId") == SM_ZONE for x in wh):
+                mark(iid, CUT_TEXT["old SM"], "Old Scarlet Monastery rule (Lokiy 2026-10-25): Wowhead drops only in SM")
         # Wowhead-only items whose every Wowhead source is cut content (no table, workbook or tracker source)
         for sid, srcs in self.wowhead.items():
             iid = int(sid)
@@ -285,6 +314,17 @@ class Sources:
                     break
             if why:
                 mark(iid, CUT_TEXT[why[0]], "Wowhead sources only, all in " + ", ".join(sorted(set(why))), force=True)
+        self.lokiy_source = {}  # item id -> (text, type) from LOKIY_ON_SERVER / WORLD_BOSS_TABLES
+        for name, src in LOKIY_ON_SERVER.items():
+            for iid in by_name.get(name, []):
+                self.lokiy_source[iid] = src
+        for key in WORLD_BOSS_TABLES:
+            for r in self.tables.get(key, []):
+                if r[0]:
+                    self.lokiy_source[r[0]] = ("World bosses", "world boss")
+        for iid in self.lokiy_source:
+            reasons.pop(iid, None)
+            rule.pop(iid, None)
         for iid in list(reasons):
             if self.loot_drops.get(iid):
                 self.conflicts.append((iid, reasons.pop(iid)))
@@ -294,6 +334,9 @@ class Sources:
     # ---- sources
     def sources(self, iid):
         """[{"text", "type", "from", "href"?}] for this item, from the first layer that has any."""
+        if iid in self.lokiy_source:
+            text, kind = self.lokiy_source[iid]
+            return [{"text": text, "type": kind, "from": "lokiy"}]
         keys = self.item_tables.get(iid, [])
         wb = self.workbook["sources"].get(str(iid))
         if keys and not (wb and all(self.groups.get(k) == "Sets" for k in keys)):
