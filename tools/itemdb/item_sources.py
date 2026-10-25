@@ -15,8 +15,11 @@ The first layer that has something is the item's source; layers 2-5 are only gap
 Not on Vanilla+ (Lokiy 2026-10-22, 2026-10-25), marked on the page, not hidden: AQ20, AQ40 and Naxxramas (their
 loot tables, the ~130 names of AQ_T3_REMOVE_NAMES, and Wowhead-only drops there), except Kurinnaxx (a world boss in
 Silithus); Alterac Valley; the Brood of Nozdormu ring; Ashbringer and the Warglaives; the workbook's Removed Items
-sheet; Tier 2 (not on the server yet, by set name, the workbook's SET_NAME_TO_RAID). An item the loot tracker has
-seen drop is never marked: it is reported as a conflict instead.
+sheet; the old (classic) versions of the tier sets (Lokiy 2026-10-25: there is no Tier 2 on Vanilla+; each class has
+2-4 Tier 1 sets with 2/4/6/8-piece bonuses, incl. Wrath, Transcendence, Judgement, Stormrage, Ten Storms,
+Netherwind, Nemesis, Dragonstalker, Bloodfang; a version of the same set with 3/5/8-piece bonuses is the old one);
+items Lokiy named (LOKIY_NOT_ON_SERVER). An item the loot tracker has seen drop is never marked: it is reported as a
+conflict instead.
 """
 import json
 import os
@@ -38,7 +41,8 @@ CUT_TEXT = {"AQ20": "Ruins of Ahn'Qiraj (AQ20) is not on Vanilla+.",
             "Naxxramas": "Naxxramas is not on Vanilla+.",
             "AV": "Alterac Valley is not on Vanilla+.",
             "Brood": "The Brood of Nozdormu ring (an AQ40 reputation) is not on Vanilla+.",
-            "T2": "Tier 2 is not on Vanilla+ yet.",
+            "old set": "The old (classic) version of this set, with 3/5/8-piece bonuses. Vanilla+ has its own "
+                       "Tier 1 version with 2/4/6/8-piece bonuses.",
             "AQ/Naxx": "From AQ20, AQ40 or Naxxramas, which are not on Vanilla+."}
 KURINNAXX = "Kurinnaxx"  # AQ20's first boss is a world boss in Silithus here (13 items)
 KURINNAXX_NPC = 15348
@@ -54,10 +58,8 @@ FORCE_IDS = {
     18583: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
     18584: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
 }
-# Tier 2 sets by the name in their tooltip set line (workbook SET_NAME_TO_RAID "Blackwing Lair"; Dragonstalker and
-# Bloodfang are Tier 1 here). The server's T2 pieces sit in AtlasLoot's T1 tables, so tables can't tell.
-T2_SETS = {"Battlegear of Wrath", "Vestments of Transcendence", "Judgement Armor", "Stormrage Raiment",
-           "The Ten Storms", "Netherwind Regalia", "Nemesis Raiment"}
+# Lokiy's answers (2026-10-25): not on Vanilla+ by name
+LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer"}
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)
 
@@ -149,13 +151,18 @@ def _load(name, default):
         return json.load(f)
 
 
-def set_name(item):
-    """The item's set name from its tooltip set line ("Judgement Armor (0/8)"), or None."""
+def set_info(item):
+    """(set name, its bonus piece counts) from the tooltip: "Judgement Armor (0/8)", "(2) Set: ..." -> ("Judgement
+    Armor", (2, 4, 6, 8)); (None, ()) for an item outside a set."""
+    name, bonuses = None, set()
     for ln in item.get("lines", []):
         m = re.match(r"^(.+?) \(\d+/\d+\)$", ln)
         if m:
-            return m.group(1)
-    return None
+            name = m.group(1)
+        m = re.match(r"^\((\d+)\) Set:", ln)
+        if m:
+            bonuses.add(int(m.group(1)))
+    return name, tuple(sorted(bonuses))
 
 
 class Sources:
@@ -230,9 +237,23 @@ class Sources:
         for iid, text in FORCE_IDS.items():
             if iid in self.items:
                 reasons[iid] = text
+        for name in LOKIY_NOT_ON_SERVER:
+            for iid in by_name.get(name, []):
+                reasons.setdefault(iid, "Not on Vanilla+.")
+        # a set that exists twice: the version with 2/4/6/8-piece bonuses is Vanilla+'s, the 3/5/8 one the old one
+        sets = {}
         for iid, it in self.items.items():
-            if set_name(it) in T2_SETS:
-                reasons.setdefault(iid, CUT_TEXT["T2"])
+            name, bonuses = set_info(it)
+            if name:
+                sets.setdefault(name, {}).setdefault(bonuses, []).append(iid)
+        # (also under another name: classic Cenarion Raiment vs Vanilla+'s Cenarion Armor, matched by the first word)
+        new_words = {n.split()[-1] if n.startswith("The ") else n.split()[0]
+                     for n, versions in sets.items() if any(b[:3] == (2, 4, 6) for b in versions)}
+        for name, versions in sets.items():
+            word = name.split()[-1] if name.startswith("The ") else name.split()[0]
+            if word in new_words or (" of " in name and name.split(" of ")[-1] in new_words):
+                for iid in versions.get((3, 5, 8), []):
+                    reasons.setdefault(iid, CUT_TEXT["old set"])
         # Wowhead-only items whose every Wowhead source is cut content (no table, workbook or tracker source)
         for sid, srcs in self.wowhead.items():
             iid = int(sid)

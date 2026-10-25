@@ -309,6 +309,10 @@ there is more to say.
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.
 - Drop chances: only the observed rates from the Chronicle logs; no server loot-table chances in the data we have.
+- "Not on Vanilla+" marks (Parts FR / FU, Lokiy 2026-10-25: mark, not hide, for now): check all 412 marks later.
+  Still open from Lokiy: Flintrock Shoulders (26318, on the workbook's Removed Items sheet; unmarked), Obsidian Mail
+  Tunic (22191) and Thick Obsidian Breastplate (22196) (unsure; unmarked), Black Qiraji Resonating Crystal (21176, not
+  answered; unmarked).
 
 ## Items from db.lokiy.dev (Part FE)
 

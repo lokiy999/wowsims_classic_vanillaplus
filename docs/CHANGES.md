@@ -4891,3 +4891,22 @@ for what's still missing. Everything also in api/sources.json.
 - `sync_sim.sh` also runs `gen_db_icons.py` and treats `db_icons.json` as a generated file.
 - Checked on sim.lokiy.dev (warrior): 204 of 224 icons from db.lokiy.dev, all load (56 px); item picker and gear
   slot links go to db.lokiy.dev/item/<id>, clicking a gear slot still opens the picker.
+
+## Part FU — db.lokiy.dev: the "Tier 2" sets are Vanilla+ Tier 1; old set versions by their bonuses (2026-10-25)
+
+Lokiy's answers (via the hub) to the Part FR questions.
+- There is no Tier 2 on Vanilla+: each class has 2-4 **Tier 1** sets. Wrath, Transcendence, Judgement, Stormrage,
+  Ten Storms, Netherwind and Nemesis (server IDs 25008-25183, in AtlasLoot's T1 tables, like Dragonstalker and
+  Bloodfang) are Vanilla+ T1 and no longer marked (Part FR's 58 "Tier 2" marks are gone).
+- Lokiy's rule: a set's version with 2/4/6/8-piece bonuses is the Vanilla+ one, a version with 3/5/8 bonuses the old
+  (classic) one. `item_sources.py` reads the bonus counts from the tooltip ("(2) Set: ...") and marks the 3/5/8
+  version of every set that also exists as 2/4/6/8 (same name, or the same first word: classic Cenarion Raiment vs
+  Cenarion Armor): 17 items, 16919 Boots of Transcendence, 16957 Judgement Sabatons and the classic T1 pieces
+  (Arcanist 16796-16802, Felheart 16805-16806, Nightslayer 16825-16827, Cenarion 16828-16830, Giantstalker
+  16847-16850, Lawbringer 16859, Might 16863). Atlas and the bonuses agree: every item in AtlasLoot's T1 tables has
+  2/4/6/8 bonuses (Giantstalker / Dragonstalker also a 7-piece one); nothing to ask Lokiy.
+- Black Grasp of the Destroyer (22194) marked (Lokiy: not on V+; its plans aren't in the item data). Shard of the
+  Fallen Star and Jagged Obsidian Shield (+ plans) stay unmarked (on V+). Malfurion's Signet Ring stays unmarked
+  (confirmed). Flintrock Shoulders, Obsidian Mail Tunic, Thick Obsidian Breastplate and the Black Qiraji Resonating
+  Crystal: unmarked, in TODO.md.
+- 412 items marked now. Rebuilt /var/www/db.
