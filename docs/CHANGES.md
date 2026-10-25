@@ -4971,3 +4971,8 @@ enchants share their drop rates between them."
   the 30 rates add up to ~4 items per kill.
 - api/sources.json: table `WBSharedLoot` instead of `AQ20ClassBooks` (the sim's gen_sources.py shows a "WB" table
   as a world boss drop; its name prettifies to "Shared Loot" unless WB_NAMES gets an entry).
+
+## Part FZ — sim: a name for the World Boss Shared Loot (2026-10-25)
+
+- `docs/gen_sources.py` WB_NAMES: db.lokiy.dev's `WBSharedLoot` table (Part FY) shows as "Kazzak, Kurinnaxx,
+  Hederine, Azuregos (shared loot)" in the World Boss zone (was the prettified table name "Shared Loot").

@@ -79,6 +79,8 @@ WB_NAMES = {
     "SiliKurinnaxx": "Kurinnaxx", "WBKurinnaxx": "Kurinnaxx",
     "DTaerar": "Taerar", "DEmeriss": "Emeriss", "DLethon": "Lethon", "DYsondre": "Ysondre",
     "FourDragons": "Emerald Dragons",
+    # db.lokiy.dev Part FY: the loot set the four world bosses share (Lokiy 2026-10-25)
+    "SharedLoot": "Kazzak, Kurinnaxx, Hederine, Azuregos (shared loot)",
 }
 
 
