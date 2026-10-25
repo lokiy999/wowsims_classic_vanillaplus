@@ -20,6 +20,8 @@ and writes plain HTML pages (Caddy serves them from disk):
   /spell/<id>.html        every Vanilla+ spell (spells.py: lokiy.dev/spells' database, its classic.json diff against
                           stock 1.12.1), the items that use it; /spells.html a search over /spells.json
   /api/spells.json        every spell: name, rank, icon, description, buff text, status (new / changed / same)
+  (items no Vanilla+ client has seen: classic Wowhead tooltips, tagged "not seen on Vanilla+ yet", api flag
+   "classicOnly"; add_classic_items, Part GF)
   /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there)
   /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
                           instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
@@ -126,6 +128,38 @@ def load_items():
         if keep:
             items[iid] = {"id": iid, "name": keep[0], "quality": quality, "lines": keep[1:]}
     return items
+
+
+# names of classic leftovers that were never real items (on top of DEV_ITEM)
+CLASSIC_JUNK = re.compile(r"^(OLD|Deptecated |NPC Equip|zz)|\((old\d*|test|TEST)\)|\bTEST\b|DOOM!", re.I)
+WOWHEAD_ONLY_LINES = re.compile(r"^(Item Level \d+|Durability \d+ / \d+|Sell Price:.*|Max Stack:.*)$")
+
+
+def add_classic_items(items, wowhead, tables):
+    """Classic 1.12 items no Vanilla+ client has seen yet: not in the VPlusItemDB dump nor the item cache (Lokiy
+    2026-10-25: a classic item exists on Vanilla+ unless it's marked not on Vanilla+; e.g. Serpent's Kiss, Blade of
+    Hanna). From Wowhead's classic tooltips (wowhead_item_tooltips.csv), only classic ids (<= 24283; higher Wowhead ids
+    are later Classic items, and Vanilla+ uses that range for its own) that had a classic source (AtlasLoot, pfQuest,
+    the Wowhead sources) and aren't placeholders. Tagged "classic_only"; once the item cache sees one, its real server
+    data is used instead (add_cache_items runs first). Returns the ids added."""
+    known = set()
+    for name in ("pfquest_sources.json", "wowhead_sources.json"):
+        path = os.path.join(HERE, name)
+        if os.path.exists(path):
+            d = json.load(open(path, encoding="utf-8"))
+            known |= {int(i) for i in (d["items"] if name.startswith("pfquest") else d)}
+    known |= {r[0] for rows in tables.values() for r in rows if r[0]}
+    added = []
+    for iid, w in wowhead.items():
+        if iid > CLASSIC_MAX_ITEM_ID or iid in items or iid not in known or not w["lines"]:
+            continue
+        if DEV_ITEM.search(w["name"]) or CLASSIC_JUNK.search(w["name"]):
+            continue
+        lines = [ln for ln in w["lines"][1:] if not WOWHEAD_ONLY_LINES.match(ln)]
+        items[iid] = {"id": iid, "name": w["name"], "quality": w["quality"] if w["quality"] is not None else 1,
+                      "lines": lines, "classic_only": True}
+        added.append(iid)
+    return added
 
 
 def add_cache_items(items):
@@ -586,13 +620,14 @@ def main():
     add_shared_world_boss_loot(tables, names, table_groups, items)
     codes = load_text_codes()
     wowhead = load_wowhead()
+    classic_only = set(add_classic_items(items, wowhead, tables))
 
     flagged_new = {r[0] for rows in tables.values() for r in rows if r[3]}
 
     def is_custom(iid):
         return iid in items and (iid > CLASSIC_MAX_ITEM_ID or iid in flagged_new)
 
-    reworked = find_reworked(items, CLASSIC_MAX_ITEM_ID, skip=flagged_new, wh=wowhead)
+    reworked = find_reworked(items, CLASSIC_MAX_ITEM_ID, skip=flagged_new | classic_only, wh=wowhead)
     all_items = sorted(items)
     custom = [i for i in all_items if is_custom(i)]
     browsable = [i for i in all_items if not DEV_ITEM.search(items[i]["name"])]
@@ -621,6 +656,8 @@ def main():
         return name or key, cat
 
     def kind(iid):
+        if iid in classic_only:
+            return "Classic item, not seen on Vanilla+ yet"
         if DEV_ITEM.search(items[iid]["name"]):
             return "Test / unused item"
         if is_custom(iid):
@@ -739,6 +776,10 @@ def main():
         page_key, section = types[iid]
         nos = NOT_ON_SERVER.get(iid)
         nos_html = f'<p class="notice nos-banner"><b>Not on Vanilla+.</b> {esc(nos)}</p>' if nos else ""
+        if iid in classic_only and not nos:
+            nos_html = ('<p class="notice"><b>Classic data, not seen on Vanilla+ yet.</b> No player\'s client has seen '
+                        'this item on the server, so the tooltip is classic 1.12 (from Wowhead); it may differ on Vanilla+. '
+                        'It is replaced by the server\'s own data as soon as an item cache upload contains it.</p>')
         if item_srcs[iid]:
             weak = item_srcs[iid][0]["from"] in ("pfquest", "wowhead")
             src_html = (f'<section class="card"><h2>Source</h2>{nos_html}{sources_html(item_srcs[iid])}'
@@ -1282,6 +1323,8 @@ your filters, so you can share a search.</p></section>
             e["icon"] = icon_url(icons[i], "medium", absolute=True)
         if is_custom(i):
             e["custom"] = 1
+        if i in classic_only:
+            e["classicOnly"] = 1  # classic tooltip; no Vanilla+ client has seen the item yet
         rows_i = afx_rows_of(i)
         if rows_i:  # [[suffix id, name, [effect lines]]] from the DBCs, incl. tracker-seen and group-borrowed ones
             e["affixes"] = [[sid, name, effs] for sid, name, effs, *_ in rows_i]
@@ -1326,6 +1369,8 @@ your filters, so you can share a search.</p></section>
     for i in all_items:
         f = item_srcs[i][0]["from"] if item_srcs[i] else "none"
         by_from[f] = by_from.get(f, 0) + 1
+    print(f"{len(classic_only)} classic items not seen on Vanilla+ yet added "
+          f"({sum(1 for i in classic_only if types[i][0] in ('weapons', 'ranged', 'cloth', 'leather', 'mail', 'plate', 'accessories', 'shields'))} gear)")
     print(f"sources by layer: {by_from}; {len(NOT_ON_SERVER)} items not on Vanilla+; {len(spells)} spells "
           f"({n_status}), {len(spell_items)} used by items")
     for iid, why in srcs.conflicts:

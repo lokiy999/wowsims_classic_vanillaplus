@@ -5050,3 +5050,23 @@ the sim and later NPC pages link spells there instead of Wowhead.
 - `api/spells.json`: {id: {name, rank, icon, desc, tip, status}}.
 - `wdb_tooltip.Lookups` reads only the numbered spell buckets (it broke on classic.json).
 - lokiy.dev/spells stays; its spells link to these pages (spell-changelog repo).
+
+## Part GF — db.lokiy.dev: classic items not seen on Vanilla+ yet (2026-10-25)
+
+Lokiy (via the hub): Serpent's Kiss (5426), Blade of Hanna (2801), Spellshock Leggings (9484) "exist, just not
+dropped yet on the server". db.lokiy.dev only had the 2026-08-26 VPlusItemDB scan + the item cache, so a server
+item no client has cached was missing. Rule: a classic item exists on Vanilla+ unless it's marked not on Vanilla+.
+- `add_classic_items()`: classic ids (<= 24283) missing from the dump and the item cache, from Wowhead's classic
+  tooltips (`assets/db_inputs/wowhead_item_tooltips.csv`, the file reworked.py uses), only those with a classic
+  source (an AtlasLoot table, pfQuest, the Wowhead sources) and without a placeholder name (DEV_ITEM + CLASSIC_JUNK:
+  OLD..., "(old2)", "(TEST)", ...). Lines without Item Level / Durability / Sell Price, like our own tooltips.
+  Higher Wowhead ids are left out (later Classic items; Vanilla+ uses that range for its own items).
+- 711 items added: 521 gear, 190 other (recipes, consumables, quest items, mounts...). 299 of them are marked not
+  on Vanilla+ by the existing rules (AQ / Naxx / AV / old SM / ...), so /removed now lists 679.
+- Item pages: "Classic item, not seen on Vanilla+ yet" + a notice (the tooltip is classic and may differ); they are
+  not compared as "reworked". api/items.json: `"classicOnly": 1`.
+- The item cache wins automatically: add_cache_items runs first and add_classic_items skips every id already
+  known, so a cached item replaces the classic data (and loses the tag) on the next rebuild.
+- Sim: 39 of its 3,709 items were missing and are now classicOnly items (none marked not on Vanilla+); one is still
+  missing, 23202 Libram of Divinity (no classic source in our data).
+- The shared world boss loot's 7 formulas not in the item data before now have item pages (sources by Lokiy: 37).
