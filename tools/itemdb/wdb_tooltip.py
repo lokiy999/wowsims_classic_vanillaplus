@@ -71,7 +71,7 @@ class Lookups:
     def __init__(self, spell_db, dbc_dir):
         self.spells = {}
         for path in glob.glob(os.path.join(spell_db, "*.json")):
-            if not path.endswith("index.json"):
+            if re.fullmatch(r"\d+\.json", os.path.basename(path)):  # the id buckets, not index / classic.json
                 with open(path, encoding="utf-8") as fh:
                     self.spells.update({int(k): v for k, v in json.load(fh).items()})
         self.sets, self.skills, self.factions, self.areas, self.maps, self.icons = {}, {}, {}, {}, {}, {}

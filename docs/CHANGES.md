@@ -5031,3 +5031,22 @@ not only the loot tracker's suffixes.
 - Effect today: only 17982 Ragnaros Core gains (1 -> 55 suffixes, from 10795 Drakeclaw Band, group 3486); its 16
   awarded names had "stats unknown" and now show their tiers (e.g. of the Owl +9-10 Intellect, +9-10 Spirit). Every
   other item in a group already has its own Wowhead list, and no awarded / seen name is missing from one.
+
+## Part GE — db.lokiy.dev: spell pages (2026-10-25)
+
+Lokiy (via the hub; hub PLAN "Spells in the database"): db.lokiy.dev/spell/<id> for every Vanilla+ spell, so items,
+the sim and later NPC pages link spells there instead of Wowhead.
+- Data: lokiy.dev/spells' database (the spell-changelog project parses the Patch 3 DBCs; its `db` build now also writes
+  `db/classic.json`, every spell against stock 1.12.1). `spells.py` only reads that JSON from
+  /var/www/lokiy/spells/db. 25,146 spells: 2,789 new on Vanilla+, 5,320 changed from classic, 17,037 the same.
+- `/spell/<id>` (25,146 pages, ~141 MB): icon, name, rank, class, status tag (New on Vanilla+ / Changed from classic /
+  Same as classic), a tooltip with the rendered description and buff text, Details (school, cast time, range, cost,
+  cooldowns, duration, levels, proc, reagents, talent, skill line, triggered by), each effect, all other fields
+  folded, "Changed from classic" (classic vs Vanilla+ per field, flipped flags), "Used by items", and a link to the
+  spell on lokiy.dev/spells. Spell / item tokens in fields are links.
+- Item pages: Use / Equip / Chance on hit lines and set bonuses of items from the item cache link to their spell
+  (the line text is matched to the item's spell ids; 3,250 spells are used by items). Dump-only items have no ids.
+- `/spells`: search by name or id, filter by status and class (over /spells.json, 300 shown); "Spells" in the nav.
+- `api/spells.json`: {id: {name, rank, icon, desc, tip, status}}.
+- `wdb_tooltip.Lookups` reads only the numbered spell buckets (it broke on classic.json).
+- lokiy.dev/spells stays; its spells link to these pages (spell-changelog repo).

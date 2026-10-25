@@ -17,6 +17,9 @@ and writes plain HTML pages (Caddy serves them from disk):
   /items.json             search index; /tt/<id // 500>.json hover tooltips
   /api/items.json         every item for other sites (lokiy.dev/loot): name, quality, icon URL, tooltip lines with
                           their colour class, custom flag, random affixes. db.lokiy.dev is the only item source.
+  /spell/<id>.html        every Vanilla+ spell (spells.py: lokiy.dev/spells' database, its classic.json diff against
+                          stock 1.12.1), the items that use it; /spells.html a search over /spells.json
+  /api/spells.json        every spell: name, rank, icon, description, buff text, status (new / changed / same)
   /api/mobs.json          {mob name: URL of its page} for every mob the loot tracker saw (lokiy.dev/loot links there)
   /api/sources.json       where items come from, for other projects (the sim): every AtlasLoot table with its name,
                           instance, folder and items (incl. the drops the loot tracker added), and the Wowhead classic
@@ -53,7 +56,8 @@ from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
-from wdb_tooltip import Lookups, tooltip  # noqa: E402
+from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
+from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells  # noqa: E402
 from affixes import Affixes  # noqa: E402
 from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
                           Sources, add_shared_world_boss_loot)
@@ -137,6 +141,14 @@ def add_cache_items(items):
     for iid, rec in recs.items():
         lines = tooltip(rec, lk, recs)
         items[iid] = {"id": iid, "name": lines[0], "quality": rec["quality"], "lines": lines[1:-1]}
+        # tooltip line -> spell id (Use / Equip / Chance on hit, set bonuses), for the links to /spell/<id>
+        spell_lines = {TRIGGERS[sp["trigger"]] + lk.desc(sp["id"]): sp["id"] for sp in rec["spells"]
+                       if sp["id"] and sp["trigger"] in TRIGGERS and lk.desc(sp["id"])}
+        for threshold, sid in lk.sets.get(rec["itemSet"], {}).get("bonuses", []):
+            if lk.desc(sid):
+                spell_lines[f"({threshold}) Set: {lk.desc(sid)}"] = sid
+        if spell_lines:
+            items[iid]["spell_lines"] = spell_lines
     return {iid: lk.icons[rec["displayId"]] for iid, rec in recs.items() if rec["displayId"] in lk.icons}
 
 
@@ -465,11 +477,15 @@ def tooltip_html(item, mark=(), mark_cls="tt-new"):
     color = Q_COLOR.get(item["quality"], "#ffffff")
     name_cls = f' {mark_cls}' if norm(item["name"]) in mark else ""
     out = [f'<div class="tt-name{name_cls}" style="color:{color}">{esc(item["name"])}</div>']
+    spell_lines = item.get("spell_lines", {})
     for ln in item["lines"]:
         cls = line_class(ln)
         if mark and norm(ln) in mark:
             cls += " " + mark_cls
-        out.append(f'<div class="{cls}">{esc(ln)}</div>')
+        text = esc(ln)
+        if ln in spell_lines:  # the spell's page on this site
+            text = f'<a class="tt-spell" href="/spell/{spell_lines[ln]}">{text}</a>'
+        out.append(f'<div class="{cls}">{text}</div>')
     return "".join(out)
 
 
@@ -508,7 +524,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/spells">Spells</a><a href="/instances">Instances</a><a href="/mobs">Mobs</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
   </form>
@@ -710,7 +726,7 @@ def main():
                 f'from every corpse), else drops per looted corpse. ~ = estimate.</p></section>')
 
     # clean output (only our generated files)
-    for sub in ("item", "loot", "type", "tt", "mob"):
+    for sub in ("item", "loot", "type", "tt", "mob", "spell"):
         shutil.rmtree(os.path.join(out, sub), ignore_errors=True)
         os.makedirs(os.path.join(out, sub), exist_ok=True)
 
@@ -991,6 +1007,120 @@ it dropped. Bosses link to their loot table.</p>{rough_note}</section>
         json.dump({m["name"]: SITE_URL + mob_href(m) for m in mob_loot}, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(os.path.join(out, "api", "mobs.json.tmp"), os.path.join(out, "api", "mobs.json"))
 
+    # ---- spell pages, the spell search and api/spells.json (spells.py; Part GE)
+    spells = load_spells()
+    spell_items = {}  # spell id -> [(item id, how: "Use" / "Equip" / ...)]
+    for iid in all_items:
+        for ln, sid in items[iid].get("spell_lines", {}).items():
+            how = ln.split(":", 1)[0]
+            spell_items.setdefault(sid, []).append((iid, how))
+    item_names = {i: esc(items[i]["name"]) for i in all_items}
+
+    def field_rows(rows):
+        return "".join(f'<tr><th>{esc(k)}</th><td>{link_tokens(esc(v), item_names)}</td></tr>' for k, v in rows)
+
+    for sid, sp in spells.items():
+        title = sp["name"] + (f" ({sp['rank']})" if sp["rank"] else "")
+        tip = (f'<div class="tooltip spell-tt"><div class="tt-name">{esc(sp["name"])}'
+               + (f' <span class="tt-grey">{esc(sp["rank"])}</span>' if sp["rank"] else "") + '</div>'
+               + (f'<div class="tt-gold">{esc(sp["desc"])}</div>' if sp["desc"] else "")
+               + (f'<div class="tt-grey">Buff: {esc(sp["tip"])}</div>' if sp["tip"] else "") + '</div>')
+        by_label = dict(sp["fields"])
+        main = [(k, by_label[k]) for k in MAIN_FIELDS if by_label.get(k)]
+        effects, rest = {}, []
+        for k, v in sp["fields"]:
+            m = re.match(r"^Effect (\d) · (.+)$", k)
+            if m:
+                effects.setdefault(m.group(1), []).append((m.group(2), v))
+            elif k not in MAIN_FIELDS:
+                rest.append((k, v))
+        eff_html = "".join(f'<h3>Effect {n}</h3><table class="spell-fields">{field_rows(rows)}</table>'
+                           for n, rows in sorted(effects.items()))
+        status = sp["status"]
+        badge = f'<span class="tag spell-{status}">{STATUS_LABEL[status]}</span>' if status else ""
+        diff_html = ""
+        if sp["diff"]:
+            trs = "".join(f'<tr><th>{esc(r[0])}</th><td class="old">{link_tokens(esc(r[1] or "—"), item_names)}</td>'
+                          f'<td>{link_tokens(esc(r[2] or "—"), item_names)}'
+                          + (f'<div class="muted small">{esc(r[3])}</div>' if len(r) > 3 and r[3] else "") + '</td></tr>'
+                          for r in sp["diff"])
+            diff_html = (f'<section class="card"><h2>Changed from classic</h2><table class="spell-diff"><thead><tr><th></th>'
+                         f'<th>Classic 1.12.1</th><th>Vanilla+</th></tr></thead><tbody>{trs}</tbody></table></section>')
+        used = spell_items.get(sid, [])
+        used_html = ""
+        if used:
+            lis = "".join(f'<li>{item_link(items[i], icons.get(i, "inv_misc_questionmark"))} '
+                          f'<span class="muted">{esc(how)}</span></li>' for i, how in sorted(used))
+            used_html = f'<section class="card"><h2>Used by items ({len(used)})</h2><ul class="loot">{lis}</ul></section>'
+        body = f"""
+<article class="spell-page">
+  <div class="item-head">{icon_img(sp['icon'] or 'inv_misc_questionmark', 'large', 'icon-l')}
+    <div><h1>{esc(sp['name'] or '(no name)')} {f'<span class="muted">{esc(sp["rank"])}</span>' if sp['rank'] else ''}</h1>
+    <div class="muted">Spell {sid}{' &middot; ' + esc(sp['class']) if sp['class'] else ''} {badge}
+    &middot; <a href="https://lokiy.dev/spells/#view=db&amp;id={sid}">all fields &amp; changelog</a></div></div>
+  </div>
+  {tip}
+  <section class="card"><h2>Details</h2><table class="spell-fields">{field_rows(main) or '<tr><td class="muted">No details.</td></tr>'}</table>
+  {eff_html}
+  <details><summary class="muted">All other fields ({len(rest)})</summary><table class="spell-fields">{field_rows(rest)}</table></details></section>
+  {diff_html}
+  {used_html}
+</article>"""
+        with open(os.path.join(out, "spell", f"{sid}.html"), "w", encoding="utf-8") as f:
+            f.write(page(title, body, description=sp["desc"] or title, image=icon_url(sp["icon"], "large", absolute=True),
+                         path=f"/spell/{sid}"))
+    n_status = {k: sum(1 for sp in spells.values() if sp["status"] == k) for k in STATUS_LABEL}
+    with open(os.path.join(out, "spells.json"), "w", encoding="utf-8") as f:
+        json.dump([[sid, sp["name"], sp["rank"], sp["icon"], sp["status"], sp["class"]] for sid, sp in spells.items()],
+                  f, ensure_ascii=False, separators=(",", ":"))
+    body = f"""
+<section class="intro"><h1>Spells</h1>
+<p class="muted">Every spell of the Vanilla+ client ({len(spells)}): {n_status['new']} new on Vanilla+,
+{n_status['changed']} changed from classic 1.12.1, {n_status['same']} the same. From the client's spell data, as on
+<a href="https://lokiy.dev/spells/">lokiy.dev/spells</a> (the changelog per patch).</p>
+<form class="spell-search" onsubmit="return false">
+  <input id="sq" type="search" placeholder="Name or ID..." autocomplete="off">
+  <select id="ss"><option value="">All</option><option value="new">New on Vanilla+</option>
+    <option value="changed">Changed from classic</option><option value="same">Same as classic</option></select>
+  <select id="sc"><option value="">Any class</option></select>
+</form></section>
+<section class="card"><p class="muted small" id="scount"></p><ul class="loot" id="slist"></ul></section>
+<script>
+(async () => {{
+  const all = await (await fetch('/spells.json')).json();
+  const $ = id => document.getElementById(id), LABEL = {json.dumps(STATUS_LABEL)}, MAX = 300;
+  const classes = [...new Set(all.map(s => s[5]).filter(Boolean))].sort();
+  $('sc').innerHTML += classes.map(c => `<option>${{c}}</option>`).join('');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({{'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}})[c]);
+  const p = new URLSearchParams(location.search);
+  $('sq').value = p.get('q') || ''; $('ss').value = p.get('status') || ''; $('sc').value = p.get('class') || '';
+  function show() {{
+    const q = $('sq').value.trim().toLowerCase(), st = $('ss').value, cl = $('sc').value;
+    const hits = all.filter(s => (!st || s[4] === st) && (!cl || s[5] === cl)
+      && (!q || String(s[0]) === q || s[1].toLowerCase().includes(q)));
+    $('scount').textContent = `${{hits.length}} spells` + (hits.length > MAX ? ` (first ${{MAX}} shown)` : '');
+    $('slist').innerHTML = hits.slice(0, MAX).map(s => `<li><a class="item" href="/spell/${{s[0]}}">`
+      + `<img class="icon-s" src="/icons/${{s[3] || 'inv_misc_questionmark'}}_s.jpg" alt="" loading="lazy" `
+      + `onerror="this.onerror=null;this.src='/icons/inv_misc_questionmark_s.jpg'">`
+      + `<span>${{esc(s[1] || '(no name)')}}</span></a> <span class="muted">${{esc(s[2])}} #${{s[0]}}`
+      + `${{s[5] ? ' · ' + esc(s[5]) : ''}}</span>${{s[4] && s[4] !== 'same' ? ` <span class="tag spell-${{s[4]}}">${{LABEL[s[4]]}}</span>` : ''}}</li>`).join('');
+    const u = new URLSearchParams(); if (q) u.set('q', q); if (st) u.set('status', st); if (cl) u.set('class', cl);
+    history.replaceState(null, '', u.toString() ? '?' + u : location.pathname);
+  }}
+  ['sq', 'ss', 'sc'].forEach(id => $(id).addEventListener('input', show));
+  show();
+}})();
+</script>"""
+    with open(os.path.join(out, "spells.html"), "w", encoding="utf-8") as f:
+        f.write(page("Spells", body, path="/spells", description=f"All {len(spells)} Vanilla Plus spells."))
+    api_spells = {sid: {"name": sp["name"], "rank": sp["rank"], "icon": icon_url(sp["icon"], "medium", absolute=True)
+                        if sp["icon"] else "", "desc": sp["desc"], "tip": sp["tip"], "status": sp["status"]}
+                  for sid, sp in spells.items()}
+    os.makedirs(os.path.join(out, "api"), exist_ok=True)
+    with open(os.path.join(out, "api", "spells.json.tmp"), "w", encoding="utf-8") as f:
+        json.dump(api_spells, f, ensure_ascii=False, separators=(",", ":"))
+    os.replace(os.path.join(out, "api", "spells.json.tmp"), os.path.join(out, "api", "spells.json"))
+
     # ---- /removed: every item marked "not on Vanilla+", by reason, with the rule that marked it (for Lokiy to check)
     def removed_row(iid, why):
         it = items[iid]
@@ -1196,7 +1326,8 @@ your filters, so you can share a search.</p></section>
     for i in all_items:
         f = item_srcs[i][0]["from"] if item_srcs[i] else "none"
         by_from[f] = by_from.get(f, 0) + 1
-    print(f"sources by layer: {by_from}; {len(NOT_ON_SERVER)} items not on Vanilla+")
+    print(f"sources by layer: {by_from}; {len(NOT_ON_SERVER)} items not on Vanilla+; {len(spells)} spells "
+          f"({n_status}), {len(spell_items)} used by items")
     for iid, why in srcs.conflicts:
         print(f"  not marked (the loot tracker saw it drop): {iid} {items[iid]['name']}: {why}")
 
