@@ -1,6 +1,7 @@
 // db.lokiy.dev/search: filter all items by name, quality, type, slot, level, class, binding, status, source and stats.
 // Data: /search.json {types, sections, cats, classes, stats, items: [[id, name, quality, type, section, level, slot,
-// bind, classMask, status, stats, cats, icon, hasRandomAffixes, affixStats {stat: [max, chance text]}]]}. The filter state lives in the URL, so a search can be linked.
+// bind, classMask, status, stats, cats, icon, hasRandomAffixes, affixStats {stat: [max, chance text]}, sources
+// (indexes into srcs: where it drops, matched by the name box like the header search)]], srcs}. The filter state lives in the URL, so a search can be linked.
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const QN = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
@@ -12,6 +13,7 @@
 	const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 	const form = $('filters');
 	let D = null;
+	let srcLower = [];
 	let rows = [];
 	let sortKey = 'q';
 	let sortDir = -1;
@@ -91,6 +93,9 @@
 		return null;
 	};
 
+	// The first drop source of an item that contains q (the name box matches sources too), or undefined.
+	const srcMatch = (it, q) => (it[15] || []).find(n => srcLower[n].includes(q));
+
 	const filter = () => {
 		const q = form.q.value.trim().toLowerCase();
 		const ql = new Set([...form.querySelectorAll('[name=ql]:checked')].map(cb => +cb.value));
@@ -107,7 +112,7 @@
 		const sf = statFilters().map(([k, v]) => [k, v === '' ? null : +v]);
 		return D.items.filter(it => {
 			const [id, name, quality, t, s, lv, sl, b, cm, status, stats, cats, , affix] = it;
-			if (q && !name.toLowerCase().includes(q) && String(id) !== q) return false;
+			if (q && !name.toLowerCase().includes(q) && String(id) !== q && !srcMatch(it, q)) return false;
 			if (ql.size && !ql.has(quality)) return false;
 			if (type && D.types[t][0] !== type) return false;
 			if (sec && D.sections[s] !== sec) return false;
@@ -177,6 +182,7 @@
 			th('type', 'Type', 'l hide-s') +
 			cols.map(k => th(k, shortLabel(k))).join('') +
 			'<th class="hide-s"></th></tr>';
+		const q = form.q.value.trim().toLowerCase();
 		const body = shown
 			.map(it => {
 				const [id, name, quality, , s, lv, sl, , , status, stats, , icon] = it;
@@ -184,7 +190,9 @@
 				const tag = status >= 2 ? `<span class="tag">${STATUS[status]}</span>` : '';
 				return (
 					`<tr><td class="l"><a class="item" href="/item/${id}" data-item="${id}"><img class="icon-s" src="${esc(src)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${ZAM('inv_misc_questionmark')}'">` +
-					`<span style="color:${QC[quality] || '#fff'}">${esc(name)}</span></a></td>` +
+					`<span style="color:${QC[quality] || '#fff'}">${esc(name)}</span></a>` +
+					(q && !name.toLowerCase().includes(q) && String(id) !== q && srcMatch(it, q) !== undefined
+						? ` <span class="muted small">drops from ${esc(D.srcs[srcMatch(it, q)])}</span>` : '') + '</td>' +
 					`<td>${lv || ''}</td><td class="l hide-s">${esc(sl || '')}</td><td class="l hide-s muted">${esc(D.sections[s])}</td>` +
 					cols.map(k => `<td>${statCell(it, k)}</td>`).join('') +
 					`<td class="hide-s">${tag}</td></tr>`
@@ -240,6 +248,7 @@
 		.then(r => r.json())
 		.then(data => {
 			D = data;
+			srcLower = (D.srcs || []).map(x => x.toLowerCase());
 			form.type.innerHTML = opt('', 'All') + D.types.map(([k, n]) => opt(k, n)).join('');
 			const slots = [...new Set(D.items.map(it => it[6]).filter(Boolean))].sort();
 			form.slot.innerHTML = opt('', 'All') + slots.map(s => opt(s, s)).join('');

@@ -1572,6 +1572,14 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
     sec_idx = {s: n for n, s in enumerate(sec_names)}
     type_idx = {k: n for n, (k, _) in enumerate(PAGES)}
     cat_idx = {c: n for n, c in enumerate(cats_all)}
+    src_names, src_idx = [], {}  # drop sources (loot table names, as in items.json "s"), so the name box matches them too
+
+    def src_no(nm):
+        if nm not in src_idx:
+            src_idx[nm] = len(src_names)
+            src_names.append(nm)
+        return src_idx[nm]
+
     srows = []
     for i in browsable:
         it = items[i]
@@ -1584,16 +1592,17 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
         srows.append([i, it["name"], it["quality"], type_idx[pk], sec_idx[sec], info.get("lv", 0), info.get("sl", ""),
                       info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
                       1 if affixes.get(i) or afx_rows_of(i) or dkp_suffixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
-                      affix_stats.get(i, 0)])
+                      affix_stats.get(i, 0),
+                      [src_no(nm) for nm in dict.fromkeys(table_label(k)[0] for k in sources.get(i, []))] or 0])
     with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
         json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,
-                   "stats": STAT_LABELS, "items": srows}, f, separators=(",", ":"))
+                   "stats": STAT_LABELS, "srcs": src_names, "items": srows}, f, separators=(",", ":"))
     body = """
 <section class="intro"><h1>Item search</h1>
 <p class="muted">Filter all items. Stats are read from the in-game tooltips; set bonuses are not counted. The URL keeps
 your filters, so you can share a search.</p></section>
 <form id="filters" class="card filters loading" autocomplete="off">
-  <label class="f-name">Name<input name="q" type="search" placeholder="Item name or id"></label>
+  <label class="f-name">Name or source<input name="q" type="search" placeholder="Item name, id, or where it drops (boss, table)"></label>
   <fieldset class="f-quality"><legend>Quality</legend><div id="qualities" class="chips"></div></fieldset>
   <label>Type<select name="type"></select></label>
   <label>Subtype<select name="sec"></select></label>

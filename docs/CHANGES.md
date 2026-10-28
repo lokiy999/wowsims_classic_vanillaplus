@@ -5253,3 +5253,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Spells / NPCs / Quests moved from the nav into it. Placeholder "Search items, NPCs, spells, quests, zones...".
 - `style.css`: menu, result groups, wrapping rows on phones.
 - Backups `gen_site.py.bak-2026-10-28`, `site.js.bak-2026-10-28`, `style.css.bak-2026-10-28`.
+
+## Part GR — db.lokiy.dev: the item search's name box also matches where an item drops (2026-10-28)
+
+- Lokiy: the header search's "Items page" link was misleading: "ragnaros" finds 24 items there (name or drop source),
+  but `/search?q=ragnaros` only matched names (3).
+- `search.json` gains `srcs` (602 drop-source names, the loot table names of items.json `s`) and per item a list of
+  indexes into it (5,400 items). `search.js`: the box ("Name or source") matches name, id or a source; an item
+  found only by its source shows "drops from <source>" after its name. Now both give 24 for "ragnaros".
+- `site.js`: the Items tab links "Open these in the item filters (slot, class, stats...)"; when there are more than
+  200, "All N on the <kind> page". Zones and loot tables get no such link (their pages don't filter by the query).
+- Backups `*.bak-2026-10-28b` (gen_site.py, site.js, search.js).

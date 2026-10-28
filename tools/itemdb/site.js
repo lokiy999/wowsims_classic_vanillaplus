@@ -72,13 +72,13 @@
 			}))),
 		},
 		{
-			key: 'zones', label: 'Zones', page: () => '/zones',
+			key: 'zones', label: 'Zones', page: () => '',
 			load: () => getJson('/api/zones.json').then(z => Object.entries(z || {}).map(([id, v]) => ({
 				h: `/zone/${id}`, id, n: v.name, also: [], m: `${v.npcs} NPCs, ${v.quests} quests`,
 			}))),
 		},
 		{
-			key: 'tables', label: 'Loot tables', page: () => '/instances',
+			key: 'tables', label: 'Loot tables', page: () => '',
 			load: () => getJson('/tables.json').then(list => (list || []).map(([k, name, group, cut]) => ({
 				h: `/loot/${k}`, n: name, also: [group], m: group, t: cut ? 'not on Vanilla+' : '',
 			}))),
@@ -118,9 +118,9 @@
 		const group = (k, n) => {
 			const hits = lastHits[k.key];
 			const more = hits.length > n
-				? (tab ? `<a href="${k.page(q)}">${hits.length - n} more on the ${k.label} page &rarr;</a>`
+				? (tab ? k.page(q) && `<a href="${k.page(q)}">All ${hits.length.toLocaleString()} on the ${k.label} page &rarr;</a>`
 					: `<a href="#" data-tab="${k.key}">Show all ${hits.length.toLocaleString()} ${k.label.toLowerCase()} &rarr;</a>`)
-				: tab ? `<a href="${k.page(q)}">${k.label} page &rarr;</a>` : '';
+				: tab && k.page(q) ? `<a href="${k.page(q)}">${k.key === 'items' ? 'Open these in the item filters (slot, class, stats...)' : `Open these on the ${k.label} page`} &rarr;</a>` : '';
 			return `<div class="result-group"><h3>${k.label} <span class="muted">${hits.length.toLocaleString()}</span></h3>` +
 				`<ul class="loot">${hits.slice(0, n).map(row).join('')}</ul>${more ? `<p class="result-more">${more}</p>` : ''}</div>`;
 		};
