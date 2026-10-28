@@ -5350,3 +5350,17 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - `ITEM_TYPE`: + Robe of Undead Cleansing (23085), Tunic of Undead Slaying (23089); Candy Corn back to its Hallow's
   End event source.
 - Backup `item_sources.py.bak-2026-10-28g`.
+
+## Part GZ — 9 more items not on Vanilla+; quest 172 is Children's Week (2026-10-28)
+
+- Lokiy: 18943 is unobtainable, as is its quest; 21038 is an AV item; 23579, 23578, 17195, 13812, 6830, 19911, 7389
+  are not on Vanilla+. Quest 172 isn't the same as Wowhead's quest 172?
+- `item_sources.py`: `FORCE_IDS` Dark Iron Pillow (18943, "Can't be obtained, and neither can its quest") and
+  Hardpacked Snowball (21038, `CUT_TEXT["AV"]`); `LOKIY_NOT_ON_SERVER_IDS` + Diet McWeaksauce, The McWeaksauce
+  Classic, Fake Mistletoe, Ring of the Dawn, Bonebiter, Whipweed Heart, Venture Co. Ledger. /removed: 976 -> 985.
+- Quest 172: pfQuest's own record (`data\pfquest\quests.lua` / `enUS\quests.lua`) mixes two quests: start / end /
+  event are Children's Week (Orphan Matron Battlewail 14451 -> Orcish Orphan 14444, Wowhead's 172), the name, text,
+  objective (Ambassador's Satchel 1923), level and the extra start / end NPC (Ambassador Berrybuck 271) an old quest
+  "Ambushed In The Forest". `quests.py` `QUEST_FIX` replaces the record with the Children's Week parts (text and level
+  left out, with a note pointing to Wowhead).
+- Backups `item_sources.py.bak-2026-10-28h`, `quests.py.bak-2026-10-28`.

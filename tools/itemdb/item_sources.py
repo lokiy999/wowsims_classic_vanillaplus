@@ -64,6 +64,8 @@ FORCE_IDS = {
     18584: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
     22736: "Can't be obtained: part of the Atiesh quest line, it doesn't drop (Lokiy 2026-10-28).",
     12947: "Can't be obtained (Lokiy 2026-10-28).",  # Alex's Ring of Audacity
+    18943: "Can't be obtained, and neither can its quest (Lokiy 2026-10-28).",  # Dark Iron Pillow
+    21038: CUT_TEXT["AV"],  # Hardpacked Snowball (Lokiy 2026-10-28)
 }
 # Lokiy's answers (2026-10-25): not on Vanilla+ by name
 LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer",
@@ -81,6 +83,9 @@ LOKIY_NOT_ON_SERVER_IDS = {
     21218, 21321, 21323,
     7484,  # Ranger Wristguards (a classic world drop)
     3777,  # Lethargy Root (Lokiy 2026-10-28)
+    # Lokiy 2026-10-28: the McWeaksauce sodas, Fake Mistletoe, Ring of the Dawn, Bonebiter, Whipweed Heart, Venture Co.
+    # Ledger
+    23578, 23579, 17195, 13812, 6830, 19911, 7389,
     # Lokiy 2026-10-28 (second list): the old SM 5-man bosses' loot and the old Scarlet set's leggings
     7682, 7684, 7710, 7711, 7712, 7718, 7719, 7756, 10330,
     13175,  # Voone's Twitchbow

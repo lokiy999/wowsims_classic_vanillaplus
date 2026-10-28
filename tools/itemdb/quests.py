@@ -12,6 +12,14 @@ from html import escape as esc
 HERE = os.path.dirname(os.path.abspath(__file__))
 JUNK = re.compile(r"<NYI>|<TXT>|\(123\)")
 WH_QUEST = re.compile(r"wowhead\.com/classic/quest=(\d+)")
+# pfQuest records that mix two quests, replaced by the parts that match Wowhead (Lokiy 2026-10-28, Part GZ). 172: start
+# / end / event are Children's Week (Horde), name / text / objective / level an old quest "Ambushed In The Forest"
+# (Ambassador Berrybuck, Ambassador's Satchel)
+QUEST_FIX = {
+    172: {"name": "Children's Week", "start": {"U": [14451]}, "end": {"U": [14444]}, "event": 10,
+          "goal": "pfQuest's data for this quest ID mixes in an old quest (Ambushed In The Forest), so its text and "
+                  "level are left out here; see Wowhead for them."},
+}
 RACES = {1: "Human", 2: "Orc", 4: "Dwarf", 8: "Night Elf", 16: "Undead", 32: "Tauren", 64: "Gnome", 128: "Troll"}
 ALLIANCE, HORDE = 1 | 4 | 8 | 64, 2 | 16 | 32 | 128
 CLASSES = {1: "Warrior", 2: "Paladin", 4: "Hunter", 8: "Rogue", 16: "Priest", 64: "Shaman", 128: "Mage",
@@ -53,6 +61,7 @@ class Quests:
         path = os.path.join(HERE, "pfquest_quests.json")
         raw = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
         self.quests = {int(k): v for k, v in raw.get("quests", {}).items() if not JUNK.search(v["name"])}
+        self.quests.update(QUEST_FIX)
         self.zones = {int(k): v for k, v in raw.get("zones", {}).items()}
         self.objects = {int(k): v for k, v in raw.get("objects", {}).items()}
         self.npcs = npcs
