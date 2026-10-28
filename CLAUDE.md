@@ -27,3 +27,8 @@ per spell or per proc (hit, crit, damage modifiers) are not in the sim's stat to
 they need adding to `modifyDisplayStats` by hand. Verify in the browser that the sidebar
 number moves when the talent or buff changes, and note any deliberate exception in
 `docs/TODO.md`.
+
+**Change log (Lokiy, 2026-10-28):** real changes (code) go in `docs/CHANGES.md` ("## Part XX"); minor ones (hotfixes, data added /
+removed, wording, settings, rebuilds: no code change) are one dated line in `docs/MINOR.md`. After either, run
+`python tools/changelog.py` in the hub (on the PC, `C:\Users\Leon_\Documents\WoW Website Project`; from the server ask the hub chat or run it next time on the PC) and commit + push the hub: its `CHANGELOG.md` and
+`CHANGELOG_MINOR.md` show every project's changes together.
