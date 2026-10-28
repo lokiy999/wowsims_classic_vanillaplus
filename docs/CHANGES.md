@@ -5338,3 +5338,4 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   items, the Scourge Invasion set pieces (23087, 23088, 23091, 23092, 23093) and Candy Corn (20389) are "dungeon"
   (also their /unseen group). Replaces Part GV's `EVENT_TABLES`.
 - Backup `item_sources.py.bak-2026-10-28f`.
+- Part GX addendum (Lokiy): Bracers of Undead Slaying (23090) listed as dungeon too (the second 23091 in the list).

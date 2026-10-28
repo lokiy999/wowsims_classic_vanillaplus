@@ -101,7 +101,7 @@ OLD_PVP_MAX_ID = 18000
 LOKIY_PROBABLY_NOT_IDS = {11768, 16999}  # Incendic Bracers, Royal Seal of Alexis
 # Lokiy 2026-10-28: source type by item (every source of the item gets it): Scorn's loot, the Scourge Invasion set
 # pieces and Candy Corn are listed as dungeon
-ITEM_TYPE = {i: "dungeon" for i in (23168, 23169, 23170, 23087, 23088, 23091, 23092, 23093, 20389)}
+ITEM_TYPE = {i: "dungeon" for i in (23168, 23169, 23170, 23087, 23088, 23090, 23091, 23092, 23093, 20389)}
 # Lokiy 2026-10-28: classic items that have dropped on Vanilla+, though no item cache upload has them yet: off /unseen,
 # the tooltip stays classic until a cache has it (gen_site.py)
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
