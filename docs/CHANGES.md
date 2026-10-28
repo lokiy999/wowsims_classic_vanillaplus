@@ -5299,3 +5299,19 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Head, Yellow Qiraji Resonating Crystal. New `LOKIY_PROBABLY_NOT_IDS` (Incendic Bracers 11768): marked "Lokiy is 99%
   sure it isn't on Vanilla+." /removed: 829 -> 844.
 - Backups `item_sources.py.bak-2026-10-28c`, `gen_site.py.bak-2026-10-28d`.
+
+## Part GV — 25 more items not on Vanilla+; Scorn is an event source, not raid loot (2026-10-28)
+
+- Lokiy: 23168-23170 aren't raid but dungeon / event loot. 22736 doesn't drop (Atiesh quest line). 16999 99% no drop.
+  22970-22977, 21037, 835 are not on Vanilla+. The junk items 18225-18234 (AV) and 21222-21227 (AQ) are
+  unobtainable; Large Fin (8508) and Silver Hook (5567) are not.
+- `item_sources.py`:
+  - `LOKIY_NOT_ON_SERVER_IDS` + 23: the Scourge Invasion letters (22970, 22972-22975, 22977; 22971 / 22976 aren't
+    in the item data), Crude Map (21037), Large Rope Net (835), the AV junk (18225-18231, 18233, 18234), the AQ junk /
+    materials (21222-21227).
+  - `FORCE_IDS` 22736 Andonisus, Reaper of Souls: "Can't be obtained: part of the Atiesh quest line, it doesn't drop".
+  - `LOKIY_PROBABLY_NOT_IDS` + 16999 Royal Seal of Alexis.
+  - New `EVENT_TABLES` = {"SMScorn"}: `table_type()` "event" instead of "raid" (SM is in `RAIDS`), so Scorn's three
+    items show event sources only. They stay on /removed "To check".
+- /removed: 844 -> 869.
+- Backup `item_sources.py.bak-2026-10-28d`.

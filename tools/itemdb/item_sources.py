@@ -59,6 +59,7 @@ FORCE_IDS = {
     18582: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
     18583: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
     18584: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
+    22736: "Can't be obtained: part of the Atiesh quest line, it doesn't drop (Lokiy 2026-10-28).",
 }
 # Lokiy's answers (2026-10-25): not on Vanilla+ by name
 LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer",
@@ -82,9 +83,15 @@ LOKIY_NOT_ON_SERVER_IDS = {
     15886,  # Timolain's Phylactery
     19882,  # The Hexxer's Head
     21324,  # Yellow Qiraji Resonating Crystal
+    # Lokiy 2026-10-28 (third list): the Scourge Invasion letters, Crude Map, Large Rope Net
+    22970, 22972, 22973, 22974, 22975, 22977, 21037, 835,
+    # the AV junk drops and the AQ junk / Qiraji raid materials (Lokiy: unobtainable)
+    18225, 18226, 18227, 18228, 18229, 18230, 18231, 18233, 18234, 21222, 21223, 21224, 21225, 21226, 21227,
 }
 # Lokiy 2026-10-28: 99% sure not on Vanilla+
-LOKIY_PROBABLY_NOT_IDS = {11768}  # Incendic Bracers
+LOKIY_PROBABLY_NOT_IDS = {11768, 16999}  # Incendic Bracers, Royal Seal of Alexis
+# loot tables of a world event inside an instance (Lokiy 2026-10-28: Scorn is a dungeon / event boss, not raid loot)
+EVENT_TABLES = {"SMScorn"}
 # Lokiy 2026-10-28: classic items that have dropped on Vanilla+, though no item cache upload has them yet: off /unseen,
 # the tooltip stays classic until a cache has it (gen_site.py)
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
@@ -279,6 +286,8 @@ class Sources:
     def table_type(self, key):
         name, inst = self.names.get(key, ("", "Other"))
         group = self.groups.get(key, "")
+        if key in EVENT_TABLES:
+            return "event"
         if group == "Instances":
             return "raid" if inst in RAIDS else "dungeon" if inst not in ("Other", "Keys", "Miscellaneous") else "other"
         if group == "Sets":
