@@ -5264,3 +5264,13 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - `site.js`: the Items tab links "Open these in the item filters (slot, class, stats...)"; when there are more than
   200, "All N on the <kind> page". Zones and loot tables get no such link (their pages don't filter by the query).
 - Backups `*.bak-2026-10-28b` (gen_site.py, site.js, search.js).
+
+## Part GS — Flintrock Shoulders (26318) drop from Houndmaster Loksey (2026-10-28)
+
+- Lokiy: Flintrock Shoulders (26318) is a confirmed drop from Loksey in SM.
+- `gen_site.py` `MANUAL_DROPS`: added to the end of `SMHoundmasterLoksey`, so it is on Loksey's loot page, his NPC page
+  (/npc/25225), the item's sources ("Houndmaster Loksey (Scarlet Monastery)", raid) and `api/sources.json`.
+- Off `TO_CHECK` (`item_sources.py`), now empty; /removed shows no "To check" card when it is empty. The classic
+  Flintrock Shoulders (7755, old SM trash) stays marked from the workbook's Removed Items sheet.
+- `docs/TODO.md`: the to-check list is answered.
+- Backups `item_sources.py.bak-2026-10-28`, `gen_site.py.bak-2026-10-28c`.

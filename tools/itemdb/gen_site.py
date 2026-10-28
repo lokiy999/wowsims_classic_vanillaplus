@@ -329,6 +329,7 @@ def mob_table(by_name, mob, zones):
 # table like the tracked drops.
 MANUAL_DROPS = {
     "BWLKrixix": [26231],  # Cloak of Untold Secrets (2026-09-25)
+    "SMHoundmasterLoksey": [26318],  # Flintrock Shoulders, a confirmed drop (2026-10-28)
 }
 
 
@@ -1443,7 +1444,7 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
     head = '<thead><tr><th>Item</th><th>ID</th><th>Marked by</th></tr></thead>'
     check = "".join(removed_row(i, why) for i, why in TO_CHECK.items() if i in items)
     blocks = [f'<section class="card"><h2>To check: not marked yet ({len(TO_CHECK)})</h2>'
-              f'<table class="obs-table removed-table">{head}<tbody>{check}</tbody></table></section>']
+              f'<table class="obs-table removed-table">{head}<tbody>{check}</tbody></table></section>'] if TO_CHECK else []
     toc = []
     for n, (text, ids) in enumerate(sorted(by_reason.items(), key=lambda kv: (-len(kv[1]), kv[0]))):
         rows = "".join(removed_row(i, srcs.mark_rule.get(i, "")) for i in sorted(ids))

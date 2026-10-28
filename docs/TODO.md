@@ -310,10 +310,8 @@ there is more to say.
 - Point the sim's item / NPC links (`ActionId.makeItemUrl` etc. in `ui/core/proto_utils/action_id.ts`) at the site.
 - Drop chances: only the observed rates from the Chronicle logs; no server loot-table chances in the data we have.
 - "Not on Vanilla+" marks (Parts FR / FU, Lokiy 2026-10-25: mark, not hide, for now): check all 412 marks later.
-  Still open from Lokiy: Flintrock Shoulders (26318, on the workbook's Removed Items sheet; unmarked), Obsidian Mail
-  Tunic (22191) and Thick Obsidian Breastplate (22196) (unsure; unmarked), Black Qiraji Resonating Crystal (21176, not
-  answered; unmarked).
-All on db.lokiy.dev/removed "To check" (Part FV).
+  The to-check list is answered: Flintrock Shoulders (26318) drops from Houndmaster Loksey (Part GS); Obsidian Mail
+  Tunic, Thick Obsidian Breastplate and Black Qiraji Resonating Crystal are not on Vanilla+ (Part GP).
 - World Boss Shared Loot (Parts FY, GA): Formula: Enchant Gloves - Living Power (spell 34347) is the 8th glove formula
   (WebDKP: awarded once) but its item ID isn't known: add it when the item cache sees it.
 

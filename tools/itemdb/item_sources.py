@@ -101,9 +101,9 @@ OUTSIDE_SM = {
 OLD_SM_TABLES = {"SMATrash", "SMCTrash", "SMGTrash", "SMLTrash"}
 SM_ZONE = 796
 # deliberately not marked yet, for Lokiy to check (/removed lists them on top)
-TO_CHECK = {
-    26318: "On the workbook's Removed Items sheet (\"not present\"), but the only item with the name is the server's own.",
-}
+# (Flintrock Shoulders 26318, on the workbook's Removed Items sheet: Lokiy 2026-10-28, a confirmed drop from Houndmaster
+# Loksey in SM; gen_site.py MANUAL_DROPS)
+TO_CHECK = {}
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)
 
