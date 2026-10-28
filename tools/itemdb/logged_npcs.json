@@ -1,6 +1,11 @@
 {
-"about": "Creature IDs seen in combat logs (creature GUID 0xF130...: id = (GUID >> 24) & 0xFFFFFF). They beat a pfQuest name match (npcs.py). Scarlet Monastery: Vanilla+'s 10-man raid uses new creatures 25200-25264 (Main - WoW hub, from DungeonJournal's SM combat-log CSVs, 2026-10-25); 25235-25264 not named in the log (totems / adds / visuals) are left out. aliases = other names the loot tracker or AtlasLoot use.",
+"about": "Creature IDs seen in combat logs (creature GUID 0xF130...: id = (GUID >> 24) & 0xFFFFFF). They beat a pfQuest name match (npcs.py). Scarlet Monastery: Vanilla+'s 10-man raid uses new creatures 25200-25264 (Main - WoW hub, from DungeonJournal's SM combat-log CSVs, 2026-10-25); 25235-25264 not named in the log (totems / adds / visuals) are left out. aliases = other names the loot tracker or AtlasLoot use. Zul'Gurub: Vanilla+'s new bosses and adds 25030-25040 (DungeonJournal's ZG combat-log CSVs, 2026-10-28; 25034 is an Azus helper that only casts Blood Tide, left out). Scarlet Sharpshooter 25233 is a 'Dummy' helper (creature cache subname, only casts Explosive Shot): left out so the name matches 25230.",
 "npcs": {
+"25030": {"name": "The Nameless Hermit", "zone": "Zul'Gurub", "boss": true, "aliases": ["Nameless Hermit"]},
+"25031": {"name": "Azus the Bloodseeker", "zone": "Zul'Gurub", "boss": true},
+"25035": {"name": "Fresh Blood Globe", "zone": "Zul'Gurub"},
+"25036": {"name": "Corrupted Blood Globe", "zone": "Zul'Gurub"},
+"25040": {"name": "Caverngloom Crocolisk", "zone": "Zul'Gurub"},
 "25200": {"name": "Fire Elemental", "zone": "Scarlet Monastery"},
 "25201": {"name": "Scarlet Beastmaster", "zone": "Scarlet Monastery"},
 "25202": {"name": "Scarlet Tracking Hound", "zone": "Scarlet Monastery"},
@@ -32,7 +37,6 @@
 "25228": {"name": "Sally Whitemane", "zone": "Scarlet Monastery", "boss": true},
 "25229": {"name": "Brigitte Abbendis", "zone": "Scarlet Monastery", "boss": true},
 "25230": {"name": "Scarlet Sharpshooter", "zone": "Scarlet Monastery"},
-"25233": {"name": "Scarlet Sharpshooter", "zone": "Scarlet Monastery"},
 "25234": {"name": "Scarlet Recruit", "zone": "Scarlet Monastery"},
 "25255": {"name": "Cockroach", "zone": "Scarlet Monastery"},
 "25257": {"name": "Scarlet Trainee", "zone": "Scarlet Monastery"}
