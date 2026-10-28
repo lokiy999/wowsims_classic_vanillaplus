@@ -66,6 +66,16 @@ LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of th
                        "Obsidian Mail Tunic", "Plans: Obsidian Mail Tunic",
                        "Thick Obsidian Breastplate", "Plans: Thick Obsidian Breastplate",
                        "Black Qiraji Resonating Crystal"}
+# Lokiy 2026-10-28: confirmed not on Vanilla+, by item ID
+LOKIY_NOT_ON_SERVER_IDS = {
+    # Kurinnaxx's classic AQ20 loot (on Vanilla+ he is a world boss)
+    21498, 21499, 21500, 21502, 21503,
+    # old Scarlet Monastery 5-man: the rares (Azshir the Sleepless, Fallen Champion, Ironspine) and Bloodmage Thalnos
+    7685, 7686, 7687, 7688, 7689, 7690, 7691, 7708, 7709, 7731,
+    # AQ40 mount crystals (Blue, Red, Green; Black is in LOKIY_NOT_ON_SERVER)
+    21218, 21321, 21323,
+    7484,  # Ranger Wristguards (a classic world drop)
+}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
     "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
@@ -103,7 +113,11 @@ SM_ZONE = 796
 # deliberately not marked yet, for Lokiy to check (/removed lists them on top)
 # (Flintrock Shoulders 26318, on the workbook's Removed Items sheet: Lokiy 2026-10-28, a confirmed drop from Houndmaster
 # Loksey in SM; gen_site.py MANUAL_DROPS)
-TO_CHECK = {}
+TO_CHECK = {
+    23168: "Lokiy 2026-10-28: maybe on Vanilla+, only during special events; may be reworked (Scorn, Scourge Invasion).",
+    23169: "Lokiy 2026-10-28: maybe on Vanilla+, only during special events; may be reworked (Scorn, Scourge Invasion).",
+    23170: "Lokiy 2026-10-28: maybe on Vanilla+, only during special events; may be reworked (Scorn, Scourge Invasion).",
+}
 # Removed Items sheet rows that are not removals (they stay on the site)
 REMOVED_SHEET_KEEP = {"Malfurion's Signet Ring"}  # a source fix (a quest reward, not an Emerald Dragons drop)
 
@@ -311,6 +325,9 @@ class Sources:
         for name in LOKIY_NOT_ON_SERVER:
             for iid in by_name.get(name, []):
                 mark(iid, "Not on Vanilla+ (Lokiy).", "Lokiy's answer, 2026-10-25")
+        for iid in LOKIY_NOT_ON_SERVER_IDS:
+            if iid in self.items:
+                mark(iid, "Not on Vanilla+ (Lokiy).", "Lokiy's answer, 2026-10-28", force=True)
         # a set that exists twice: the version with 2/4/6/8-piece bonuses is Vanilla+'s, the 3/5/8 one the old one
         sets = {}
         for iid, it in self.items.items():

@@ -5274,3 +5274,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Flintrock Shoulders (7755, old SM trash) stays marked from the workbook's Removed Items sheet.
 - `docs/TODO.md`: the to-check list is answered.
 - Backups `item_sources.py.bak-2026-10-28`, `gen_site.py.bak-2026-10-28c`.
+
+## Part GT — 19 more items not on Vanilla+; Scorn's loot to check (2026-10-28)
+
+- Lokiy: 21498, 21499, 21500, 21503, 7709, 21218, 7690, 7691, 7731, 21323, 7686, 7687, 7688, 7689, 7708, 7685, 21321,
+  21502, 7484 are confirmed not on Vanilla+; 23168, 23169, 23170 might be, only during special events, maybe reworked.
+- `item_sources.py` `LOKIY_NOT_ON_SERVER_IDS` (by item ID, forced, "Not on Vanilla+ (Lokiy).", rule "Lokiy's answer,
+  2026-10-28"): Kurinnaxx's classic AQ20 loot (5), the old SM rares' and Bloodmage Thalnos' loot (10), the Blue / Red /
+  Green Qiraji Resonating Crystals, Ranger Wristguards. /removed: 810 -> 829.
+- Scorn's Focal Dagger, Scorn's Icy Choker, The Frozen Clutch (Scorn, Scourge Invasion) into `TO_CHECK` with Lokiy's
+  note: unmarked, on /removed "To check" (3).
+- Backup `item_sources.py.bak-2026-10-28b`.
