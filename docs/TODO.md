@@ -303,12 +303,8 @@ there is more to say.
 
 ## Item database site db.lokiy.dev (Parts EN-ET)
 
-- **NEXT UP (Lokiy, 2026-10-28, from the hub): crafted, faction and PvP sources from the database's own AtlasLoot
-  data instead of Wowhead classic.** Today these come from Wowhead classic (Part FK); AtlasLoot's `Crafting/`,
-  `Factions/` and `PvP/` tables (hub `data\`, already an input of `gen_site.py`) have them: profession + recipe /
-  pattern item for crafts, faction + standing for rep rewards, rank / honor vendor for PvP. Build them in
-  `item_sources.py`, keep Wowhead only for items AtlasLoot doesn't cover, and report how many sources moved off
-  Wowhead (and what's left). `api/sources.json` shape stays the same so the sim follows via `sync_sim.sh`.
+- Crafted / faction sources from AtlasLoot: done (Part HB). PvP rank items still name Wowhead's vendor (AtlasLoot
+  has only the rank).
 
 - Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the spells site shows food / drink totals
   ($oN) as one tick and "hr" for hours (spell_changelog.py), `wdb_tooltip.py` corrects both on the item side.

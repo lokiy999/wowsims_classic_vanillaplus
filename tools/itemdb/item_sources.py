@@ -280,6 +280,93 @@ def add_shared_world_boss_loot(tables, names, table_groups, items):
     return moved
 
 
+# ---- crafted / reputation sources from AtlasLoot's tables for api/sources.json (Lokiy 2026-10-28, Part HB), instead of
+# Wowhead classic's. In UIItemSource shape: {"crafted": {"profession", "spellId"}}, {"rep": {"repFactionId",
+# "repLevel", "playerFaction"?}}. PvP rank items keep Wowhead's vendor: AtlasLoot only has the rank (#rank12#) and
+# UIItemSource has no field for it.
+CRAFT_PROF = [("Alchemy", 1), ("Smithing", 2), ("Armorsmith", 2), ("Weaponsmith", 2), ("Axesmith", 2),
+              ("Hammersmith", 2), ("Swordsmith", 2), ("Enchanting", 3), ("Engineering", 4), ("Gnomish", 4),
+              ("Goblin", 4), ("Leather", 8), ("Dragonscale", 8), ("Elemental", 8), ("Tribal", 8), ("Tailoring", 11),
+              ("Smelting", 9)]  # table key prefix -> profession (Herbalism / Mining list gathered herbs and ores)
+PROF_CODE = {"#p1#": 1, "#p2#": 2, "#p4#": 3, "#p5#": 4, "#p7#": 8, "#p8#": 11, "#p9#": 8, "#p10#": 8, "#p11#": 8,
+             "#p14#": 4, "#p15#": 4, "#p17#": 8}  # AtlasLoot's profession codes in a row (cooking / first aid: none)
+SET_PROF = {"Blacksmithing": 2, "Leatherworking": 8, "Tailoring": 11}  # "Crafted Sets - <profession>" tables
+# Factions table key (without its number) -> faction id; Argent1 (token hand-ins) and Darkmoon (tickets) are no standing
+FACTION_TABLES = {"Argent": 529, "Timbermaw": 576, "Thorium": 59, "Cenarion": 609, "Zandalar": 270,
+                  "Wintersaber": 589, "Stormpike": 730, "Frostwolf": 729, "WaterLords": 749, "Bloodsail": 87,
+                  "Defilers": 510, "GelkisClan": 92, "LeagueofArathor": 509, "MagramClan": 93, "Shendralar": 809,
+                  "AQBroodRings": 910}
+NO_STANDING_TABLES = {"Argent1", "Darkmoon"}
+# battleground reward tables (PvP folder): a header names the side's faction (#b1# Stormpike Guard, ...) ->
+# (faction id, player faction 1 Alliance / 2 Horde)
+BG_REP = ("WSGRep", "ABRep", "AVRep")
+BG_SIDE = {"#b1#": (730, 1), "#b2#": (729, 2), "#b3#": (890, 1), "#b4#": (889, 2), "#b5#": (509, 1), "#b6#": (510, 2)}
+STANDING_CODE = {"#r1#": 4, "#r2#": 5, "#r3#": 6, "#r4#": 7, "#r5#": 8}
+STANDING_WORD = {"Neutral": 4, "Friendly": 5, "Honored": 6, "Revered": 7, "Exalted": 8}
+
+
+def atlas_item_sources(tables, groups, names, row_info, craft):
+    """{item id: [UIItemSource]} from AtlasLoot's Crafting, Factions and battleground tables. tables / groups / names as
+    in gen_site, row_info {key: [(rest of the row, recipe spell)] per row}, craft {spell: made item}."""
+    item_spell = {}
+    for sp, iid in sorted(craft.items()):
+        item_spell.setdefault(iid, sp)
+    out = {}
+
+    def add(iid, e):
+        if e not in out.setdefault(iid, []):
+            out[iid].append(e)
+
+    for key, rows in tables.items():
+        group, (name, inst) = groups.get(key, ""), names.get(key, ("", ""))
+        info = row_info.get(key, [])
+        if group == "Crafting":
+            prof = next((p for pre, p in CRAFT_PROF if key.startswith(pre)), None)
+            if inst.startswith("Crafted Sets - "):
+                prof = SET_PROF.get(inst[len("Crafted Sets - "):])
+            for r, (rest, spell) in zip(rows, info):
+                if not r[0]:
+                    continue
+                p = next((v for c, v in PROF_CODE.items() if c in rest), prof)
+                spell = spell or item_spell.get(r[0])
+                if p:
+                    add(r[0], {"crafted": {"profession": p, **({"spellId": spell} if spell else {})}})
+            continue
+        base = re.sub(r"\d+$", "", key)
+        if group == "Factions" and base in FACTION_TABLES and key not in NO_STANDING_TABLES:
+            side = (FACTION_TABLES[base], 0)
+        elif group == "PvP" and key.startswith(BG_REP):
+            side = None  # from the side's header
+        else:
+            continue
+        words = [STANDING_WORD[w] for w in re.findall(r"[A-Z][a-z]+", name + " " + key) if w in STANDING_WORD]
+        level = words[0] if len(set(words)) == 1 else None
+        for r, (rest, _) in zip(rows, info):
+            if not r[0]:
+                level = next((v for c, v in STANDING_CODE.items() if c == r[2].strip()), level)
+                side = next((v for c, v in BG_SIDE.items() if c in rest), side)
+                continue
+            if level and side:
+                fid, pf = side
+                add(r[0], {"rep": {"repFactionId": fid, "repLevel": level, **({"playerFaction": pf} if pf else {})}})
+    return out
+
+
+def merge_atlas_sources(wowhead, atlas):
+    """api/sources.json's "wowhead" {item id (str): [UIItemSource]} with AtlasLoot's crafted / rep sources in place of
+    Wowhead's of the same kind (its quest / drop / vendor sources stay). Returns (merged, {"<kind> replaced" / "<kind>
+    added": items})."""
+    merged, moved = dict(wowhead), {}
+    for iid, entries in atlas.items():
+        old = wowhead.get(str(iid), [])
+        kinds = {k for e in entries for k in e}
+        for k in kinds:
+            label = f"{k} replaced" if any(k in s for s in old) else f"{k} added"
+            moved[label] = moved.get(label, 0) + 1
+        merged[str(iid)] = entries + [s for s in old if not set(s) & kinds]
+    return merged, moved
+
+
 class Sources:
     def __init__(self, items, tables, names, table_groups, loot_drops):
         """items {id: item}, tables {key: rows}, names {key: (name, instance)}, table_groups {key: group},

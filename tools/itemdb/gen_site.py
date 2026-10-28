@@ -72,7 +72,7 @@ from npcs import RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa
 from quests import Quests  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
-from item_sources import (CUT_TEXT, FROM_LABEL, LOKIY_DROPPED_IDS, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
+from item_sources import (CUT_TEXT, FROM_LABEL, atlas_item_sources, merge_atlas_sources, LOKIY_DROPPED_IDS, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
                           Sources, add_shared_world_boss_loot)
 
 CSV = os.path.join(REPO, "CSV's")
@@ -275,6 +275,12 @@ def craft_items():
     return out
 
 
+# {table key: [(rest of the AtlasLoot row after the name, recipe spell id or 0)]}, one per row of the table (headers too),
+# filled by load_loot_tables():
+# the crafted / reputation sources of api/sources.json come from it (item_sources.atlas_item_sources, Part HB)
+ROW_INFO = {}
+
+
 def load_loot_tables():
     """({table_key: [(item_id, icon, display_name, is_new)]} in AtlasLoot order (id 0 rows are spacers / headers),
     {table_key: AtlasLoot folder (Instances, WorldBosses, Crafting, ...)}).
@@ -291,18 +297,20 @@ def load_loot_tables():
             continue
         txt = open(path, encoding="utf-8", errors="replace").read()
         for m in re.finditer(r'^\t\t?(\w+) ?= ?\{\n(.*?)^\t\},?', txt, re.M | re.S):
-            rows = []
+            rows, info = [], []
             for e in re.finditer(r'\{\s*"?([se]?)(\d+)"?,\s*"([^"]*)",\s*"([^"]*)"(.*?)\}[,;]?\s*$', m.group(2), re.M):
-                iid = int(e.group(2))
+                iid, spell = int(e.group(2)), 0
                 if e.group(1):
-                    iid = craft.get(iid)
+                    spell, iid = iid, craft.get(iid)
                     if not iid:
                         continue
+                info.append((e.group(5), spell))
                 # a crafting row's icon is the recipe spell's, not the item's
                 rows.append((iid, "" if e.group(1) else e.group(3).lower(), re.sub(r"^=q\d=", "", e.group(4)),
                              bool(re.search(r'"N"\s*,?\s*$', e.group(5).strip()))))
             if any(r[0] for r in rows) and m.group(1) not in tables:
                 tables[m.group(1)] = rows
+                ROW_INFO[m.group(1)] = info
                 groups[m.group(1)] = rel.split(os.sep)[0]
     return tables, groups
 
@@ -1686,6 +1694,11 @@ your filters, so you can share a search.</p></section>
     if os.path.exists(wowhead_sources):
         with open(wowhead_sources, encoding="utf-8") as f:
             src_api["wowhead"] = json.load(f)
+    # crafted / reputation sources from AtlasLoot's own tables replace Wowhead's of that kind (Part HB); the key stays
+    # "wowhead" so the sim (docs/gen_sources.py) reads them unchanged
+    atlas = atlas_item_sources(tables, table_groups, names, ROW_INFO, craft_items())
+    src_api["wowhead"], moved = merge_atlas_sources(src_api.get("wowhead", {}), atlas)
+    print("api/sources.json from AtlasLoot:", ", ".join(f"{k} {v}" for k, v in sorted(moved.items())))
     tmp = os.path.join(out, "api", "sources.json.tmp")
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(src_api, f, ensure_ascii=False, separators=(",", ":"))

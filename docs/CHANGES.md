@@ -5378,3 +5378,29 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Not caught by this scan: a mixed-in NPC in the same zone as the real one. pfQuest's text vs. Wowhead's would catch
   those, but the hub has no Wowhead quest list.
 - Backup `quests.py.bak-2026-10-28b`.
+
+## Part HB — crafted and reputation sources from AtlasLoot instead of Wowhead classic (2026-10-28)
+
+- Lokiy (via the hub, TODO "NEXT UP"): crafted, faction and PvP sources from the database's own AtlasLoot data instead
+  of Wowhead classic (Part FK); Wowhead only for what AtlasLoot doesn't cover; `api/sources.json` keeps its shape.
+- AtlasLoot copy: `gen_site.py` reads the sim repo's `CSV's/AtlasLoot` (`ATLAS`); the website already showed these
+  tables as sources. The sim didn't: `docs/gen_sources.py` maps only instance / world boss tables to drops and takes
+  everything else from `api/sources.json`'s `wowhead` map, which was the Wowhead snapshot.
+- `gen_site.py` `load_loot_tables()` also keeps each row's rest (after the name) and recipe spell in `ROW_INFO`.
+- `item_sources.py` `atlas_item_sources()` builds UIItemSource entries:
+  - crafted: the Crafting tables (not Herbalism / Mining, which list gathered herbs / ores); profession from the row's
+    `#pN#` code, else the table (`CRAFT_PROF`, "Crafted Sets - <profession>"); spell from the recipe row, else
+    `Core/Spells.lua`.
+  - rep: the Factions tables (`FACTION_TABLES`; not Argent Dawn token hand-ins or Darkmoon tickets), standing from
+    the `#rN#` header above the row or the table name; the battleground reward tables (WSG / AB / AV) with the side's
+    faction from its header (`#b1#`-`#b6#`, Alliance / Horde).
+  - `merge_atlas_sources()` puts them in place of Wowhead's of the same kind in the `wowhead` map (key kept for the
+    sim); Wowhead's quest / drop / vendor entries stay.
+- Result: crafted 655 replaced (628 identical, 27 got a spell id Wowhead lacked) + 338 added (server crafts Wowhead
+  doesn't have); rep 276 replaced (268 identical, 22 other standing, e.g. AB "Highlander's" shoulders Exalted in
+  AtlasLoot vs Revered on Wowhead; 4 WSG Runes on one side only) + 196 added.
+- Still Wowhead: 490 PvP vendor entries (rank items: AtlasLoot only has the rank, `#rank12#`, and UIItemSource has no
+  field for it, so the vendor NPC stays); 28 crafted (27 items in no AtlasLoot table, e.g. Stormcloth; Mechbuilder's
+  Overalls only in an instance table); 18 rep (12 Brood of Nozdormu rings: their table has no standing; 6 AB
+  talismans in no table).
+- Backups `gen_site.py.bak-2026-10-28e`, `item_sources.py.bak-2026-10-28i`.
