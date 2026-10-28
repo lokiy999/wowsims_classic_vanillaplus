@@ -5285,3 +5285,17 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Scorn's Focal Dagger, Scorn's Icy Choker, The Frozen Clutch (Scorn, Scourge Invasion) into `TO_CHECK` with Lokiy's
   note: unmarked, on /removed "To check" (3).
 - Backup `item_sources.py.bak-2026-10-28b`.
+
+## Part GU — 14 classic items dropped on Vanilla+; 15 more not on Vanilla+ (2026-10-28)
+
+- Lokiy: 18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731 have dropped
+  before. 7756, 7712, 7718, 7711, 13175, 7710, 7719, 7682, 7684, 21324, 13247, 19882, 10330, 15886 are confirmed not
+  on Vanilla+; 11768 99% not.
+- `item_sources.py` `LOKIY_DROPPED_IDS`: all 14 were classic items no item cache has (on /unseen). `gen_site.py`: off
+  /unseen, search status "classic" instead of "not seen on Vanilla+ yet", the item page says "Has dropped on Vanilla+
+  (Lokiy)" (tooltip still classic until a cache has it). `api/items.json` keeps `classicOnly: 1` (classic tooltip).
+- `LOKIY_NOT_ON_SERVER_IDS` + 14: the old SM 5-man bosses' loot (7682, 7684, 7710, 7711, 7712, 7718, 7719, 7756),
+  Scarlet Leggings (10330), Voone's Twitchbow, Quartermaster Zigris' Footlocker, Timolain's Phylactery, The Hexxer's
+  Head, Yellow Qiraji Resonating Crystal. New `LOKIY_PROBABLY_NOT_IDS` (Incendic Bracers 11768): marked "Lokiy is 99%
+  sure it isn't on Vanilla+." /removed: 829 -> 844.
+- Backups `item_sources.py.bak-2026-10-28c`, `gen_site.py.bak-2026-10-28d`.

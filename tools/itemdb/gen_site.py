@@ -72,7 +72,7 @@ from npcs import RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa
 from quests import Quests  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
-from item_sources import (CUT_TEXT, FROM_LABEL, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
+from item_sources import (CUT_TEXT, FROM_LABEL, LOKIY_DROPPED_IDS, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
                           Sources, add_shared_world_boss_loot)
 
 CSV = os.path.join(REPO, "CSV's")
@@ -673,7 +673,8 @@ def main():
 
     def kind(iid):
         if iid in classic_only:
-            return "Classic item, not seen on Vanilla+ yet"
+            return ("Classic item, dropped on Vanilla+ (Lokiy)" if iid in LOKIY_DROPPED_IDS
+                    else "Classic item, not seen on Vanilla+ yet")
         if DEV_ITEM.search(items[iid]["name"]):
             return "Test / unused item"
         if is_custom(iid):
@@ -920,6 +921,10 @@ def main():
             nos_html = ('<p class="notice"><b>Classic data, not seen on Vanilla+ yet.</b> No player\'s client has seen '
                         'this item on the server, so the tooltip is classic 1.12 (from Wowhead); it may differ on Vanilla+. '
                         'It is replaced by the server\'s own data as soon as an item cache upload contains it.</p>')
+            if iid in LOKIY_DROPPED_IDS:
+                nos_html = ('<p class="notice"><b>Has dropped on Vanilla+</b> (Lokiy), but no item cache upload contains it '
+                            'yet, so the tooltip is classic 1.12 (from Wowhead); it may differ on Vanilla+. It is replaced by '
+                            'the server\'s own data as soon as an item cache upload contains it.</p>')
         if item_srcs[iid]:
             weak = item_srcs[iid][0]["from"] in ("pfquest", "wowhead")
             src_html = (f'<section class="card"><h2>Source</h2>{nos_html}{sources_html([local_source(e) for e in item_srcs[iid]])}'
@@ -1481,7 +1486,7 @@ Wowhead sources that are all in cut content. An item Lokiy's loot tracker has se
                 f'<td>{iid}</td><td class="muted">{lv}</td><td class="muted">{esc(types[iid][1])}</td>'
                 f'<td class="rule">{srcs_html}</td></tr>')
 
-    unseen = [i for i in classic_only if i not in NOT_ON_SERVER]
+    unseen = [i for i in classic_only if i not in NOT_ON_SERVER and i not in LOKIY_DROPPED_IDS]
     unseen_groups = {}
     for i in unseen:
         unseen_groups.setdefault(item_srcs[i][0]["type"] if item_srcs[i] else "none", []).append(i)
@@ -1586,7 +1591,7 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
         it = items[i]
         pk, sec = types[i]
         info = parse_stats(it, pk, sec)
-        status = (4 if i in classic_only else 3 if is_custom(i) else 2 if i in reworked
+        status = (4 if i in classic_only and i not in LOKIY_DROPPED_IDS else 1 if i in classic_only else 3 if is_custom(i) else 2 if i in reworked
                   else 0 if kind(i).endswith("same as classic") else 1)
         cats = sorted({cat_idx[table_label(k)[1]] for k in sources.get(i, []) if table_label(k)[1] in cat_idx})
         ic = icon_url(icons.get(i), "small")  # /icons/<name>_s.jpg

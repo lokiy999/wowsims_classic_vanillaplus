@@ -75,7 +75,19 @@ LOKIY_NOT_ON_SERVER_IDS = {
     # AQ40 mount crystals (Blue, Red, Green; Black is in LOKIY_NOT_ON_SERVER)
     21218, 21321, 21323,
     7484,  # Ranger Wristguards (a classic world drop)
+    # Lokiy 2026-10-28 (second list): the old SM 5-man bosses' loot and the old Scarlet set's leggings
+    7682, 7684, 7710, 7711, 7712, 7718, 7719, 7756, 10330,
+    13175,  # Voone's Twitchbow
+    13247,  # Quartermaster Zigris' Footlocker
+    15886,  # Timolain's Phylactery
+    19882,  # The Hexxer's Head
+    21324,  # Yellow Qiraji Resonating Crystal
 }
+# Lokiy 2026-10-28: 99% sure not on Vanilla+
+LOKIY_PROBABLY_NOT_IDS = {11768}  # Incendic Bracers
+# Lokiy 2026-10-28: classic items that have dropped on Vanilla+, though no item cache upload has them yet: off /unseen,
+# the tooltip stays classic until a cache has it (gen_site.py)
+LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
     "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
@@ -328,6 +340,9 @@ class Sources:
         for iid in LOKIY_NOT_ON_SERVER_IDS:
             if iid in self.items:
                 mark(iid, "Not on Vanilla+ (Lokiy).", "Lokiy's answer, 2026-10-28", force=True)
+        for iid in LOKIY_PROBABLY_NOT_IDS:
+            if iid in self.items:
+                mark(iid, "Lokiy is 99% sure it isn't on Vanilla+.", "Lokiy's answer, 2026-10-28", force=True)
         # a set that exists twice: the version with 2/4/6/8-piece bonuses is Vanilla+'s, the 3/5/8 one the old one
         sets = {}
         for iid, it in self.items.items():
