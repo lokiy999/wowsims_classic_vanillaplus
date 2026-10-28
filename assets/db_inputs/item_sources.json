@@ -31,6 +31,14 @@
 }
 }
 ],
+"118": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2330
+}
+}
+],
 "710": [
 {
 "quest": {
@@ -138,6 +146,14 @@
 {
 "drop": {
 "zoneId": 40
+}
+}
+],
+"858": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2337
 }
 }
 ],
@@ -256,6 +272,14 @@
 {
 "drop": {
 "zoneId": 10
+}
+}
+],
+"929": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3447
 }
 }
 ],
@@ -1154,6 +1178,14 @@
 "drop": {
 "npcId": 723,
 "zoneId": 33
+}
+}
+],
+"1710": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7181
 }
 }
 ],
@@ -2237,6 +2269,14 @@
 }
 }
 ],
+"2304": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 2152
+}
+}
+],
 "2307": [
 {
 "crafted": {
@@ -2285,6 +2325,14 @@
 }
 }
 ],
+"2313": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 2165
+}
+}
+],
 "2314": [
 {
 "crafted": {
@@ -2317,6 +2365,22 @@
 }
 }
 ],
+"2318": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 2881
+}
+}
+],
+"2319": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 20648
+}
+}
+],
 "2326": [
 {
 "quest": {
@@ -2330,6 +2394,54 @@
 "drop": {
 "npcId": 480,
 "zoneId": 40
+}
+}
+],
+"2454": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2329
+}
+}
+],
+"2455": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2331
+}
+}
+],
+"2456": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2332
+}
+}
+],
+"2457": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3230
+}
+}
+],
+"2458": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2334
+}
+}
+],
+"2459": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2335
 }
 }
 ],
@@ -2437,11 +2549,43 @@
 }
 }
 ],
+"2575": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2392
+}
+}
+],
+"2576": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2393
+}
+}
+],
+"2577": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2394
+}
+}
+],
 "2578": [
 {
 "crafted": {
 "profession": 11,
 "spellId": 2395
+}
+}
+],
+"2579": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2396
 }
 }
 ],
@@ -2482,6 +2626,14 @@
 "crafted": {
 "profession": 11,
 "spellId": 2403
+}
+}
+],
+"2587": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2406
 }
 }
 ],
@@ -2642,6 +2794,30 @@
 }
 }
 ],
+"2840": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 2657
+}
+}
+],
+"2841": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 2659
+}
+}
+],
+"2842": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 2658
+}
+}
+],
 "2844": [
 {
 "crafted": {
@@ -2730,6 +2906,22 @@
 }
 }
 ],
+"2862": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 2660
+}
+}
+],
+"2863": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 2665
+}
+}
+],
 "2864": [
 {
 "crafted": {
@@ -2783,6 +2975,14 @@
 "crafted": {
 "profession": 2,
 "spellId": 2675
+}
+}
+],
+"2871": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 2674
 }
 }
 ],
@@ -2974,6 +3174,22 @@
 {
 "drop": {
 "zoneId": 33
+}
+}
+],
+"2996": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2963
+}
+}
+],
+"2997": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 2964
 }
 }
 ],
@@ -3309,6 +3525,30 @@
 }
 }
 ],
+"3239": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 3115
+}
+}
+],
+"3240": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 3116
+}
+}
+],
+"3241": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 3117
+}
+}
+],
 "3260": [
 {
 "drop": {
@@ -3569,6 +3809,86 @@
 "drop": {
 "npcId": 412,
 "zoneId": 10
+}
+}
+],
+"3382": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3170
+}
+}
+],
+"3383": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3171
+}
+}
+],
+"3384": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3172
+}
+}
+],
+"3385": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3173
+}
+}
+],
+"3386": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3174
+}
+}
+],
+"3387": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3175
+}
+}
+],
+"3388": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3176
+}
+}
+],
+"3389": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3177
+}
+}
+],
+"3390": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 2333
+}
+}
+],
+"3391": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3188
 }
 }
 ],
@@ -3834,6 +4154,14 @@
 }
 }
 ],
+"3470": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 3320
+}
+}
+],
 "3471": [
 {
 "crafted": {
@@ -3863,6 +4191,14 @@
 "crafted": {
 "profession": 2,
 "spellId": 3325
+}
+}
+],
+"3478": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 3326
 }
 }
 ],
@@ -3911,6 +4247,14 @@
 "crafted": {
 "profession": 2,
 "spellId": 3336
+}
+}
+],
+"3486": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 3337
 }
 }
 ],
@@ -4095,6 +4439,36 @@
 "quest": {
 "id": 258,
 "name": "A Hunter's Challenge"
+}
+}
+],
+"3575": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 3307
+}
+}
+],
+"3576": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 3304
+}
+}
+],
+"3577": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11479
+}
+},
+{
+"crafted": {
+"profession": 9,
+"spellId": 3308
 }
 }
 ],
@@ -4338,6 +4712,62 @@
 }
 }
 ],
+"3823": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3448
+}
+}
+],
+"3824": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3449
+}
+}
+],
+"3825": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3450
+}
+}
+],
+"3826": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3451
+}
+}
+],
+"3827": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3452
+}
+}
+],
+"3828": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3453
+}
+}
+],
+"3829": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 3454
+}
+}
+],
 "3833": [
 {
 "quest": {
@@ -4514,10 +4944,34 @@
 }
 }
 ],
+"3859": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 3569
+}
+}
+],
+"3860": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 10097
+}
+}
+],
 "3902": [
 {
 "drop": {
 "npcId": 596
+}
+}
+],
+"3928": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11457
 }
 }
 ],
@@ -4785,6 +5239,38 @@
 }
 }
 ],
+"4231": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 3816
+}
+}
+],
+"4233": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 3817
+}
+}
+],
+"4234": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 20649
+}
+}
+],
+"4236": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 3818
+}
+}
+],
 "4237": [
 {
 "crafted": {
@@ -4793,11 +5279,35 @@
 }
 }
 ],
+"4238": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3755
+}
+}
+],
 "4239": [
 {
 "crafted": {
 "profession": 8,
 "spellId": 3756
+}
+}
+],
+"4240": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3757
+}
+}
+],
+"4241": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3758
 }
 }
 ],
@@ -4822,6 +5332,14 @@
 "crafted": {
 "profession": 8,
 "spellId": 3762
+}
+}
+],
+"4245": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3813
 }
 }
 ],
@@ -4977,6 +5495,14 @@
 }
 }
 ],
+"4265": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 3780
+}
+}
+],
 "4290": [
 {
 "drop": {
@@ -4997,6 +5523,22 @@
 {
 "drop": {
 "zoneId": 85
+}
+}
+],
+"4304": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 20650
+}
+}
+],
+"4305": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3839
 }
 }
 ],
@@ -5184,11 +5726,67 @@
 }
 }
 ],
+"4330": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3866
+}
+}
+],
 "4331": [
 {
 "crafted": {
 "profession": 11,
 "spellId": 3868
+}
+}
+],
+"4332": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3869
+}
+}
+],
+"4333": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3870
+}
+}
+],
+"4334": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3871
+}
+}
+],
+"4335": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3872
+}
+}
+],
+"4336": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3873
+}
+}
+],
+"4339": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3865
 }
 }
 ],
@@ -5200,6 +5798,54 @@
 }
 }
 ],
+"4344": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 3915
+}
+}
+],
+"4357": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3918
+}
+}
+],
+"4358": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3919
+}
+}
+],
+"4359": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3922
+}
+}
+],
+"4360": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3923
+}
+}
+],
+"4361": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3924
+}
+}
+],
 "4362": [
 {
 "crafted": {
@@ -5208,12 +5854,47 @@
 }
 }
 ],
-"4368": [
+"4363": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 3926
 }
-},
+}
+],
+"4364": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3929
+}
+}
+],
+"4365": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3931
+}
+}
+],
+"4366": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3932
+}
+}
+],
+"4367": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3933
+}
+}
+],
+"4368": [
 {
 "crafted": {
 "profession": 4,
@@ -5229,6 +5910,22 @@
 }
 }
 ],
+"4370": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3937
+}
+}
+],
+"4371": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3938
+}
+}
+],
 "4372": [
 {
 "crafted": {
@@ -5240,13 +5937,48 @@
 "4373": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 3940
 }
-},
+}
+],
+"4374": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 3940
+"spellId": 3941
+}
+}
+],
+"4375": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3942
+}
+}
+],
+"4376": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3944
+}
+}
+],
+"4377": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3945
+}
+}
+],
+"4378": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3946
 }
 }
 ],
@@ -5258,16 +5990,27 @@
 }
 }
 ],
-"4381": [
+"4380": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 3950
 }
-},
+}
+],
+"4381": [
 {
 "crafted": {
 "profession": 4,
 "spellId": 3952
+}
+}
+],
+"4382": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3953
 }
 }
 ],
@@ -5292,12 +6035,63 @@
 }
 }
 ],
-"4393": [
+"4386": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 3957
 }
-},
+}
+],
+"4387": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3958
+}
+}
+],
+"4388": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3959
+}
+}
+],
+"4389": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3961
+}
+}
+],
+"4390": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3962
+}
+}
+],
+"4391": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3963
+}
+}
+],
+"4392": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3965
+}
+}
+],
+"4393": [
 {
 "crafted": {
 "profession": 4,
@@ -5305,12 +6099,23 @@
 }
 }
 ],
-"4396": [
+"4394": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 3967
 }
-},
+}
+],
+"4395": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3968
+}
+}
+],
+"4396": [
 {
 "crafted": {
 "profession": 4,
@@ -5321,13 +6126,64 @@
 "4397": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 3971
 }
-},
+}
+],
+"4398": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 3971
+"spellId": 3972
+}
+}
+],
+"4401": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3928
+}
+}
+],
+"4403": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3960
+}
+}
+],
+"4404": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3973
+}
+}
+],
+"4405": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3977
+}
+}
+],
+"4406": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3978
+}
+}
+],
+"4407": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3979
 }
 }
 ],
@@ -5664,10 +6520,26 @@
 }
 }
 ],
+"4596": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 4508
+}
+}
+],
 "4616": [
 {
 "drop": {
 "zoneId": 3
+}
+}
+],
+"4623": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 4942
 }
 }
 ],
@@ -5841,6 +6713,14 @@
 "quest": {
 "id": 46,
 "name": "Bounty on Murlocs"
+}
+}
+],
+"4852": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 8243
 }
 }
 ],
@@ -6352,6 +7232,14 @@
 "drop": {
 "npcId": 690,
 "zoneId": 33
+}
+}
+],
+"5081": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 5244
 }
 }
 ],
@@ -7124,6 +8012,14 @@
 }
 }
 ],
+"5507": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 6458
+}
+}
+],
 "5540": [
 {
 "crafted": {
@@ -7403,6 +8299,30 @@
 }
 }
 ],
+"5631": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 6617
+}
+}
+],
+"5633": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 6618
+}
+}
+],
+"5634": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 6624
+}
+}
+],
 "5739": [
 {
 "crafted": {
@@ -7496,6 +8416,38 @@
 "quest": {
 "id": 182,
 "name": "The Troll Cave"
+}
+}
+],
+"5762": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 6686
+}
+}
+],
+"5763": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 6688
+}
+}
+],
+"5764": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 6693
+}
+}
+],
+"5765": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 6695
 }
 }
 ],
@@ -7786,11 +8738,105 @@
 }
 }
 ],
+"5996": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7179
+}
+}
+],
+"5997": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7183
+}
+}
+],
+"6037": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11480
+}
+},
+{
+"crafted": {
+"profession": 9,
+"spellId": 10098
+}
+}
+],
 "6040": [
 {
 "crafted": {
 "profession": 2,
 "spellId": 7223
+}
+}
+],
+"6041": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 7224
+}
+}
+],
+"6042": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 7221
+}
+}
+],
+"6043": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 7222
+}
+}
+],
+"6048": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7256
+}
+}
+],
+"6049": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7257
+}
+}
+],
+"6050": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7258
+}
+}
+],
+"6051": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7255
+}
+}
+],
+"6052": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7259
 }
 }
 ],
@@ -7934,6 +8980,14 @@
 {
 "drop": {
 "zoneId": 12
+}
+}
+],
+"6149": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11448
 }
 }
 ],
@@ -8153,12 +9207,15 @@
 }
 }
 ],
-"6219": [
+"6218": [
 {
 "crafted": {
-"profession": 4
+"profession": 3,
+"spellId": 7421
 }
-},
+}
+],
+"6219": [
 {
 "crafted": {
 "profession": 4,
@@ -8374,6 +9431,22 @@
 }
 }
 ],
+"6338": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 7818
+}
+}
+],
+"6339": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 7795
+}
+}
+],
 "6340": [
 {
 "drop": {
@@ -8409,6 +9482,54 @@
 "drop": {
 "npcId": 176582,
 "zoneId": 405
+}
+}
+],
+"6370": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7836
+}
+}
+],
+"6371": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7837
+}
+}
+],
+"6372": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7841
+}
+}
+],
+"6373": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 7845
+}
+}
+],
+"6384": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 7892
+}
+}
+],
+"6385": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 7893
 }
 }
 ],
@@ -8665,6 +9786,14 @@
 }
 }
 ],
+"6533": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 9271
+}
+}
+],
 "6627": [
 {
 "drop": {
@@ -8770,6 +9899,14 @@
 "quest": {
 "id": 995,
 "name": "Escape Through Stealth"
+}
+}
+],
+"6662": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 8240
 }
 }
 ],
@@ -9012,11 +10149,27 @@
 }
 }
 ],
+"6712": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 8334
+}
+}
+],
 "6713": [
 {
 "quest": {
 "id": 794,
 "name": "Burning Blade Medallion"
+}
+}
+],
+"6714": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 8339
 }
 }
 ],
@@ -9238,6 +10391,12 @@
 ],
 "6773": [
 {
+"rep": {
+"repFactionId": 92,
+"repLevel": 5
+}
+},
+{
 "quest": {
 "id": 1380,
 "name": "Khan Hratha"
@@ -9245,6 +10404,12 @@
 }
 ],
 "6774": [
+{
+"rep": {
+"repFactionId": 92,
+"repLevel": 5
+}
+},
 {
 "quest": {
 "id": 1380,
@@ -9286,6 +10451,12 @@
 ],
 "6788": [
 {
+"rep": {
+"repFactionId": 93,
+"repLevel": 5
+}
+},
+{
 "quest": {
 "id": 1381,
 "name": "Khan Hratha"
@@ -9293,6 +10464,12 @@
 }
 ],
 "6789": [
+{
+"rep": {
+"repFactionId": 93,
+"repLevel": 5
+}
+},
 {
 "quest": {
 "id": 1381,
@@ -9337,6 +10514,22 @@
 "quest": {
 "id": 1467,
 "name": "Reagents for Reclaimers Inc."
+}
+}
+],
+"6795": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 8483
+}
+}
+],
+"6796": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 8489
 }
 }
 ],
@@ -9900,6 +11093,66 @@
 }
 }
 ],
+"7068": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 25146
+}
+}
+],
+"7071": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 8768
+}
+}
+],
+"7076": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17560
+}
+},
+{
+"crafted": {
+"profession": 1,
+"spellId": 17565
+}
+}
+],
+"7078": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17559
+}
+}
+],
+"7080": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17561
+}
+},
+{
+"crafted": {
+"profession": 1,
+"spellId": 17563
+}
+}
+],
+"7082": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17562
+}
+}
+],
 "7094": [
 {
 "drop": {
@@ -10006,11 +11259,6 @@
 "7148": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 9273
 }
@@ -10026,15 +11274,15 @@
 ],
 "7189": [
 {
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
-},
-{
 "crafted": {
 "profession": 4,
 "spellId": 8895
+}
+},
+{
+"soldBy": {
+"npcId": 209889,
+"npcName": "Barebones"
 }
 }
 ],
@@ -10075,6 +11323,22 @@
 "crafted": {
 "profession": 8,
 "spellId": 9059
+}
+}
+],
+"7278": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 9060
+}
+}
+],
+"7279": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 9062
 }
 }
 ],
@@ -10284,6 +11548,22 @@
 }
 }
 ],
+"7371": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 9193
+}
+}
+],
+"7372": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 9194
+}
+}
+],
 "7373": [
 {
 "crafted": {
@@ -10357,11 +11637,6 @@
 }
 ],
 "7506": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -11237,6 +12512,46 @@
 }
 }
 ],
+"7964": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 9918
+}
+}
+],
+"7965": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 9921
+}
+}
+],
+"7966": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 9920
+}
+}
+],
+"7967": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 9939
+}
+}
+],
+"7969": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 9964
+}
+}
+],
 "8026": [
 {
 "drop": {
@@ -11253,11 +12568,59 @@
 }
 }
 ],
+"8067": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3920
+}
+}
+],
+"8068": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3930
+}
+}
+],
+"8069": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 3947
+}
+}
+],
 "8071": [
 {
 "quest": {
 "id": 1487,
 "name": "Deviate Eradication"
+}
+}
+],
+"8170": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 22331
+}
+}
+],
+"8172": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 10482
+}
+}
+],
+"8173": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 10487
 }
 }
 ],
@@ -11493,6 +12856,22 @@
 }
 }
 ],
+"8217": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 14930
+}
+}
+],
+"8218": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 14932
+}
+}
+],
 "8223": [
 {
 "drop": {
@@ -11625,11 +13004,171 @@
 }
 }
 ],
+"8949": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11449
+}
+}
+],
+"8951": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11450
+}
+}
+],
+"8956": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11451
+}
+}
+],
+"9030": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11452
+}
+}
+],
+"9036": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11453
+}
+}
+],
+"9060": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 11454
+}
+}
+],
+"9061": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11456
+}
+}
+],
+"9088": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11466
+}
+}
+],
+"9144": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11458
+}
+}
+],
+"9149": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11459
+}
+}
+],
+"9154": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11460
+}
+}
+],
+"9155": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11461
+}
+}
+],
+"9172": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11464
+}
+}
+],
+"9179": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11465
+}
+}
+],
+"9187": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11467
+}
+}
+],
+"9197": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11468
+}
+}
+],
+"9206": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11472
+}
+}
+],
+"9210": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11473
+}
+}
+],
 "9214": [
 {
 "drop": {
 "zoneId": 1583,
 "otherName": "Trash"
+}
+}
+],
+"9224": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11477
+}
+}
+],
+"9233": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11478
 }
 }
 ],
@@ -11654,6 +13193,14 @@
 "drop": {
 "zoneId": 2557,
 "npcId": 14322
+}
+}
+],
+"9264": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 11476
 }
 }
 ],
@@ -11702,6 +13249,14 @@
 "drop": {
 "zoneId": 721,
 "otherName": "Trash"
+}
+}
+],
+"9312": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23067
 }
 }
 ],
@@ -13311,14 +14866,14 @@
 ],
 "10026": [
 {
-"drop": {
-"npcId": 7190
-}
-},
-{
 "crafted": {
 "profession": 11,
 "spellId": 12073
+}
+},
+{
+"drop": {
+"npcId": 7190
 }
 }
 ],
@@ -13375,6 +14930,14 @@
 "crafted": {
 "profession": 11,
 "spellId": 12084
+}
+}
+],
+"10034": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12085
 }
 }
 ],
@@ -13482,11 +15045,59 @@
 }
 }
 ],
+"10050": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12065
+}
+}
+],
+"10051": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12079
+}
+}
+],
+"10052": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12064
+}
+}
+],
 "10053": [
 {
 "crafted": {
 "profession": 11,
 "spellId": 12077
+}
+}
+],
+"10054": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12075
+}
+}
+],
+"10055": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12080
+}
+}
+],
+"10056": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 12061
 }
 }
 ],
@@ -13700,12 +15311,15 @@
 }
 }
 ],
-"10499": [
+"10498": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12590
 }
-},
+}
+],
+"10499": [
 {
 "crafted": {
 "profession": 4,
@@ -13716,11 +15330,6 @@
 "10500": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 12594
 }
@@ -13729,7 +15338,8 @@
 "10501": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12607
 }
 },
 {
@@ -13737,20 +15347,9 @@
 "npcId": 209889,
 "npcName": "Barebones"
 }
-},
-{
-"crafted": {
-"profession": 4,
-"spellId": 12607
-}
 }
 ],
 "10502": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -13761,11 +15360,6 @@
 "10503": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 12618
 }
@@ -13774,26 +15368,32 @@
 "10504": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12622
 }
-},
+}
+],
+"10505": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 12622
+"spellId": 12585
 }
 }
 ],
 "10506": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12617
 }
-},
+}
+],
+"10507": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 12617
+"spellId": 12586
 }
 }
 ],
@@ -13813,12 +15413,31 @@
 }
 }
 ],
-"10518": [
+"10512": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12596
 }
-},
+}
+],
+"10513": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12621
+}
+}
+],
+"10514": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12603
+}
+}
+],
+"10518": [
 {
 "crafted": {
 "profession": 4,
@@ -13829,22 +15448,12 @@
 "10542": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 12717
 }
 }
 ],
 "10543": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -13863,13 +15472,16 @@
 "10545": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12897
 }
-},
+}
+],
+"10546": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 12897
+"spellId": 12597
 }
 }
 ],
@@ -13878,6 +15490,14 @@
 "quest": {
 "id": 320,
 "name": "Return to Bellowfiz"
+}
+}
+],
+"10548": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12620
 }
 }
 ],
@@ -13910,6 +15530,38 @@
 "drop": {
 "npcId": 8503,
 "zoneId": 1
+}
+}
+],
+"10559": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12589
+}
+}
+],
+"10560": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12591
+}
+}
+],
+"10561": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12599
+}
+}
+],
+"10562": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12619
 }
 }
 ],
@@ -13964,11 +15616,6 @@
 "10576": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 12624
 }
@@ -13977,13 +15624,14 @@
 "10577": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 13240
 }
 },
 {
 "crafted": {
 "profession": 4,
-"spellId": 13240
+"spellId": 12716
 }
 }
 ],
@@ -14035,12 +15683,15 @@
 }
 }
 ],
-"10587": [
+"10586": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12754
 }
-},
+}
+],
+"10587": [
 {
 "crafted": {
 "profession": 4,
@@ -14051,7 +15702,8 @@
 "10588": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12758
 }
 },
 {
@@ -14059,11 +15711,13 @@
 "npcId": 209889,
 "npcName": "Barebones"
 }
-},
+}
+],
+"10592": [
 {
 "crafted": {
-"profession": 4,
-"spellId": 12758
+"profession": 1,
+"spellId": 12609
 }
 }
 ],
@@ -14195,17 +15849,33 @@
 }
 }
 ],
+"10644": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12715
+}
+}
+],
 "10645": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 12759
+}
+},
 {
 "soldBy": {
 "npcId": 209889,
 "npcName": "Barebones"
 }
-},
+}
+],
+"10646": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 12759
+"spellId": 12760
 }
 }
 ],
@@ -14393,12 +16063,15 @@
 }
 }
 ],
-"10716": [
+"10713": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12895
 }
-},
+}
+],
+"10716": [
 {
 "crafted": {
 "profession": 4,
@@ -14409,7 +16082,8 @@
 "10720": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12902
 }
 },
 {
@@ -14417,20 +16091,9 @@
 "npcId": 209889,
 "npcName": "Barebones"
 }
-},
-{
-"crafted": {
-"profession": 4,
-"spellId": 12902
-}
 }
 ],
 "10721": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -14449,7 +16112,8 @@
 "10724": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 12905
 }
 },
 {
@@ -14457,20 +16121,9 @@
 "npcId": 209889,
 "npcName": "Barebones"
 }
-},
-{
-"crafted": {
-"profession": 4,
-"spellId": 12905
-}
 }
 ],
 "10725": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -14479,11 +16132,6 @@
 }
 ],
 "10726": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -15190,11 +16838,43 @@
 }
 }
 ],
+"11128": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 14379
+}
+}
+],
+"11130": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 13628
+}
+}
+],
 "11140": [
 {
 "drop": {
 "zoneId": 1584,
 "npcId": 9018
+}
+}
+],
+"11144": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 14380
+}
+}
+],
+"11145": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 13702
 }
 }
 ],
@@ -15334,6 +17014,14 @@
 }
 }
 ],
+"11371": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 14891
+}
+}
+],
 "11382": [
 {
 "drop": {
@@ -15366,6 +17054,14 @@
 }
 }
 ],
+"11590": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 15255
+}
+}
+],
 "11602": [
 {
 "drop": {
@@ -15391,14 +17087,14 @@
 ],
 "11605": [
 {
-"drop": {
-"npcId": 189420
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 15295
+}
+},
+{
+"drop": {
+"npcId": 189420
 }
 }
 ],
@@ -16211,6 +17907,22 @@
 "difficulty": 1,
 "npcId": 9030,
 "zoneId": 1584
+}
+}
+],
+"11825": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 15628
+}
+}
+],
+"11826": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 15633
 }
 }
 ],
@@ -17057,15 +18769,23 @@
 ],
 "12185": [
 {
+"rep": {
+"repFactionId": 87,
+"repLevel": 5
+}
+},
+{
 "quest": {
 "id": 4621,
 "name": "Avast Ye, Admiral!"
 }
-},
+}
+],
+"12190": [
 {
-"rep": {
-"repFactionId": 87,
-"repLevel": 5
+"crafted": {
+"profession": 1,
+"spellId": 15833
 }
 }
 ],
@@ -17188,11 +18908,35 @@
 }
 }
 ],
+"12359": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 16153
+}
+}
+],
+"12360": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17187
+}
+}
+],
 "12382": [
 {
 "drop": {
 "zoneId": 2017,
 "npcId": 10435
+}
+}
+],
+"12404": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 16641
 }
 }
 ],
@@ -17206,14 +18950,14 @@
 ],
 "12406": [
 {
-"drop": {
-"npcId": 189420
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 16643
+}
+},
+{
+"drop": {
+"npcId": 189420
 }
 }
 ],
@@ -17834,40 +19578,40 @@
 ],
 "12612": [
 {
-"drop": {
-"npcId": 189420
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 16726
+}
+},
+{
+"drop": {
+"npcId": 189420
 }
 }
 ],
 "12613": [
 {
-"drop": {
-"npcId": 189420
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 16731
+}
+},
+{
+"drop": {
+"npcId": 189420
 }
 }
 ],
 "12614": [
 {
-"drop": {
-"npcId": 189420
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 16732
+}
+},
+{
+"drop": {
+"npcId": 189420
 }
 }
 ],
@@ -17944,6 +19688,12 @@
 ],
 "12631": [
 {
+"crafted": {
+"profession": 2,
+"spellId": 16655
+}
+},
+{
 "drop": {
 "npcId": 189420
 }
@@ -17952,12 +19702,6 @@
 "quest": {
 "id": 5124,
 "name": "Fiery Plate Gauntlets"
-}
-},
-{
-"crafted": {
-"profession": 2,
-"spellId": 16655
 }
 }
 ],
@@ -18025,6 +19769,30 @@
 }
 }
 ],
+"12643": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 16640
+}
+}
+],
+"12644": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 16639
+}
+}
+],
+"12645": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 16651
+}
+}
+],
 "12651": [
 {
 "drop": {
@@ -18060,6 +19828,14 @@
 "drop": {
 "zoneId": 1583,
 "otherName": "Shadow Hunter Vosh'gajin"
+}
+}
+],
+"12655": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 17180
 }
 }
 ],
@@ -18350,11 +20126,35 @@
 }
 }
 ],
+"12803": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17566
+}
+}
+],
 "12806": [
 {
 "drop": {
 "zoneId": 1583,
 "npcId": 10899
+}
+}
+],
+"12808": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17564
+}
+}
+],
+"12810": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 17181
 }
 }
 ],
@@ -18744,6 +20544,14 @@
 "difficulty": 1,
 "npcId": 10430,
 "zoneId": 1583
+}
+}
+],
+"13086": [
+{
+"rep": {
+"repFactionId": 589,
+"repLevel": 8
 }
 }
 ],
@@ -19793,6 +21601,142 @@
 }
 }
 ],
+"13423": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17551
+}
+}
+],
+"13442": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17552
+}
+}
+],
+"13443": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17553
+}
+}
+],
+"13444": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17580
+}
+}
+],
+"13445": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17554
+}
+}
+],
+"13446": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17556
+}
+}
+],
+"13447": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17555
+}
+}
+],
+"13452": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17571
+}
+}
+],
+"13453": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17557
+}
+}
+],
+"13454": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17573
+}
+}
+],
+"13455": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17570
+}
+}
+],
+"13456": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17575
+}
+}
+],
+"13457": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17574
+}
+}
+],
+"13458": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17576
+}
+}
+],
+"13459": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17578
+}
+}
+],
+"13461": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17577
+}
+}
+],
+"13462": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17572
+}
+}
+],
 "13473": [
 {
 "quest": {
@@ -19817,11 +21761,27 @@
 }
 }
 ],
+"13482": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 6
+}
+}
+],
 "13483": [
 {
 "drop": {
 "zoneId": 1584,
 "npcId": 9537
+}
+}
+],
+"13484": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 5
 }
 }
 ],
@@ -19865,6 +21825,14 @@
 }
 }
 ],
+"13506": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17634
+}
+}
+],
 "13508": [
 {
 "drop": {
@@ -19878,6 +21846,38 @@
 "drop": {
 "zoneId": 2017,
 "npcId": 10438
+}
+}
+],
+"13510": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17635
+}
+}
+],
+"13511": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17636
+}
+}
+],
+"13512": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17637
+}
+}
+],
+"13513": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 17638
 }
 }
 ],
@@ -20073,11 +22073,35 @@
 }
 }
 ],
+"13724": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 5
+}
+}
+],
+"13810": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
 "13812": [
 {
 "quest": {
 "id": 5532,
 "name": "<NYI> <TXT> Ring of the Dawn"
+}
+}
+],
+"13813": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
 }
 }
 ],
@@ -20474,6 +22498,22 @@
 }
 }
 ],
+"14046": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 18405
+}
+}
+],
+"14048": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 18401
+}
+}
+],
 "14100": [
 {
 "crafted": {
@@ -20772,11 +22812,35 @@
 }
 }
 ],
+"14155": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 18445
+}
+}
+],
+"14156": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 18455
+}
+}
+],
 "14340": [
 {
 "drop": {
 "zoneId": 2057,
 "npcId": 10508
+}
+}
+],
+"14342": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 18560
 }
 }
 ],
@@ -21205,40 +23269,40 @@
 ],
 "15053": [
 {
-"drop": {
-"npcId": 189421
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 19076
+}
+},
+{
+"drop": {
+"npcId": 189421
 }
 }
 ],
 "15054": [
 {
-"drop": {
-"npcId": 189421
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 19059
+}
+},
+{
+"drop": {
+"npcId": 189421
 }
 }
 ],
 "15055": [
 {
-"drop": {
-"npcId": 189421
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 19101
+}
+},
+{
+"drop": {
+"npcId": 189421
 }
 }
 ],
@@ -21771,6 +23835,14 @@
 }
 }
 ],
+"15407": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 19047
+}
+}
+],
 "15410": [
 {
 "drop": {
@@ -22011,6 +24083,14 @@
 }
 }
 ],
+"15564": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 19058
+}
+}
+],
 "15585": [
 {
 "quest": {
@@ -22168,6 +24248,14 @@
 "drop": {
 "zoneId": 1477,
 "otherName": "Trash"
+}
+}
+],
+"15742": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 5
 }
 }
 ],
@@ -22411,6 +24499,14 @@
 }
 }
 ],
+"15846": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19567
+}
+}
+],
 "15853": [
 {
 "quest": {
@@ -22507,11 +24603,67 @@
 }
 }
 ],
+"15869": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 19666
+}
+}
+],
+"15870": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 19667
+}
+}
+],
+"15871": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 19668
+}
+}
+],
+"15872": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 19669
+}
+}
+],
 "15873": [
 {
 "quest": {
 "id": 4866,
 "name": "Mother's Milk"
+}
+}
+],
+"15992": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19788
+}
+}
+],
+"15993": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19790
+}
+}
+],
+"15994": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19791
 }
 }
 ],
@@ -22523,16 +24675,35 @@
 }
 }
 ],
-"15999": [
+"15996": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 19793
 }
-},
+}
+],
+"15997": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19800
+}
+}
+],
+"15999": [
 {
 "crafted": {
 "profession": 4,
 "spellId": 19794
+}
+}
+],
+"16000": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19795
 }
 }
 ],
@@ -22541,6 +24712,22 @@
 "crafted": {
 "profession": 4,
 "spellId": 19796
+}
+}
+],
+"16005": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19799
+}
+}
+],
+"16006": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19815
 }
 }
 ],
@@ -22553,11 +24740,6 @@
 }
 ],
 "16008": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -22576,13 +24758,16 @@
 "16022": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 19830
 }
-},
+}
+],
+"16023": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 19830
+"spellId": 19814
 }
 }
 ],
@@ -22591,6 +24776,14 @@
 "drop": {
 "npcId": 10826,
 "zoneId": 139
+}
+}
+],
+"16040": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 19831
 }
 }
 ],
@@ -22631,6 +24824,22 @@
 "quest": {
 "id": 5944,
 "name": "In Dreams"
+}
+}
+],
+"16206": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 20201
+}
+}
+],
+"16207": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 20051
 }
 }
 ],
@@ -24338,22 +26547,22 @@
 {
 "rep": {
 "repFactionId": 576,
-"repLevel": 6
+"repLevel": 7
 }
 }
 ],
 "16769": [
 {
+"rep": {
+"repFactionId": 576,
+"repLevel": 7
+}
+},
+{
 "soldBy": {
 "npcId": 11555,
 "npcName": "Gorn One Eye",
 "zoneId": 361
-}
-},
-{
-"rep": {
-"repFactionId": 576,
-"repLevel": 6
 }
 }
 ],
@@ -24749,6 +26958,46 @@
 }
 }
 ],
+"17017": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
+}
+}
+],
+"17018": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 5
+}
+}
+],
+"17022": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 5
+}
+}
+],
+"17023": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 5
+}
+}
+],
+"17025": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
+}
+}
+],
 "17039": [
 {
 "drop": {
@@ -24805,11 +27054,43 @@
 }
 }
 ],
+"17049": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
+}
+}
+],
 "17050": [
 {
 "drop": {
 "npcId": 8217,
 "zoneId": 47
+}
+}
+],
+"17051": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 5
+}
+}
+],
+"17052": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"17053": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
 }
 }
 ],
@@ -24826,6 +27107,22 @@
 "drop": {
 "npcId": 8201,
 "zoneId": 440
+}
+}
+],
+"17059": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
+}
+}
+],
+"17060": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
 }
 }
 ],
@@ -25081,6 +27378,162 @@
 "drop": {
 "zoneId": 2717,
 "otherName": "Sulfuron Harbinger"
+}
+}
+],
+"17333": [
+{
+"rep": {
+"repFactionId": 749,
+"repLevel": 6
+}
+}
+],
+"17348": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 6,
+"playerFaction": 2
+}
+},
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 6,
+"playerFaction": 2
+}
+}
+],
+"17349": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 5,
+"playerFaction": 2
+}
+},
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+},
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"17351": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 6,
+"playerFaction": 2
+}
+},
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 6,
+"playerFaction": 2
+}
+}
+],
+"17352": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 5,
+"playerFaction": 2
+}
+},
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+},
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
 }
 }
 ],
@@ -25376,6 +27829,14 @@
 }
 }
 ],
+"17708": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 21923
+}
+}
+],
 "17710": [
 {
 "drop": {
@@ -25416,6 +27877,14 @@
 }
 }
 ],
+"17716": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 21940
+}
+}
+],
 "17717": [
 {
 "drop": {
@@ -25445,6 +27914,14 @@
 "crafted": {
 "profession": 8,
 "spellId": 21943
+}
+}
+],
+"17723": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 21945
 }
 }
 ],
@@ -25720,6 +28197,14 @@
 }
 }
 ],
+"17771": [
+{
+"crafted": {
+"profession": 9,
+"spellId": 22967
+}
+}
+],
 "17774": [
 {
 "quest": {
@@ -25992,13 +28477,56 @@
 "18168": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 22797
+}
+}
+],
+"18169": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"18170": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"18171": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"18172": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"18173": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"18182": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 8
 }
 }
 ],
@@ -26040,6 +28568,14 @@
 }
 }
 ],
+"18232": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 22704
+}
+}
+],
 "18238": [
 {
 "crafted": {
@@ -26072,11 +28608,27 @@
 }
 }
 ],
+"18251": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 22727
+}
+}
+],
 "18252": [
 {
 "drop": {
 "zoneId": 2717,
 "otherName": "Trash"
+}
+}
+],
+"18253": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 22732
 }
 }
 ],
@@ -26117,6 +28669,14 @@
 "drop": {
 "zoneId": 2717,
 "otherName": "Trash"
+}
+}
+],
+"18262": [
+{
+"crafted": {
+"profession": 2,
+"spellId": 22757
 }
 }
 ],
@@ -26184,6 +28744,14 @@
 }
 }
 ],
+"18283": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 22793
+}
+}
+],
 "18284": [
 {
 "drop": {
@@ -26237,6 +28805,14 @@
 "drop": {
 "zoneId": 2717,
 "otherName": "Trash"
+}
+}
+],
+"18294": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 22808
 }
 }
 ],
@@ -27016,6 +29592,12 @@
 ],
 "18398": [
 {
+"rep": {
+"repFactionId": 749,
+"repLevel": 6
+}
+},
+{
 "quest": {
 "id": 7486,
 "name": "A Hero's Reward"
@@ -27023,6 +29605,12 @@
 }
 ],
 "18399": [
+{
+"rep": {
+"repFactionId": 749,
+"repLevel": 6
+}
+},
 {
 "drop": {
 "npcId": 189420
@@ -28128,13 +30716,16 @@
 "18587": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 23078
 }
-},
+}
+],
+"18588": [
 {
 "crafted": {
 "profession": 4,
-"spellId": 23078
+"spellId": 23069
 }
 }
 ],
@@ -28143,6 +30734,14 @@
 "drop": {
 "zoneId": 1584,
 "npcId": 9537
+}
+}
+],
+"18594": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23080
 }
 }
 ],
@@ -28192,22 +30791,25 @@
 }
 }
 ],
+"18631": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23071
+}
+}
+],
 "18634": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 23077
 }
 },
 {
 "soldBy": {
 "npcId": 209889,
 "npcName": "Barebones"
-}
-},
-{
-"crafted": {
-"profession": 4,
-"spellId": 23077
 }
 }
 ],
@@ -28222,38 +30824,28 @@
 "18638": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 23081
 }
 },
 {
 "soldBy": {
 "npcId": 209889,
 "npcName": "Barebones"
-}
-},
-{
-"crafted": {
-"profession": 4,
-"spellId": 23081
 }
 }
 ],
 "18639": [
 {
 "crafted": {
-"profession": 4
+"profession": 4,
+"spellId": 23082
 }
 },
 {
 "soldBy": {
 "npcId": 209889,
 "npcName": "Barebones"
-}
-},
-{
-"crafted": {
-"profession": 4,
-"spellId": 23082
 }
 }
 ],
@@ -28262,6 +30854,22 @@
 "drop": {
 "zoneId": 2557,
 "otherName": "Trash"
+}
+}
+],
+"18641": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23070
+}
+}
+],
+"18645": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23096
 }
 }
 ],
@@ -28313,11 +30921,27 @@
 }
 }
 ],
+"18660": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23129
+}
+}
+],
 "18661": [
 {
 "drop": {
 "zoneId": 1584,
 "otherName": "Trash"
+}
+}
+],
+"18662": [
+{
+"crafted": {
+"profession": 8,
+"spellId": 23190
 }
 }
 ],
@@ -29571,22 +32195,12 @@
 "18984": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 23486
 }
 }
 ],
 "18986": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -29648,10 +32262,54 @@
 }
 }
 ],
+"19026": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 23507
+}
+}
+],
 "19028": [
 {
 "drop": {
 "npcId": 113770
+}
+}
+],
+"19029": [
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 8,
+"playerFaction": 2
+}
+}
+],
+"19030": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 8,
+"playerFaction": 1
+}
+}
+],
+"19031": [
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19032": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 5,
+"playerFaction": 1
 }
 }
 ],
@@ -29716,6 +32374,24 @@
 "crafted": {
 "profession": 8,
 "spellId": 23703
+}
+}
+],
+"19045": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 7,
+"playerFaction": 1
+}
+}
+],
+"19046": [
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 7,
+"playerFaction": 2
 }
 }
 ],
@@ -29796,6 +32472,102 @@
 "crafted": {
 "profession": 11,
 "spellId": 23665
+}
+}
+],
+"19060": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19061": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19062": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19066": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19067": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19068": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 5,
+"playerFaction": 2
 }
 }
 ],
@@ -30372,6 +33144,142 @@
 }
 }
 ],
+"19202": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 6
+}
+}
+],
+"19203": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 6
+}
+}
+],
+"19204": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 7
+}
+}
+],
+"19205": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"19206": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"19207": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
+"19208": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"19209": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"19210": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
+"19211": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
+"19212": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
+"19215": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 6
+}
+}
+],
+"19216": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 6
+}
+}
+],
+"19217": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"19218": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 7
+}
+}
+],
+"19219": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"19220": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
 "19227": [
 {
 "drop": {
@@ -30460,6 +33368,22 @@
 }
 }
 ],
+"19301": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 6,
+"playerFaction": 2
+}
+}
+],
 "19302": [
 {
 "soldBy": {
@@ -30473,6 +33397,22 @@
 "soldBy": {
 "npcId": 14846,
 "npcName": "Lhara"
+}
+}
+],
+"19307": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 5,
+"playerFaction": 2
 }
 }
 ],
@@ -30572,6 +33512,86 @@
 }
 }
 ],
+"19316": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 6,
+"playerFaction": 2
+}
+}
+],
+"19317": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 6,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 6,
+"playerFaction": 2
+}
+}
+],
+"19318": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 5,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"19319": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 7,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 7,
+"playerFaction": 2
+}
+}
+],
+"19320": [
+{
+"rep": {
+"repFactionId": 730,
+"repLevel": 7,
+"playerFaction": 1
+}
+},
+{
+"rep": {
+"repFactionId": 729,
+"repLevel": 7,
+"playerFaction": 2
+}
+}
+],
 "19321": [
 {
 "rep": {
@@ -30633,6 +33653,70 @@
 "repFactionId": 729,
 "repLevel": 8,
 "playerFaction": 2
+}
+}
+],
+"19326": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 6
+}
+}
+],
+"19327": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 7
+}
+}
+],
+"19328": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 6
+}
+}
+],
+"19329": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"19330": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
+}
+}
+],
+"19331": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"19332": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
+"19333": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
 }
 }
 ],
@@ -31286,11 +34370,85 @@
 }
 }
 ],
+"19442": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 6
+}
+}
+],
+"19444": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
+}
+}
+],
+"19445": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 6
+}
+}
+],
+"19446": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 6
+}
+}
+],
+"19447": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 7
+}
+}
+],
+"19448": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 7
+}
+}
+],
+"19449": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
+}
+}
+],
 "19491": [
 {
 "quest": {
 "id": 7981,
 "name": "1200 Tickets - Amulet of the Darkmoon"
+}
+}
+],
+"19505": [
+{
+"rep": {
+"repFactionId": 889,
+"repLevel": 8,
+"playerFaction": 2
+}
+}
+],
+"19506": [
+{
+"rep": {
+"repFactionId": 890,
+"repLevel": 8,
+"playerFaction": 1
 }
 }
 ],
@@ -31326,1025 +34484,1025 @@
 ],
 "19510": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19511": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19512": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19513": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19514": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19515": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19516": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19517": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19518": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19519": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19520": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19521": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19522": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19523": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19524": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19525": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19526": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19527": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19528": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19529": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19530": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19531": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19532": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19533": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19534": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19535": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19536": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19537": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19538": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19539": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19540": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19541": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
 }
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
+}
 }
 ],
 "19542": [
-{
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
 {
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19543": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19544": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19545": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19546": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19547": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19548": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19549": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19550": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19551": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19552": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19553": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19554": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19555": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19556": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19557": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19558": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19559": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19560": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19561": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19562": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19563": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19564": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19565": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19566": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19567": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19568": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "19569": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
 }
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
+}
 }
 ],
 "19570": [
-{
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
 {
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19571": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19572": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "19573": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
@@ -32831,22 +35989,12 @@
 "19682": [
 {
 "crafted": {
-"profession": 11
-}
-},
-{
-"crafted": {
 "profession": 11,
 "spellId": 24091
 }
 }
 ],
 "19683": [
-{
-"crafted": {
-"profession": 11
-}
-},
 {
 "crafted": {
 "profession": 11,
@@ -32857,22 +36005,12 @@
 "19684": [
 {
 "crafted": {
-"profession": 11
-}
-},
-{
-"crafted": {
 "profession": 11,
 "spellId": 24093
 }
 }
 ],
 "19685": [
-{
-"crafted": {
-"profession": 8
-}
-},
 {
 "crafted": {
 "profession": 8,
@@ -32883,22 +36021,12 @@
 "19686": [
 {
 "crafted": {
-"profession": 8
-}
-},
-{
-"crafted": {
 "profession": 8,
 "spellId": 24122
 }
 }
 ],
 "19687": [
-{
-"crafted": {
-"profession": 8
-}
-},
 {
 "crafted": {
 "profession": 8,
@@ -32909,22 +36037,12 @@
 "19688": [
 {
 "crafted": {
-"profession": 8
-}
-},
-{
-"crafted": {
 "profession": 8,
 "spellId": 24124
 }
 }
 ],
 "19689": [
-{
-"crafted": {
-"profession": 8
-}
-},
 {
 "crafted": {
 "profession": 8,
@@ -32959,11 +36077,6 @@
 "19693": [
 {
 "crafted": {
-"profession": 2
-}
-},
-{
-"crafted": {
 "profession": 2,
 "spellId": 24139
 }
@@ -32972,22 +36085,12 @@
 "19694": [
 {
 "crafted": {
-"profession": 2
-}
-},
-{
-"crafted": {
 "profession": 2,
 "spellId": 24140
 }
 }
 ],
 "19695": [
-{
-"crafted": {
-"profession": 2
-}
-},
 {
 "crafted": {
 "profession": 2,
@@ -33219,6 +36322,30 @@
 }
 }
 ],
+"19764": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"19765": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"19766": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
+}
+}
+],
 "19767": [
 {
 "drop": {
@@ -33232,6 +36359,94 @@
 "drop": {
 "zoneId": 1977,
 "otherName": "Trash"
+}
+}
+],
+"19769": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"19770": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"19771": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
+}
+}
+],
+"19772": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"19773": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"19776": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"19777": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"19778": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
+}
+}
+],
+"19779": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"19780": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"19781": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
 }
 }
 ],
@@ -34106,6 +37321,14 @@
 }
 }
 ],
+"19931": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 24266
+}
+}
+],
 "19939": [
 {
 "drop": {
@@ -34309,11 +37532,6 @@
 "19998": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 24357
 }
@@ -34322,13 +37540,96 @@
 "19999": [
 {
 "crafted": {
-"profession": 4
-}
-},
-{
-"crafted": {
 "profession": 4,
 "spellId": 24356
+}
+}
+],
+"20000": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"20001": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
+}
+}
+],
+"20002": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 24366
+}
+}
+],
+"20004": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 24368
+}
+}
+],
+"20007": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 24365
+}
+}
+],
+"20008": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 24367
+}
+}
+],
+"20011": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"20012": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
+}
+}
+],
+"20013": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 8
+}
+}
+],
+"20014": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"20031": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
 }
 }
 ],
@@ -34372,339 +37673,347 @@
 }
 }
 ],
-"20041": [
+"20040": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
+"rep": {
+"repFactionId": 59,
+"repLevel": 8
 }
-},
+}
+],
+"20041": [
 {
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20042": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20043": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20045": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20046": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20047": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
 }
-}
-],
-"20048": [
+},
 {
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
 }
-},
+}
+],
+"20048": [
 {
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20049": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20050": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20052": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20053": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20054": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20055": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
 "20057": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
 "20058": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
 "20059": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
 "20060": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
 "20061": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
 }
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
-}
 }
 ],
 "20068": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
 {
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
 }
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
-}
 }
 ],
 "20069": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
 {
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
 "20070": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
 }
 }
 ],
@@ -34742,41 +38051,65 @@
 ],
 "20073": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
 }
-},
-{
-"rep": {
-"repFactionId": 509,
-"repLevel": 7,
-"playerFaction": 1
-}
 }
 ],
 "20076": [
 {
-"drop": {
-"zoneId": 1977,
-"otherName": "ZG Enchants"
+"rep": {
+"repFactionId": 270,
+"repLevel": 8
 }
 }
 ],
 "20077": [
 {
-"drop": {
-"zoneId": 1977,
-"otherName": "ZG Enchants"
+"rep": {
+"repFactionId": 270,
+"repLevel": 8
 }
 }
 ],
 "20078": [
 {
-"drop": {
-"zoneId": 1977,
-"otherName": "ZG Enchants"
+"rep": {
+"repFactionId": 270,
+"repLevel": 8
+}
+}
+],
+"20079": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"20080": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
+}
+}
+],
+"20081": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 7
 }
 }
 ],
@@ -34790,1441 +38123,1471 @@
 ],
 "20088": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20089": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20090": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20091": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20092": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20093": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20094": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20095": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20096": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20097": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20098": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20099": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20100": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20101": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20102": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20103": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20104": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20105": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20106": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20107": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20108": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20109": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20110": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20111": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20112": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20113": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20114": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20115": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20116": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20117": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20124": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20125": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20126": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 6,
 "playerFaction": 1
 }
-}
-],
-"20127": [
+},
 {
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
 }
-},
+}
+],
+"20127": [
 {
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "20128": [
 {
+"rep": {
+"repFactionId": 509,
+"repLevel": 7,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
 }
-},
+}
+],
+"20129": [
 {
 "rep": {
 "repFactionId": 509,
 "repLevel": 7,
 "playerFaction": 1
 }
-}
-],
-"20129": [
+},
 {
 "soldBy": {
 "npcId": 15127,
 "npcName": "Samuel Hawke",
 "zoneId": 45
 }
+}
+],
+"20131": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 8
+}
+},
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+}
+],
+"20132": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 8
+}
 },
 {
 "rep": {
 "repFactionId": 509,
-"repLevel": 7,
+"repLevel": 8,
 "playerFaction": 1
 }
 }
 ],
 "20150": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20151": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20152": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20153": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20154": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20155": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20156": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20157": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20158": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
 "20159": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20160": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20161": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20162": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20163": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20164": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20165": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20166": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20167": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20168": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20169": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20170": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20171": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20172": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20173": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20174": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20175": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
 "20176": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
 "20186": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20187": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20188": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20189": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20190": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20191": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20192": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20193": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20194": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
 "20195": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20196": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20197": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20198": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20199": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20200": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20201": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20202": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20203": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
 "20204": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20205": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20206": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20207": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 6,
 "playerFaction": 2
 }
-}
-],
-"20208": [
+},
 {
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
 }
-},
+}
+],
+"20208": [
 {
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20209": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20210": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20211": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "20212": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
@@ -36238,17 +39601,17 @@
 ],
 "20214": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
-}
-},
-{
-"rep": {
-"repFactionId": 510,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
@@ -36294,17 +39657,133 @@
 ],
 "20220": [
 {
+"rep": {
+"repFactionId": 510,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 15126,
 "npcName": "Rutherford Twing",
 "zoneId": 45
 }
-},
+}
+],
+"20222": [
 {
 "rep": {
 "repFactionId": 510,
-"repLevel": 7,
+"repLevel": 5,
 "playerFaction": 2
+}
+}
+],
+"20223": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"20224": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"20225": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+}
+],
+"20226": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+}
+],
+"20227": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+}
+],
+"20232": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"20234": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"20235": [
+{
+"rep": {
+"repFactionId": 510,
+"repLevel": 5,
+"playerFaction": 2
+}
+}
+],
+"20237": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+}
+],
+"20243": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+}
+],
+"20244": [
+{
+"rep": {
+"repFactionId": 509,
+"repLevel": 5,
+"playerFaction": 1
+}
+}
+],
+"20254": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 5
 }
 }
 ],
@@ -36420,6 +39899,14 @@
 }
 }
 ],
+"20382": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 8
+}
+}
+],
 "20383": [
 {
 "drop": {
@@ -36465,257 +39952,257 @@
 ],
 "20425": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20426": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20427": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20428": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "20429": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20430": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20431": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "20434": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "20437": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20438": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "20439": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "20440": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "20441": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 7,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "20442": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 6,
 "playerFaction": 2
 }
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
+}
 }
 ],
 "20443": [
-{
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
 {
 "rep": {
 "repFactionId": 890,
 "repLevel": 7,
 "playerFaction": 1
 }
-}
-],
-"20444": [
+},
 {
 "soldBy": {
 "npcId": 14753,
 "npcName": "Illiyana Moonblaze",
 "zoneId": 331
 }
-},
+}
+],
+"20444": [
 {
 "rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
@@ -36772,6 +40259,54 @@
 "crafted": {
 "profession": 8,
 "spellId": 24846
+}
+}
+],
+"20506": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 5
+}
+}
+],
+"20507": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 6
+}
+}
+],
+"20508": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
+}
+}
+],
+"20509": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 5
+}
+}
+],
+"20510": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 6
+}
+}
+],
+"20511": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
 }
 }
 ],
@@ -37839,6 +41374,22 @@
 }
 }
 ],
+"20732": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
+}
+}
+],
+"20733": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 8
+}
+}
+],
 "20734": [
 {
 "drop": {
@@ -37860,6 +41411,86 @@
 "drop": {
 "zoneId": 900001,
 "otherName": "W B Shared Loot"
+}
+}
+],
+"20744": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25124
+}
+}
+],
+"20745": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25125
+}
+}
+],
+"20746": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25126
+}
+}
+],
+"20747": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25127
+}
+}
+],
+"20748": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25130
+}
+}
+],
+"20749": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25129
+}
+}
+],
+"20750": [
+{
+"crafted": {
+"profession": 3,
+"spellId": 25128
+}
+}
+],
+"20756": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 6
+}
+}
+],
+"20757": [
+{
+"rep": {
+"repFactionId": 270,
+"repLevel": 5
+}
+}
+],
+"20761": [
+{
+"rep": {
+"repFactionId": 59,
+"repLevel": 6
 }
 }
 ],
@@ -37937,33 +41568,33 @@
 ],
 "21119": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 5,
 "playerFaction": 1
 }
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
+}
 }
 ],
 "21120": [
-{
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
 {
 "rep": {
 "repFactionId": 510,
 "repLevel": 5,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
@@ -38009,183 +41640,183 @@
 ],
 "21178": [
 {
-"quest": {
-"id": 8548,
-"name": "Volunteer's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 5
+}
+},
+{
+"quest": {
+"id": 8548,
+"name": "Volunteer's Battlegear"
 }
 }
 ],
 "21179": [
 {
-"quest": {
-"id": 8548,
-"name": "Volunteer's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 5
+}
+},
+{
+"quest": {
+"id": 8548,
+"name": "Volunteer's Battlegear"
 }
 }
 ],
 "21180": [
 {
-"quest": {
-"id": 8573,
-"name": "Champion's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 8
+}
+},
+{
+"quest": {
+"id": 8573,
+"name": "Champion's Battlegear"
 }
 }
 ],
 "21181": [
 {
-"quest": {
-"id": 8572,
-"name": "Veteran's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 6
+}
+},
+{
+"quest": {
+"id": 8572,
+"name": "Veteran's Battlegear"
 }
 }
 ],
 "21182": [
 {
-"quest": {
-"id": 8572,
-"name": "Veteran's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 6
+}
+},
+{
+"quest": {
+"id": 8572,
+"name": "Veteran's Battlegear"
 }
 }
 ],
 "21183": [
 {
-"quest": {
-"id": 8572,
-"name": "Veteran's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 6
+}
+},
+{
+"quest": {
+"id": 8572,
+"name": "Veteran's Battlegear"
 }
 }
 ],
 "21184": [
 {
-"quest": {
-"id": 8574,
-"name": "Stalwart's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 7
+}
+},
+{
+"quest": {
+"id": 8574,
+"name": "Stalwart's Battlegear"
 }
 }
 ],
 "21185": [
 {
-"quest": {
-"id": 8574,
-"name": "Stalwart's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 7
+}
+},
+{
+"quest": {
+"id": 8574,
+"name": "Stalwart's Battlegear"
 }
 }
 ],
 "21186": [
 {
-"quest": {
-"id": 8574,
-"name": "Stalwart's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 7
+}
+},
+{
+"quest": {
+"id": 8574,
+"name": "Stalwart's Battlegear"
 }
 }
 ],
 "21187": [
 {
-"quest": {
-"id": 8548,
-"name": "Volunteer's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 5
+}
+},
+{
+"quest": {
+"id": 8548,
+"name": "Volunteer's Battlegear"
 }
 }
 ],
 "21188": [
 {
-"quest": {
-"id": 8573,
-"name": "Champion's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 8
+}
+},
+{
+"quest": {
+"id": 8573,
+"name": "Champion's Battlegear"
 }
 }
 ],
 "21189": [
 {
-"quest": {
-"id": 8574,
-"name": "Stalwart's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 7
+}
+},
+{
+"quest": {
+"id": 8574,
+"name": "Stalwart's Battlegear"
 }
 }
 ],
 "21190": [
 {
-"quest": {
-"id": 8573,
-"name": "Champion's Battlegear"
-}
-},
-{
 "rep": {
 "repFactionId": 609,
 "repLevel": 8
+}
+},
+{
+"quest": {
+"id": 8573,
+"name": "Champion's Battlegear"
 }
 }
 ],
@@ -38424,6 +42055,14 @@
 "quest": {
 "id": 8790,
 "name": "Imperial Qiraji Regalia"
+}
+}
+],
+"21277": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26011
 }
 }
 ],
@@ -38709,15 +42348,15 @@
 ],
 "21326": [
 {
-"quest": {
-"id": 8481,
-"name": "The Root of All Evil"
-}
-},
-{
 "rep": {
 "repFactionId": 576,
 "repLevel": 8
+}
+},
+{
+"quest": {
+"id": 8481,
+"name": "The Root of All Evil"
 }
 }
 ],
@@ -38798,6 +42437,30 @@
 "quest": {
 "id": 8660,
 "name": "Doomcaller's Footwraps"
+}
+}
+],
+"21340": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 26085
+}
+}
+],
+"21341": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 26086
+}
+}
+],
+"21342": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 26087
 }
 }
 ],
@@ -39881,6 +43544,38 @@
 }
 }
 ],
+"21546": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 26277
+}
+}
+],
+"21557": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26418
+}
+}
+],
+"21558": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26416
+}
+}
+],
+"21559": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26417
+}
+}
+],
 "21563": [
 {
 "rep": {
@@ -39900,13 +43595,6 @@
 "21565": [
 {
 "rep": {
-"repFactionId": 890,
-"repLevel": 5,
-"playerFaction": 1
-}
-},
-{
-"rep": {
 "repFactionId": 889,
 "repLevel": 5,
 "playerFaction": 2
@@ -39914,13 +43602,6 @@
 }
 ],
 "21566": [
-{
-"rep": {
-"repFactionId": 890,
-"repLevel": 5,
-"playerFaction": 1
-}
-},
 {
 "rep": {
 "repFactionId": 889,
@@ -39936,13 +43617,6 @@
 "repLevel": 5,
 "playerFaction": 1
 }
-},
-{
-"rep": {
-"repFactionId": 889,
-"repLevel": 5,
-"playerFaction": 2
-}
 }
 ],
 "21568": [
@@ -39952,12 +43626,37 @@
 "repLevel": 5,
 "playerFaction": 1
 }
-},
+}
+],
+"21569": [
 {
-"rep": {
-"repFactionId": 889,
-"repLevel": 5,
-"playerFaction": 2
+"crafted": {
+"profession": 4,
+"spellId": 26442
+}
+}
+],
+"21571": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26423
+}
+}
+],
+"21574": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26424
+}
+}
+],
+"21576": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26425
 }
 }
 ],
@@ -40006,6 +43705,30 @@
 "drop": {
 "npcId": 15727,
 "zoneId": 3428
+}
+}
+],
+"21589": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26420
+}
+}
+],
+"21590": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26421
+}
+}
+],
+"21592": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26422
 }
 }
 ],
@@ -40683,11 +44406,35 @@
 }
 }
 ],
+"21714": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26426
+}
+}
+],
 "21715": [
 {
 "drop": {
 "npcId": 15339,
 "zoneId": 3429
+}
+}
+],
+"21716": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26427
+}
+}
+],
+"21718": [
+{
+"crafted": {
+"profession": 4,
+"spellId": 26428
 }
 }
 ],
@@ -41066,11 +44813,43 @@
 }
 }
 ],
+"22209": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
+}
+}
+],
 "22212": [
 {
 "drop": {
 "zoneId": 1584,
 "npcId": 9537
+}
+}
+],
+"22214": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 6
+}
+}
+],
+"22219": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 8
+}
+}
+],
+"22221": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 8
 }
 }
 ],
@@ -41167,6 +44946,14 @@
 }
 }
 ],
+"22246": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 27658
+}
+}
+],
 "22247": [
 {
 "drop": {
@@ -41182,11 +44969,35 @@
 }
 }
 ],
+"22248": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 27659
+}
+}
+],
 "22249": [
 {
 "drop": {
 "zoneId": 2557,
 "npcId": 11487
+}
+}
+],
+"22251": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 27724
+}
+}
+],
+"22252": [
+{
+"crafted": {
+"profession": 11,
+"spellId": 27725
 }
 }
 ],
@@ -41484,6 +45295,14 @@
 }
 }
 ],
+"22310": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 5
+}
+}
+],
 "22311": [
 {
 "drop": {
@@ -41496,6 +45315,14 @@
 "difficulty": 1,
 "npcId": 10430,
 "zoneId": 1583
+}
+}
+],
+"22312": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
 }
 }
 ],
@@ -41817,6 +45644,14 @@
 "crafted": {
 "profession": 2,
 "spellId": 27829
+}
+}
+],
+"22392": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 5
 }
 }
 ],
@@ -42606,73 +46441,73 @@
 ],
 "22651": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 8,
 "playerFaction": 2
 }
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
+}
 }
 ],
 "22652": [
-{
-"quest": {
-"id": 9240,
-"name": "Glacial Vest"
-}
-},
 {
 "crafted": {
 "profession": 11,
 "spellId": 28207
 }
+},
+{
+"quest": {
+"id": 9240,
+"name": "Glacial Vest"
+}
 }
 ],
 "22654": [
-{
-"quest": {
-"id": 9239,
-"name": "Glacial Gloves"
-}
-},
 {
 "crafted": {
 "profession": 11,
 "spellId": 28205
 }
+},
+{
+"quest": {
+"id": 9239,
+"name": "Glacial Gloves"
+}
 }
 ],
 "22655": [
-{
-"quest": {
-"id": 9238,
-"name": "Glacial Wrists"
-}
-},
 {
 "crafted": {
 "profession": 11,
 "spellId": 28209
 }
+},
+{
+"quest": {
+"id": 9238,
+"name": "Glacial Wrists"
+}
 }
 ],
 "22658": [
 {
-"quest": {
-"id": 9237,
-"name": "Glacial Cloak"
-}
-},
-{
 "crafted": {
 "profession": 11,
 "spellId": 28208
+}
+},
+{
+"quest": {
+"id": 9237,
+"name": "Glacial Cloak"
 }
 }
 ],
@@ -42686,175 +46521,183 @@
 ],
 "22661": [
 {
-"quest": {
-"id": 9243,
-"name": "Polar Tunic"
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 28219
+}
+},
+{
+"quest": {
+"id": 9243,
+"name": "Polar Tunic"
 }
 }
 ],
 "22662": [
 {
-"quest": {
-"id": 9242,
-"name": "Polar Gloves"
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 28220
+}
+},
+{
+"quest": {
+"id": 9242,
+"name": "Polar Gloves"
 }
 }
 ],
 "22663": [
 {
-"quest": {
-"id": 9241,
-"name": "Polar Bracers"
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 28221
+}
+},
+{
+"quest": {
+"id": 9241,
+"name": "Polar Bracers"
 }
 }
 ],
 "22664": [
 {
-"quest": {
-"id": 9246,
-"name": "Icy Scale Breastplate"
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 28222
+}
+},
+{
+"quest": {
+"id": 9246,
+"name": "Icy Scale Breastplate"
 }
 }
 ],
 "22665": [
 {
-"quest": {
-"id": 9244,
-"name": "Icy Scale Bracers"
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 28224
+}
+},
+{
+"quest": {
+"id": 9244,
+"name": "Icy Scale Bracers"
 }
 }
 ],
 "22666": [
 {
-"quest": {
-"id": 9245,
-"name": "Icy Scale Gauntlets"
-}
-},
-{
 "crafted": {
 "profession": 8,
 "spellId": 28223
+}
+},
+{
+"quest": {
+"id": 9245,
+"name": "Icy Scale Gauntlets"
 }
 }
 ],
 "22669": [
 {
-"quest": {
-"id": 9236,
-"name": "Icebane Breastplate"
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 28242
+}
+},
+{
+"quest": {
+"id": 9236,
+"name": "Icebane Breastplate"
 }
 }
 ],
 "22670": [
 {
-"quest": {
-"id": 9234,
-"name": "Icebane Gauntlets"
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 28243
+}
+},
+{
+"quest": {
+"id": 9234,
+"name": "Icebane Gauntlets"
 }
 }
 ],
 "22671": [
 {
-"quest": {
-"id": 9235,
-"name": "Icebane Bracers"
-}
-},
-{
 "crafted": {
 "profession": 2,
 "spellId": 28244
 }
+},
+{
+"quest": {
+"id": 9235,
+"name": "Icebane Bracers"
+}
 }
 ],
 "22672": [
-{
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
 {
 "rep": {
 "repFactionId": 890,
 "repLevel": 8,
 "playerFaction": 1
 }
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
+}
 }
 ],
 "22673": [
-{
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
 {
 "rep": {
 "repFactionId": 889,
 "repLevel": 8,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "22676": [
 {
+"rep": {
+"repFactionId": 889,
+"repLevel": 8,
+"playerFaction": 2
+}
+},
+{
 "soldBy": {
 "npcId": 14754,
 "npcName": "Kelm Hargunth",
 "zoneId": 17
 }
-},
+}
+],
+"22683": [
 {
 "rep": {
-"repFactionId": 889,
-"repLevel": 8,
-"playerFaction": 2
+"repFactionId": 609,
+"repLevel": 7
 }
 }
 ],
@@ -43033,50 +46876,64 @@
 ],
 "22740": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 8,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
 }
 }
 ],
 "22741": [
 {
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
-{
 "rep": {
 "repFactionId": 889,
 "repLevel": 8,
 "playerFaction": 2
 }
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
+}
 }
 ],
 "22742": [
 {
-"drop": {
-"npcId": 22746
+"rep": {
+"repFactionId": 87,
+"repLevel": 4
 }
 },
 {
+"drop": {
+"npcId": 22746
+}
+}
+],
+"22743": [
+{
 "rep": {
 "repFactionId": 87,
-"repLevel": 5
+"repLevel": 4
 }
 }
 ],
 "22744": [
+{
+"rep": {
+"repFactionId": 87,
+"repLevel": 4
+}
+},
 {
 "drop": {
 "npcId": 22746
@@ -43085,98 +46942,105 @@
 ],
 "22745": [
 {
-"drop": {
-"npcId": 22746
+"rep": {
+"repFactionId": 87,
+"repLevel": 4
 }
 },
 {
-"rep": {
-"repFactionId": 87,
-"repLevel": 5
+"drop": {
+"npcId": 22746
 }
 }
 ],
 "22747": [
-{
-"soldBy": {
-"npcId": 14754,
-"npcName": "Kelm Hargunth",
-"zoneId": 17
-}
-},
 {
 "rep": {
 "repFactionId": 889,
 "repLevel": 8,
 "playerFaction": 2
 }
+},
+{
+"soldBy": {
+"npcId": 14754,
+"npcName": "Kelm Hargunth",
+"zoneId": 17
+}
 }
 ],
 "22748": [
-{
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
 {
 "rep": {
 "repFactionId": 890,
 "repLevel": 8,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "22749": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 8,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "22750": [
 {
-"soldBy": {
-"npcId": 14753,
-"npcName": "Illiyana Moonblaze",
-"zoneId": 331
-}
-},
-{
 "rep": {
 "repFactionId": 890,
 "repLevel": 8,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 14753,
+"npcName": "Illiyana Moonblaze",
+"zoneId": 331
 }
 }
 ],
 "22752": [
 {
+"rep": {
+"repFactionId": 890,
+"repLevel": 8,
+"playerFaction": 1
+}
+},
+{
 "soldBy": {
 "npcId": 14753,
 "npcName": "Illiyana Moonblaze",
 "zoneId": 331
 }
-},
+}
+],
+"22753": [
 {
 "rep": {
 "repFactionId": 890,
 "repLevel": 8,
 "playerFaction": 1
 }
-}
-],
-"22753": [
+},
 {
 "drop": {
 "zoneId": 2597
@@ -43188,12 +47052,13 @@
 "npcName": "Illiyana Moonblaze",
 "zoneId": 331
 }
-},
+}
+],
+"22754": [
 {
 "rep": {
-"repFactionId": 890,
-"repLevel": 8,
-"playerFaction": 1
+"repFactionId": 749,
+"repLevel": 8
 }
 }
 ],
@@ -43266,6 +47131,78 @@
 "crafted": {
 "profession": 2,
 "spellId": 28463
+}
+}
+],
+"22766": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
+}
+}
+],
+"22767": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 6
+}
+}
+],
+"22768": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 5
+}
+}
+],
+"22769": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 5
+}
+}
+],
+"22770": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 6
+}
+}
+],
+"22771": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
+}
+}
+],
+"22772": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 5
+}
+}
+],
+"22773": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 6
+}
+}
+],
+"22774": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 7
 }
 }
 ],
@@ -45259,6 +49196,14 @@
 }
 }
 ],
+"23684": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 7
+}
+}
+],
 "24101": [
 {
 "drop": {
@@ -46767,6 +50712,14 @@
 }
 }
 ],
+"26054": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 8
+}
+}
+],
 "26057": [
 {
 "drop": {
@@ -46895,6 +50848,214 @@
 }
 }
 ],
+"26073": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 7
+}
+}
+],
+"26074": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 7
+}
+}
+],
+"26075": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 7
+}
+}
+],
+"26076": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 8
+}
+}
+],
+"26077": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 8
+}
+}
+],
+"26078": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 8
+}
+}
+],
+"26079": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26080": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26081": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26082": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26083": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26084": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26085": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26086": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26087": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26088": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26089": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26090": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 5
+}
+}
+],
+"26091": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26092": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26093": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 6
+}
+}
+],
+"26094": [
+{
+"rep": {
+"repFactionId": 809,
+"repLevel": 8
+}
+}
+],
+"26095": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 8
+}
+}
+],
+"26096": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 8
+}
+}
+],
+"26097": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 8
+}
+}
+],
+"26098": [
+{
+"rep": {
+"repFactionId": 529,
+"repLevel": 8
+}
+}
+],
 "26099": [
 {
 "drop": {
@@ -46908,6 +51069,38 @@
 "drop": {
 "zoneId": 2717,
 "otherName": "Sulfuron Harbinger"
+}
+}
+],
+"26101": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 8
+}
+}
+],
+"26102": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 8
+}
+}
+],
+"26103": [
+{
+"rep": {
+"repFactionId": 576,
+"repLevel": 8
+}
+}
+],
+"26104": [
+{
+"rep": {
+"repFactionId": 609,
+"repLevel": 8
 }
 }
 ],
@@ -47987,6 +52180,14 @@
 "drop": {
 "zoneId": 796,
 "otherName": "Renault Mograine"
+}
+}
+],
+"34323": [
+{
+"crafted": {
+"profession": 1,
+"spellId": 34324
 }
 }
 ],
