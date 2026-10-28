@@ -14,6 +14,8 @@ and writes plain HTML pages (Caddy serves them from disk):
   /instances.html         every loot table by instance
   /type/<type>.html       every item by type (item_types.py)
   /search.html            filter all items (search.js over /search.json; stats from item_stats.py)
+  /tables.json            the loot tables for the header search (site.js: items, NPCs, spells, quests, zones,
+                          loot tables, grouped; Part GQ)
   /items.json             search index; /tt/<id // 500>.json hover tooltips
   /api/items.json         every item for other sites (lokiy.dev/loot): name, quality, icon URL, tooltip lines with
                           their colour class, custom flag, random affixes. db.lokiy.dev is the only item source.
@@ -569,9 +571,9 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/spells">Spells</a><a href="/instances">Instances</a><a href="/npcs">NPCs</a><a href="/quests">Quests</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/removed">Not on V+</a><a href="/search">Search</a></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
   <form class="search" action="/" method="get" role="search">
-    <input type="search" name="q" placeholder="Search items..." aria-label="Search items" autocomplete="off">
+    <input type="search" name="q" placeholder="Search items, NPCs, spells, quests, zones..." aria-label="Search everything" autocomplete="off">
   </form>
 </header>
 <main>
@@ -1117,7 +1119,8 @@ def main():
                 + "".join(f'<li><a href="/type/{k}">{esc(nm)}</a> <span class="muted">{type_counts[k]}</span></li>'
                           for k, nm in PAGES if type_counts.get(k)) + "</ul></section>")
 
-    search_box = '<section id="results" class="card" hidden><h2>Search results</h2><ul class="loot" id="result-list"></ul></section>'
+    search_box = ('<section id="results" class="card" hidden><h2>Search results</h2><nav class="type-tabs" id="result-tabs"></nav>'
+                  '<div id="result-groups"></div></section>')
     blocks, n_nosrc = browse_blocks(is_custom)
     body = f"""
 <section class="intro">
@@ -1530,6 +1533,9 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
 {''.join(blocks)}"""
     with open(os.path.join(out, "instances.html"), "w", encoding="utf-8") as f:
         f.write(page("Instances", body, path="/instances", description="Vanilla Plus loot tables by instance and boss."))
+    with open(os.path.join(out, "tables.json"), "w", encoding="utf-8") as f:  # the header search's loot tables (Part GQ)
+        json.dump([[key, table_label(key)[0], cat, 1 if srcs.cut_table(key) else 0] for cat in cats_all for key in by_cat_all[cat]],
+                  f, ensure_ascii=False, separators=(",", ":"))
 
     # ---- type pages: every item, by type and section
     for page_key, page_name in PAGES:

@@ -259,3 +259,26 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .dj-tactics li { margin: .25rem 0 .25rem 1rem; list-style: disc; }
 .dj h3 { font-size: .95rem; margin: .8rem 0 .2rem; }
 .src-npc { font-size: .75rem; margin-left: .3rem; }
+
+/* nav Search menu and the grouped header search (Part GQ) */
+.nav { align-items: center; }
+.nav-drop { position: relative; }
+.nav-drop > button { background: none; border: 0; padding: 0; font: inherit; color: var(--muted); cursor: pointer; }
+.nav-drop > button:hover, .nav-drop.open > button { color: var(--text); }
+.nav-drop .drop {
+	display: none; position: absolute; right: 0; top: 100%; z-index: 20; min-width: 200px; padding: 6px 0;
+	background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 6px 18px #0008;
+}
+.nav-drop::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 8px; }
+.nav-drop:hover .drop, .nav-drop:focus-within .drop, .nav-drop.open .drop { display: block; margin-top: 8px; }
+.nav-drop .drop a { display: block; padding: 6px 14px; white-space: nowrap; }
+.nav-drop .drop a:hover { background: var(--panel-2); }
+.nav-drop .drop .muted { font-size: .8rem; }
+#results { scroll-margin-top: 70px; }
+#result-tabs:empty { display: none; }
+.result-group + .result-group { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); }
+.result-group h3 { color: var(--accent); margin-bottom: 4px; }
+.result-more { margin: 6px 0 0; font-size: .9rem; }
+.type-tabs a.on .muted { color: inherit; }
+#results .loot li { flex-wrap: wrap; column-gap: 6px; row-gap: 0; }
+#results .loot li > .item { flex-shrink: 0; max-width: 100%; }

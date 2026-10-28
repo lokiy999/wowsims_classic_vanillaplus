@@ -5237,3 +5237,19 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Lokiy (via the hub): 22191, 21176 and 22196 are unavailable. Off the to-check list into `LOKIY_NOT_ON_SERVER`
   (`item_sources.py`), with Plans: Obsidian Mail Tunic (22221) and Plans: Thick Obsidian Breastplate (22222, already
   marked as AQ40), like Black Grasp's plans. /removed: 806 -> 810. To check now: only Flintrock Shoulders (26318).
+
+## Part GQ — db.lokiy.dev: header search finds everything, grouped; Search menu in the nav (2026-10-28)
+
+- Lokiy: search NPCs, instances etc. from the database search, not only items; the big search shows each kind
+  separately; the Search tab becomes a menu of the separate searches.
+- Header box (`site.js`): searches items, NPCs (plus the loot tracker mobs without a creature ID, `api/mobs.json`),
+  spells, quests, zones and loot tables. Results (index and reworked pages; other pages submit to `/?q=`) are grouped
+  per kind with tabs: All (the best 8 of each kind, "Show all N") or one kind (up to 200, plus a link to that kind's
+  own search page with the query). Ranked: exact name / id, name starts with it, a word starts with it, in the name,
+  then zone / source / instance matches; items by quality. Each index loads on the first search; `?t=<kind>` keeps
+  the tab.
+- New `/tables.json` (`[key, name, group, not on V+]`) for the loot tables.
+- Nav: "Search ▾" menu (Items with filters, NPCs, Spells, Quests, Zones, Loot tables; opens on hover, focus or tap);
+  Spells / NPCs / Quests moved from the nav into it. Placeholder "Search items, NPCs, spells, quests, zones...".
+- `style.css`: menu, result groups, wrapping rows on phones.
+- Backups `gen_site.py.bak-2026-10-28`, `site.js.bak-2026-10-28`, `style.css.bak-2026-10-28`.
