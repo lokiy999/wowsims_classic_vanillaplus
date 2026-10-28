@@ -5339,3 +5339,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   (also their /unseen group). Replaces Part GV's `EVENT_TABLES`.
 - Backup `item_sources.py.bak-2026-10-28f`.
 - Part GX addendum (Lokiy): Bracers of Undead Slaying (23090) listed as dungeon too (the second 23091 in the list).
+
+## Part GY — /unseen's items without a source are unobtainable; Scourge Invasion set as dungeon (2026-10-28)
+
+- Lokiy: all items in /unseen's "No known source" are unobtainable; 23085 and 23089 to dungeon; Candy Corn (20389,
+  in the Part GX list) was a typo for 23089.
+- `item_sources.py` `LOKIY_UNOBTAINABLE_IDS` (the 9 items of that group: 7683, 17733, 19105, 19109-19113, 19508),
+  marked "Can't be obtained (Lokiy 2026-10-28)."; by ID, so an item that lands in the group later is still shown
+  there. /removed: 967 -> 976; /unseen has no "No known source" group now.
+- `ITEM_TYPE`: + Robe of Undead Cleansing (23085), Tunic of Undead Slaying (23089); Candy Corn back to its Hallow's
+  End event source.
+- Backup `item_sources.py.bak-2026-10-28g`.

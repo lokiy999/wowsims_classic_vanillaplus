@@ -99,9 +99,11 @@ OLD_PVP_SET = re.compile(r"^(Knight-Lieutenant|Knight-Captain|Lieutenant Command
 OLD_PVP_MAX_ID = 18000
 # Lokiy 2026-10-28: 99% sure not on Vanilla+
 LOKIY_PROBABLY_NOT_IDS = {11768, 16999}  # Incendic Bracers, Royal Seal of Alexis
-# Lokiy 2026-10-28: source type by item (every source of the item gets it): Scorn's loot, the Scourge Invasion set
-# pieces and Candy Corn are listed as dungeon
-ITEM_TYPE = {i: "dungeon" for i in (23168, 23169, 23170, 23087, 23088, 23090, 23091, 23092, 23093, 20389)}
+# Lokiy 2026-10-28: source type by item (every source of the item gets it): Scorn's loot and the Scourge Invasion set
+# pieces are listed as dungeon (Candy Corn 20389 was a typo for 23089)
+ITEM_TYPE = {i: "dungeon" for i in (23168, 23169, 23170, 23085, 23087, 23088, 23089, 23090, 23091, 23092, 23093)}
+# Lokiy 2026-10-28: "all items in No known source are unobtainable" (/unseen's group of classic items without a source)
+LOKIY_UNOBTAINABLE_IDS = {7683, 17733, 19105, 19109, 19110, 19111, 19112, 19113, 19508}
 # Lokiy 2026-10-28: classic items that have dropped on Vanilla+, though no item cache upload has them yet: off /unseen,
 # the tooltip stays classic until a cache has it (gen_site.py)
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
@@ -360,6 +362,9 @@ class Sources:
         for iid, it in self.items.items():
             if iid < OLD_PVP_MAX_ID and it["quality"] == 3 and OLD_PVP_SET.match(it["name"]):
                 mark(iid, CUT_TEXT["old pvp"], "Old PvP rank set (name, rare, id < 18000), Lokiy 2026-10-28")
+        for iid in LOKIY_UNOBTAINABLE_IDS:
+            if iid in self.items:
+                mark(iid, "Can't be obtained (Lokiy 2026-10-28).", "Lokiy's answer, 2026-10-28", force=True)
         for iid in LOKIY_PROBABLY_NOT_IDS:
             if iid in self.items:
                 mark(iid, "Lokiy is 99% sure it isn't on Vanilla+.", "Lokiy's answer, 2026-10-28", force=True)
