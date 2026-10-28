@@ -63,6 +63,7 @@ FORCE_IDS = {
     18583: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
     18584: "The Warglaives of Azzinoth are level 70 (TBC) items and can't be obtained.",
     22736: "Can't be obtained: part of the Atiesh quest line, it doesn't drop (Lokiy 2026-10-28).",
+    12947: "Can't be obtained (Lokiy 2026-10-28).",  # Alex's Ring of Audacity
 }
 # Lokiy's answers (2026-10-25): not on Vanilla+ by name
 LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of the Destroyer",
@@ -79,6 +80,7 @@ LOKIY_NOT_ON_SERVER_IDS = {
     # AQ40 mount crystals (Blue, Red, Green; Black is in LOKIY_NOT_ON_SERVER)
     21218, 21321, 21323,
     7484,  # Ranger Wristguards (a classic world drop)
+    3777,  # Lethargy Root (Lokiy 2026-10-28)
     # Lokiy 2026-10-28 (second list): the old SM 5-man bosses' loot and the old Scarlet set's leggings
     7682, 7684, 7710, 7711, 7712, 7718, 7719, 7756, 10330,
     13175,  # Voone's Twitchbow
@@ -97,8 +99,9 @@ OLD_PVP_SET = re.compile(r"^(Knight-Lieutenant|Knight-Captain|Lieutenant Command
 OLD_PVP_MAX_ID = 18000
 # Lokiy 2026-10-28: 99% sure not on Vanilla+
 LOKIY_PROBABLY_NOT_IDS = {11768, 16999}  # Incendic Bracers, Royal Seal of Alexis
-# loot tables of a world event inside an instance (Lokiy 2026-10-28: Scorn is a dungeon / event boss, not raid loot)
-EVENT_TABLES = {"SMScorn"}
+# Lokiy 2026-10-28: source type by item (every source of the item gets it): Scorn's loot, the Scourge Invasion set
+# pieces and Candy Corn are listed as dungeon
+ITEM_TYPE = {i: "dungeon" for i in (23168, 23169, 23170, 23087, 23088, 23091, 23092, 23093, 20389)}
 # Lokiy 2026-10-28: classic items that have dropped on Vanilla+, though no item cache upload has them yet: off /unseen,
 # the tooltip stays classic until a cache has it (gen_site.py)
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
@@ -293,8 +296,6 @@ class Sources:
     def table_type(self, key):
         name, inst = self.names.get(key, ("", "Other"))
         group = self.groups.get(key, "")
-        if key in EVENT_TABLES:
-            return "event"
         if group == "Instances":
             return "raid" if inst in RAIDS else "dungeon" if inst not in ("Other", "Keys", "Miscellaneous") else "other"
         if group == "Sets":
@@ -427,7 +428,13 @@ class Sources:
 
     # ---- sources
     def sources(self, iid):
-        """[{"text", "type", "from", "href"?}] for this item, from the first layer that has any."""
+        """[{"text", "type", "from", "href"?}] for this item, from the first layer that has any (type: ITEM_TYPE first)."""
+        out = self._sources(iid)
+        if iid in ITEM_TYPE:
+            out = [{**e, "type": ITEM_TYPE[iid]} for e in out]
+        return out
+
+    def _sources(self, iid):
         if iid in self.lokiy_source:
             text, kind, frm, href = self.lokiy_source[iid]
             return [{"text": text, "type": kind, "from": frm, **({"href": href} if href else {})}]

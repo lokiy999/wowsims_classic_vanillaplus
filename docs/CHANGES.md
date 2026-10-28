@@ -5327,3 +5327,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   `CUT_TEXT["old pvp"]`; exactly the 96 (the WSG rewards 19510-20430, the green Champion's world drops and the 1.12
   set don't match). /removed: 869 -> 965.
 - Backup `item_sources.py.bak-2026-10-28e`.
+
+## Part GX — Lethargy Root and Alex's Ring of Audacity not on Vanilla+; Scourge Invasion items listed as dungeon (2026-10-28)
+
+- Lokiy: 3777 can be removed; 12947 is unobtainable; list 23168-23170 and 23091, 23087, 23088, 20389, 23092, 23093
+  as dungeon.
+- `item_sources.py`: Lethargy Root (3777) into `LOKIY_NOT_ON_SERVER_IDS`; Alex's Ring of Audacity (12947) into
+  `FORCE_IDS` ("Can't be obtained"). /removed: 965 -> 967.
+- New `ITEM_TYPE` {item id: source type}: `sources()` gives every source of those items that type. Scorn's three
+  items, the Scourge Invasion set pieces (23087, 23088, 23091, 23092, 23093) and Candy Corn (20389) are "dungeon"
+  (also their /unseen group). Replaces Part GV's `EVENT_TABLES`.
+- Backup `item_sources.py.bak-2026-10-28f`.
