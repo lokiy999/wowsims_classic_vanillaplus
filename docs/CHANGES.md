@@ -5315,3 +5315,15 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
     items show event sources only. They stay on /removed "To check".
 - /removed: 844 -> 869.
 - Backup `item_sources.py.bak-2026-10-28d`.
+
+## Part GW — the old vendor PvP rank sets are not on Vanilla+ (2026-10-28)
+
+- Lokiy: are the vendor blues (PvP sets) the old sets? If so, mark them.
+- Checked: the rare rank 7-10 sets (Knight-Lieutenant's, Knight-Captain's, Lieutenant Commander's, Blood Guard's,
+  Legionnaire's, Champion's) exist twice. The old vendor version (16xxx / 17xxx, sold by Captain Dirgehammer / Lady
+  Palanseer, 96 items) is in no Vanilla+ AtlasLoot table and in no item cache; the patch 1.12 version (22843-23319) is
+  in AtlasLoot's class PvP set tables and was seen in item caches. So yes: the 96 are the old sets.
+- `item_sources.py`: `OLD_PVP_SET` (name prefix) + rare + id < `OLD_PVP_MAX_ID` (18000) marks them with
+  `CUT_TEXT["old pvp"]`; exactly the 96 (the WSG rewards 19510-20430, the green Champion's world drops and the 1.12
+  set don't match). /removed: 869 -> 965.
+- Backup `item_sources.py.bak-2026-10-28e`.

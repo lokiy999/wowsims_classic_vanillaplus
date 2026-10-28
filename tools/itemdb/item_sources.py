@@ -45,7 +45,10 @@ CUT_TEXT = {"AQ20": "Ruins of Ahn'Qiraj (AQ20) is not on Vanilla+.",
                       "can't drop anymore; a BoE that dropped back then may still exist on the server, but maybe none.",
             "old set": "The old (classic) version of this set, with 3/5/8-piece bonuses. Vanilla+ has its own "
                        "Tier 1 version with 2/4/6/8-piece bonuses.",
-            "AQ/Naxx": "From AQ20, AQ40 or Naxxramas, which are not on Vanilla+."}
+            "AQ/Naxx": "From AQ20, AQ40 or Naxxramas, which are not on Vanilla+.",
+            "old pvp": "The old (before patch 1.12) version of this PvP rank set, sold by Captain Dirgehammer / Lady "
+                       "Palanseer. Vanilla+ has the patch 1.12 version of the set (AtlasLoot's PvP sets), with other "
+                       "item IDs."}
 KURINNAXX = "Kurinnaxx"  # AQ20's first boss is a world boss in Silithus here (13 items)
 KURINNAXX_NPC = 15348
 AV_TABLES = {"AVRepFriendly", "AVRepHonored", "AVRepRevered", "AVRepExalted", "Stormpike1", "Frostwolf1"}
@@ -88,6 +91,10 @@ LOKIY_NOT_ON_SERVER_IDS = {
     # the AV junk drops and the AQ junk / Qiraji raid materials (Lokiy: unobtainable)
     18225, 18226, 18227, 18228, 18229, 18230, 18231, 18233, 18234, 21222, 21223, 21224, 21225, 21226, 21227,
 }
+# The rank 7-10 PvP sets (rare) exist twice: the old vendor version (16xxx / 17xxx) and patch 1.12's (22843-23319),
+# which is the one on Vanilla+ (in AtlasLoot's PvP set tables, seen in item caches). Lokiy 2026-10-28: mark the old.
+OLD_PVP_SET = re.compile(r"^(Knight-Lieutenant|Knight-Captain|Lieutenant Commander|Blood Guard|Legionnaire|Champion)'s ")
+OLD_PVP_MAX_ID = 18000
 # Lokiy 2026-10-28: 99% sure not on Vanilla+
 LOKIY_PROBABLY_NOT_IDS = {11768, 16999}  # Incendic Bracers, Royal Seal of Alexis
 # loot tables of a world event inside an instance (Lokiy 2026-10-28: Scorn is a dungeon / event boss, not raid loot)
@@ -349,6 +356,9 @@ class Sources:
         for iid in LOKIY_NOT_ON_SERVER_IDS:
             if iid in self.items:
                 mark(iid, "Not on Vanilla+ (Lokiy).", "Lokiy's answer, 2026-10-28", force=True)
+        for iid, it in self.items.items():
+            if iid < OLD_PVP_MAX_ID and it["quality"] == 3 and OLD_PVP_SET.match(it["name"]):
+                mark(iid, CUT_TEXT["old pvp"], "Old PvP rank set (name, rare, id < 18000), Lokiy 2026-10-28")
         for iid in LOKIY_PROBABLY_NOT_IDS:
             if iid in self.items:
                 mark(iid, "Lokiy is 99% sure it isn't on Vanilla+.", "Lokiy's answer, 2026-10-28", force=True)
