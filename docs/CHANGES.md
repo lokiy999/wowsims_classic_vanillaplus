@@ -5364,3 +5364,17 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   "Ambushed In The Forest". `quests.py` `QUEST_FIX` replaces the record with the Children's Week parts (text and level
   left out, with a note pointing to Wowhead).
 - Backups `item_sources.py.bak-2026-10-28h`, `quests.py.bak-2026-10-28`.
+
+## Part HA — scan for pfQuest quests mixed with an old quest: 171 fixed too (2026-10-28)
+
+- Lokiy: scan the other quests for the quest 172 mix-up (Part GZ).
+- Checks: (1) the client's `WDB\questcache.wdb` (Vanilla+'s own quest titles, 177 quests): all 169 that pfQuest has
+  match by name. (2) Quests whose start or end NPCs are in different zones: 40. 38 are normal (a quest handed out in
+  several cities, class quests with several trainers). 172 and 171 have an old quest's NPC mixed in.
+- 171 "A Warden of the Alliance" (Children's Week, Alliance): name and text are right, but Watcher Callahan (2142,
+  Duskwood) was a second start and end NPC. `quests.py` `QUEST_FIX` now merges over pfQuest's record: 171 starts at
+  the Human Orphan (14305) and ends at Orphan Matron Nightingale (14450); 172 also blanks the old quest's text,
+  objective and level.
+- Not caught by this scan: a mixed-in NPC in the same zone as the real one. pfQuest's text vs. Wowhead's would catch
+  those, but the hub has no Wowhead quest list.
+- Backup `quests.py.bak-2026-10-28b`.
