@@ -25697,16 +25697,8 @@
 "16671": [
 {
 "drop": {
-"difficulty": 1,
-"zoneId": 2057,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
 "zoneId": 2017,
-"otherName": "Trash"
+"npcId": 10440
 }
 }
 ],
@@ -25807,16 +25799,8 @@
 "16681": [
 {
 "drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
 "zoneId": 2017,
-"otherName": "Trash"
+"npcId": 10440
 }
 }
 ],
@@ -25831,21 +25815,8 @@
 "16683": [
 {
 "drop": {
-"zoneId": 1583
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
+"zoneId": 2017,
+"npcId": 10440
 }
 }
 ],
@@ -26000,14 +25971,8 @@
 "16697": [
 {
 "drop": {
-"zoneId": 2017
-}
-},
-{
-"drop": {
-"difficulty": 1,
 "zoneId": 2017,
-"otherName": "Trash"
+"npcId": 10440
 }
 }
 ],
@@ -26076,21 +26041,8 @@
 "16703": [
 {
 "drop": {
-"zoneId": 1583
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
+"zoneId": 2017,
+"npcId": 10440
 }
 }
 ],
@@ -26167,23 +26119,8 @@
 "16710": [
 {
 "drop": {
-"difficulty": 1,
-"npcId": 10505,
-"zoneId": 2057
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 2057,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
 "zoneId": 2017,
-"otherName": "Trash"
+"npcId": 10440
 }
 }
 ],
@@ -26214,16 +26151,8 @@
 "16714": [
 {
 "drop": {
-"difficulty": 1,
-"zoneId": 2057,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
 "zoneId": 2017,
-"otherName": "Trash"
+"npcId": 10440
 }
 }
 ],
@@ -26308,29 +26237,8 @@
 "16722": [
 {
 "drop": {
-"zoneId": 2057
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 10504,
-"zoneId": 2057,
-"category": "Original Loot"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 10504,
-"zoneId": 2057
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 2057,
-"otherName": "Trash"
+"zoneId": 2017,
+"npcId": 10440
 }
 }
 ],
@@ -26477,21 +26385,8 @@
 "16735": [
 {
 "drop": {
-"zoneId": 1583
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 1583,
-"otherName": "Trash"
+"zoneId": 2017,
+"npcId": 10440
 }
 }
 ],
