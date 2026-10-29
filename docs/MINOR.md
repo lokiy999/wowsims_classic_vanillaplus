@@ -12,3 +12,4 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 ## 2026-10-29
 
 - db.lokiy.dev: Dragonbreath 50021 (tier set hand-in) also drops from Dire Maul West's Tendris Warpwood, Illyanna Ravenoak, Magister Kalendris and Immol'thar (`MANUAL_DROPS`; the loot tracker saw it drop after each of them, AtlasLoot lists only Prince Tortheldrin there). Gauntlets of Valor 16737 left as is: its one tracked drop came after Shadow Hunter Vosh'gajin (an AtlasLoot source), not Highlord Omokk (hub, from LootTracker).
+- db.lokiy.dev: Dragonbreath 50021 also drops from Captain Kromcrush (Dire Maul North; in the same loot as his Libram of Focus / Boots of the Full Moon in an approved upload). The Crimson Defender drop in Lokiy's pre-event data was Cannon Master Willey's loot (with Miniature Cannon Balls and Mantle of the Scarlet Crusade), already a source: no change.

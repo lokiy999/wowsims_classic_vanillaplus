@@ -338,10 +338,11 @@ def mob_table(by_name, mob, zones):
 MANUAL_DROPS = {
     "BWLKrixix": [26231],  # Cloak of Untold Secrets (2026-09-25)
     "SMHoundmasterLoksey": [26318],  # Flintrock Shoulders, a confirmed drop (2026-10-28)
-    # Dragonbreath (tier set hand-in): the loot tracker saw it drop after these Dire Maul West bosses; AtlasLoot lists
-    # only Prince Tortheldrin there (2026-10-29)
+    # Dragonbreath (tier set hand-in): the loot tracker saw it drop from these Dire Maul bosses; AtlasLoot lists only
+    # Prince Tortheldrin and King Gordok there (2026-10-29)
     "DMWTendrisWarpwood": [50021], "DMWIllyannaRavenoak": [50021], "DMWMagisterKalendris": [50021],
     "DMWImmolthar": [50021],
+    "DMNCaptainKromcrush": [50021],  # in the same loot as his Libram of Focus / Boots of the Full Moon (upload)
     # Highlord Omokk drops the Tier 0 boots and gloves, not the bracers (Lokiy 2026-10-29)
     "LBRSOmokk": [16684, 16692, 16705, 16712, 16717, 16676, 16672, 16737, 16724],
 }
