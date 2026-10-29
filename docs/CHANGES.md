@@ -5404,3 +5404,15 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Overalls only in an instance table); 18 rep (12 Brood of Nozdormu rings: their table has no standing; 6 AB
   talismans in no table).
 - Backups `gen_site.py.bak-2026-10-28e`, `item_sources.py.bak-2026-10-28i`.
+
+## Part HC — Highlord Omokk drops the Tier 0 boots and gloves, not the bracers (2026-10-29)
+
+- Lokiy: Omokk's AtlasLoot table is wrong for Vanilla+. He doesn't drop the Tier 0 bracers, only all the boots and the
+  gloves.
+- `gen_site.py`: new `MANUAL_NOT_DROPS` {table key: [item ids]}: AtlasLoot rows that are wrong for Vanilla+, taken out
+  of the table by `add_manual_drops()` before `MANUAL_DROPS` adds its rows. `LBRSOmokk` loses the 9 Tier 0 bracers
+  (16683 16697 16703 16710 16714 16681 16671 16735 16722) and gains the 9 Tier 0 gloves (16684 16692 16705 16712 16717
+  16676 16672 16737 16724) in `MANUAL_DROPS`. The bracers keep their other sources (e.g. Magister's Bindings: Baron
+  Rivendare); the gloves keep Halycon / Vosh'gajin / Voone.
+- This answers the hub's LootTracker question (HISTORY 24): the Gauntlets of Valor loot line on Omokk was right.
+- Backup `gen_site.py.bak-2026-10-29b`.

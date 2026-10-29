@@ -342,10 +342,18 @@ MANUAL_DROPS = {
     # only Prince Tortheldrin there (2026-10-29)
     "DMWTendrisWarpwood": [50021], "DMWIllyannaRavenoak": [50021], "DMWMagisterKalendris": [50021],
     "DMWImmolthar": [50021],
+    # Highlord Omokk drops the Tier 0 boots and gloves, not the bracers (Lokiy 2026-10-29)
+    "LBRSOmokk": [16684, 16692, 16705, 16712, 16717, 16676, 16672, 16737, 16724],
+}
+# AtlasLoot rows that are wrong for Vanilla+, from Lokiy: {table key: [item ids]}, taken out of the table.
+MANUAL_NOT_DROPS = {
+    "LBRSOmokk": [16683, 16697, 16703, 16710, 16714, 16681, 16671, 16735, 16722],  # Tier 0 bracers (2026-10-29)
 }
 
 
 def add_manual_drops(tables, items):
+    for key, ids in MANUAL_NOT_DROPS.items():
+        tables[key] = [r for r in tables.get(key, []) if r[0] not in ids]
     for key, ids in MANUAL_DROPS.items():
         have = {r[0] for r in tables.get(key, [])}
         tables[key] = tables.get(key, []) + [(i, "", items[i]["name"], False) for i in ids
