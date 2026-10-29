@@ -111,6 +111,9 @@ ITEM_TYPE = {i: "dungeon" for i in (23168, 23169, 23170, 23085, 23087, 23088, 23
 LOKIY_UNOBTAINABLE_IDS = {7683, 17733, 19105, 19109, 19110, 19111, 19112, 19113, 19508}
 # Lokiy 2026-10-28: classic items that have dropped on Vanilla+, though no item cache upload has them yet: off /unseen,
 # the tooltip stays classic until a cache has it (gen_site.py)
+# AtlasLoot lists these on one boss, but they are classic world drops and the loot tracker saw them drop from trash on
+# Vanilla+ too: pfQuest's world drop line follows the AtlasLoot sources
+ALSO_WORLD_DROP = {18335}  # Pristine Black Diamond (LBRS Blackhand trash, 2026-10-29)
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
@@ -544,6 +547,8 @@ class Sources:
                 where = f" ({inst})" if inst and inst != "Other" and inst not in name else ""
                 out.append({"text": (name or k) + where, "type": self.table_type(k), "from": "atlasloot",
                             "href": f"/loot/{k}"})
+            if iid in ALSO_WORLD_DROP and self.pf.get(str(iid)):
+                out += [e for e in self._pfquest(self.pf[str(iid)]) if e["type"] == "world drop"]
             return out
         if wb:
             return [{"text": part.strip(), "type": wb["type"], "from": "workbook"} for part in wb["text"].split(" / ")]

@@ -225,6 +225,12 @@ def lua_string_expr(expr):
     return "".join(a or b for a, b in parts).strip()
 
 
+# AtlasLoot tables whose boss has another name on Vanilla+: {table key: Vanilla+ name}
+TABLE_NAMES = {
+    "SMHoundmasterLoksey": "Loksey",  # the SM raid's 25225 (2026-10-29)
+}
+
+
 def load_table_names():
     """{table_key: (display name, category)}; category is the instance / group name in AtlasLoot's boss list."""
     txt = open(os.path.join(ATLAS, "TableRegister", "loottables.en.lua"), encoding="utf-8", errors="replace").read()
@@ -243,6 +249,9 @@ def load_table_names():
         m = re.match(r'^\s*\["(\w+)"\]\s*=\s*\{\s*(.*?),\s*"[^"]*"\s*\},?\s*$', ln)
         if m:
             names[m.group(1)] = (lua_string_expr(m.group(2)) or names.get(m.group(1), ("", ""))[0], category)
+    for key, name in TABLE_NAMES.items():
+        if key in names:
+            names[key] = (name, names[key][1])
     return names, order
 
 

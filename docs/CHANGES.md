@@ -5416,3 +5416,16 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Rivendare); the gloves keep Halycon / Vosh'gajin / Voone.
 - This answers the hub's LootTracker question (HISTORY 24): the Gauntlets of Valor loot line on Omokk was right.
 - Backup `gen_site.py.bak-2026-10-29b`.
+
+## Part HD — Pristine Black Diamond is a world drop too; Loksey's table named after the Vanilla+ NPC (2026-10-29)
+
+- Hub (LootTracker HISTORY 25): a Pristine Black Diamond (18335) came from a Blackhand Summoner in LBRS, but the
+  database listed only Shadow Hunter Vosh'gajin (AtlasLoot); and Vanilla+ calls Houndmaster Loksey just "Loksey".
+- `item_sources.py`: new `ALSO_WORLD_DROP` {item ids}: items AtlasLoot puts on one boss that are classic world drops
+  the loot tracker saw from trash too. After the AtlasLoot sources, they get pfQuest's world drop line (normally
+  hidden by an AtlasLoot source). 18335: "World drop: 203 kinds of mobs, level 32-63"; on Vanilla+ also seen 9.6 s after
+  a Blackhand Elite (observed_loot.json) and on a Blackhand Summoner (the hub).
+- `gen_site.py`: new `TABLE_NAMES` {table key: Vanilla+ name}, applied in `load_table_names()`. `SMHoundmasterLoksey`
+  is now "Loksey": its items' source reads "Loksey (Scarlet Monastery)" and the table name in `api/sources.json`
+  matches the tracker's mob name. The table matches NPC 25225 by name; classic Houndmaster Loksey 3974 doesn't link it.
+- Backups `gen_site.py.bak-2026-10-29d`, `item_sources.py.bak-2026-10-29`.
