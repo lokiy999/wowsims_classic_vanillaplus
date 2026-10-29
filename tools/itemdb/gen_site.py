@@ -338,6 +338,10 @@ def mob_table(by_name, mob, zones):
 MANUAL_DROPS = {
     "BWLKrixix": [26231],  # Cloak of Untold Secrets (2026-09-25)
     "SMHoundmasterLoksey": [26318],  # Flintrock Shoulders, a confirmed drop (2026-10-28)
+    # Dragonbreath (tier set hand-in): the loot tracker saw it drop after these Dire Maul West bosses; AtlasLoot lists
+    # only Prince Tortheldrin there (2026-10-29)
+    "DMWTendrisWarpwood": [50021], "DMWIllyannaRavenoak": [50021], "DMWMagisterKalendris": [50021],
+    "DMWImmolthar": [50021],
 }
 
 
