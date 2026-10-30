@@ -1531,6 +1531,26 @@
 "1992": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -2124,6 +2144,33 @@
 "2262": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -8398,6 +8445,26 @@
 "5756": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -11766,64 +11833,120 @@
 "7684": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 4543
+"npcId": 4543,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 4543,
+"zoneId": 796
 }
 }
 ],
 "7685": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 4543
+"npcId": 4543,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 4543,
+"zoneId": 796
 }
 }
 ],
 "7686": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 6489
+"npcId": 6489,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 6489,
+"zoneId": 796
 }
 }
 ],
 "7687": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 6489
+"npcId": 6489,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 6489,
+"zoneId": 796
 }
 }
 ],
 "7688": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 6489
+"npcId": 6489,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 6489,
+"zoneId": 796
 }
 }
 ],
 "7689": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 6488
+"npcId": 6488,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 6488,
+"zoneId": 796
 }
 }
 ],
 "7690": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 6488
+"npcId": 6488,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 6488,
+"zoneId": 796
 }
 }
 ],
 "7691": [
 {
 "drop": {
-"zoneId": 796,
-"npcId": 6488
+"npcId": 6488,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 6488,
+"zoneId": 796
 }
 }
 ],
@@ -11965,6 +12088,33 @@
 "7727": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -11981,6 +12131,28 @@
 "7729": [
 {
 "drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -11989,6 +12161,33 @@
 "7730": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12019,6 +12218,26 @@
 "7736": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12083,6 +12302,28 @@
 "7752": [
 {
 "drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12091,6 +12332,28 @@
 "7753": [
 {
 "drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12107,6 +12370,26 @@
 "7755": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12115,6 +12398,26 @@
 "7757": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12123,6 +12426,19 @@
 "7758": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12131,6 +12447,26 @@
 "7759": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12139,6 +12475,19 @@
 "7760": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12147,6 +12496,33 @@
 "7761": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12155,6 +12531,28 @@
 "7786": [
 {
 "drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12163,6 +12561,28 @@
 "7787": [
 {
 "drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12891,6 +13311,26 @@
 "8225": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -12899,6 +13339,28 @@
 "8226": [
 {
 "drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -17641,8 +18103,15 @@
 "11768": [
 {
 "drop": {
-"zoneId": 1584,
-"npcId": 9017
+"npcId": 9017,
+"zoneId": 1584
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"npcId": 9017,
+"zoneId": 1584
 }
 }
 ],
@@ -22709,7 +23178,7 @@
 {
 "crafted": {
 "profession": 11,
-"spellId": 18454
+"spellId": 28208
 }
 }
 ],
@@ -22792,7 +23261,7 @@
 {
 "crafted": {
 "profession": 11,
-"spellId": 18457
+"spellId": 28205
 }
 }
 ],
@@ -27287,20 +27756,6 @@
 "17348": [
 {
 "rep": {
-"repFactionId": 730,
-"repLevel": 6,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 6,
-"playerFaction": 2
-}
-},
-{
-"rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
@@ -27315,20 +27770,6 @@
 }
 ],
 "17349": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 5,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 5,
-"playerFaction": 2
-}
-},
 {
 "rep": {
 "repFactionId": 509,
@@ -27361,20 +27802,6 @@
 "17351": [
 {
 "rep": {
-"repFactionId": 730,
-"repLevel": 6,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 6,
-"playerFaction": 2
-}
-},
-{
-"rep": {
 "repFactionId": 890,
 "repLevel": 6,
 "playerFaction": 1
@@ -27389,20 +27816,6 @@
 }
 ],
 "17352": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 5,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 5,
-"playerFaction": 2
-}
-},
 {
 "rep": {
 "repFactionId": 509,
@@ -32180,42 +32593,6 @@
 }
 }
 ],
-"19029": [
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 8,
-"playerFaction": 2
-}
-}
-],
-"19030": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 8,
-"playerFaction": 1
-}
-}
-],
-"19031": [
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 5,
-"playerFaction": 2
-}
-}
-],
-"19032": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 5,
-"playerFaction": 1
-}
-}
-],
 "19037": [
 {
 "quest": {
@@ -32277,24 +32654,6 @@
 "crafted": {
 "profession": 8,
 "spellId": 23703
-}
-}
-],
-"19045": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 7,
-"playerFaction": 1
-}
-}
-],
-"19046": [
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 7,
-"playerFaction": 2
 }
 }
 ],
@@ -32947,7 +33306,7 @@
 {
 "crafted": {
 "profession": 8,
-"spellId": 23707
+"spellId": 28224
 }
 }
 ],
@@ -33271,22 +33630,6 @@
 }
 }
 ],
-"19301": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 6,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 6,
-"playerFaction": 2
-}
-}
-],
 "19302": [
 {
 "soldBy": {
@@ -33300,22 +33643,6 @@
 "soldBy": {
 "npcId": 14846,
 "npcName": "Lhara"
-}
-}
-],
-"19307": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 5,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 5,
-"playerFaction": 2
 }
 }
 ],
@@ -33411,86 +33738,6 @@
 "rep": {
 "repFactionId": 729,
 "repLevel": 8,
-"playerFaction": 2
-}
-}
-],
-"19316": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 6,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 6,
-"playerFaction": 2
-}
-}
-],
-"19317": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 6,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 6,
-"playerFaction": 2
-}
-}
-],
-"19318": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 5,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 5,
-"playerFaction": 2
-}
-}
-],
-"19319": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 7,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 7,
-"playerFaction": 2
-}
-}
-],
-"19320": [
-{
-"rep": {
-"repFactionId": 730,
-"repLevel": 7,
-"playerFaction": 1
-}
-},
-{
-"rep": {
-"repFactionId": 729,
-"repLevel": 7,
 "playerFaction": 2
 }
 }
@@ -44665,7 +44912,7 @@
 {
 "crafted": {
 "profession": 2,
-"spellId": 27586
+"spellId": 27589
 }
 }
 ],
@@ -44741,14 +44988,6 @@
 }
 ],
 "22219": [
-{
-"rep": {
-"repFactionId": 609,
-"repLevel": 8
-}
-}
-],
-"22221": [
 {
 "rep": {
 "repFactionId": 609,
@@ -46360,57 +46599,57 @@
 ],
 "22652": [
 {
-"crafted": {
-"profession": 11,
-"spellId": 28207
-}
-},
-{
 "quest": {
 "id": 9240,
 "name": "Glacial Vest"
+}
+},
+{
+"crafted": {
+"profession": 11,
+"spellId": 28207
 }
 }
 ],
 "22654": [
 {
-"crafted": {
-"profession": 11,
-"spellId": 28205
-}
-},
-{
 "quest": {
 "id": 9239,
 "name": "Glacial Gloves"
+}
+},
+{
+"crafted": {
+"profession": 11,
+"spellId": 28205
 }
 }
 ],
 "22655": [
 {
-"crafted": {
-"profession": 11,
-"spellId": 28209
-}
-},
-{
 "quest": {
 "id": 9238,
 "name": "Glacial Wrists"
+}
+},
+{
+"crafted": {
+"profession": 11,
+"spellId": 28209
 }
 }
 ],
 "22658": [
 {
-"crafted": {
-"profession": 11,
-"spellId": 28208
-}
-},
-{
 "quest": {
 "id": 9237,
 "name": "Glacial Cloak"
+}
+},
+{
+"crafted": {
+"profession": 11,
+"spellId": 28208
 }
 }
 ],
@@ -46424,127 +46663,127 @@
 ],
 "22661": [
 {
-"crafted": {
-"profession": 8,
-"spellId": 28219
-}
-},
-{
 "quest": {
 "id": 9243,
 "name": "Polar Tunic"
+}
+},
+{
+"crafted": {
+"profession": 8,
+"spellId": 28219
 }
 }
 ],
 "22662": [
 {
-"crafted": {
-"profession": 8,
-"spellId": 28220
-}
-},
-{
 "quest": {
 "id": 9242,
 "name": "Polar Gloves"
+}
+},
+{
+"crafted": {
+"profession": 8,
+"spellId": 28220
 }
 }
 ],
 "22663": [
 {
-"crafted": {
-"profession": 8,
-"spellId": 28221
-}
-},
-{
 "quest": {
 "id": 9241,
 "name": "Polar Bracers"
+}
+},
+{
+"crafted": {
+"profession": 8,
+"spellId": 28221
 }
 }
 ],
 "22664": [
 {
-"crafted": {
-"profession": 8,
-"spellId": 28222
-}
-},
-{
 "quest": {
 "id": 9246,
 "name": "Icy Scale Breastplate"
+}
+},
+{
+"crafted": {
+"profession": 8,
+"spellId": 28222
 }
 }
 ],
 "22665": [
 {
-"crafted": {
-"profession": 8,
-"spellId": 28224
-}
-},
-{
 "quest": {
 "id": 9244,
 "name": "Icy Scale Bracers"
+}
+},
+{
+"crafted": {
+"profession": 8,
+"spellId": 28224
 }
 }
 ],
 "22666": [
 {
-"crafted": {
-"profession": 8,
-"spellId": 28223
-}
-},
-{
 "quest": {
 "id": 9245,
 "name": "Icy Scale Gauntlets"
+}
+},
+{
+"crafted": {
+"profession": 8,
+"spellId": 28223
 }
 }
 ],
 "22669": [
 {
-"crafted": {
-"profession": 2,
-"spellId": 28242
-}
-},
-{
 "quest": {
 "id": 9236,
 "name": "Icebane Breastplate"
+}
+},
+{
+"crafted": {
+"profession": 2,
+"spellId": 28242
 }
 }
 ],
 "22670": [
 {
-"crafted": {
-"profession": 2,
-"spellId": 28243
-}
-},
-{
 "quest": {
 "id": 9234,
 "name": "Icebane Gauntlets"
+}
+},
+{
+"crafted": {
+"profession": 2,
+"spellId": 28243
 }
 }
 ],
 "22671": [
 {
-"crafted": {
-"profession": 2,
-"spellId": 28244
-}
-},
-{
 "quest": {
 "id": 9235,
 "name": "Icebane Bracers"
+}
+},
+{
+"crafted": {
+"profession": 2,
+"spellId": 28244
 }
 }
 ],
@@ -51765,6 +52004,13 @@
 "26346": [
 {
 "drop": {
+"npcId": 4302,
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -51781,6 +52027,33 @@
 "26349": [
 {
 "drop": {
+"zoneId": 796
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
+"zoneId": 796,
+"otherName": "Trash"
+}
+},
+{
+"drop": {
+"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
