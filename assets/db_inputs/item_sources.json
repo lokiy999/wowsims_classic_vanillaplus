@@ -31,11 +31,27 @@
 }
 }
 ],
+"117": [
+{
+"quest": {
+"id": 2160,
+"name": "Supplies to Tannok"
+}
+}
+],
 "118": [
 {
 "crafted": {
 "profession": 1,
 "spellId": 2330
+}
+}
+],
+"159": [
+{
+"quest": {
+"id": 2160,
+"name": "Supplies to Tannok"
 }
 }
 ],
@@ -288,6 +304,14 @@
 "drop": {
 "zoneId": 209,
 "otherName": "Fel Steed"
+}
+}
+],
+"961": [
+{
+"quest": {
+"id": 182,
+"name": "The Troll Cave"
 }
 }
 ],
@@ -2890,6 +2914,12 @@
 "profession": 2,
 "spellId": 2660
 }
+},
+{
+"quest": {
+"id": 30006,
+"name": "A Change Of Heart"
+}
 }
 ],
 "2863": [
@@ -2969,6 +2999,22 @@
 "drop": {
 "zoneId": 1581,
 "npcId": 639
+}
+}
+],
+"2888": [
+{
+"quest": {
+"id": 384,
+"name": "Beer Basted Boar Ribs"
+}
+}
+],
+"2889": [
+{
+"quest": {
+"id": 384,
+"name": "Beer Basted Boar Ribs"
 }
 }
 ],
@@ -3508,6 +3554,12 @@
 "crafted": {
 "profession": 2,
 "spellId": 3115
+}
+},
+{
+"quest": {
+"id": 30006,
+"name": "A Change Of Heart"
 }
 }
 ],
@@ -6853,6 +6905,14 @@
 }
 }
 ],
+"4925": [
+{
+"quest": {
+"id": 792,
+"name": "Vile Familiars"
+}
+}
+],
 "4928": [
 {
 "quest": {
@@ -8450,6 +8510,14 @@
 "quest": {
 "id": 757,
 "name": "Rite of Strength"
+}
+}
+],
+"5778": [
+{
+"quest": {
+"id": 792,
+"name": "Vile Familiars"
 }
 }
 ],
@@ -13823,6 +13891,14 @@
 }
 }
 ],
+"9541": [
+{
+"quest": {
+"id": 2747,
+"name": "An Extraordinary Egg"
+}
+}
+],
 "9588": [
 {
 "drop": {
@@ -16338,9 +16414,9 @@
 ],
 "11000": [
 {
-"drop": {
-"zoneId": 1584,
-"otherName": "Monument of Franclorn Forgewright"
+"quest": {
+"id": 3802,
+"name": "Dark Iron Legacy"
 }
 }
 ],
@@ -18315,6 +18391,38 @@
 }
 }
 ],
+"12112": [
+{
+"quest": {
+"id": 4263,
+"name": "Incendius!"
+}
+}
+],
+"12113": [
+{
+"quest": {
+"id": 4263,
+"name": "Incendius!"
+}
+}
+],
+"12114": [
+{
+"quest": {
+"id": 4263,
+"name": "Incendius!"
+}
+}
+],
+"12115": [
+{
+"quest": {
+"id": 4263,
+"name": "Incendius!"
+}
+}
+],
 "12185": [
 {
 "rep": {
@@ -18645,6 +18753,54 @@
 }
 }
 ],
+"12450": [
+{
+"quest": {
+"id": 4801,
+"name": "Frostsaber E'ko"
+}
+}
+],
+"12455": [
+{
+"quest": {
+"id": 4803,
+"name": "Shardtooth E'ko"
+}
+}
+],
+"12457": [
+{
+"quest": {
+"id": 4804,
+"name": "Chillwind E'ko"
+}
+}
+],
+"12458": [
+{
+"quest": {
+"id": 4807,
+"name": "Wildkin E'ko"
+}
+}
+],
+"12459": [
+{
+"quest": {
+"id": 4805,
+"name": "Ice Thistle E'ko"
+}
+}
+],
+"12460": [
+{
+"quest": {
+"id": 4806,
+"name": "Frostmaul E'ko"
+}
+}
+],
 "12462": [
 {
 "drop": {
@@ -18722,6 +18878,14 @@
 "drop": {
 "zoneId": 1584,
 "otherName": "Trash"
+}
+}
+],
+"12529": [
+{
+"quest": {
+"id": 4862,
+"name": "En-Ay-Es-Tee-Why"
 }
 }
 ],
@@ -19723,6 +19887,14 @@
 }
 }
 ],
+"12821": [
+{
+"quest": {
+"id": 5306,
+"name": "Snakestone of the Shadow Huntress"
+}
+}
+],
 "12824": [
 {
 "drop": {
@@ -19824,6 +19996,26 @@
 "drop": {
 "zoneId": 2057,
 "otherName": "Trash"
+}
+}
+],
+"12844": [
+{
+"quest": {
+"id": 5510,
+"name": "Minion's Scourgestones"
+}
+},
+{
+"quest": {
+"id": 5508,
+"name": "Corruptor's Scourgestones"
+}
+},
+{
+"quest": {
+"id": 5509,
+"name": "Invader's Scourgestones"
 }
 }
 ],
@@ -20255,7 +20447,7 @@
 {
 "quest": {
 "id": 5214,
-"name": "The Great Ezra Grimm"
+"name": "The Great Fras Siabi"
 }
 }
 ],
@@ -20721,6 +20913,14 @@
 }
 }
 ],
+"13315": [
+{
+"quest": {
+"id": 5282,
+"name": "The Restless Souls"
+}
+}
+],
 "13340": [
 {
 "drop": {
@@ -21172,6 +21372,12 @@
 "profession": 1,
 "spellId": 17580
 }
+},
+{
+"quest": {
+"id": 9422,
+"name": "Scouring the Desert"
+}
 }
 ],
 "13445": [
@@ -21187,6 +21393,12 @@
 "crafted": {
 "profession": 1,
 "spellId": 17556
+}
+},
+{
+"quest": {
+"id": 9422,
+"name": "Scouring the Desert"
 }
 }
 ],
@@ -21873,11 +22085,51 @@
 }
 }
 ],
+"13958": [
+{
+"quest": {
+"id": 4903,
+"name": "Warlord's Command"
+}
+}
+],
+"13959": [
+{
+"quest": {
+"id": 4903,
+"name": "Warlord's Command"
+}
+}
+],
 "13960": [
 {
 "drop": {
 "zoneId": 2057,
 "npcId": 10506
+}
+}
+],
+"13961": [
+{
+"quest": {
+"id": 4903,
+"name": "Warlord's Command"
+}
+}
+],
+"13962": [
+{
+"quest": {
+"id": 4903,
+"name": "Warlord's Command"
+}
+}
+],
+"13963": [
+{
+"quest": {
+"id": 4903,
+"name": "Warlord's Command"
 }
 }
 ],
@@ -23962,6 +24214,14 @@
 }
 }
 ],
+"15804": [
+{
+"quest": {
+"id": 4987,
+"name": "Glyphed Oaken Branch"
+}
+}
+],
 "15805": [
 {
 "quest": {
@@ -24023,6 +24283,48 @@
 "quest": {
 "id": 6031,
 "name": "Runecloth"
+}
+}
+],
+"15824": [
+{
+"quest": {
+"id": 4701,
+"name": "Put Her Down"
+}
+},
+{
+"quest": {
+"id": 4724,
+"name": "The Pack Mistress"
+}
+}
+],
+"15825": [
+{
+"quest": {
+"id": 4701,
+"name": "Put Her Down"
+}
+},
+{
+"quest": {
+"id": 4724,
+"name": "The Pack Mistress"
+}
+}
+],
+"15827": [
+{
+"quest": {
+"id": 4701,
+"name": "Put Her Down"
+}
+},
+{
+"quest": {
+"id": 4724,
+"name": "The Pack Mistress"
 }
 }
 ],
@@ -24438,6 +24740,12 @@
 {
 "drop": {
 "zoneId": 1583
+}
+},
+{
+"quest": {
+"id": 6602,
+"name": "Blood of the Black Dragon Champion"
 }
 }
 ],
@@ -26066,14 +26374,6 @@
 "drop": {
 "zoneId": 719,
 "npcId": 202699
-}
-}
-],
-"16787": [
-{
-"quest": {
-"id": 6570,
-"name": "Emberstrife"
 }
 }
 ],
@@ -28725,6 +29025,38 @@
 }
 }
 ],
+"18366": [
+{
+"quest": {
+"id": 7703,
+"name": "Unfinished Gordok Business"
+}
+}
+],
+"18367": [
+{
+"quest": {
+"id": 7703,
+"name": "Unfinished Gordok Business"
+}
+}
+],
+"18368": [
+{
+"quest": {
+"id": 7703,
+"name": "Unfinished Gordok Business"
+}
+}
+],
+"18369": [
+{
+"quest": {
+"id": 7703,
+"name": "Unfinished Gordok Business"
+}
+}
+],
 "18370": [
 {
 "drop": {
@@ -29637,6 +29969,14 @@
 "difficulty": 1,
 "npcId": 14324,
 "zoneId": 2557
+}
+}
+],
+"18491": [
+{
+"quest": {
+"id": 7489,
+"name": "Lethtendris's Web"
 }
 }
 ],
@@ -30557,6 +30897,14 @@
 }
 }
 ],
+"18707": [
+{
+"quest": {
+"id": 7636,
+"name": "Stave of the Ancients"
+}
+}
+],
 "18709": [
 {
 "drop": {
@@ -30666,6 +31014,14 @@
 "drop": {
 "zoneId": 2017,
 "npcId": 10439
+}
+}
+],
+"18724": [
+{
+"quest": {
+"id": 7635,
+"name": "A Proper String"
 }
 }
 ],
@@ -36402,6 +36758,14 @@
 }
 }
 ],
+"20009": [
+{
+"quest": {
+"id": 8149,
+"name": "Honoring a Hero"
+}
+}
+],
 "20011": [
 {
 "rep": {
@@ -39021,6 +39385,12 @@
 "npcId": 14479,
 "zoneId": 1377
 }
+},
+{
+"quest": {
+"id": 8341,
+"name": "Lords of the Council"
+}
 }
 ],
 "20476": [
@@ -39342,6 +39712,48 @@
 "drop": {
 "zoneId": 900001,
 "otherName": "Emeriss"
+}
+}
+],
+"20601": [
+{
+"quest": {
+"id": 8348,
+"name": "Signet of the Dukes"
+}
+},
+{
+"quest": {
+"id": 8363,
+"name": "Abyssal Signets"
+}
+}
+],
+"20602": [
+{
+"quest": {
+"id": 8352,
+"name": "Scepter of the Council"
+}
+},
+{
+"quest": {
+"id": 8364,
+"name": "Abyssal Scepters"
+}
+}
+],
+"20603": [
+{
+"quest": {
+"id": 8361,
+"name": "Abyssal Contacts"
+}
+},
+{
+"quest": {
+"id": 8362,
+"name": "Abyssal Crests"
 }
 }
 ],
@@ -40303,6 +40715,52 @@
 }
 }
 ],
+"20800": [
+{
+"quest": {
+"id": 8787,
+"name": "Armor Kits for the Field"
+}
+}
+],
+"20801": [
+{
+"quest": {
+"id": 8537,
+"name": "Crimson Templar"
+}
+}
+],
+"20802": [
+{
+"quest": {
+"id": 8687,
+"name": "Target: Hive'Zora Tunnelers"
+}
+}
+],
+"20808": [
+{
+"quest": {
+"id": 8731,
+"name": "Field Duty"
+}
+}
+],
+"20809": [
+{
+"quest": {
+"id": 8537,
+"name": "Crimson Templar"
+}
+},
+{
+"quest": {
+"id": 8731,
+"name": "Field Duty"
+}
+}
+],
 "20949": [
 {
 "drop": {
@@ -40610,6 +41068,14 @@
 "drop": {
 "zoneId": 900001,
 "otherName": "W B Shared Loot"
+}
+}
+],
+"21266": [
+{
+"quest": {
+"id": 8731,
+"name": "Field Duty"
 }
 }
 ],
@@ -40944,6 +41410,14 @@
 "drop": {
 "zoneId": 2717,
 "otherName": "Trash"
+}
+}
+],
+"21386": [
+{
+"quest": {
+"id": 8787,
+"name": "Armor Kits for the Field"
 }
 }
 ],
@@ -42448,6 +42922,14 @@
 }
 }
 ],
+"22638": [
+{
+"quest": {
+"id": 9213,
+"name": "The Shadow Guard"
+}
+}
+],
 "22651": [
 {
 "rep": {
@@ -43449,6 +43931,22 @@
 }
 }
 ],
+"23246": [
+{
+"quest": {
+"id": 9368,
+"name": "The Festival of Fire"
+}
+}
+],
+"23247": [
+{
+"quest": {
+"id": 9368,
+"name": "The Festival of Fire"
+}
+}
+],
 "23251": [
 {
 "soldBy": {
@@ -44276,12 +44774,24 @@
 "drop": {
 "zoneId": 2717
 }
+},
+{
+"quest": {
+"id": 10006,
+"name": "Melted Bindings Exchange"
+}
 }
 ],
 "25017": [
 {
 "drop": {
 "zoneId": 2717
+}
+},
+{
+"quest": {
+"id": 10006,
+"name": "Melted Bindings Exchange"
 }
 }
 ],
@@ -44291,6 +44801,12 @@
 "npcId": 12259,
 "zoneId": 2717
 }
+},
+{
+"quest": {
+"id": 10007,
+"name": "Molten Grips Exchange"
+}
 }
 ],
 "25019": [
@@ -44298,6 +44814,12 @@
 "drop": {
 "npcId": 12118,
 "zoneId": 2717
+}
+},
+{
+"quest": {
+"id": 10007,
+"name": "Molten Grips Exchange"
 }
 }
 ],
@@ -44333,11 +44855,49 @@
 }
 }
 ],
+"25024": [
+{
+"quest": {
+"id": 10006,
+"name": "Melted Bindings Exchange"
+}
+}
+],
+"25025": [
+{
+"quest": {
+"id": 10006,
+"name": "Melted Bindings Exchange"
+}
+}
+],
+"25026": [
+{
+"quest": {
+"id": 10007,
+"name": "Molten Grips Exchange"
+}
+}
+],
+"25027": [
+{
+"quest": {
+"id": 10007,
+"name": "Molten Grips Exchange"
+}
+}
+],
 "25032": [
 {
 "drop": {
 "npcId": 12435,
 "zoneId": 2677
+}
+},
+{
+"quest": {
+"id": 10006,
+"name": "Melted Bindings Exchange"
 }
 }
 ],
@@ -44347,12 +44907,24 @@
 "npcId": 13020,
 "zoneId": 2677
 }
+},
+{
+"quest": {
+"id": 10006,
+"name": "Melted Bindings Exchange"
+}
 }
 ],
 "25034": [
 {
 "drop": {
 "zoneId": 2677
+}
+},
+{
+"quest": {
+"id": 10007,
+"name": "Molten Grips Exchange"
 }
 }
 ],
@@ -44361,6 +44933,12 @@
 "drop": {
 "npcId": 12017,
 "zoneId": 2677
+}
+},
+{
+"quest": {
+"id": 10007,
+"name": "Molten Grips Exchange"
 }
 }
 ],
@@ -47038,6 +47616,12 @@
 "id": 1053,
 "name": "In the Name of the Light"
 }
+},
+{
+"quest": {
+"id": 1048,
+"name": "Into The Scarlet Monastery"
+}
 }
 ],
 "26401": [
@@ -47054,6 +47638,12 @@
 "id": 1053,
 "name": "In the Name of the Light"
 }
+},
+{
+"quest": {
+"id": 1048,
+"name": "Into The Scarlet Monastery"
+}
 }
 ],
 "26403": [
@@ -47061,6 +47651,12 @@
 "quest": {
 "id": 1053,
 "name": "In the Name of the Light"
+}
+},
+{
+"quest": {
+"id": 1048,
+"name": "Into The Scarlet Monastery"
 }
 }
 ],
@@ -47357,6 +47953,38 @@
 "drop": {
 "zoneId": 2557,
 "otherName": "Alzzin the Wildshaper"
+}
+}
+],
+"80013": [
+{
+"quest": {
+"id": 40004,
+"name": "The Defense of Aerie Peak"
+}
+}
+],
+"80014": [
+{
+"quest": {
+"id": 40004,
+"name": "The Defense of Aerie Peak"
+}
+}
+],
+"83123": [
+{
+"quest": {
+"id": 41206,
+"name": "Jungle Mastery"
+}
+}
+],
+"83167": [
+{
+"quest": {
+"id": 41206,
+"name": "Jungle Mastery"
 }
 }
 ]
