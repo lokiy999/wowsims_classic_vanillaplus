@@ -5566,3 +5566,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   10007. Quest pages 4209 -> 4217. Still Wowhead: quest rewards on 1,227 -> 1,161 items in the sim's map, item pages
   with only a Wowhead quest reward 949 -> 915.
 - Backups `*.bak-2026-10-30h` (gen_site.py, item_sources.py, quests.py).
+
+## Part HL — shamans can use polearms (2026-10-30)
+
+- Lokiy: on Vanilla+ shamans can use polearms. Neither db.lokiy.dev's search nor the sim knew it.
+- `ui/core/proto_utils/utils.ts` `classToEligibleWeaponTypes`: Shaman gets `WeaponTypePolearm` (two-hand), so
+  polearms show in the shaman specs' main-hand picker (checked on sim.lokiy.dev enhancement shaman: Herald of Woe,
+  Blackfury, Halberd of Smiting). This list is the only class check for weapons; the Go sim has none.
+- db.lokiy.dev search: `tools/itemdb/item_stats.py` `WEAPON_USERS["Polearms"]` adds Shaman (MINOR.md, committed
+  before this Part).
+- Deployed: `make dist/classic/.dirstamp && make devserver`, sim restarted. Backup
+  `ui/core/proto_utils/utils.ts.bak-2026-10-30`.

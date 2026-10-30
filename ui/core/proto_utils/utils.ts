@@ -1384,6 +1384,8 @@ export const classToEligibleWeaponTypes: Record<Class, Array<EligibleWeaponType>
 		{ weaponType: WeaponType.WeaponTypeFist },
 		{ weaponType: WeaponType.WeaponTypeMace, canUseTwoHand: true },
 		{ weaponType: WeaponType.WeaponTypeOffHand },
+		// Vanilla+: shamans can use polearms (Lokiy 2026-10-30)
+		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
 		{ weaponType: WeaponType.WeaponTypeShield },
 		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
 	],
