@@ -303,15 +303,38 @@ there is more to say.
 
 ## Item database site db.lokiy.dev (Parts EN-ET)
 
-- Crafted / faction sources from AtlasLoot: done (Part HB). PvP rank items still name Wowhead's vendor (AtlasLoot
-  has only the rank).
+- Crafted / faction sources from AtlasLoot: done (Part HB). Still from Wowhead on 2026-10-30, counting only items still
+  on db.lokiy.dev (after Parts HF-HI). Each line is open; Lokiy picks which comes next.
+  - PvP rank items: 282 items still name Wowhead's vendor in `api/sources.json` "wowhead" (AtlasLoot has only the
+    rank; the item pages already show AtlasLoot's PvP tables for all 296 rank items). Replace with Vanilla+'s rank
+    vendors: their creature IDs per faction (combat logs / pfQuest: Captain Dirgehammer / Lady Palanseer and the
+    city rank vendors), with the faction taken from the item's `allowableRace` (item cache).
+  - Other vendor sources: 248 items (battleground and faction vendors: Defiler's / Arathor / Sentinel's /
+    Outrider's ...). Replace with pfQuest's vendor lists (`pfquest_sources.json` "vendors") where it has the item.
+    14 entries name Season of Discovery NPCs (Barebones 209889, Rix Xizzix 214954): drop those.
+  - Crafts in no AtlasLoot table: 27 items (Stormcloth set, Goblin Radio / Gnomish Ham Radio, Glimmering Mithril
+    Insignia, Thorium Greatsword, ...). Add the recipe spells to the AtlasLoot crafting import, or take the spell
+    from the server's Spell.csv (an effect that creates the item).
+  - Reps in no AtlasLoot table: 6 items (Talisman of Arathor / Defiler's Talisman, 3 IDs each). Map them to the
+    League of Arathor / Defilers tables by hand.
+  - Drops: Wowhead classic drop sources on 1,939 items (3,091 entries). The item pages show them only when no own
+    layer has the item (5 items). Replace with pfQuest's drops (`pfquest_sources.json`) plus the loot tracker, which
+    covers the same NPC IDs.
+  - Quest rewards: 1,227 items in the map, and 949 item pages whose only source is a Wowhead quest reward. pfQuest's
+    data has no reward items (only start / needs / hand-out items), so it can't replace them. Options: the client's
+    `WDB/questcache.wdb` (the server's own rewards, for quests a client has opened), uploaded like the item cache, or
+    keep Wowhead's classic rewards marked "classic".
+  - Item pages with only Wowhead crafting sources: 24 (the 27 crafts above minus 3 with another layer).
+  - Clean-up: the "wowhead" map still holds 315 removed (not-on-V+) items. The sim ignores them (they aren't in
+    `api/items.json`), but Part HF meant to take them out of `api/sources.json` too.
 
 - Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the spells site shows food / drink totals
   ($oN) as one tick and "hr" for hours (spell_changelog.py), `wdb_tooltip.py` corrects both on the item side.
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
 - Drop chances: only the observed rates from the Chronicle logs; no server loot-table chances in the data we have.
-- "Not on Vanilla+" marks (Parts FR / FU, Lokiy 2026-10-25: mark, not hide, for now): check all ~810 marks (db.lokiy.dev/removed) later.
+- "Not on Vanilla+" items (Parts FR / FU): left out of the database since Part HF (2026-10-30; AQ / Naxx / AV creatures,
+  quests and zones too, Parts HG-HI). /removed lists all 999 with the rule that marked each; check them later.
   The to-check list is answered: Flintrock Shoulders (26318) drops from Houndmaster Loksey (Part GS); Obsidian Mail
   Tunic, Thick Obsidian Breastplate and Black Qiraji Resonating Crystal are not on Vanilla+ (Part GP).
 - World Boss Shared Loot (Parts FY, GA): Formula: Enchant Gloves - Living Power (spell 34347) is the 8th glove formula
