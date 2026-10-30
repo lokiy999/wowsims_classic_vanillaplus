@@ -678,7 +678,7 @@ QUESTS_NOT_ON_SERVER = {
                         7301, 7302, 7361, 7362, 7363, 7364, 7365, 7366, 7367, 7368, 7385, 7386, 7401, 7402, 7421,
                         7422, 7423, 7424, 7425, 7426, 7427, 7428},
 }
-ZONES_NOT_ON_SERVER = {2597}  # Alterac Valley
+ZONES_NOT_ON_SERVER = {2597, 2839}  # Alterac Valley (pfQuest has it twice)
 NOT_ON_SERVER_NPCS = set().union(*NPCS_NOT_ON_SERVER.values())
 NOT_ON_SERVER_QUESTS = set().union(*QUESTS_NOT_ON_SERVER.values())
 AV_REPS = {729, 730}  # Frostwolf Clan, Stormpike Guard

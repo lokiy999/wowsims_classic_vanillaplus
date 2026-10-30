@@ -5511,7 +5511,7 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   - `NPCS_NOT_ON_SERVER["Alterac Valley"]`: 220 creatures (pfQuest's zone 2597 plus Wowhead's AV-only creatures). The
     ones Wowhead also lists elsewhere stay (rank vendors, spirit guides, Stormpike Mountaineer).
   - New `QUESTS_NOT_ON_SERVER["Alterac Valley"]`: the 52 quests started or ended by an AV NPC.
-  - New `ZONES_NOT_ON_SERVER = {2597}`.
+  - New `ZONES_NOT_ON_SERVER = {2597, 2839}` (pfQuest has Alterac Valley under two area IDs).
   - `kept_source()` drops item source lines in AV (pfQuest's "(Alterac Valley" lines) and links to a removed creature
     or quest. `kept_wowhead()` does the same for `api/sources.json` "wowhead" (the sim's source data): AV reputation,
     drops from / sold by removed creatures or in zone 2597, rewards of removed quests.
