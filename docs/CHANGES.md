@@ -5521,3 +5521,19 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   and ~96 vendor goods with other sources only lose their AV lines. A scan of the built site finds no link to a
   removed creature, quest or /zone/2597, and no AV source line or AV reputation source left.
 - Backups `*.bak-2026-10-30f` (gen_site.py, item_sources.py, quests.py).
+
+## Part HJ — the sim's "wowhead" sources: no removed items, rank vendors from our NPC data, no SoD vendors (2026-10-30)
+
+- Lokiy (via the hub) approved three fixes to `api/sources.json` "wowhead" (the sim's source data) in `gen_site.py`:
+  - Only items still in the database. Part HF meant this: the map still had the 315 not-on-V+ items. 5168 -> 4853
+    items.
+  - PvP rank items: every item a rank vendor sells (pfQuest's vendor lists) is now sold by that vendor from
+    `RANK_VENDORS` {creature id: (name, zone)}, with the name and zone that Wowhead's entries lacked. Alliance:
+    Captain Dirgehammer, Captain O'Neal and Officer Areyn (Stormwind). Horde: Lady Palanseer, Sergeant Thunderhorn and
+    Sergeant Ba'sha (Orgrimmar). All 282 rank items map to exactly one vendor of their faction, so no item was left
+    without one. V+ evidence: Areyn and Ba'sha (48 items) are in the client's creature cache. The other four (234
+    items) are NPC pages kept as shared NPCs in Part HI that no client has seen yet.
+  - No Season of Discovery vendors (creature id >= `SOD_NPC_MIN` 200000): 14 entries (Barebones 13, Rix Xizzix 1).
+- Entries: soldBy 530 -> 516, crafted 1027 -> 1011, drop 3263 -> 3091, quest 1446 -> 1227, rep 471 -> 459 (the last
+  four only from the removed items).
+- Backup `gen_site.py.bak-2026-10-30g`.

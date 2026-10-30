@@ -305,13 +305,12 @@ there is more to say.
 
 - Crafted / faction sources from AtlasLoot: done (Part HB). Still from Wowhead on 2026-10-30, counting only items still
   on db.lokiy.dev (after Parts HF-HI). Each line is open; Lokiy picks which comes next.
-  - PvP rank items: 282 items still name Wowhead's vendor in `api/sources.json` "wowhead" (AtlasLoot has only the
-    rank; the item pages already show AtlasLoot's PvP tables for all 296 rank items). Replace with Vanilla+'s rank
-    vendors: their creature IDs per faction (combat logs / pfQuest: Captain Dirgehammer / Lady Palanseer and the
-    city rank vendors), with the faction taken from the item's `allowableRace` (item cache).
+  - PvP rank items: done (Part HJ). All 282 now name a rank vendor from our NPC data. Check later that Dirgehammer,
+    O'Neal, Palanseer and Thunderhorn exist on Vanilla+: no client's creature cache has them yet (Areyn and Ba'sha
+    are in it).
   - Other vendor sources: 248 items (battleground and faction vendors: Defiler's / Arathor / Sentinel's /
     Outrider's ...). Replace with pfQuest's vendor lists (`pfquest_sources.json` "vendors") where it has the item.
-    14 entries name Season of Discovery NPCs (Barebones 209889, Rix Xizzix 214954): drop those.
+    (The 14 Season of Discovery vendor entries are gone, Part HJ.)
   - Crafts in no AtlasLoot table: 27 items (Stormcloth set, Goblin Radio / Gnomish Ham Radio, Glimmering Mithril
     Insignia, Thorium Greatsword, ...). Add the recipe spells to the AtlasLoot crafting import, or take the spell
     from the server's Spell.csv (an effect that creates the item).
@@ -325,8 +324,6 @@ there is more to say.
     `WDB/questcache.wdb` (the server's own rewards, for quests a client has opened), uploaded like the item cache, or
     keep Wowhead's classic rewards marked "classic".
   - Item pages with only Wowhead crafting sources: 24 (the 27 crafts above minus 3 with another layer).
-  - Clean-up: the "wowhead" map still holds 315 removed (not-on-V+) items. The sim ignores them (they aren't in
-    `api/items.json`), but Part HF meant to take them out of `api/sources.json` too.
 
 - Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the spells site shows food / drink totals
   ($oN) as one tick and "hr" for hours (spell_changelog.py), `wdb_tooltip.py` corrects both on the item side.

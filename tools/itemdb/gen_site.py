@@ -682,6 +682,14 @@ ZONES_NOT_ON_SERVER = {2597, 2839}  # Alterac Valley (pfQuest has it twice)
 NOT_ON_SERVER_NPCS = set().union(*NPCS_NOT_ON_SERVER.values())
 NOT_ON_SERVER_QUESTS = set().union(*QUESTS_NOT_ON_SERVER.values())
 AV_REPS = {729, 730}  # Frostwolf Clan, Stormpike Guard
+# PvP rank vendors (Part HJ): {creature id: (name, zone id)}. In the sim's sources ("wowhead" map) every item they sell
+# (pfQuest's vendor lists) is sold by them instead of Wowhead's entry. Officer Areyn and Sergeant Ba'sha are in the
+# client's creature cache; the four in the Champions' Hall / Hall of Legends are pfQuest NPCs no client has seen yet
+# (kept as shared NPCs in Part HI). Faction: Alliance in Stormwind, Horde in Orgrimmar.
+RANK_VENDORS = {12777: ("Captain Dirgehammer", 1519), 12782: ("Captain O'Neal", 1519), 12805: ("Officer Areyn", 1519),
+                12792: ("Lady Palanseer", 1637), 14581: ("Sergeant Thunderhorn", 1637),
+                12799: ("Sergeant Ba'sha", 1637)}
+SOD_NPC_MIN = 200000  # Season of Discovery creature ids (Barebones, Rix Xizzix): not on Vanilla+
 
 
 def kept_source(e):
@@ -1823,6 +1831,23 @@ your filters, so you can share a search.</p></section>
     src_api["wowhead"], moved = merge_atlas_sources(src_api.get("wowhead", {}), atlas)
     src_api["wowhead"] = {k: kept for k, v in src_api["wowhead"].items() for kept in [[e for e in v if kept_wowhead(e)]]
                           if kept}  # Part HI
+    # Part HJ: only items still in the database; the rank vendors' items sold by them; no Season of Discovery vendors
+    rank_sold = {}
+    for nid in RANK_VENDORS:
+        for i in npcs.get(nid, {}).get("sells", []):
+            rank_sold.setdefault(str(i), []).append(nid)
+    wh_api = {}
+    for k, v in src_api["wowhead"].items():
+        if int(k) not in items:
+            continue
+        v = [e for e in v if (e.get("soldBy") or {}).get("npcId", 0) < SOD_NPC_MIN]
+        if k in rank_sold:
+            v = [e for e in v if "soldBy" not in e] + [
+                {"soldBy": {"npcId": nid, "npcName": RANK_VENDORS[nid][0], "zoneId": RANK_VENDORS[nid][1]}}
+                for nid in sorted(rank_sold[k])]
+        if v:
+            wh_api[k] = v
+    src_api["wowhead"] = wh_api
     print("api/sources.json from AtlasLoot:", ", ".join(f"{k} {v}" for k, v in sorted(moved.items())))
     tmp = os.path.join(out, "api", "sources.json.tmp")
     with open(tmp, "w", encoding="utf-8") as f:
