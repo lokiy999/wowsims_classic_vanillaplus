@@ -141,6 +141,8 @@ LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 127
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
     "The Lobotomizer": ("Upper Blackrock Spire - Lord Valthalak (seen once)", "dungeon"),
+    # its only data source was an Alterac Valley trogg (gone since Part HI); hub, Lokiy 2026-10-30
+    "Heavy Junkbox": ("Pickpocketed by rogues from humanoids of level 50 and up (classic)", "other"),
 }
 # Lokiy 2026-10-25: the AQ class books and three glove formulas are one loot set that the four world bosses share
 # (their drop rates are shared between them): its own loot table, built by add_shared_world_boss_loot()

@@ -20,3 +20,4 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 - db.lokiy.dev: Sandals of the Impure Saint 26355 drops from Brother Michael (SM raid; `MANUAL_DROPS` SMMichael): seen in Rist's loot log, confirmed by Lokiy. It had no source before.
 - Docs: docs/TODO.md: what is still sourced from Wowhead (counts after Parts HF-HI) and how each could be replaced; the not-on-V+ line updated (left out since HF).
 - db.lokiy.dev search: shamans can use polearms on Vanilla+ (`item_stats.py` WEAPON_USERS; Lokiy 2026-10-30).
+- db.lokiy.dev: Heavy Junkbox (16885) gets the source "Pickpocketed by rogues from humanoids of level 50 and up (classic)" (`LOKIY_ON_SERVER`); it had none since Part HI.

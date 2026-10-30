@@ -5577,3 +5577,15 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   before this Part).
 - Deployed: `make dist/classic/.dirstamp && make devserver`, sim restarted. Backup
   `ui/core/proto_utils/utils.ts.bak-2026-10-30`.
+
+## Part HM — spells the tooltip doesn't show, listed on item pages (2026-10-30)
+
+- Hub TODO: Golden Ceremonial Bloodletter (26194) has a Use spell, 34275, that the tooltip doesn't show. The spell
+  ("Disarm Immune (FistWeap)") has no tooltip text in Spell.csv, so the game doesn't show it either:
+  `wdb_tooltip.py` is right. 100 items on the site have such spells (70 Use, 30 Equip), e.g. Claw of Molten Fury
+  (also Disarm Immune) and Lashlayer's Signet / Chronomirage (hidden Equip spells).
+- `gen_site.py`: `add_cache_items()` keeps them as `hidden_spells` [[spell id, Use / Equip, name (Spell.csv column
+  120, `SPELL_NAME_COL`)]]. `tooltip_html()` shows a grey line under the tooltip on the item page and in hover
+  tooltips: "Not on the tooltip (Use): <spell name>", linked to /spell/<id>. `api/items.json` (the sim's input)
+  keeps the game's tooltip lines only.
+- Backup `gen_site.py.bak-2026-10-30i`.

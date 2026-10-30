@@ -197,6 +197,13 @@ def add_cache_items(items):
                 spell_lines[f"({threshold}) Set: {lk.desc(sid)}"] = sid
         if spell_lines:
             items[iid]["spell_lines"] = spell_lines
+        # spells the game doesn't show (no tooltip text in Spell.csv), e.g. Golden Ceremonial Bloodletter's
+        # "Disarm Immune (FistWeap)": listed under the tooltip (Part HM)
+        hidden = [[sp["id"], TRIGGERS[sp["trigger"]].rstrip(": "), lk.spells[sp["id"]]["raw"][SPELL_NAME_COL]]
+                  for sp in rec["spells"] if sp["id"] and sp["trigger"] in TRIGGERS and not lk.desc(sp["id"])
+                  and sp["id"] in lk.spells]
+        if hidden:
+            items[iid]["hidden_spells"] = hidden
     return {iid: lk.icons[rec["displayId"]] for iid, rec in recs.items() if rec["displayId"] in lk.icons}
 
 
@@ -555,6 +562,9 @@ def line_class(ln):
     return "tt-white"
 
 
+SPELL_NAME_COL = 120  # Spell.csv: the spell's name
+
+
 def tooltip_html(item, mark=(), mark_cls="tt-new"):
     """mark: normalized lines to highlight (the changes against the other version of a reworked item)."""
     color = Q_COLOR.get(item["quality"], "#ffffff")
@@ -569,6 +579,9 @@ def tooltip_html(item, mark=(), mark_cls="tt-new"):
         if ln in spell_lines:  # the spell's page on this site
             text = f'<a class="tt-spell" href="/spell/{spell_lines[ln]}">{text}</a>'
         out.append(f'<div class="{cls}">{text}</div>')
+    for sid, kind, name in item.get("hidden_spells", []):  # Part HM
+        out.append(f'<div class="tt-grey">Not on the tooltip ({esc(kind)}): '
+                   f'<a class="tt-spell" href="/spell/{sid}">{esc(name or f"spell {sid}")}</a></div>')
     return "".join(out)
 
 
