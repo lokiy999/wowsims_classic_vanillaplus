@@ -263,7 +263,7 @@ TYPE_LABEL = {"raid": "Raid", "dungeon": "Dungeon", "world boss": "World boss", 
               "other": "Other"}
 FROM_LABEL = {"lokiy": "Lokiy", "external": "another player's loot log", "atlasloot": "AtlasLoot", "workbook": "item workbook", "tracker": "Lokiy's loot tracker",
               "pfquest": "classic data (pfQuest)", "wowhead": "from Wowhead",
-              "questcache": "Vanilla+ quest cache"}
+              "questcache": "Vanilla+ quest cache", "spellcsv": "Vanilla+ spell data"}
 
 
 def _load(name, default):
@@ -326,6 +326,10 @@ FACTION_TABLES = {"Argent": 529, "Timbermaw": 576, "Thorium": 59, "Cenarion": 60
                   "Defilers": 510, "GelkisClan": 92, "LeagueofArathor": 509, "MagramClan": 93, "Shendralar": 809,
                   "AQBroodRings": 910}
 NO_STANDING_TABLES = {"Argent1", "Darkmoon"}
+# items added to a Factions table by hand (gen_site.py MANUAL_DROPS) have no AtlasLoot header for their standing:
+# {item id: (faction id, standing, player faction)} (Part HP, Lokiy via the hub 2026-10-30)
+HAND_REP = {**{i: (509, 5, 1) for i in (20071, 21117, 21118, 21119)},  # Talisman of Arathor: League of Arathor, Friendly
+            **{i: (510, 5, 2) for i in (20072, 21115, 21116, 21120)}}  # Defiler's Talisman: The Defilers, Friendly
 # battleground reward tables (PvP folder): a header names the side's faction (#b1# Stormpike Guard, ...) ->
 # (faction id, player faction 1 Alliance / 2 Horde)
 BG_REP = ("WSGRep", "ABRep", "AVRep")
@@ -345,6 +349,9 @@ def atlas_item_sources(tables, groups, names, row_info, craft):
     def add(iid, e):
         if e not in out.setdefault(iid, []):
             out[iid].append(e)
+
+    for iid, (fid, level, pf) in HAND_REP.items():
+        add(iid, {"rep": {"repFactionId": fid, "repLevel": level, "playerFaction": pf}})
 
     for key, rows in tables.items():
         group, (name, inst) = groups.get(key, ""), names.get(key, ("", ""))

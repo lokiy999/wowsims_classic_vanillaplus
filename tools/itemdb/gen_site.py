@@ -68,7 +68,7 @@ from item_types import ARMOR_SLOTS, PAGES, classify  # noqa: E402
 from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  # noqa: E402
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
-from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
+from wdb_tooltip import C_EFFECT, C_ITEM_TYPE, TRIGGERS, Lookups, tooltip  # noqa: E402
 from npcs import RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
 from quests import WH_QUEST, Quests  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
@@ -186,6 +186,12 @@ def add_cache_items(items):
         return {}
     recs = {int(k): v["item"] for k, v in store.items()}
     lk = Lookups(SPELL_DB, os.path.join(CSV, "dbc"))
+    SPELL_MAKERS.clear()
+    for sid, sp in sorted(lk.spells.items()):
+        raw = sp["raw"]
+        for j in range(3):  # effect Create Item (24) and the item it makes
+            if raw[C_EFFECT + j] == 24 and raw[C_ITEM_TYPE + j]:
+                SPELL_MAKERS.setdefault(raw[C_ITEM_TYPE + j], []).append((sid, raw[SPELL_NAME_COL]))
     for iid, rec in recs.items():
         lines = tooltip(rec, lk, recs)
         items[iid] = {"id": iid, "name": lines[0], "quality": rec["quality"], "lines": lines[1:-1]}
@@ -354,7 +360,10 @@ def mob_table(by_name, mob, zones):
 # table like the tracked drops.
 MANUAL_DROPS = {
     "BWLKrixix": [26231],  # Cloak of Untold Secrets (2026-09-25)
-    "SMHoundmasterLoksey": [26318],  # Flintrock Shoulders, a confirmed drop (2026-10-28)
+    "SMHoundmasterLoksey": [26318],
+    # the talismans' faction tables (standing: item_sources.py HAND_REP; Part HP)
+    "LeagueofArathor": [20071, 21117, 21118, 21119],
+    "Defilers": [20072, 21115, 21116, 21120],  # Flintrock Shoulders, a confirmed drop (2026-10-28)
     "SMMichael": [26355],  # Sandals of the Impure Saint (Rist's loot log, confirmed by Lokiy 2026-10-30)
     # Dragonbreath (tier set hand-in): the loot tracker saw it drop from these Dire Maul bosses; AtlasLoot lists only
     # Prince Tortheldrin and King Gordok there (2026-10-29)
@@ -563,6 +572,7 @@ def line_class(ln):
 
 
 SPELL_NAME_COL = 120  # Spell.csv: the spell's name
+SPELL_MAKERS = {}  # item id -> [(spell id, spell name)]: the server's spells that create it (Spell.csv; Part HP)
 ITEM_CHANGES = os.path.expanduser("~/itemcache/changes.jsonl")  # itemcache_sync.py: one line per new / changed item
 STAT_NAMES = {0: "Mana", 1: "Health", 3: "Agility", 4: "Strength", 5: "Intellect", 6: "Spirit", 7: "Stamina"}
 CHANGE_FIELDS = {"maxCount": "Unique", "stats": "Stats", "armor": "Armor", "spells": "Spells", "name": "Name",
@@ -879,6 +889,14 @@ def main():
     item_srcs = {i: [e for e in srcs.sources(i) if (not e.get("href", "").startswith("/loot/")
                                                     or e["href"][6:].split("#")[0] in tables) and kept_source(e)]
                  for i in all_items}
+    # Crafted items whose only crafting line is Wowhead's: the server's spell that makes it (Spell.csv; Part HP)
+    for i in all_items:
+        wh_craft = [e for e in item_srcs[i] if e.get("from") == "wowhead" and e.get("type") == "crafting"]
+        if wh_craft and i in SPELL_MAKERS:
+            prof = wh_craft[0]["text"]
+            item_srcs[i] = [e for e in item_srcs[i] if e not in wh_craft] + [
+                {"text": f"{prof}: {name}", "type": "crafting", "from": "spellcsv", "href": f"/spell/{sid}"}
+                for sid, name in SPELL_MAKERS[i]]
     # Quest rewards from the game's quest cache (Part HK): for a quest it has, its rewards replace Wowhead's
     qcache = {q: c for q, c in load_questcache().items() if q not in NOT_ON_SERVER_QUESTS}
     qc_rewards = {}  # item id -> [(quest id, label)]
@@ -1938,6 +1956,34 @@ your filters, so you can share a search.</p></section>
                 for nid in sorted(rank_sold[k])]
         if v:
             wh_api[k] = v
+    # Part HP: vendors from pfQuest's lists (NPCs with a page here; the rank vendors are done above) and crafts in no
+    # AtlasLoot table from the server's spells; Wowhead's stay where neither has the item
+    sellers = {}
+    for nid, n in npcs.items():
+        if nid not in RANK_VENDORS:
+            for i in n.get("sells", []):
+                sellers.setdefault(str(i), []).append(nid)
+    in_craft_table = {str(r[0]) for k, rows in tables.items() if table_groups.get(k) == "Crafting" for r in rows}
+    hp_left = {"vendor": [], "craft": []}
+    for k, v in list(wh_api.items()):
+        if any("soldBy" in e for e in v) and k not in rank_sold:
+            if k in sellers:
+                v = [e for e in v if "soldBy" not in e] + [
+                    {"soldBy": {"npcId": nid, "npcName": npcs[nid]["name"],
+                                **({"zoneId": npcs[nid]["zid"]} if npcs[nid].get("zid") else {})}}
+                    for nid in sorted(sellers[k])]
+            else:
+                hp_left["vendor"].append(int(k))
+        if any("crafted" in e for e in v) and k not in in_craft_table:
+            if int(k) in SPELL_MAKERS:
+                prof = next((e["crafted"]["profession"] for e in v if "crafted" in e), 0)
+                v = [e for e in v if "crafted" not in e] + [{"crafted": {"profession": prof, "spellId": sid}}
+                                                             for sid, _ in SPELL_MAKERS[int(k)]]
+            else:
+                hp_left["craft"].append(int(k))
+        wh_api[k] = v
+    print(f"api/sources.json vendors / crafts still Wowhead's: {len(hp_left['vendor'])} vendor items "
+          f"{sorted(hp_left['vendor'])}, {len(hp_left['craft'])} crafts {sorted(hp_left['craft'])}")
     # Part HK: quest rewards from the game's quest cache replace Wowhead's for the quests it has
     for k in set(wh_api) | {str(i) for i in qc_rewards if i in items}:
         v = [e for e in wh_api.get(k, []) if (e.get("quest") or {}).get("id") not in qcache]

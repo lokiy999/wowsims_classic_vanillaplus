@@ -5611,3 +5611,23 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   other fields as they are. Now: 239 changes. 2026-10-30: Savage Gladiator Chain stats / armor, new Ravager and Loop
   of Cosmic Balance. 2026-10-23: Kassan's Signet. 2026-10-22: 235, mostly the 218 PvP items losing Unique.
 - Backup `gen_site.py.bak-2026-10-30j`.
+
+## Part HP — vendors from pfQuest, crafts from the server's spells, talismans on their faction tables (2026-10-30)
+
+- Lokiy (via the hub): replace three more of the Wowhead leftovers (TODO.md).
+- `gen_site.py`:
+  - Vendors (`api/sources.json` "wowhead", the sim): every vendor item except the rank items (Part HJ) is sold by
+    pfQuest's sellers (NPCs that have a page here), with name and zone. That covers 230 of 234; 229 of them name the
+    same vendors as Wowhead. Left on Wowhead: 17705, 17743 and 17753 (Wowhead gives only Desolace) and 19120 (Primal
+    Torntusk has no page).
+  - Crafts in no AtlasLoot crafting table: `SPELL_MAKERS` {item: [(spell, name)]} lists the server's spells that
+    create each item (Spell.csv effect 24, Create Item; built in `add_cache_items()`). In the sim's data those spells
+    replace Wowhead's crafted entries. On item pages a Wowhead crafting line becomes "<profession>: <spell name>"
+    from `spellcsv` ("Vanilla+ spell data"), linked to /spell/<id>. 22 of 27 done. Left: 10418, 8663, 8703, 4548 and
+    9508; no server spell makes them (crafting-quest rewards).
+  - Talismans: Talisman of Arathor (20071, 21117-21119) and Defiler's Talisman (20072, 21115, 21116, 21120) added to
+    the LeagueofArathor / Defilers tables (`MANUAL_DROPS`). `item_sources.py` `HAND_REP` sets their standing
+    (Friendly), because rows added by hand have no AtlasLoot standing header.
+- Effect on the sim's data: 10 items changed (the vendors and crafts mostly matched Wowhead already). They are now
+  backed by our own data.
+- Backups `*.bak-2026-10-30k` (gen_site.py, item_sources.py).

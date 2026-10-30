@@ -308,14 +308,15 @@ there is more to say.
   - PvP rank items: done (Part HJ). All 282 now name a rank vendor from our NPC data. Check later that Dirgehammer,
     O'Neal, Palanseer and Thunderhorn exist on Vanilla+: no client's creature cache has them yet (Areyn and Ba'sha
     are in it).
-  - Other vendor sources: 248 items (battleground and faction vendors: Defiler's / Arathor / Sentinel's /
-    Outrider's ...). Replace with pfQuest's vendor lists (`pfquest_sources.json` "vendors") where it has the item.
-    (The 14 Season of Discovery vendor entries are gone, Part HJ.)
-  - Crafts in no AtlasLoot table: 27 items (Stormcloth set, Goblin Radio / Gnomish Ham Radio, Glimmering Mithril
-    Insignia, Thorium Greatsword, ...). Add the recipe spells to the AtlasLoot crafting import, or take the spell
-    from the server's Spell.csv (an effect that creates the item).
-  - Reps in no AtlasLoot table: 6 items (Talisman of Arathor / Defiler's Talisman, 3 IDs each). Map them to the
-    League of Arathor / Defilers tables by hand.
+  - Other vendor sources: done (Part HP) from pfQuest's vendor lists for 230 of 234 items. Still Wowhead's: 17705
+    Thrash Blade, 17743 Resurgence Rod, 17753 Verdant Keeper's Aim (Wowhead names only the zone, Desolace) and 19120
+    Rune of the Guard Captain (Primal Torntusk, no NPC page here).
+  - Crafts in no AtlasLoot table: done (Part HP), 22 of 27 from the server's Spell.csv (the spell that creates the
+    item). Still Wowhead's: 10418 Glimmering Mithril Insignia, 8663 Mithril Insignia, 8703 Signet of Expertise, 4548
+    Servomechanic Sledgehammer, 9508 Mechbuilder's Overalls. No server spell makes them: they are rewards of
+    crafting quests, so Wowhead's "crafted" is probably wrong.
+  - Reps in no AtlasLoot table: done (Part HP). The 8 talismans are on the League of Arathor / Defilers tables, with
+    their standing (Friendly) set by hand.
   - Drops: Wowhead classic drop sources on 1,939 items (3,091 entries). The item pages show them only when no own
     layer has the item (5 items). Replace with pfQuest's drops (`pfquest_sources.json`) plus the loot tracker, which
     covers the same NPC IDs.
@@ -323,9 +324,10 @@ there is more to say.
     opened). Still Wowhead after the first upload (177 quests, 2026-10-30): quest rewards on 1,161 items in the map
     (was 1,227) and 915 item pages whose only source is a Wowhead quest reward (was 949). Each rebuild prints the
     current numbers ("quest cache: ..."). They shrink with every upload.
-  - Item pages with only Wowhead crafting sources: 24 (the 27 crafts above minus 3 with another layer).
+  - Item pages with only Wowhead crafting sources: done (Part HP). The server's spell is shown instead ("Vanilla+
+    spell data"), except for the 5 crafts above.
 
-- Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the spells site shows food / drink totals
+- Item cache (Part FA): the "recently changed items" page is done (/changes, Part HO); the spells site shows food / drink totals
   ($oN) as one tick and "hr" for hours (spell_changelog.py), `wdb_tooltip.py` corrects both on the item side.
 - Observed drop rates need more logs: re-run `tools/itemdb/loot_from_logs.py` on Lokiy's PC when new Chronicle logs
   come in, copy `observed_loot.json` to `tools/itemdb/` and regenerate.
@@ -343,10 +345,6 @@ there is more to say.
   in no loot table, so `gen_phases.py` puts them in phase 1 / ilvl 66 instead of phase 6. Since Part FK the sim reads
   db.lokiy.dev's loot tables, so each one moves to phase 6 with its boss as soon as the loot tracker sees it drop
   (26300 Hospitaller Codex, 26348 Champion's Broken Tooth and 26330 Kassan's Signet already did).
-- The sim DB's `unique` flag still comes from the Wowhead base data: the 218 PvP items the server made non-Unique
-  keep it (only matters for rings / trinkets / weapons).
-- 26194 Golden Ceremonial Bloodletter: the server added a Use spell (34275) that db.lokiy.dev's tooltip lines don't
-  show; check `wdb_tooltip.py` for it.
 
 ## Trinkets and items still open
 
