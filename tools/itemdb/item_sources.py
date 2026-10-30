@@ -120,6 +120,19 @@ ALSO_WORLD_DROP = {18335}  # Pristine Black Diamond (LBRS Blackhand trash, 2026-
 EXTERNAL_DROPS = {
     12662: [(11454, "Wildspawn Betrayer", "Dire Maul", 1, "Rist's log"),  # Demonic Rune (Lokiy 2026-10-30)
             (13276, "Wildspawn Imp", "Dire Maul", 2, "Rist's log")],
+    # the rest of the proposal's "maybe" list (Lokiy 2026-10-30; not Living Essence)
+    18364: [(14349, "Pimgib", "Dire Maul", 1, "Rist's log"),  # The Emerald Dream
+            (11455, "Wildspawn Felsworn", "Dire Maul", 1, "Rist's log")],
+    18357: [(11455, "Wildspawn Felsworn", "Dire Maul", 1, "Rist's log")],  # Codex of Defense
+    19272: [(11443, "Gordok Ogre-Mage", "Dire Maul", 1, "Rist's log")],  # Five of Elementals
+    17964: [(11583, "Nefarian", "Blackwing Lair", 1, "Rist's log")],  # Gray Sack of Gems
+    12704: [(11451, "Wildspawn Satyr", "Dire Maul", 1, "Rist's log")],  # Plans: Thorium Leggings
+    8267: [(11443, "Gordok Ogre-Mage", "Dire Maul", 1, "Rist's log")],  # Ebonhold Gauntlets
+    10203: [(11443, "Gordok Ogre-Mage", "Dire Maul", 1, "Rist's log")],  # Overlord's Chestplate
+    5758: [(11443, "Gordok Ogre-Mage", "Dire Maul", 1, "Rist's log"),  # Mithril Lockbox
+           (1791, "Slavering Ghoul", "Western Plaguelands", 1, "Rist's log")],
+    12014: [(11443, "Gordok Ogre-Mage", "Dire Maul", 1, "Rist's log")],  # Arctic Ring
+    7909: [(11673, "Ancient Core Hound", "Molten Core", 1, "Rist's log")],  # Aquamarine
 }
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
