@@ -3987,9 +3987,23 @@
 },
 {
 "soldBy": {
-"npcId": 8766,
-"npcName": "Forest Ooze",
-"zoneId": 16
+"npcId": 1302,
+"npcName": "Bernard Gump",
+"zoneId": 1519
+}
+},
+{
+"soldBy": {
+"npcId": 1303,
+"npcName": "Felicia Gump",
+"zoneId": 1519
+}
+},
+{
+"soldBy": {
+"npcId": 3014,
+"npcName": "Nida Winterhoof",
+"zoneId": 215
 }
 }
 ],
@@ -6053,11 +6067,6 @@
 }
 ],
 "4385": [
-{
-"crafted": {
-"profession": 4
-}
-},
 {
 "crafted": {
 "profession": 4,
@@ -32839,7 +32848,8 @@
 {
 "soldBy": {
 "npcId": 14846,
-"npcName": "Lhara"
+"npcName": "Lhara",
+"zoneId": 12
 }
 }
 ],
@@ -32847,7 +32857,8 @@
 {
 "soldBy": {
 "npcId": 14846,
-"npcName": "Lhara"
+"npcName": "Lhara",
+"zoneId": 12
 }
 }
 ],
@@ -37192,33 +37203,33 @@
 ],
 "20071": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 5,
 "playerFaction": 1
 }
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
+}
 }
 ],
 "20072": [
-{
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
 {
 "rep": {
 "repFactionId": 510,
 "repLevel": 5,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
@@ -40771,65 +40782,65 @@
 ],
 "21115": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 5,
 "playerFaction": 2
+}
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
 }
 }
 ],
 "21116": [
 {
-"soldBy": {
-"npcId": 15126,
-"npcName": "Rutherford Twing",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 510,
 "repLevel": 5,
 "playerFaction": 2
 }
+},
+{
+"soldBy": {
+"npcId": 15126,
+"npcName": "Rutherford Twing",
+"zoneId": 45
+}
 }
 ],
 "21117": [
-{
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
 {
 "rep": {
 "repFactionId": 509,
 "repLevel": 5,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
 "21118": [
 {
-"soldBy": {
-"npcId": 15127,
-"npcName": "Samuel Hawke",
-"zoneId": 45
-}
-},
-{
 "rep": {
 "repFactionId": 509,
 "repLevel": 5,
 "playerFaction": 1
+}
+},
+{
+"soldBy": {
+"npcId": 15127,
+"npcName": "Samuel Hawke",
+"zoneId": 45
 }
 }
 ],
