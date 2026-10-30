@@ -15,7 +15,8 @@ def mask(*names):
     return m
 
 
-# armor and weapon proficiencies (classic 1.12; hunters / shamans learn mail at 40, still listed)
+# armor and weapon proficiencies (classic 1.12 plus Vanilla+'s changes; hunters / shamans learn mail at 40, still
+# listed)
 ARMOR_USERS = {
     "cloth": ALL_CLASSES,
     "leather": mask("Warrior", "Paladin", "Hunter", "Rogue", "Shaman", "Druid"),
@@ -28,7 +29,7 @@ WEAPON_USERS = {
     "Axes": mask("Warrior", "Paladin", "Hunter", "Shaman"),
     "Maces": mask("Warrior", "Paladin", "Rogue", "Priest", "Shaman", "Druid"),
     "Swords": mask("Warrior", "Paladin", "Hunter", "Rogue", "Mage", "Warlock"),
-    "Polearms": mask("Warrior", "Paladin", "Hunter"),
+    "Polearms": mask("Warrior", "Paladin", "Hunter", "Shaman"),  # shamans: Vanilla+ (Lokiy 2026-10-30)
     "Staffs": mask("Warrior", "Hunter", "Priest", "Shaman", "Mage", "Warlock", "Druid"),
     "Bows": mask("Warrior", "Hunter", "Rogue"),
     "Guns": mask("Warrior", "Hunter", "Rogue"),
