@@ -114,6 +114,13 @@ LOKIY_UNOBTAINABLE_IDS = {7683, 17733, 19105, 19109, 19110, 19111, 19112, 19113,
 # AtlasLoot lists these on one boss, but they are classic world drops and the loot tracker saw them drop from trash on
 # Vanilla+ too: pfQuest's world drop line follows the AtlasLoot sources
 ALSO_WORLD_DROP = {18335}  # Pristine Black Diamond (LBRS Blackhand trash, 2026-10-29)
+# Drops seen in other players' loot logs that Lokiy confirmed: {item id: [(npc id, mob name, zone, times seen, log)]}.
+# Added after the item's other sources as "Drops from <mob> (<log>, seen n x)"; no rate (the logs' kill counts don't
+# line up with their loot). Proposal: data\external loot\rist_proposal.md in the hub.
+EXTERNAL_DROPS = {
+    12662: [(11454, "Wildspawn Betrayer", "Dire Maul", 1, "Rist's log"),  # Demonic Rune (Lokiy 2026-10-30)
+            (13276, "Wildspawn Imp", "Dire Maul", 2, "Rist's log")],
+}
 LOKIY_DROPPED_IDS = {18259, 18252, 18290, 14456, 18292, 22739, 20635, 20736, 12714, 20734, 20735, 20728, 20727, 20731}
 # Lokiy 2026-10-25: on Vanilla+ after all, with their real source (overrides every rule and every other source)
 LOKIY_ON_SERVER = {
@@ -236,7 +243,7 @@ TYPE_LABEL = {"raid": "Raid", "dungeon": "Dungeon", "world boss": "World boss", 
               "crafting": "Crafted", "pvp": "PvP", "quest": "Quest", "world drop": "World drop", "drop": "Drop",
               "vendor": "Vendor", "container": "Container", "event": "Event", "set": "Set", "rare mob": "Rare mob",
               "other": "Other"}
-FROM_LABEL = {"lokiy": "Lokiy", "atlasloot": "AtlasLoot", "workbook": "item workbook", "tracker": "Lokiy's loot tracker",
+FROM_LABEL = {"lokiy": "Lokiy", "external": "another player's loot log", "atlasloot": "AtlasLoot", "workbook": "item workbook", "tracker": "Lokiy's loot tracker",
               "pfquest": "classic data (pfQuest)", "wowhead": "from Wowhead"}
 
 
@@ -530,6 +537,9 @@ class Sources:
     def sources(self, iid):
         """[{"text", "type", "from", "href"?}] for this item, from the first layer that has any (type: ITEM_TYPE first)."""
         out = self._sources(iid)
+        for npc, mob, zone, n, log in EXTERNAL_DROPS.get(iid, []):
+            out.append({"text": f"Drops from {mob} ({zone}; {log}, seen {n}x)", "type": "drop", "from": "external",
+                        "href": f"/npc/{npc}"})
         if iid in ITEM_TYPE:
             out = [{**e, "type": ITEM_TYPE[iid]} for e in out]
         return out

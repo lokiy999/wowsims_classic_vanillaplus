@@ -351,7 +351,10 @@ MANUAL_DROPS = {
     # Prince Tortheldrin and King Gordok there (2026-10-29)
     "DMWTendrisWarpwood": [50021], "DMWIllyannaRavenoak": [50021], "DMWMagisterKalendris": [50021],
     "DMWImmolthar": [50021],
-    "DMNCaptainKromcrush": [50021],  # in the same loot as his Libram of Focus / Boots of the Full Moon (upload)
+    "DMNCaptainKromcrush": [50021],
+    # Primordial Hakkari Bijou drops from every Zul'Gurub boss (Lokiy 2026-10-30; AtlasLoot: Azus / Nameless Hermit)
+    **{k: [26191] for k in ("ZGJeklik", "ZGVenoxis", "ZGMarli", "ZGMandokir", "ZGGrilek", "ZGHazzarah", "ZGRenataki",
+                            "ZGWushoolay", "ZGGahzranka", "ZGThekal", "ZGArlokk", "ZGJindo", "ZGHakkar")},  # in the same loot as his Libram of Focus / Boots of the Full Moon (upload)
     # Highlord Omokk drops the Tier 0 boots and gloves, not the bracers (Lokiy 2026-10-29)
     "LBRSOmokk": [16684, 16692, 16705, 16712, 16717, 16676, 16672, 16737, 16724],
 }

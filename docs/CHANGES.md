@@ -5429,3 +5429,17 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   is now "Loksey": its items' source reads "Loksey (Scarlet Monastery)" and the table name in `api/sources.json`
   matches the tracker's mob name. The table matches NPC 25225 by name; classic Houndmaster Loksey 3974 doesn't link it.
 - Backups `gen_site.py.bak-2026-10-29d`, `item_sources.py.bak-2026-10-29`.
+
+## Part HE — drops from other players' loot logs; Primordial Hakkari Bijou from every ZG boss (2026-10-30)
+
+- Hub: Rist's LootTracker SavedVariables (another addon) reviewed as a proposal (hub `data\external loot\
+  rist_proposal.md`: 630 item-mob pairs; 5 proposed, 13 maybe, 71 already covered, 541 rejected). Lokiy's answers:
+  Demonic Rune is good; Primordial Hakkari Bijou drops from all Zul'Gurub bosses; Brother Michael's Reliquary of Light
+  is 26425 (already listed: Rist's addon maps both items of that name to 26426, so no change).
+- `item_sources.py`: new `EXTERNAL_DROPS` {item id: [(npc id, mob, zone, times seen, log)]}: confirmed drops from
+  other players' logs, added after the item's other sources as "Drops from <mob> (<zone>; <log>, seen n x)", type drop,
+  from `external` (label "another player's loot log"), linked to /npc/<id>; no rate. 12662 Demonic Rune: Wildspawn
+  Betrayer 11454 (1x), Wildspawn Imp 13276 (2x).
+- `gen_site.py` `MANUAL_DROPS`: 26191 Primordial Hakkari Bijou on the other 13 ZG boss tables (AtlasLoot had Azus and
+  the Nameless Hermit).
+- Backups `gen_site.py.bak-2026-10-30`, `item_sources.py.bak-2026-10-30`.
