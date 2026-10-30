@@ -12,7 +12,7 @@ own data is missing):
   5. Wowhead's classic sources (wowhead_sources.json), marked "from Wowhead".
 The first layer that has something is the item's source; layers 2-5 are only gap fillers.
 
-Not on Vanilla+ (Lokiy 2026-10-22, 2026-10-25), marked on the page, not hidden: AQ20, AQ40 and Naxxramas (their
+Not on Vanilla+ (Lokiy 2026-10-22, 2026-10-25; left out of the database since 2026-10-30, gen_site.py Part HF): AQ20, AQ40 and Naxxramas (their
 loot tables, the ~130 names of AQ_T3_REMOVE_NAMES, and Wowhead-only drops there), except Kurinnaxx (a world boss in
 Silithus); Alterac Valley; the Brood of Nozdormu ring; Ashbringer and the Warglaives; the workbook's Removed Items
 sheet; the old (classic) versions of the tier sets (Lokiy 2026-10-25: there is no Tier 2 on Vanilla+; each class has

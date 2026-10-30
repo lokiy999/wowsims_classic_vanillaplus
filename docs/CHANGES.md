@@ -5443,3 +5443,23 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - `gen_site.py` `MANUAL_DROPS`: 26191 Primordial Hakkari Bijou on the other 13 ZG boss tables (AtlasLoot had Azus and
   the Nameless Hermit).
 - Backups `gen_site.py.bak-2026-10-30`, `item_sources.py.bak-2026-10-30`.
+
+## Part HF — items not on Vanilla+ are left out of the database (2026-10-30)
+
+- Lokiy (via the hub): "exclude any items not on V+ like naxx/AQ". This replaces "mark them, don't hide them" (Part FR).
+- `gen_site.py`: `Sources` (and the loot tracker load) now runs right after the classic items are added. The
+  `NOT_ON_SERVER` items (985) are then popped from `items` into `EXCLUDED`. They get no item page, search / filter /
+  type-list entry and no row in any loot table, and they are not in `api/items.json` or `api/sources.json` "items" /
+  "tables". Tables of cut content (`cut_table`: AQ20 except Kurinnaxx, AQ40, Naxxramas and their set tables, Alterac
+  Valley, the Brood ring) are dropped whole, and so is any table left without items. Source lines that link to a
+  dropped table are removed from the remaining items, e.g. 21651 keeps Kurinnaxx and loses Fankriss.
+- What is left: the list itself in `item_sources.py` (reversible), `api/sources.json` "notOnServer" (id -> reason),
+  and `/removed`, which names the items without links ("Not on V+" in the nav).
+- Effect: items 15100 -> 14115, loot tables 658 -> 573, zone pages for Ahn'Qiraj and Naxxramas gone. 331 NPC pages
+  lose item rows and 30 AQ / Naxx bosses' pages are left without loot (the NPC pages themselves stay). The sim drops
+  20 items it had (old PvP rank pieces, old set versions, Sliverblade, Incendic Bracers, Cold Forged Hammer, the
+  Obsidian items). Nothing on lokiy.dev/loot changes.
+- Checked first: no list item was seen in lokiy.dev/loot (tracker + approved uploads), the raw uploads, the
+  combat-log loot or Rist's log. 385 are in the client item cache, but that is filled by AtlasLoot browsing, so it
+  is no evidence.
+- Backups `gen_site.py.bak-2026-10-30c`, `item_sources.py.bak-2026-10-30c`.

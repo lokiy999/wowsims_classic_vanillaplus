@@ -37,7 +37,8 @@ and writes plain HTML pages (Caddy serves them from disk):
                           sources (wowhead_sources.json) for what AtlasLoot doesn't cover. The sim's only source data.
                           "items": every item's sources by layer (item_sources.py: AtlasLoot, the item workbook, the
                           loot tracker, pfQuest, Wowhead), each {"text", "type", "from"}; "notOnServer": {item id:
-                          why} for items not on Vanilla+ (AQ, Naxxramas, Alterac Valley, Tier 2, ...).
+                          why} for items not on Vanilla+ (AQ, Naxxramas, Alterac Valley, Tier 2, ...): only this
+                          list; the items themselves are left out of every page, table and API (Part HF).
                           "webdkp": guild raid loot awards per item (webdkp_awards.json): count, first / last date.
   /style.css, /site.js
 
@@ -626,6 +627,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 
 
 NOT_ON_SERVER = {}  # item id -> why it isn't on Vanilla+ (item_sources.py), set by main()
+EXCLUDED = {}  # item id -> item: the NOT_ON_SERVER items taken out of the database (Part HF), for /removed
 
 
 def item_link(item, icon):
@@ -671,6 +673,23 @@ def main():
     codes = load_text_codes()
     wowhead = load_wowhead()
     classic_only = set(add_classic_items(items, wowhead, tables))
+    # where each item comes from (AtlasLoot, item workbook, loot tracker, pfQuest, Wowhead) and what isn't on Vanilla+
+    loot = load_loot()  # Lokiy's loot tracker (lokiy.dev/loot)
+    loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
+    srcs = Sources(items, tables, names, table_groups, loot_drops)
+    NOT_ON_SERVER.clear()
+    NOT_ON_SERVER.update(srcs.not_on_server)
+    # Items not on Vanilla+ are left out of the database (Lokiy 2026-10-30, Part HF): no item page, search entry, loot
+    # table row or API entry. The list stays (item_sources.py, reversible) and /removed names them. Tables of content
+    # that isn't on the server (AQ20 but Kurinnaxx, AQ40, Naxxramas, Alterac Valley, the Brood ring) go too, and so
+    # does a table left without items.
+    EXCLUDED.clear()
+    EXCLUDED.update({i: items.pop(i) for i in sorted(NOT_ON_SERVER) if i in items})
+    for key in list(tables):
+        tables[key] = [r for r in tables[key] if r[0] not in EXCLUDED]
+        if srcs.cut_table(key) or not any(r[0] for r in tables[key]):
+            del tables[key]
+    classic_only -= set(EXCLUDED)
 
     flagged_new = {r[0] for rows in tables.values() for r in rows if r[3]}
 
@@ -728,14 +747,9 @@ def main():
     boss_names = {nm for nm, cat in names.values() if nm and not nm.startswith("Trash")}
     observed = {i: observed_drops(i, sources.get(i, []), names, tables_by_cat, obs, boss_names, guess=is_custom(i))
                 for i in all_items}
-    # Lokiy's loot tracker (lokiy.dev/loot) and the possible random affixes per item
-    loot = load_loot()
-    loot_names, loot_drops, loot_time = loot if loot else ({}, {}, None)
-    # where each item comes from (AtlasLoot, item workbook, loot tracker, pfQuest, Wowhead) and what isn't on Vanilla+
-    srcs = Sources(items, tables, names, table_groups, loot_drops)
-    NOT_ON_SERVER.clear()
-    NOT_ON_SERVER.update(srcs.not_on_server)
-    item_srcs = {i: srcs.sources(i) for i in all_items}
+    # (a source line linking to a loot table that was left out goes too)
+    item_srcs = {i: [e for e in srcs.sources(i) if not e.get("href", "").startswith("/loot/")
+                     or e["href"][6:].split("#")[0] in tables] for i in all_items}
     affixes, affix_stats, affix_chances = load_random_affixes()
     # suffix names and values from the server's DBCs; which ones an item rolls: Wowhead's list + the loot tracker's,
     # pooled per item cache group (affixes.py)
@@ -1471,11 +1485,12 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
 
     # ---- /removed: every item marked "not on Vanilla+", by reason, with the rule that marked it (for Lokiy to check)
     def removed_row(iid, why):
-        it = items[iid]
-        return (f'<tr><td><a class="item" href="/item/{iid}" data-item="{iid}">'
-                f'{icon_img(icons.get(iid, "inv_misc_questionmark"), "small", "icon-s")}'
-                f'<span style="color:{Q_COLOR.get(it["quality"], "#ffffff")}">{esc(it["name"])}</span></a></td>'
-                f'<td>{iid}</td><td class="muted rule">{esc(why)}</td></tr>')
+        it = items.get(iid) or EXCLUDED[iid]
+        name = f'<span style="color:{Q_COLOR.get(it["quality"], "#ffffff")}">{esc(it["name"])}</span>'
+        if iid in items:  # TO_CHECK: still in the database
+            name = (f'<a class="item" href="/item/{iid}" data-item="{iid}">'
+                    f'{icon_img(icons.get(iid, "inv_misc_questionmark"), "small", "icon-s")}{name}</a>')
+        return f'<tr><td>{name}</td><td>{iid}</td><td class="muted rule">{esc(why)}</td></tr>'
 
     by_reason = {}
     for iid, text in NOT_ON_SERVER.items():
@@ -1492,7 +1507,8 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
                       f'<table class="obs-table removed-table">{head}<tbody>{rows}</tbody></table></section>')
     body = f"""
 <section class="intro"><h1>Items not on Vanilla+</h1>
-<p class="muted">Every item the database marks "not on Vanilla+" ({len(NOT_ON_SERVER)}), grouped by reason. "Marked by" is
+<p class="muted">Every item that isn't on Vanilla+ ({len(NOT_ON_SERVER)}), grouped by reason. They are left out of the
+database (no item page, search or loot table entry), so this list is the only place that names them. "Marked by" is
 the rule that marked it: an AtlasLoot table of content that isn't on the server, the workbook's AQ / Naxxramas names
 list or Removed Items sheet, the set-bonus rule (the 3/5/8 version of a set is the old one), Lokiy's answers, or
 Wowhead sources that are all in cut content. An item Lokiy's loot tracker has seen drop is never marked.</p>
