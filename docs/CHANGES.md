@@ -5463,3 +5463,19 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   combat-log loot or Rist's log. 385 are in the client item cache, but that is filled by AtlasLoot browsing, so it
   is no evidence.
 - Backups `gen_site.py.bak-2026-10-30c`, `item_sources.py.bak-2026-10-30c`.
+
+## Part HG — AQ / Naxxramas bosses' NPC pages left out; hidden items no longer linked to Wowhead (2026-10-30)
+
+- Lokiy (via the hub): remove the AQ / Naxx boss NPC pages left without loot by Part HF, "the instances aren't here yet".
+- `gen_site.py`: new `NPCS_NOT_ON_SERVER` {instance: {creature ids}}. These are popped from pfQuest's NPCs right
+  after loading, so they get no /npc page, no NPC search entry and no `api/npcs.json` entry. It covers 35 bosses (the
+  instances come from Wowhead's drop zones): AQ20 5 (not Kurinnaxx, a world boss here), AQ40 12 and Naxxramas 18
+  (incl. the Four Horsemen). None has V+ evidence (combat-log IDs, tracker mobs, combat-log kills). When an
+  instance arrives, delete its line. Every other `/npc/` link is already built only for NPCs that have a page; a
+  scan of the built site finds no link to a removed one.
+- Fix to Part HF: NPC pages listed the hidden items in "Classic drops" / "Sells" as Wowhead links (`item_cell` falls
+  back to Wowhead for items not in the database). They are now left out of those lists. On quest pages they show as
+  a plain name without a link. A scan finds no Wowhead link to a hidden item left.
+- NPC pages 10187 -> 10152. Not removed (reported to Lokiy): ~74 AQ / Naxx trash creatures (pfQuest drops of AQ /
+  Naxx items at >= 1%), Maws (Silithus, the AQ war event) and Atiesh (Stratholme).
+- Backup `gen_site.py.bak-2026-10-30d`.

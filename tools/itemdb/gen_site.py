@@ -628,6 +628,15 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 
 NOT_ON_SERVER = {}  # item id -> why it isn't on Vanilla+ (item_sources.py), set by main()
 EXCLUDED = {}  # item id -> item: the NOT_ON_SERVER items taken out of the database (Part HF), for /removed
+# Creatures of instances that aren't on Vanilla+ yet (Lokiy 2026-10-30: "the instances aren't here yet", Part HG): no
+# /npc page, NPC search or api/npcs.json entry. The bosses (Wowhead's zones; Kurinnaxx is a world boss here and stays).
+# When an instance arrives, delete its line.
+NPCS_NOT_ON_SERVER = {
+    "AQ20": {15341, 15340, 15370, 15369, 15339},  # Rajaxx, Moam, Buru, Ayamiss, Ossirian
+    "AQ40": {15263, 15544, 15511, 15543, 15516, 15510, 15299, 15509, 15276, 15275, 15517, 15727},  # Skeram .. C'Thun
+    "Naxxramas": {15956, 15953, 15952, 15954, 15936, 16011, 16061, 16060, 16062, 16063, 16064, 16065, 16028, 15931,
+                  15932, 15928, 15989, 15990},  # Anub'Rekhan .. Kel'Thuzad, incl. the Four Horsemen
+}
 
 
 def item_link(item, icon):
@@ -799,6 +808,9 @@ def main():
 
     # creature ids (npcs.py, Part GJ): the tracker's mobs and AtlasLoot's boss tables only know names
     npcs = load_npcs()
+    for nids in NPCS_NOT_ON_SERVER.values():
+        for nid in nids:
+            npcs.pop(nid, None)
     logged = load_logged()  # creature ids from combat logs; Vanilla+'s own ones get a page of their own (Part GL)
     for nid, r in logged.items():
         if nid not in npcs:
@@ -1257,6 +1269,8 @@ or their own page.</p>{rough_note}</section>
     def item_cell(i):
         if i in items:
             return item_link(items[i], icons.get(i, "inv_misc_questionmark"))
+        if i in EXCLUDED:  # not on Vanilla+ (Part HF): the name only, no link (quest pages)
+            return f'<span class="muted">{esc(EXCLUDED[i]["name"])}</span>'
         w = wowhead.get(i, {"name": f"Item {i}", "quality": 1})
         return (f'<a class="item ext" href="https://www.wowhead.com/classic/item={i}" rel="noopener">'
                 f'<span style="color:{Q_COLOR.get(w["quality"] or 1, "#ffffff")}">{esc(w["name"])}</span></a>')
@@ -1283,7 +1297,7 @@ or their own page.</p>{rough_note}</section>
             lis = "".join(f'<li>{item_cell(r[0])}</li>' for r in tables[key] if r[0])
             parts.append(f'<section class="card"><h2>Loot table: <a href="/loot/{key}">{esc(table_label(key)[0])}</a></h2>'
                          f'<ul class="loot">{lis}</ul></section>')
-        drops = n.get("drops", [])
+        drops = [d for d in n.get("drops", []) if d[0] not in EXCLUDED]
         if drops:
             trs = "".join(f'<tr><td>{item_cell(i)}</td><td class="rate">{c:g}%</td></tr>' for i, c in drops[:80])
             more = f'<p class="muted small">{len(drops) - 80} more with lower chances.</p>' if len(drops) > 80 else ""
@@ -1293,8 +1307,9 @@ or their own page.</p>{rough_note}</section>
                          f'raid loot tables aren\'t listed here.</p></section>')
         if quests.npc_card(nid):
             parts.append(quests.npc_card(nid))
-        if n.get("sells"):
-            lis = "".join(f'<li>{item_cell(i)}</li>' for i in n["sells"][:150])
+        sells = [i for i in n.get("sells", []) if i not in EXCLUDED]
+        if sells:
+            lis = "".join(f'<li>{item_cell(i)}</li>' for i in sells[:150])
             parts.append(f'<section class="card"><h2>Sells</h2><ul class="loot cols">{lis}</ul>'
                          f'<p class="muted small">Classic 1.12 data (pfQuest).</p></section>')
         body = f"""
