@@ -563,6 +563,29 @@ def line_class(ln):
 
 
 SPELL_NAME_COL = 120  # Spell.csv: the spell's name
+ITEM_CHANGES = os.path.expanduser("~/itemcache/changes.jsonl")  # itemcache_sync.py: one line per new / changed item
+STAT_NAMES = {0: "Mana", 1: "Health", 3: "Agility", 4: "Strength", 5: "Intellect", 6: "Spirit", 7: "Stamina"}
+CHANGE_FIELDS = {"maxCount": "Unique", "stats": "Stats", "armor": "Armor", "spells": "Spells", "name": "Name",
+                 "quality": "Quality", "itemLevel": "Item level", "requiredLevel": "Required level",
+                 "sellPrice": "Sell price", "buyPrice": "Buy price", "delay": "Speed", "block": "Block",
+                 "displayId": "Model", "bonding": "Binding", "description": "Description"}
+
+
+def change_value(field, v):
+    """One old / new value of an item cache field, readable (the /changes page)."""
+    if v is None:
+        return "-"
+    if field == "maxCount":
+        return "no" if not v else "yes" if v == 1 else f"yes ({v})"
+    if field == "stats":
+        return ", ".join(f"{STAT_NAMES.get(t, f'stat {t}')} {n}" for t, n in v) or "none"
+    if field == "spells":
+        return ", ".join(f'<a href="/spell/{sp["id"]}">{sp["id"]}</a>' for sp in v if sp.get("id")) or "none"
+    if field == "delay":
+        return f"{v / 1000:g}"
+    if isinstance(v, (list, dict)):
+        return esc(json.dumps(v, ensure_ascii=False))[:200]
+    return esc(str(v))
 
 
 def tooltip_html(item, mark=(), mark_cls="tt-new"):
@@ -620,7 +643,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/changes">Changes</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items, NPCs, spells, quests, zones..." aria-label="Search everything" autocomplete="off">
   </form>
@@ -1642,6 +1665,38 @@ Wowhead sources that are all in cut content. An item Lokiy's loot tracker has se
     with open(os.path.join(out, "removed.html"), "w", encoding="utf-8") as f:
         f.write(page("Not on Vanilla+", body, path="/removed",
                      description=f"{len(NOT_ON_SERVER)} items that aren't on Vanilla Plus, by reason."))
+
+    # ---- /changes: items the item cache uploads found new or changed (itemcache_sync.py changes.jsonl; Part HO)
+    try:
+        with open(ITEM_CHANGES, encoding="utf-8") as f:
+            changes = [json.loads(ln) for ln in f if ln.strip()]
+    except (OSError, ValueError):
+        changes = []
+    by_day = {}
+    for c in changes:
+        by_day.setdefault(c["date"][:10], []).append(c)
+    head = '<thead><tr><th>Item</th><th>ID</th><th>What changed</th></tr></thead>'
+    blocks = []
+    for day in sorted(by_day, reverse=True):
+        rows = []
+        for c in sorted(by_day[day], key=lambda c: (not c["new"], c["name"])):
+            iid = c["id"]
+            name = (item_link(items[iid], icons.get(iid, "inv_misc_questionmark")) if iid in items
+                    else f'{esc(c["name"])} <span class="muted">(not in the database)</span>')
+            what = "<b>New item</b>" if c["new"] else "<br>".join(
+                f'{CHANGE_FIELDS.get(k, k)}: {change_value(k, old)} &rarr; {change_value(k, new)}'
+                for k, (old, new) in c["fields"].items())
+            rows.append(f'<tr><td>{name}</td><td>{iid}</td><td class="rule">{what}</td></tr>')
+        blocks.append(f'<section class="card"><h2>{day} <span class="muted">{len(rows)}</span></h2>'
+                      f'<table class="obs-table removed-table">{head}<tbody>{"".join(rows)}</tbody></table></section>')
+    body = f"""
+<section class="intro"><h1>Recently changed items</h1>
+<p class="muted">Items that an item cache upload (lokiy.dev/admin/upload) found new or changed on the server, newest first:
+{len(changes)} changes. The first upload (2026-10-22) only set the baseline; changes are counted from then on.</p></section>
+{''.join(blocks) or '<p class="muted">No changes yet.</p>'}"""
+    with open(os.path.join(out, "changes.html"), "w", encoding="utf-8") as f:
+        f.write(page("Recently changed items", body, path="/changes",
+                     description="Items the Vanilla Plus server added or changed, from the item cache uploads."))
 
     # ---- /unseen: classic items no Vanilla+ client has seen yet (Part GG), by where they come from
     UNSEEN_ORDER = ["raid", "world boss", "dungeon", "rare mob", "drop", "world drop", "container", "quest", "vendor",

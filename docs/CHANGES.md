@@ -5589,3 +5589,25 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   tooltips: "Not on the tooltip (Use): <spell name>", linked to /spell/<id>. `api/items.json` (the sim's input)
   keeps the game's tooltip lines only.
 - Backup `gen_site.py.bak-2026-10-30i`.
+
+## Part HN — the sim's Unique flag from the server's tooltip (2026-10-30)
+
+- TODO: the PvP items the server made non-Unique kept Unique from the Wowhead base data. Two causes:
+  `parse_vplus.py` only sent `unique` for brand-new items (and only when true), and `gen_db`'s merge
+  (`googleproto.Merge`) never turns a true field false.
+- `docs/parse_vplus.py` `_entry_for()`: every override carries `unique` from db.lokiy.dev's tooltip lines (true or
+  false). `tools/database/gen_db/main.go`: after merging `custom_items.json`, each overridden item's Unique is set to
+  the override's value, and the number changed is printed.
+- First run: 234 items lost Unique (the PvP rank items, e.g. Marshal's Silk Footwraps, Sergeant's Cloak, Carrot on a
+  Stick) and 16 got it (e.g. Seal of Rivendare, Band of Vigor, Gordok Nose Ring), as the server's tooltips say.
+  Sim deployed 6d2974ace.
+- Backups `docs/parse_vplus.py.bak-2026-10-30`, `tools/database/gen_db/main.go.bak-2026-10-30`.
+
+## Part HO — /changes: recently changed items (2026-10-30)
+
+- New page db.lokiy.dev/changes ("Changes" in the nav) built from `~/itemcache/changes.jsonl` (`itemcache_sync.py`).
+  It lists every item an item cache upload found new or changed, grouped by day, newest first, linked to its page.
+  Readable values: Unique yes / no (`maxCount`), stats by name, spells linked to /spell/<id>, speed in seconds;
+  other fields as they are. Now: 239 changes. 2026-10-30: Savage Gladiator Chain stats / armor, new Ravager and Loop
+  of Cosmic Balance. 2026-10-23: Kassan's Signet. 2026-10-22: 235, mostly the 218 PvP items losing Unique.
+- Backup `gen_site.py.bak-2026-10-30j`.
