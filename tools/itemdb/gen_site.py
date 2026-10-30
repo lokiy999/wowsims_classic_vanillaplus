@@ -70,7 +70,7 @@ from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot,
                        merge_tiers, seen_affixes)
 from wdb_tooltip import TRIGGERS, Lookups, tooltip  # noqa: E402
 from npcs import RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
-from quests import Quests  # noqa: E402
+from quests import WH_QUEST, Quests  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
 from item_sources import (CUT_TEXT, FROM_LABEL, atlas_item_sources, merge_atlas_sources, LOKIY_DROPPED_IDS, SHARED_WB_BOSSES, SHARED_WB_KEY, TO_CHECK, TYPE_LABEL,  # noqa: E402
@@ -690,6 +690,16 @@ RANK_VENDORS = {12777: ("Captain Dirgehammer", 1519), 12782: ("Captain O'Neal", 
                 12792: ("Lady Palanseer", 1637), 14581: ("Sergeant Thunderhorn", 1637),
                 12799: ("Sergeant Ba'sha", 1637)}
 SOD_NPC_MIN = 200000  # Season of Discovery creature ids (Barebones, Rix Xizzix): not on Vanilla+
+QUESTCACHE = os.path.expanduser("~/questcache/quests.json")  # the game's quest cache (questcache_sync.py, Part HK)
+
+
+def load_questcache():
+    """{quest id: record (wdb_quests.py)} from Lokiy's questcache.wdb uploads; {} before the first one."""
+    try:
+        with open(QUESTCACHE, encoding="utf-8") as f:
+            return {int(k): v["quest"] for k, v in json.load(f)["quests"].items()}
+    except (OSError, ValueError, KeyError):
+        return {}
 
 
 def kept_source(e):
@@ -833,6 +843,19 @@ def main():
     item_srcs = {i: [e for e in srcs.sources(i) if (not e.get("href", "").startswith("/loot/")
                                                     or e["href"][6:].split("#")[0] in tables) and kept_source(e)]
                  for i in all_items}
+    # Quest rewards from the game's quest cache (Part HK): for a quest it has, its rewards replace Wowhead's
+    qcache = {q: c for q, c in load_questcache().items() if q not in NOT_ON_SERVER_QUESTS}
+    qc_rewards = {}  # item id -> [(quest id, label)]
+    for qid, c in qcache.items():
+        for key, label in (("items", "Reward from"), ("choices", "Choice reward from")):
+            for iid, _ in c.get(key, []):
+                qc_rewards.setdefault(iid, []).append((qid, label))
+    for i in all_items:
+        lines = [e for e in item_srcs[i] if not (e.get("from") == "wowhead" and WH_QUEST.search(e.get("href", ""))
+                                                 and int(WH_QUEST.search(e["href"]).group(1)) in qcache)]
+        lines += [{"text": f"{label} {qcache[q].get('title') or f'quest {q}'}", "type": "quest", "from": "questcache",
+                   "href": f"/quest/{q}"} for q, label in qc_rewards.get(i, [])]
+        item_srcs[i] = lines
     affixes, affix_stats, affix_chances = load_random_affixes()
     # suffix names and values from the server's DBCs; which ones an item rolls: Wowhead's list + the loot tracker's,
     # pooled per item cache group (affixes.py)
@@ -916,7 +939,7 @@ def main():
 
     # DungeonJournal's abilities / tactics (npcs.load_journal; Part GN), on the NPC pages
     journal, journal_flags = load_journal()
-    quests = Quests(npcs, NOT_ON_SERVER_QUESTS, ZONES_NOT_ON_SERVER)  # quest / zone pages (quests.py; Part GO)
+    quests = Quests(npcs, NOT_ON_SERVER_QUESTS, ZONES_NOT_ON_SERVER, qcache)  # quest / zone pages (Parts GO, HK)
     quests.add_rewards(item_srcs)
 
     def journal_icon(path):
@@ -1847,7 +1870,20 @@ your filters, so you can share a search.</p></section>
                 for nid in sorted(rank_sold[k])]
         if v:
             wh_api[k] = v
+    # Part HK: quest rewards from the game's quest cache replace Wowhead's for the quests it has
+    for k in set(wh_api) | {str(i) for i in qc_rewards if i in items}:
+        v = [e for e in wh_api.get(k, []) if (e.get("quest") or {}).get("id") not in qcache]
+        v += [{"quest": {"id": q, "name": qcache[q].get("title", "")}} for q, _ in qc_rewards.get(int(k), [])]
+        if v:
+            wh_api[k] = v
+        else:
+            wh_api.pop(k, None)
     src_api["wowhead"] = wh_api
+    wh_quest_items = sum(1 for v in wh_api.values() if any("quest" in e and e["quest"].get("id") not in qcache for e in v))
+    page_wh_quest = sum(1 for i in all_items if item_srcs[i] and all(e["from"] == "wowhead" for e in item_srcs[i])
+                        and any(e["type"] == "quest" for e in item_srcs[i]))
+    print(f"quest cache: {len(qcache)} quests, {len(qc_rewards)} reward items; still Wowhead: quest rewards on "
+          f"{wh_quest_items} items in api/sources.json, {page_wh_quest} item pages with only a Wowhead quest reward")
     print("api/sources.json from AtlasLoot:", ", ".join(f"{k} {v}" for k, v in sorted(moved.items())))
     tmp = os.path.join(out, "api", "sources.json.tmp")
     with open(tmp, "w", encoding="utf-8") as f:

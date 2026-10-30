@@ -5537,3 +5537,32 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Entries: soldBy 530 -> 516, crafted 1027 -> 1011, drop 3263 -> 3091, quest 1446 -> 1227, rep 471 -> 459 (the last
   four only from the removed items).
 - Backup `gen_site.py.bak-2026-10-30g`.
+
+## Part HK — quest rewards and text from the game's quest cache (questcache.wdb uploads) (2026-10-30)
+
+- Lokiy (via the hub): Vanilla+'s own quest rewards from the client's `WDB\questcache.wdb`, uploaded on
+  lokiy.dev/admin/upload like the item cache. The upload side is LootTracker HISTORY 28: "WQST" files land in
+  `~/loot-upload/data/questcache/incoming/`, and the page shows `data/questcache/status.json`.
+- `tools/itemdb/wdb_quests.py` (new): parses questcache.wdb (build 5875). Header "TSQW" + 16 bytes, then records
+  (id, size, record). A record holds 39 uint32s (quest id, method, level, zone or sort, type, rep faction / value,
+  next quest, money, max-level money, reward spell, source item, flags, 4 reward items + counts, 6 choice items +
+  counts, map point), then title, objectives, details and end text, then 4 x (creature or object, count, item,
+  count) and 4 objective texts. Checked against Wowhead's classic rewards: all 30 quests in both match.
+- `tools/itemdb/questcache_sync.py` (new, run by `sync_db.sh` with `--pickup` every 5 minutes): the same as
+  `itemcache_sync.py`. It takes the uploads from the pickup folder and merges them into `~/questcache/quests.json`
+  ({"quests": {id: {"quest", "firstSeen", "changed", "seen"}}}, the newest file wins) and `changes.jsonl`. Then it
+  rebuilds db.lokiy.dev / lokiy.dev/loot / the sim and writes the status for the page: {"at", "files", "code",
+  "output", "changes": [{"date", "id", "name", "new", "fields"}]}.
+- `gen_site.py`: for every cached quest (not the AV ones), its reward and choice items become source lines
+  ("Reward from <quest>" / "Choice reward from <quest>", type quest, from `questcache` = "Vanilla+ quest cache",
+  linked to /quest/<id>). Wowhead's lines for that quest go. In `api/sources.json` "wowhead" (the sim) the quest
+  entries of cached quests are replaced the same way. Each build prints what is still Wowhead.
+- `quests.py`: `Quests(..., cache)`. A cached quest gets the server's title, objectives, details and level. Its
+  Rewards card shows "You receive" / "Choose one of" with counts, money (or cost) and the level-60 money, plus a note
+  that this is server data. Quests pfQuest doesn't have (Vanilla+ ones) get pages too. A quest's zone is still its
+  start / end NPC's; the server's zone only when there is none (it also gives subzones like Coldridge Valley).
+- First import (the client's file, 2026-10-30): 177 quests, 147 reward items. 8 are Vanilla+ quests pfQuest doesn't
+  have, e.g. Jungle Mastery 41206, The Defense of Aerie Peak 40004, Melted Bindings / Molten Grips Exchange 10006 /
+  10007. Quest pages 4209 -> 4217. Still Wowhead: quest rewards on 1,227 -> 1,161 items in the sim's map, item pages
+  with only a Wowhead quest reward 949 -> 915.
+- Backups `*.bak-2026-10-30h` (gen_site.py, item_sources.py, quests.py).

@@ -319,10 +319,10 @@ there is more to say.
   - Drops: Wowhead classic drop sources on 1,939 items (3,091 entries). The item pages show them only when no own
     layer has the item (5 items). Replace with pfQuest's drops (`pfquest_sources.json`) plus the loot tracker, which
     covers the same NPC IDs.
-  - Quest rewards: 1,227 items in the map, and 949 item pages whose only source is a Wowhead quest reward. pfQuest's
-    data has no reward items (only start / needs / hand-out items), so it can't replace them. Options: the client's
-    `WDB/questcache.wdb` (the server's own rewards, for quests a client has opened), uploaded like the item cache, or
-    keep Wowhead's classic rewards marked "classic".
+  - Quest rewards: replaced from the client's `WDB/questcache.wdb` uploads since Part HK (only quests a client has
+    opened). Still Wowhead after the first upload (177 quests, 2026-10-30): quest rewards on 1,161 items in the map
+    (was 1,227) and 915 item pages whose only source is a Wowhead quest reward (was 949). Each rebuild prints the
+    current numbers ("quest cache: ..."). They shrink with every upload.
   - Item pages with only Wowhead crafting sources: 24 (the 27 crafts above minus 3 with another layer).
 
 - Item cache (Part FA): a "recently changed items" page from `~/itemcache/changes.jsonl`; the spells site shows food / drink totals

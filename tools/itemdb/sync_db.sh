@@ -10,6 +10,8 @@ MARK=/home/lokiy/loot-upload/data/rebuild-requested
 LOG=/home/lokiy/loot-sync/db-sync.log
 # Item cache uploaded on lokiy.dev/admin/upload: merged and rebuilt by itemcache_sync.py (takes the build lock itself)
 python3 /opt/wowsims-classic/tools/itemdb/itemcache_sync.py --pickup >>"$LOG" 2>&1
+# Quest cache uploaded there too: merged into ~/questcache/quests.json and rebuilt by questcache_sync.py (Part HK)
+python3 /opt/wowsims-classic/tools/itemdb/questcache_sync.py --pickup >>"$LOG" 2>&1
 NEED_LOOT=
 [ -f "$MARK" ] && { [ ! -f "$LOOT" ] || [ "$MARK" -nt "$LOOT" ]; } && NEED_LOOT=1
 if [ -z "$NEED_LOOT" ]; then

@@ -260,7 +260,8 @@ TYPE_LABEL = {"raid": "Raid", "dungeon": "Dungeon", "world boss": "World boss", 
               "vendor": "Vendor", "container": "Container", "event": "Event", "set": "Set", "rare mob": "Rare mob",
               "other": "Other"}
 FROM_LABEL = {"lokiy": "Lokiy", "external": "another player's loot log", "atlasloot": "AtlasLoot", "workbook": "item workbook", "tracker": "Lokiy's loot tracker",
-              "pfquest": "classic data (pfQuest)", "wowhead": "from Wowhead"}
+              "pfquest": "classic data (pfQuest)", "wowhead": "from Wowhead",
+              "questcache": "Vanilla+ quest cache"}
 
 
 def _load(name, default):

@@ -36,6 +36,14 @@ ZONE_ALIASES = {"Lower Blackrock Spire": "Blackrock Spire", "Upper Blackrock Spi
                 "Dire Maul (North)": "Dire Maul", "Dire Maul (East)": "Dire Maul", "Dire Maul (West)": "Dire Maul"}
 NOTE = ('<p class="muted small">Classic 1.12 quest data (pfQuest / vmangos), not checked against Vanilla+: '
         'quests the server changed or added may differ or be missing.</p>')
+CACHE_NOTE = ('<p class="muted small">Title, text, rewards and money from the game\'s quest cache (Vanilla+ server data, '
+              'uploaded by Lokiy); start / end NPCs and the quest chain are classic data (pfQuest).</p>')
+
+
+def money(c):
+    """Copper -> "1g 20s 5c"."""
+    g, s_, c = c // 10000, c // 100 % 100, c % 100
+    return " ".join(f"{v}{u}" for v, u in ((g, "g"), (s_, "s"), (c, "c")) if v) or "0c"
 
 
 def side(race):
@@ -59,9 +67,11 @@ def quest_text(t):
 
 
 class Quests:
-    def __init__(self, npcs, skip_quests=(), skip_zones=()):
+    def __init__(self, npcs, skip_quests=(), skip_zones=(), cache=None):
         """npcs: gen_site's {creature id: {"name", "zone", "zid"?, ...}}. skip_quests / skip_zones: not on Vanilla+
-        (gen_site.py QUESTS_NOT_ON_SERVER / ZONES_NOT_ON_SERVER): no page, no link, not in the lists."""
+        (gen_site.py QUESTS_NOT_ON_SERVER / ZONES_NOT_ON_SERVER): no page, no link, not in the lists. cache: {quest
+        id: record} from the game's quest cache (questcache_sync.py, Part HK): its title, text, level and rewards
+        replace pfQuest's, and a quest pfQuest doesn't have gets a page too."""
         path = os.path.join(HERE, "pfquest_quests.json")
         raw = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
         self.quests = {int(k): v for k, v in raw.get("quests", {}).items() if not JUNK.search(v["name"])}
@@ -69,6 +79,15 @@ class Quests:
             self.quests[qid] = {**self.quests.get(qid, {}), **fix}
         self.skipped = {q: self.quests.pop(q)["name"] for q in skip_quests if q in self.quests}
         self.skip_zones = set(skip_zones)
+        self.cache = {q: c for q, c in (cache or {}).items() if q not in self.skipped and q not in skip_quests}
+        for qid, c in self.cache.items():
+            q = self.quests.setdefault(qid, {})
+            q["name"] = c.get("title") or q.get("name") or f"Quest {qid}"
+            for key, ckey in (("goal", "objectives"), ("desc", "details")):
+                if c.get(ckey):
+                    q[key] = c[ckey]
+            if c.get("level", 0) > 0:
+                q["lvl"] = c["level"]
         self.zones = {int(k): v for k, v in raw.get("zones", {}).items() if int(k) not in self.skip_zones}
         self.objects = {int(k): v for k, v in raw.get("objects", {}).items()}
         self.npcs = npcs
@@ -96,13 +115,18 @@ class Quests:
                 self.item_quests.setdefault(iid, []).append(("Needed for", qid))
             for iid in q.get("needs", {}).get("IR", []):
                 self.item_quests.setdefault(iid, []).append(("Handed out by", qid))
+        for qid, c in self.cache.items():  # the server's rewards (Wowhead's for these quests are left out)
+            for key, label in (("items", "Reward from"), ("choices", "Choice reward from")):
+                for iid, _ in c.get(key, []):
+                    self.rewards.setdefault(qid, []).append(iid)
+                    self.item_quests.setdefault(iid, []).append((label, qid))
 
     def add_rewards(self, item_srcs):
         """Rewards from the item sources: a "quest" source linking quest=<id>."""
         for iid, srcs in item_srcs.items():
             for e in srcs:
                 m = WH_QUEST.search(e.get("href", ""))
-                if m and int(m.group(1)) in self.quests:
+                if m and int(m.group(1)) in self.quests and int(m.group(1)) not in self.cache:
                     self.rewards.setdefault(int(m.group(1)), []).append(iid)
                     self.item_quests.setdefault(iid, []).append(("Reward from", int(m.group(1))))
 
@@ -115,7 +139,10 @@ class Quests:
                     return n["zid"] if n["zid"] not in self.skip_zones else None
                 if n.get("zone") in self.zone_by_name:
                     return self.zone_by_name[n["zone"]]
-        return None
+        # no NPC with a zone (a Vanilla+ quest pfQuest doesn't have): the server's zone, if a zone page uses that id
+        # (it also gives subzones like Coldridge Valley; a negative one is a quest sort)
+        c = self.cache.get(qid, {})
+        return c["zone"] if c.get("zone", 0) > 0 and c["zone"] in self.zone_by_name.values() else None
 
     def npc_zone(self, n):
         zid = n.get("zid") or self.zone_by_name.get(n.get("zone") or "")
@@ -199,7 +226,22 @@ class Quests:
                          f'<p><b>End:</b> {ends(q.get("end", {}))}</p>'
                          + (f'<p><b>Handed out:</b> {", ".join(item_cell(i) for i in needs["IR"])}</p>' if needs.get("IR") else "")
                          + '</section>')
-            if self.rewards.get(qid):
+            c = self.cache.get(qid)
+            if c:
+                rows = []
+                for key, label in (("items", "You receive"), ("choices", "Choose one of")):
+                    if c.get(key):
+                        rows.append(f'<h3>{label}</h3><ul class="loot">' + "".join(
+                            f'<li>{item_cell(i)}{f" x{n}" if n > 1 else ""}</li>' for i, n in c[key]) + '</ul>')
+                if c.get("money", 0) > 0:
+                    rows.append(f'<p><b>Money:</b> {money(c["money"])}</p>')
+                elif c.get("money", 0) < 0:
+                    rows.append(f'<p><b>Costs:</b> {money(-c["money"])}</p>')
+                if c.get("moneyMax"):
+                    rows.append(f'<p class="muted">At level 60 instead of XP: {money(c["moneyMax"])}</p>')
+                if rows:
+                    parts.append(f'<section class="card"><h2>Rewards</h2>{"".join(rows)}</section>')
+            elif self.rewards.get(qid):
                 parts.append(f'<section class="card"><h2>Rewards</h2><ul class="loot">'
                              f'{"".join(f"<li>{item_cell(i)}</li>" for i in sorted(set(self.rewards[qid])))}</ul>'
                              f'<p class="muted small">Items whose source is this quest; money and XP aren\'t known.</p></section>')
@@ -221,7 +263,7 @@ class Quests:
   <p class="muted">{info}{' &middot; ' if info else ''}Quest {qid} &middot;
   <a href="https://www.wowhead.com/classic/quest={qid}" rel="noopener">Wowhead</a></p>
   {''.join(parts)}
-  {NOTE}
+  {CACHE_NOTE if c else NOTE}
 </article>"""
             with open(os.path.join(out, "quest", f"{qid}.html"), "w", encoding="utf-8") as f:
                 f.write(page(q["name"], body, path=f"/quest/{qid}",
