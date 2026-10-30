@@ -370,7 +370,10 @@ def build_tooltip(lines, quality):
 def _entry_for(iid, lines):
     it = parse_item(lines)
     entry = {"id": iid, "stats": it["stats"],
-             "tooltip": build_tooltip(lines, it.get("quality"))}
+             "tooltip": build_tooltip(lines, it.get("quality")),
+             # always from the server's tooltip: gen_db sets it even when false (Part HN; the Wowhead base data
+             # has Unique on PvP items the server made non-Unique)
+             "unique": bool(it.get("unique"))}
     for k in ("weaponDamageMin", "weaponDamageMax", "weaponSpeed"):
         if k in it:
             entry[k] = it[k]

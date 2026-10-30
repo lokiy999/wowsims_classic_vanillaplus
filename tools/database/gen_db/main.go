@@ -188,8 +188,20 @@ func main() {
 				customPhases[item.Id] = item.Phase
 			}
 		}
+		uniques := make(map[int32]bool, len(customItems))
+		for _, item := range customItems {
+			uniques[item.Id] = item.Unique
+		}
 		db.MergeItems(customItems)
-		fmt.Printf("Merged %d private-server item overrides\n", len(customItems))
+		// Merge never turns a true field false: the server's Unique flag (from its tooltip) wins either way (Part HN)
+		nUnique := 0
+		for id, unique := range uniques {
+			if dst, ok := db.Items[id]; ok && dst.Unique != unique {
+				dst.Unique = unique
+				nUnique++
+			}
+		}
+		fmt.Printf("Merged %d private-server item overrides (%d Unique flags changed)\n", len(customItems), nUnique)
 	}
 
 	// Items removed on the private server (raid content / tier sets the server does
