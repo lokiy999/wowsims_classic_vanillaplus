@@ -5498,3 +5498,26 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   - Fix: one `av(iid)` check for both branches. It skips items db.lokiy.dev has from Lokiy's own answers (source
     "lokiy", LOKIY_ON_SERVER: The Lobotomizer from UBRS' Lord Valthalak), so those stay.
 - Backups `gen_site.py.bak-2026-10-30e`, `docs/gen_include.py.bak-2026-10-30`.
+
+## Part HI — Alterac Valley left out: its items, NPCs, quests and zone page (2026-10-30)
+
+- Lokiy (via the hub) approved the list in hub `data\av_removal_list.md` (a proposal, git-ignored). Part HF already
+  removed the 58 AV items on the "not on V+" list and the AV loot / faction tables.
+- `item_sources.py` `AV_ONLY_IDS`: 14 items whose only source is AV (medals, Stormpike flesh, ram / Frostwolf hides,
+  banners, supplies, Skull of Korrak, Steamsaw, Intricate Bauble). They are marked "Alterac Valley is not on
+  Vanilla+." and left out like every not-on-V+ item. Heavy Junkbox (16885) was on the list but stays: it comes from
+  pickpocketing, and its only source line (an AV trogg) is gone, so it now has no source.
+- `gen_site.py`:
+  - `NPCS_NOT_ON_SERVER["Alterac Valley"]`: 220 creatures (pfQuest's zone 2597 plus Wowhead's AV-only creatures). The
+    ones Wowhead also lists elsewhere stay (rank vendors, spirit guides, Stormpike Mountaineer).
+  - New `QUESTS_NOT_ON_SERVER["Alterac Valley"]`: the 52 quests started or ended by an AV NPC.
+  - New `ZONES_NOT_ON_SERVER = {2597}`.
+  - `kept_source()` drops item source lines in AV (pfQuest's "(Alterac Valley" lines) and links to a removed creature
+    or quest. `kept_wowhead()` does the same for `api/sources.json` "wowhead" (the sim's source data): AV reputation,
+    drops from / sold by removed creatures or in zone 2597, rewards of removed quests.
+- `quests.py`: `Quests(npcs, skip_quests, skip_zones)`. Skipped quests get no page and no list entry, and a link to
+  one is the name without a link. A skipped zone gets no page, and its quests / NPCs aren't linked to it.
+- Effect: items 14115 -> 14101, NPC pages 9992 -> 9772, quest pages 4261 -> 4209, zone pages 74 -> 73. The 113 items
+  and ~96 vendor goods with other sources only lose their AV lines. A scan of the built site finds no link to a
+  removed creature, quest or /zone/2597, and no AV source line or AV reputation source left.
+- Backups `*.bak-2026-10-30f` (gen_site.py, item_sources.py, quests.py).

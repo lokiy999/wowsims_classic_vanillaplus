@@ -73,6 +73,9 @@ LOKIY_NOT_ON_SERVER = {"Black Grasp of the Destroyer", "Plans: Black Grasp of th
                        "Obsidian Mail Tunic", "Plans: Obsidian Mail Tunic",
                        "Thick Obsidian Breastplate", "Plans: Thick Obsidian Breastplate",
                        "Black Qiraji Resonating Crystal"}
+# Alterac Valley items with no other source (Lokiy 2026-10-30, Part HI; hub data\\av_removal_list.md): medals, flesh,
+# hides, banners, supplies, Skull of Korrak, Steamsaw, Intricate Bauble
+AV_ONLY_IDS = {5430, 17326, 17327, 17328, 17411, 17502, 17503, 17522, 17542, 17642, 17643, 17849, 17850, 18148}
 # Lokiy 2026-10-28: confirmed not on Vanilla+, by item ID
 LOKIY_NOT_ON_SERVER_IDS = {
     # Kurinnaxx's classic AQ20 loot (on Vanilla+ he is a world boss)
@@ -474,6 +477,9 @@ class Sources:
         for iid in LOKIY_NOT_ON_SERVER_IDS:
             if iid in self.items:
                 mark(iid, "Not on Vanilla+ (Lokiy).", "Lokiy's answer, 2026-10-28", force=True)
+        for iid in AV_ONLY_IDS:
+            if iid in self.items:
+                mark(iid, CUT_TEXT["AV"], "Alterac Valley is its only source (Lokiy 2026-10-30)", force=True)
         for iid, it in self.items.items():
             if iid < OLD_PVP_MAX_ID and it["quality"] == 3 and OLD_PVP_SET.match(it["name"]):
                 mark(iid, CUT_TEXT["old pvp"], "Old PvP rank set (name, rare, id < 18000), Lokiy 2026-10-28")

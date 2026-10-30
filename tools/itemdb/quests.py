@@ -59,14 +59,17 @@ def quest_text(t):
 
 
 class Quests:
-    def __init__(self, npcs):
-        """npcs: gen_site's {creature id: {"name", "zone", "zid"?, ...}}."""
+    def __init__(self, npcs, skip_quests=(), skip_zones=()):
+        """npcs: gen_site's {creature id: {"name", "zone", "zid"?, ...}}. skip_quests / skip_zones: not on Vanilla+
+        (gen_site.py QUESTS_NOT_ON_SERVER / ZONES_NOT_ON_SERVER): no page, no link, not in the lists."""
         path = os.path.join(HERE, "pfquest_quests.json")
         raw = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
         self.quests = {int(k): v for k, v in raw.get("quests", {}).items() if not JUNK.search(v["name"])}
         for qid, fix in QUEST_FIX.items():
             self.quests[qid] = {**self.quests.get(qid, {}), **fix}
-        self.zones = {int(k): v for k, v in raw.get("zones", {}).items()}
+        self.skipped = {q: self.quests.pop(q)["name"] for q in skip_quests if q in self.quests}
+        self.skip_zones = set(skip_zones)
+        self.zones = {int(k): v for k, v in raw.get("zones", {}).items() if int(k) not in self.skip_zones}
         self.objects = {int(k): v for k, v in raw.get("objects", {}).items()}
         self.npcs = npcs
         # a zone name -> its area id (the one most NPCs use, for names pfQuest has twice)
@@ -109,19 +112,22 @@ class Quests:
             for nid in q.get(key, {}).get("U", []):
                 n = self.npcs.get(nid) or {}
                 if n.get("zid"):
-                    return n["zid"]
+                    return n["zid"] if n["zid"] not in self.skip_zones else None
                 if n.get("zone") in self.zone_by_name:
                     return self.zone_by_name[n["zone"]]
         return None
 
     def npc_zone(self, n):
-        return n.get("zid") or self.zone_by_name.get(n.get("zone") or "")
+        zid = n.get("zid") or self.zone_by_name.get(n.get("zone") or "")
+        return zid if zid not in self.skip_zones else None
 
     def href(self, qid):
         return f"/quest/{qid}" if qid in self.quests else None
 
     def link(self, qid):
         q = self.quests.get(qid)
+        if qid in self.skipped:  # not on Vanilla+: the name only
+            return f'<span class="muted">{esc(self.skipped[qid])}</span>'
         if not q:
             return f'<a class="ext" href="https://www.wowhead.com/classic/quest={qid}" rel="noopener">Quest {qid}</a>'
         lv = f' <span class="muted">({q["lvl"]})</span>' if q.get("lvl") else ""

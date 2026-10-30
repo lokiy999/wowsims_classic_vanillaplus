@@ -650,7 +650,58 @@ NPCS_NOT_ON_SERVER = {
                   16982, 16983, 16984, 16998, 17055},
     "Maws": {15571},  # the AQ war event's Silithus boss
     "Atiesh": {16387},  # the Atiesh quest line's demon in Stratholme
+    # pfQuest's zone 2597 + Wowhead's AV-only creatures; not the ones Wowhead also has elsewhere (rank vendors,
+    # spirit guides, Stormpike Mountaineer) (Lokiy 2026-10-30, Part HI)
+    "Alterac Valley": {603, 2225, 3343, 3625, 4255, 4257, 5134, 5135, 5139, 10364, 10367, 10981, 10982, 10983, 10986,
+                        10987, 10990, 10991, 11600, 11602, 11603, 11604, 11605, 11657, 11675, 11677, 11678, 11679,
+                        11837, 11838, 11839, 11840, 11946, 11947, 11948, 11949, 11997, 11998, 12048, 12050, 12051,
+                        12052, 12053, 12096, 12097, 12121, 12122, 12127, 12156, 12157, 12159, 13078, 13079, 13080,
+                        13081, 13086, 13087, 13088, 13089, 13096, 13097, 13098, 13099, 13137, 13138, 13139, 13140,
+                        13143, 13144, 13145, 13146, 13147, 13151, 13152, 13153, 13154, 13161, 13176, 13178, 13179,
+                        13180, 13181, 13216, 13218, 13236, 13256, 13257, 13284, 13296, 13297, 13298, 13299, 13300,
+                        13316, 13317, 13318, 13319, 13320, 13324, 13325, 13326, 13327, 13328, 13329, 13330, 13331,
+                        13332, 13333, 13334, 13335, 13336, 13337, 13356, 13357, 13358, 13359, 13377, 13396, 13397,
+                        13419, 13421, 13422, 13424, 13425, 13426, 13427, 13428, 13437, 13438, 13439, 13440, 13441,
+                        13442, 13443, 13446, 13447, 13448, 13449, 13517, 13518, 13519, 13521, 13522, 13523, 13524,
+                        13525, 13526, 13527, 13529, 13530, 13531, 13534, 13535, 13536, 13537, 13538, 13539, 13540,
+                        13541, 13542, 13543, 13544, 13545, 13546, 13547, 13548, 13549, 13550, 13551, 13552, 13553,
+                        13554, 13555, 13556, 13557, 13576, 13577, 13597, 13598, 13616, 13617, 13618, 13676, 13797,
+                        13798, 13956, 13957, 13958, 13959, 14185, 14186, 14187, 14188, 14282, 14283, 14284, 14285,
+                        14762, 14763, 14764, 14765, 14766, 14767, 14768, 14769, 14770, 14771, 14772, 14773, 14774,
+                        14775, 14776, 14777, 14848, 14943, 14944, 14945, 14946, 14947, 14948},
 }
+# Quests and zone pages that aren't on Vanilla+ (Part HI): quests started or ended by an AV NPC; when the
+# battleground arrives, delete its lines here and in NPCS_NOT_ON_SERVER
+QUESTS_NOT_ON_SERVER = {
+    "Alterac Valley": {5892, 5893, 6741, 6781, 6801, 6825, 6826, 6827, 6846, 6847, 6848, 6861, 6862, 6881, 6901,
+                        6941, 6942, 6943, 6982, 6985, 7001, 7002, 7026, 7027, 7121, 7123, 7223, 7224, 7281, 7282,
+                        7301, 7302, 7361, 7362, 7363, 7364, 7365, 7366, 7367, 7368, 7385, 7386, 7401, 7402, 7421,
+                        7422, 7423, 7424, 7425, 7426, 7427, 7428},
+}
+ZONES_NOT_ON_SERVER = {2597}  # Alterac Valley
+NOT_ON_SERVER_NPCS = set().union(*NPCS_NOT_ON_SERVER.values())
+NOT_ON_SERVER_QUESTS = set().union(*QUESTS_NOT_ON_SERVER.values())
+AV_REPS = {729, 730}  # Frostwolf Clan, Stormpike Guard
+
+
+def kept_source(e):
+    """False for an item source line in content that isn't on Vanilla+ (Part HI): Alterac Valley (pfQuest's "(Alterac
+    Valley...)" lines) and links to a creature or quest that was left out."""
+    h = e.get("href") or ""
+    m = re.search(r"(?:/npc/|npc=)(\d+)", h)
+    q = re.search(r"quest=(\d+)", h)
+    return not ("(Alterac Valley" in e.get("text", "") or (m and int(m.group(1)) in NOT_ON_SERVER_NPCS)
+                or (q and int(q.group(1)) in NOT_ON_SERVER_QUESTS))
+
+
+def kept_wowhead(e):
+    """The same for a Wowhead classic source (api/sources.json "wowhead", the sim's source data)."""
+    return not ((e.get("rep") or {}).get("repFactionId") in AV_REPS
+                or (e.get("drop") or {}).get("npcId") in NOT_ON_SERVER_NPCS
+                or (e.get("drop") or {}).get("zoneId") in ZONES_NOT_ON_SERVER
+                or (e.get("soldBy") or {}).get("npcId") in NOT_ON_SERVER_NPCS
+                or (e.get("soldBy") or {}).get("zoneId") in ZONES_NOT_ON_SERVER
+                or (e.get("quest") or {}).get("id") in NOT_ON_SERVER_QUESTS)
 
 
 def item_link(item, icon):
@@ -771,8 +822,9 @@ def main():
     observed = {i: observed_drops(i, sources.get(i, []), names, tables_by_cat, obs, boss_names, guess=is_custom(i))
                 for i in all_items}
     # (a source line linking to a loot table that was left out goes too)
-    item_srcs = {i: [e for e in srcs.sources(i) if not e.get("href", "").startswith("/loot/")
-                     or e["href"][6:].split("#")[0] in tables] for i in all_items}
+    item_srcs = {i: [e for e in srcs.sources(i) if (not e.get("href", "").startswith("/loot/")
+                                                    or e["href"][6:].split("#")[0] in tables) and kept_source(e)]
+                 for i in all_items}
     affixes, affix_stats, affix_chances = load_random_affixes()
     # suffix names and values from the server's DBCs; which ones an item rolls: Wowhead's list + the loot tracker's,
     # pooled per item cache group (affixes.py)
@@ -856,7 +908,7 @@ def main():
 
     # DungeonJournal's abilities / tactics (npcs.load_journal; Part GN), on the NPC pages
     journal, journal_flags = load_journal()
-    quests = Quests(npcs)  # quest / zone pages (quests.py; Part GO)
+    quests = Quests(npcs, NOT_ON_SERVER_QUESTS, ZONES_NOT_ON_SERVER)  # quest / zone pages (quests.py; Part GO)
     quests.add_rewards(item_srcs)
 
     def journal_icon(path):
@@ -1769,6 +1821,8 @@ your filters, so you can share a search.</p></section>
     # "wowhead" so the sim (docs/gen_sources.py) reads them unchanged
     atlas = atlas_item_sources(tables, table_groups, names, ROW_INFO, craft_items())
     src_api["wowhead"], moved = merge_atlas_sources(src_api.get("wowhead", {}), atlas)
+    src_api["wowhead"] = {k: kept for k, v in src_api["wowhead"].items() for kept in [[e for e in v if kept_wowhead(e)]]
+                          if kept}  # Part HI
     print("api/sources.json from AtlasLoot:", ", ".join(f"{k} {v}" for k, v in sorted(moved.items())))
     tmp = os.path.join(out, "api", "sources.json.tmp")
     with open(tmp, "w", encoding="utf-8") as f:
