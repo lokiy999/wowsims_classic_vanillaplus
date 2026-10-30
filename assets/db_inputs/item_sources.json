@@ -787,12 +787,6 @@
 "npcId": 2779,
 "zoneId": 45
 }
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
 }
 ],
 "1405": [
@@ -1528,34 +1522,6 @@
 }
 }
 ],
-"1992": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
 "1996": [
 {
 "drop": {
@@ -2138,41 +2104,6 @@
 {
 "drop": {
 "zoneId": 1
-}
-}
-],
-"2262": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
 }
 }
 ],
@@ -8442,34 +8373,6 @@
 }
 }
 ],
-"5756": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
 "5757": [
 {
 "quest": {
@@ -10648,14 +10551,6 @@
 }
 }
 ],
-"6830": [
-{
-"quest": {
-"id": 1053,
-"name": "In the Name of the Light"
-}
-}
-],
 "6832": [
 {
 "quest": {
@@ -11345,12 +11240,6 @@
 "profession": 4,
 "spellId": 8895
 }
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
 }
 ],
 "7191": [
@@ -11815,311 +11704,6 @@
 }
 }
 ],
-"7683": [
-{
-"drop": {
-"npcId": 3983,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 3983,
-"zoneId": 796
-}
-}
-],
-"7684": [
-{
-"drop": {
-"npcId": 4543,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 4543,
-"zoneId": 796
-}
-}
-],
-"7685": [
-{
-"drop": {
-"npcId": 4543,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 4543,
-"zoneId": 796
-}
-}
-],
-"7686": [
-{
-"drop": {
-"npcId": 6489,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6489,
-"zoneId": 796
-}
-}
-],
-"7687": [
-{
-"drop": {
-"npcId": 6489,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6489,
-"zoneId": 796
-}
-}
-],
-"7688": [
-{
-"drop": {
-"npcId": 6489,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6489,
-"zoneId": 796
-}
-}
-],
-"7689": [
-{
-"drop": {
-"npcId": 6488,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6488,
-"zoneId": 796
-}
-}
-],
-"7690": [
-{
-"drop": {
-"npcId": 6488,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6488,
-"zoneId": 796
-}
-}
-],
-"7691": [
-{
-"drop": {
-"npcId": 6488,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6488,
-"zoneId": 796
-}
-}
-],
-"7708": [
-{
-"drop": {
-"npcId": 6490,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6490,
-"zoneId": 796
-}
-}
-],
-"7709": [
-{
-"drop": {
-"npcId": 6490,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6490,
-"zoneId": 796
-}
-}
-],
-"7713": [
-{
-"drop": {
-"npcId": 6487,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6487,
-"zoneId": 796
-}
-}
-],
-"7714": [
-{
-"drop": {
-"npcId": 6487,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6487,
-"zoneId": 796
-}
-}
-],
-"7717": [
-{
-"drop": {
-"npcId": 3975,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 3975,
-"zoneId": 796
-}
-}
-],
-"7721": [
-{
-"drop": {
-"npcId": 3977,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 3977,
-"zoneId": 796
-}
-}
-],
-"7722": [
-{
-"drop": {
-"npcId": 3977,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 3977,
-"zoneId": 796
-}
-}
-],
-"7723": [
-{
-"drop": {
-"npcId": 3976,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 3976,
-"zoneId": 796
-}
-}
-],
-"7724": [
-{
-"drop": {
-"npcId": 3976,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 3976,
-"zoneId": 796
-}
-}
-],
-"7727": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
 "7728": [
 {
 "drop": {
@@ -12128,118 +11712,10 @@
 }
 }
 ],
-"7729": [
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7730": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7731": [
-{
-"drop": {
-"npcId": 6490,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 6490,
-"zoneId": 796
-}
-}
-],
 "7734": [
 {
 "drop": {
 "npcId": 209889
-}
-}
-],
-"7736": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
 }
 }
 ],
@@ -12299,290 +11775,9 @@
 }
 }
 ],
-"7752": [
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7753": [
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
 "7754": [
 {
 "drop": {
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7755": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7757": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7758": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7759": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7760": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7761": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7786": [
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"7787": [
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
 "zoneId": 796,
 "otherName": "Trash"
 }
@@ -13305,64 +12500,6 @@
 "drop": {
 "npcId": 4132,
 "zoneId": 400
-}
-}
-],
-"8225": [
-{
-"drop": {
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-}
-],
-"8226": [
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 796,
-"otherName": "Trash"
 }
 }
 ],
@@ -15716,13 +14853,6 @@
 "id": 3321,
 "name": "Did You Lose This?"
 }
-},
-{
-"soldBy": {
-"npcId": 214954,
-"npcName": "Rix Xizzix",
-"zoneId": 33
-}
 }
 ],
 "10421": [
@@ -15802,12 +14932,6 @@
 "crafted": {
 "profession": 4,
 "spellId": 12607
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -16167,12 +15291,6 @@
 "profession": 4,
 "spellId": 12758
 }
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
 }
 ],
 "10592": [
@@ -16324,12 +15442,6 @@
 "crafted": {
 "profession": 4,
 "spellId": 12759
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -16547,12 +15659,6 @@
 "profession": 4,
 "spellId": 12902
 }
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
 }
 ],
 "10721": [
@@ -16576,12 +15682,6 @@
 "crafted": {
 "profession": 4,
 "spellId": 12905
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -18100,21 +17200,6 @@
 }
 }
 ],
-"11768": [
-{
-"drop": {
-"npcId": 9017,
-"zoneId": 1584
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 9017,
-"zoneId": 1584
-}
-}
-],
 "11782": [
 {
 "drop": {
@@ -18719,12 +17804,6 @@
 "quest": {
 "id": 3962,
 "name": "It's Dangerous to Go Alone"
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -19872,7 +18951,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -21189,14 +20269,6 @@
 {
 "drop": {
 "difficulty": 1,
-"npcId": 9237,
-"zoneId": 1583
-}
-}
-],
-"13175": [
-{
-"drop": {
 "npcId": 9237,
 "zoneId": 1583
 }
@@ -22558,14 +21630,6 @@
 }
 }
 ],
-"13812": [
-{
-"quest": {
-"id": 5532,
-"name": "<NYI> <TXT> Ring of the Dawn"
-}
-}
-],
 "13813": [
 {
 "rep": {
@@ -22918,12 +21982,6 @@
 "quest": {
 "id": 5344,
 "name": "The Last Barov"
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -25414,7 +24472,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -25422,7 +24481,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25430,7 +24490,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25438,7 +24499,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25446,7 +24508,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25454,7 +24517,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25462,7 +24526,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25470,7 +24535,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25478,7 +24544,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25486,7 +24553,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25494,7 +24562,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25502,7 +24571,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25510,7 +24580,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25518,7 +24589,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25526,7 +24598,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25534,7 +24607,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25542,7 +24616,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25550,7 +24625,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25558,7 +24634,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25566,7 +24643,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25574,7 +24652,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25582,7 +24661,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25590,7 +24670,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25598,7 +24679,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25606,7 +24688,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25614,7 +24697,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25622,7 +24706,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25630,7 +24715,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25638,7 +24724,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25646,7 +24733,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25654,7 +24742,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25662,7 +24751,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25670,7 +24760,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25678,7 +24769,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25686,7 +24778,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25694,7 +24787,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25702,7 +24796,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -25737,7 +24832,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25745,7 +24841,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25753,7 +24850,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25761,7 +24859,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25769,7 +24868,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25777,7 +24877,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25785,7 +24886,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25793,7 +24895,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25801,7 +24904,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25809,7 +24913,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25817,7 +24922,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25825,7 +24931,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25833,7 +24940,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25841,7 +24949,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25849,7 +24958,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25857,7 +24967,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25865,7 +24976,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25873,7 +24985,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25881,7 +24994,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25889,7 +25003,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25897,7 +25012,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25905,7 +25021,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25913,7 +25030,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25921,7 +25039,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25929,7 +25048,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25937,7 +25057,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25945,7 +25066,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25953,7 +25075,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25961,7 +25084,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25969,7 +25093,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25977,7 +25102,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25985,7 +25111,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -25993,7 +25120,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -26001,7 +25129,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -26009,7 +25138,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -26017,7 +25147,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -26986,22 +26117,6 @@
 }
 }
 ],
-"16800": [
-{
-"drop": {
-"npcId": 12118,
-"zoneId": 2717
-}
-}
-],
-"16863": [
-{
-"drop": {
-"npcId": 12118,
-"zoneId": 2717
-}
-}
-],
 "16873": [
 {
 "quest": {
@@ -27862,7 +26977,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27870,7 +26986,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27878,7 +26995,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27886,7 +27004,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27894,7 +27013,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27902,7 +27022,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27910,7 +27031,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -27918,7 +27040,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -27926,7 +27049,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -27934,7 +27058,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -27942,7 +27067,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -27950,7 +27076,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -27958,7 +27085,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27966,7 +27094,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27974,7 +27103,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27982,7 +27112,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27990,7 +27121,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -27998,7 +27130,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -28006,7 +27139,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -28014,7 +27148,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -28022,7 +27157,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -28030,7 +27166,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -28038,7 +27175,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -28046,7 +27184,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -28071,22 +27210,6 @@
 "quest": {
 "id": 338,
 "name": "The Green Hills of Stranglethorn"
-}
-}
-],
-"17690": [
-{
-"quest": {
-"id": 7161,
-"name": "Proving Grounds"
-}
-}
-],
-"17691": [
-{
-"quest": {
-"id": 7162,
-"name": "Proving Grounds"
 }
 }
 ],
@@ -28558,86 +27681,6 @@
 "drop": {
 "zoneId": 2100,
 "npcId": 12201
-}
-}
-],
-"17900": [
-{
-"quest": {
-"id": 7168,
-"name": "Rise and Be Recognized"
-}
-}
-],
-"17901": [
-{
-"quest": {
-"id": 7169,
-"name": "Honored Amongst the Guard"
-}
-}
-],
-"17902": [
-{
-"quest": {
-"id": 7170,
-"name": "Earned Reverence"
-}
-}
-],
-"17903": [
-{
-"quest": {
-"id": 7171,
-"name": "Legendary Heroes"
-}
-}
-],
-"17904": [
-{
-"quest": {
-"id": 7172,
-"name": "The Eye of Command"
-}
-}
-],
-"17905": [
-{
-"quest": {
-"id": 7163,
-"name": "Rise and Be Recognized"
-}
-}
-],
-"17906": [
-{
-"quest": {
-"id": 7164,
-"name": "Honored Amongst the Clan"
-}
-}
-],
-"17907": [
-{
-"quest": {
-"id": 7165,
-"name": "Earned Reverence"
-}
-}
-],
-"17908": [
-{
-"quest": {
-"id": 7166,
-"name": "Legendary Heroes"
-}
-}
-],
-"17909": [
-{
-"quest": {
-"id": 7167,
-"name": "The Eye of Command"
 }
 }
 ],
@@ -31121,12 +30164,6 @@
 "profession": 4,
 "spellId": 23077
 }
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
 }
 ],
 "18637": [
@@ -31143,12 +30180,6 @@
 "profession": 4,
 "spellId": 23081
 }
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
-}
 }
 ],
 "18639": [
@@ -31156,12 +30187,6 @@
 "crafted": {
 "profession": 4,
 "spellId": 23082
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -32056,7 +31081,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32064,7 +31090,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32072,7 +31099,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32080,7 +31108,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32096,7 +31125,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32104,7 +31134,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32120,7 +31151,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32137,7 +31169,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32145,7 +31178,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32153,7 +31187,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32161,7 +31196,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32169,7 +31205,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32185,7 +31222,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32193,7 +31231,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32219,7 +31258,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32227,7 +31267,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32289,7 +31330,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32333,7 +31375,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32376,7 +31419,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32384,7 +31428,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32392,7 +31437,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32400,7 +31446,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32408,7 +31455,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32424,7 +31472,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32440,7 +31489,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32448,7 +31498,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32464,7 +31515,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -32472,7 +31524,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -32569,12 +31622,6 @@
 "quest": {
 "id": 7838,
 "name": "Arena Grandmaster"
-}
-},
-{
-"soldBy": {
-"npcId": 209889,
-"npcName": "Barebones"
 }
 }
 ],
@@ -34241,36 +33288,6 @@
 "repFactionId": 890,
 "repLevel": 8,
 "playerFaction": 1
-}
-}
-],
-"19507": [
-{
-"drop": {
-"npcId": 4542,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 4542,
-"zoneId": 796
-}
-}
-],
-"19509": [
-{
-"drop": {
-"npcId": 4542,
-"zoneId": 796
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"npcId": 4542,
-"zoneId": 796
 }
 }
 ],
@@ -41588,241 +40605,11 @@
 }
 }
 ],
-"21196": [
-{
-"quest": {
-"id": 8747,
-"name": "The Path of the Protector"
-}
-}
-],
-"21197": [
-{
-"quest": {
-"id": 8748,
-"name": "The Path of the Protector"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 5
-}
-}
-],
-"21198": [
-{
-"quest": {
-"id": 8749,
-"name": "The Path of the Protector"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 6
-}
-}
-],
-"21199": [
-{
-"quest": {
-"id": 8750,
-"name": "The Path of the Protector"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 7
-}
-}
-],
-"21200": [
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 8
-}
-}
-],
-"21201": [
-{
-"quest": {
-"id": 8752,
-"name": "The Path of the Conqueror"
-}
-}
-],
-"21202": [
-{
-"quest": {
-"id": 8753,
-"name": "The Path of the Conqueror"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 5
-}
-}
-],
-"21203": [
-{
-"quest": {
-"id": 8754,
-"name": "The Path of the Conqueror"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 6
-}
-}
-],
-"21204": [
-{
-"quest": {
-"id": 8755,
-"name": "The Path of the Conqueror"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 7
-}
-}
-],
-"21205": [
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 8
-}
-}
-],
-"21206": [
-{
-"quest": {
-"id": 8757,
-"name": "The Path of the Invoker"
-}
-}
-],
-"21207": [
-{
-"quest": {
-"id": 8758,
-"name": "The Path of the Invoker"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 5
-}
-}
-],
-"21208": [
-{
-"quest": {
-"id": 8759,
-"name": "The Path of the Invoker"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 6
-}
-}
-],
-"21209": [
-{
-"quest": {
-"id": 8760,
-"name": "The Path of the Invoker"
-}
-},
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 7
-}
-}
-],
-"21210": [
-{
-"rep": {
-"repFactionId": 910,
-"repLevel": 8
-}
-}
-],
 "21214": [
 {
 "drop": {
 "zoneId": 900001,
 "otherName": "W B Shared Loot"
-}
-}
-],
-"21242": [
-{
-"quest": {
-"id": 8789,
-"name": "Imperial Qiraji Armaments"
-}
-}
-],
-"21244": [
-{
-"quest": {
-"id": 8789,
-"name": "Imperial Qiraji Armaments"
-}
-}
-],
-"21268": [
-{
-"quest": {
-"id": 8790,
-"name": "Imperial Qiraji Regalia"
-}
-}
-],
-"21269": [
-{
-"quest": {
-"id": 8789,
-"name": "Imperial Qiraji Armaments"
-}
-}
-],
-"21272": [
-{
-"quest": {
-"id": 8789,
-"name": "Imperial Qiraji Armaments"
-}
-}
-],
-"21273": [
-{
-"quest": {
-"id": 8790,
-"name": "Imperial Qiraji Regalia"
-}
-}
-],
-"21275": [
-{
-"quest": {
-"id": 8790,
-"name": "Imperial Qiraji Regalia"
 }
 }
 ],
@@ -42128,86 +40915,6 @@
 }
 }
 ],
-"21329": [
-{
-"quest": {
-"id": 8561,
-"name": "Conqueror's Crown"
-}
-}
-],
-"21330": [
-{
-"quest": {
-"id": 8544,
-"name": "Conqueror's Spaulders"
-}
-}
-],
-"21331": [
-{
-"quest": {
-"id": 8562,
-"name": "Conqueror's Breastplate"
-}
-}
-],
-"21332": [
-{
-"quest": {
-"id": 8560,
-"name": "Conqueror's Legguards"
-}
-}
-],
-"21333": [
-{
-"quest": {
-"id": 8559,
-"name": "Conqueror's Greaves"
-}
-}
-],
-"21334": [
-{
-"quest": {
-"id": 8661,
-"name": "Doomcaller's Robes"
-}
-}
-],
-"21335": [
-{
-"quest": {
-"id": 8664,
-"name": "Doomcaller's Mantle"
-}
-}
-],
-"21336": [
-{
-"quest": {
-"id": 8663,
-"name": "Doomcaller's Trousers"
-}
-}
-],
-"21337": [
-{
-"quest": {
-"id": 8662,
-"name": "Doomcaller's Circlet"
-}
-}
-],
-"21338": [
-{
-"quest": {
-"id": 8660,
-"name": "Doomcaller's Footwraps"
-}
-}
-],
 "21340": [
 {
 "crafted": {
@@ -42232,507 +40939,11 @@
 }
 }
 ],
-"21343": [
-{
-"quest": {
-"id": 8633,
-"name": "Enigma Robes"
-}
-}
-],
-"21344": [
-{
-"quest": {
-"id": 8634,
-"name": "Enigma Boots"
-}
-}
-],
-"21345": [
-{
-"quest": {
-"id": 8625,
-"name": "Enigma Shoulderpads"
-}
-}
-],
-"21346": [
-{
-"quest": {
-"id": 8631,
-"name": "Enigma Leggings"
-}
-}
-],
-"21347": [
-{
-"quest": {
-"id": 8632,
-"name": "Enigma Circlet"
-}
-}
-],
-"21348": [
-{
-"quest": {
-"id": 8592,
-"name": "Tiara of the Oracle"
-}
-}
-],
-"21349": [
-{
-"quest": {
-"id": 8596,
-"name": "Footwraps of the Oracle"
-}
-}
-],
-"21350": [
-{
-"quest": {
-"id": 8594,
-"name": "Mantle of the Oracle"
-}
-}
-],
-"21351": [
-{
-"quest": {
-"id": 8603,
-"name": "Vestments of the Oracle"
-}
-}
-],
-"21352": [
-{
-"quest": {
-"id": 8593,
-"name": "Trousers of the Oracle"
-}
-}
-],
-"21353": [
-{
-"quest": {
-"id": 8667,
-"name": "Genesis Helm"
-}
-}
-],
-"21354": [
-{
-"quest": {
-"id": 8669,
-"name": "Genesis Shoulderpads"
-}
-}
-],
-"21355": [
-{
-"quest": {
-"id": 8665,
-"name": "Genesis Boots"
-}
-}
-],
-"21356": [
-{
-"quest": {
-"id": 8668,
-"name": "Genesis Trousers"
-}
-}
-],
-"21357": [
-{
-"quest": {
-"id": 8666,
-"name": "Genesis Vest"
-}
-}
-],
-"21359": [
-{
-"quest": {
-"id": 8637,
-"name": "Deathdealer's Boots"
-}
-}
-],
-"21360": [
-{
-"quest": {
-"id": 8639,
-"name": "Deathdealer's Helm"
-}
-}
-],
-"21361": [
-{
-"quest": {
-"id": 8641,
-"name": "Deathdealer's Spaulders"
-}
-}
-],
-"21362": [
-{
-"quest": {
-"id": 8640,
-"name": "Deathdealer's Leggings"
-}
-}
-],
-"21364": [
-{
-"quest": {
-"id": 8638,
-"name": "Deathdealer's Vest"
-}
-}
-],
-"21365": [
-{
-"quest": {
-"id": 8626,
-"name": "Striker's Footguards"
-}
-}
-],
-"21366": [
-{
-"quest": {
-"id": 8657,
-"name": "Striker's Diadem"
-}
-}
-],
-"21367": [
-{
-"quest": {
-"id": 8659,
-"name": "Striker's Pauldrons"
-}
-}
-],
-"21368": [
-{
-"quest": {
-"id": 8658,
-"name": "Striker's Leggings"
-}
-}
-],
-"21370": [
-{
-"quest": {
-"id": 8656,
-"name": "Striker's Hauberk"
-}
-}
-],
 "21371": [
 {
 "drop": {
 "zoneId": 2717,
 "otherName": "Trash"
-}
-}
-],
-"21372": [
-{
-"quest": {
-"id": 8623,
-"name": "Stormcaller's Diadem"
-}
-}
-],
-"21373": [
-{
-"quest": {
-"id": 8621,
-"name": "Stormcaller's Footguards"
-}
-}
-],
-"21374": [
-{
-"quest": {
-"id": 8622,
-"name": "Stormcaller's Hauberk"
-}
-}
-],
-"21375": [
-{
-"quest": {
-"id": 8624,
-"name": "Stormcaller's Leggings"
-}
-}
-],
-"21376": [
-{
-"quest": {
-"id": 8602,
-"name": "Stormcaller's Pauldrons"
-}
-}
-],
-"21387": [
-{
-"quest": {
-"id": 8628,
-"name": "Avenger's Crown"
-}
-}
-],
-"21388": [
-{
-"quest": {
-"id": 8655,
-"name": "Avenger's Greaves"
-}
-}
-],
-"21389": [
-{
-"quest": {
-"id": 8627,
-"name": "Avenger's Breastplate"
-}
-}
-],
-"21390": [
-{
-"quest": {
-"id": 8629,
-"name": "Avenger's Legguards"
-}
-}
-],
-"21391": [
-{
-"quest": {
-"id": 8630,
-"name": "Avenger's Pauldrons"
-}
-}
-],
-"21392": [
-{
-"quest": {
-"id": 8558,
-"name": "Sickle of Unyielding Strength"
-}
-}
-],
-"21393": [
-{
-"quest": {
-"id": 8556,
-"name": "Signet of Unyielding Strength"
-}
-}
-],
-"21394": [
-{
-"quest": {
-"id": 8557,
-"name": "Drape of Unyielding Strength"
-}
-}
-],
-"21395": [
-{
-"quest": {
-"id": 8711,
-"name": "Blade of Eternal Justice"
-}
-}
-],
-"21396": [
-{
-"quest": {
-"id": 8703,
-"name": "Ring of Eternal Justice"
-}
-}
-],
-"21397": [
-{
-"quest": {
-"id": 8695,
-"name": "Cape of Eternal Justice"
-}
-}
-],
-"21398": [
-{
-"quest": {
-"id": 8706,
-"name": "Hammer of the Gathering Storm"
-}
-}
-],
-"21399": [
-{
-"quest": {
-"id": 8698,
-"name": "Ring of the Gathering Storm"
-}
-}
-],
-"21400": [
-{
-"quest": {
-"id": 8690,
-"name": "Cloak of the Gathering Storm"
-}
-}
-],
-"21401": [
-{
-"quest": {
-"id": 8712,
-"name": "Scythe of the Unseen Path"
-}
-}
-],
-"21402": [
-{
-"quest": {
-"id": 8704,
-"name": "Signet of the Unseen Path"
-}
-}
-],
-"21403": [
-{
-"quest": {
-"id": 8696,
-"name": "Cloak of the Unseen Path"
-}
-}
-],
-"21404": [
-{
-"quest": {
-"id": 8709,
-"name": "Dagger of Veiled Shadows"
-}
-}
-],
-"21405": [
-{
-"quest": {
-"id": 8701,
-"name": "Band of Veiled Shadows"
-}
-}
-],
-"21406": [
-{
-"quest": {
-"id": 8693,
-"name": "Cloak of Veiled Shadows"
-}
-}
-],
-"21407": [
-{
-"quest": {
-"id": 8708,
-"name": "Mace of Unending Life"
-}
-}
-],
-"21408": [
-{
-"quest": {
-"id": 8700,
-"name": "Band of Unending Life"
-}
-}
-],
-"21409": [
-{
-"quest": {
-"id": 8692,
-"name": "Cloak of Unending Life"
-}
-}
-],
-"21410": [
-{
-"quest": {
-"id": 8705,
-"name": "Gavel of Infinite Wisdom"
-}
-}
-],
-"21411": [
-{
-"quest": {
-"id": 8697,
-"name": "Ring of Infinite Wisdom"
-}
-}
-],
-"21412": [
-{
-"quest": {
-"id": 8689,
-"name": "Shroud of Infinite Wisdom"
-}
-}
-],
-"21413": [
-{
-"quest": {
-"id": 8707,
-"name": "Blade of Vaulted Secrets"
-}
-}
-],
-"21414": [
-{
-"quest": {
-"id": 8699,
-"name": "Band of Vaulted Secrets"
-}
-}
-],
-"21415": [
-{
-"quest": {
-"id": 8691,
-"name": "Drape of Vaulted Secrets"
-}
-}
-],
-"21416": [
-{
-"quest": {
-"id": 8710,
-"name": "Kris of Unspoken Names"
-}
-}
-],
-"21417": [
-{
-"quest": {
-"id": 8702,
-"name": "Ring of Unspoken Names"
-}
-}
-],
-"21418": [
-{
-"quest": {
-"id": 8694,
-"name": "Shroud of Unspoken Names"
 }
 }
 ],
@@ -42760,171 +40971,11 @@
 }
 }
 ],
-"21498": [
-{
-"drop": {
-"npcId": 15348,
-"zoneId": 3429
-}
-}
-],
-"21499": [
-{
-"drop": {
-"npcId": 15348,
-"zoneId": 3429
-}
-}
-],
-"21500": [
-{
-"drop": {
-"npcId": 15348,
-"zoneId": 3429
-}
-}
-],
 "21501": [
 {
 "drop": {
 "zoneId": 900001,
 "otherName": "Kurinnaxx"
-}
-}
-],
-"21502": [
-{
-"drop": {
-"npcId": 15348,
-"zoneId": 3429
-}
-}
-],
-"21503": [
-{
-"drop": {
-"npcId": 15348,
-"zoneId": 3429
-}
-}
-],
-"21504": [
-{
-"quest": {
-"id": 8791,
-"name": "The Fall of Ossirian"
-}
-}
-],
-"21505": [
-{
-"quest": {
-"id": 8791,
-"name": "The Fall of Ossirian"
-}
-}
-],
-"21506": [
-{
-"quest": {
-"id": 8791,
-"name": "The Fall of Ossirian"
-}
-}
-],
-"21507": [
-{
-"quest": {
-"id": 8791,
-"name": "The Fall of Ossirian"
-}
-}
-],
-"21517": [
-{
-"quest": {
-"id": 8620,
-"name": "The Only Prescription"
-}
-}
-],
-"21520": [
-{
-"quest": {
-"id": 8745,
-"name": "Treasure of the Timeless One"
-}
-}
-],
-"21521": [
-{
-"quest": {
-"id": 8745,
-"name": "Treasure of the Timeless One"
-}
-}
-],
-"21522": [
-{
-"quest": {
-"id": 8745,
-"name": "Treasure of the Timeless One"
-}
-}
-],
-"21523": [
-{
-"quest": {
-"id": 8745,
-"name": "Treasure of the Timeless One"
-}
-}
-],
-"21526": [
-{
-"quest": {
-"id": 8729,
-"name": "The Wrath of Neptulon"
-}
-}
-],
-"21527": [
-{
-"quest": {
-"id": 8729,
-"name": "The Wrath of Neptulon"
-}
-}
-],
-"21529": [
-{
-"quest": {
-"id": 8730,
-"name": "Nefarius's Corruption"
-}
-}
-],
-"21530": [
-{
-"quest": {
-"id": 8730,
-"name": "Nefarius's Corruption"
-}
-}
-],
-"21531": [
-{
-"quest": {
-"id": 8736,
-"name": "The Nightmare Manifests"
-}
-}
-],
-"21532": [
-{
-"quest": {
-"id": 8736,
-"name": "The Nightmare Manifests"
 }
 }
 ],
@@ -43156,72 +41207,6 @@
 }
 }
 ],
-"21692": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21693": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21694": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21695": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21696": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21697": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21709": [
-{
-"quest": {
-"id": 8802,
-"name": "The Savior of Kalimdor"
-}
-}
-],
-"21710": [
-{
-"quest": {
-"id": 8802,
-"name": "The Savior of Kalimdor"
-}
-}
-],
-"21712": [
-{
-"quest": {
-"id": 8802,
-"name": "The Savior of Kalimdor"
-}
-}
-],
 "21714": [
 {
 "crafted": {
@@ -43243,118 +41228,6 @@
 "crafted": {
 "profession": 4,
 "spellId": 26428
-}
-}
-],
-"21800": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21801": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21802": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21803": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21804": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21805": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21806": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21809": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21810": [
-{
-"drop": {
-"zoneId": 3429
-}
-}
-],
-"21836": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21837": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21838": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21856": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21888": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21889": [
-{
-"drop": {
-"zoneId": 3428
-}
-}
-],
-"21890": [
-{
-"drop": {
-"zoneId": 3428
 }
 }
 ],
@@ -43510,35 +41383,11 @@
 }
 }
 ],
-"22191": [
-{
-"crafted": {
-"profession": 2,
-"spellId": 27590
-}
-}
-],
-"22194": [
-{
-"crafted": {
-"profession": 2,
-"spellId": 27589
-}
-}
-],
 "22195": [
 {
 "crafted": {
 "profession": 2,
 "spellId": 27588
-}
-}
-],
-"22196": [
-{
-"crafted": {
-"profession": 2,
-"spellId": 27587
 }
 }
 ],
@@ -44567,134 +42416,6 @@
 }
 }
 ],
-"22416": [
-{
-"quest": {
-"id": 9034,
-"name": "Dreadnaught Breastplate"
-}
-}
-],
-"22417": [
-{
-"quest": {
-"id": 9036,
-"name": "Dreadnaught Legplates"
-}
-}
-],
-"22418": [
-{
-"quest": {
-"id": 9037,
-"name": "Dreadnaught Helmet"
-}
-}
-],
-"22419": [
-{
-"quest": {
-"id": 9038,
-"name": "Dreadnaught Pauldrons"
-}
-}
-],
-"22420": [
-{
-"quest": {
-"id": 9039,
-"name": "Dreadnaught Sabatons"
-}
-}
-],
-"22421": [
-{
-"quest": {
-"id": 9040,
-"name": "Dreadnaught Gauntlets"
-}
-}
-],
-"22422": [
-{
-"quest": {
-"id": 9041,
-"name": "Dreadnaught Waistguard"
-}
-}
-],
-"22423": [
-{
-"quest": {
-"id": 9042,
-"name": "Dreadnaught Bracers"
-}
-}
-],
-"22424": [
-{
-"quest": {
-"id": 9050,
-"name": "Redemption Wristguards"
-}
-}
-],
-"22425": [
-{
-"quest": {
-"id": 9043,
-"name": "Redemption Tunic"
-}
-}
-],
-"22426": [
-{
-"quest": {
-"id": 9048,
-"name": "Redemption Handguards"
-}
-}
-],
-"22427": [
-{
-"quest": {
-"id": 9044,
-"name": "Redemption Legguards"
-}
-}
-],
-"22428": [
-{
-"quest": {
-"id": 9045,
-"name": "Redemption Headpiece"
-}
-}
-],
-"22429": [
-{
-"quest": {
-"id": 9046,
-"name": "Redemption Spaulders"
-}
-}
-],
-"22430": [
-{
-"quest": {
-"id": 9047,
-"name": "Redemption Boots"
-}
-}
-],
-"22431": [
-{
-"quest": {
-"id": 9049,
-"name": "Redemption Girdle"
-}
-}
-],
 "22433": [
 {
 "drop": {
@@ -44703,491 +42424,11 @@
 }
 }
 ],
-"22436": [
-{
-"quest": {
-"id": 9054,
-"name": "Cryptstalker Tunic"
-}
-}
-],
-"22437": [
-{
-"quest": {
-"id": 9055,
-"name": "Cryptstalker Legguards"
-}
-}
-],
-"22438": [
-{
-"quest": {
-"id": 9056,
-"name": "Cryptstalker Headpiece"
-}
-}
-],
-"22439": [
-{
-"quest": {
-"id": 9057,
-"name": "Cryptstalker Spaulders"
-}
-}
-],
-"22440": [
-{
-"quest": {
-"id": 9058,
-"name": "Cryptstalker Boots"
-}
-}
-],
-"22441": [
-{
-"quest": {
-"id": 9059,
-"name": "Cryptstalker Handguards"
-}
-}
-],
-"22442": [
-{
-"quest": {
-"id": 9060,
-"name": "Cryptstalker Girdle"
-}
-}
-],
-"22443": [
-{
-"quest": {
-"id": 9061,
-"name": "Cryptstalker Wristguards"
-}
-}
-],
-"22464": [
-{
-"quest": {
-"id": 9068,
-"name": "Earthshatter Tunic"
-}
-}
-],
-"22465": [
-{
-"quest": {
-"id": 9069,
-"name": "Earthshatter Legguards"
-}
-}
-],
-"22466": [
-{
-"quest": {
-"id": 9070,
-"name": "Earthshatter Headpiece"
-}
-}
-],
-"22467": [
-{
-"quest": {
-"id": 9071,
-"name": "Earthshatter Spaulders"
-}
-}
-],
-"22468": [
-{
-"quest": {
-"id": 9072,
-"name": "Earthshatter Boots"
-}
-}
-],
-"22469": [
-{
-"quest": {
-"id": 9073,
-"name": "Earthshatter Handguards"
-}
-}
-],
-"22470": [
-{
-"quest": {
-"id": 9074,
-"name": "Earthshatter Girdle"
-}
-}
-],
-"22471": [
-{
-"quest": {
-"id": 9075,
-"name": "Earthshatter Wristguards"
-}
-}
-],
 "22472": [
 {
 "drop": {
 "zoneId": 2557,
 "npcId": 16097
-}
-}
-],
-"22476": [
-{
-"quest": {
-"id": 9077,
-"name": "Bonescythe Breastplate"
-}
-}
-],
-"22477": [
-{
-"quest": {
-"id": 9078,
-"name": "Bonescythe Legplates"
-}
-}
-],
-"22478": [
-{
-"quest": {
-"id": 9079,
-"name": "Bonescythe Helmet"
-}
-}
-],
-"22479": [
-{
-"quest": {
-"id": 9080,
-"name": "Bonescythe Pauldrons"
-}
-}
-],
-"22480": [
-{
-"quest": {
-"id": 9081,
-"name": "Bonescythe Sabatons"
-}
-}
-],
-"22481": [
-{
-"quest": {
-"id": 9082,
-"name": "Bonescythe Gauntlets"
-}
-}
-],
-"22482": [
-{
-"quest": {
-"id": 9083,
-"name": "Bonescythe Waistguard"
-}
-}
-],
-"22483": [
-{
-"quest": {
-"id": 9084,
-"name": "Bonescythe Bracers"
-}
-}
-],
-"22488": [
-{
-"quest": {
-"id": 9086,
-"name": "Dreamwalker Tunic"
-}
-}
-],
-"22489": [
-{
-"quest": {
-"id": 9087,
-"name": "Dreamwalker Legguards"
-}
-}
-],
-"22490": [
-{
-"quest": {
-"id": 9088,
-"name": "Dreamwalker Headpiece"
-}
-}
-],
-"22491": [
-{
-"quest": {
-"id": 9089,
-"name": "Dreamwalker Spaulders"
-}
-}
-],
-"22492": [
-{
-"quest": {
-"id": 9090,
-"name": "Dreamwalker Boots"
-}
-}
-],
-"22493": [
-{
-"quest": {
-"id": 9091,
-"name": "Dreamwalker Handguards"
-}
-}
-],
-"22494": [
-{
-"quest": {
-"id": 9092,
-"name": "Dreamwalker Girdle"
-}
-}
-],
-"22495": [
-{
-"quest": {
-"id": 9093,
-"name": "Dreamwalker Wristguards"
-}
-}
-],
-"22496": [
-{
-"quest": {
-"id": 9095,
-"name": "Frostfire Robe"
-}
-}
-],
-"22497": [
-{
-"quest": {
-"id": 9096,
-"name": "Frostfire Leggings"
-}
-}
-],
-"22498": [
-{
-"quest": {
-"id": 9097,
-"name": "Frostfire Circlet"
-}
-}
-],
-"22499": [
-{
-"quest": {
-"id": 9098,
-"name": "Frostfire Shoulderpads"
-}
-}
-],
-"22500": [
-{
-"quest": {
-"id": 9099,
-"name": "Frostfire Sandals"
-}
-}
-],
-"22501": [
-{
-"quest": {
-"id": 9100,
-"name": "Frostfire Gloves"
-}
-}
-],
-"22502": [
-{
-"quest": {
-"id": 9101,
-"name": "Frostfire Belt"
-}
-}
-],
-"22503": [
-{
-"quest": {
-"id": 9102,
-"name": "Frostfire Bindings"
-}
-}
-],
-"22504": [
-{
-"quest": {
-"id": 9103,
-"name": "Plagueheart Robe"
-}
-}
-],
-"22505": [
-{
-"quest": {
-"id": 9104,
-"name": "Plagueheart Leggings"
-}
-}
-],
-"22506": [
-{
-"quest": {
-"id": 9105,
-"name": "Plagueheart Circlet"
-}
-}
-],
-"22507": [
-{
-"quest": {
-"id": 9106,
-"name": "Plagueheart Shoulderpads"
-}
-}
-],
-"22508": [
-{
-"quest": {
-"id": 9107,
-"name": "Plagueheart Sandals"
-}
-}
-],
-"22509": [
-{
-"quest": {
-"id": 9108,
-"name": "Plagueheart Gloves"
-}
-}
-],
-"22510": [
-{
-"quest": {
-"id": 9109,
-"name": "Plagueheart Belt"
-}
-}
-],
-"22511": [
-{
-"quest": {
-"id": 9110,
-"name": "Plagueheart Bindings"
-}
-}
-],
-"22512": [
-{
-"quest": {
-"id": 9111,
-"name": "Robe of Faith"
-}
-}
-],
-"22513": [
-{
-"quest": {
-"id": 9112,
-"name": "Leggings of Faith"
-}
-}
-],
-"22514": [
-{
-"quest": {
-"id": 9113,
-"name": "Circlet of Faith"
-}
-}
-],
-"22515": [
-{
-"quest": {
-"id": 9114,
-"name": "Shoulderpads of Faith"
-}
-}
-],
-"22516": [
-{
-"quest": {
-"id": 9115,
-"name": "Sandals of Faith"
-}
-}
-],
-"22517": [
-{
-"quest": {
-"id": 9116,
-"name": "Gloves of Faith"
-}
-}
-],
-"22518": [
-{
-"quest": {
-"id": 9117,
-"name": "Belt of Faith"
-}
-}
-],
-"22519": [
-{
-"quest": {
-"id": 9118,
-"name": "Bindings of Faith"
-}
-}
-],
-"22589": [
-{
-"quest": {
-"id": 9270,
-"name": "Atiesh, Greatstaff of the Guardian"
-}
-}
-],
-"22630": [
-{
-"quest": {
-"id": 9271,
-"name": "Atiesh, Greatstaff of the Guardian"
-}
-}
-],
-"22631": [
-{
-"quest": {
-"id": 9257,
-"name": "Atiesh, Greatstaff of the Guardian"
-}
-}
-],
-"22632": [
-{
-"quest": {
-"id": 9269,
-"name": "Atiesh, Greatstaff of the Guardian"
 }
 }
 ],
@@ -45223,193 +42464,11 @@
 }
 }
 ],
-"22652": [
-{
-"quest": {
-"id": 9240,
-"name": "Glacial Vest"
-}
-},
-{
-"crafted": {
-"profession": 11,
-"spellId": 28207
-}
-}
-],
-"22654": [
-{
-"quest": {
-"id": 9239,
-"name": "Glacial Gloves"
-}
-},
-{
-"crafted": {
-"profession": 11,
-"spellId": 28205
-}
-}
-],
-"22655": [
-{
-"quest": {
-"id": 9238,
-"name": "Glacial Wrists"
-}
-},
-{
-"crafted": {
-"profession": 11,
-"spellId": 28209
-}
-}
-],
-"22658": [
-{
-"quest": {
-"id": 9237,
-"name": "Glacial Cloak"
-}
-},
-{
-"crafted": {
-"profession": 11,
-"spellId": 28208
-}
-}
-],
 "22660": [
 {
 "crafted": {
 "profession": 11,
 "spellId": 28210
-}
-}
-],
-"22661": [
-{
-"quest": {
-"id": 9243,
-"name": "Polar Tunic"
-}
-},
-{
-"crafted": {
-"profession": 8,
-"spellId": 28219
-}
-}
-],
-"22662": [
-{
-"quest": {
-"id": 9242,
-"name": "Polar Gloves"
-}
-},
-{
-"crafted": {
-"profession": 8,
-"spellId": 28220
-}
-}
-],
-"22663": [
-{
-"quest": {
-"id": 9241,
-"name": "Polar Bracers"
-}
-},
-{
-"crafted": {
-"profession": 8,
-"spellId": 28221
-}
-}
-],
-"22664": [
-{
-"quest": {
-"id": 9246,
-"name": "Icy Scale Breastplate"
-}
-},
-{
-"crafted": {
-"profession": 8,
-"spellId": 28222
-}
-}
-],
-"22665": [
-{
-"quest": {
-"id": 9244,
-"name": "Icy Scale Bracers"
-}
-},
-{
-"crafted": {
-"profession": 8,
-"spellId": 28224
-}
-}
-],
-"22666": [
-{
-"quest": {
-"id": 9245,
-"name": "Icy Scale Gauntlets"
-}
-},
-{
-"crafted": {
-"profession": 8,
-"spellId": 28223
-}
-}
-],
-"22669": [
-{
-"quest": {
-"id": 9236,
-"name": "Icebane Breastplate"
-}
-},
-{
-"crafted": {
-"profession": 2,
-"spellId": 28242
-}
-}
-],
-"22670": [
-{
-"quest": {
-"id": 9234,
-"name": "Icebane Gauntlets"
-}
-},
-{
-"crafted": {
-"profession": 2,
-"spellId": 28243
-}
-}
-],
-"22671": [
-{
-"quest": {
-"id": 9235,
-"name": "Icebane Bracers"
-}
-},
-{
-"crafted": {
-"profession": 2,
-"spellId": 28244
 }
 }
 ],
@@ -45466,54 +42525,6 @@
 "rep": {
 "repFactionId": 609,
 "repLevel": 7
-}
-}
-],
-"22691": [
-{
-"drop": {
-"npcId": 181366,
-"zoneId": 3456
-}
-}
-],
-"22699": [
-{
-"quest": {
-"id": 9232,
-"name": "The Only Song I Know..."
-}
-}
-],
-"22700": [
-{
-"quest": {
-"id": 9232,
-"name": "The Only Song I Know..."
-}
-}
-],
-"22701": [
-{
-"quest": {
-"id": 9232,
-"name": "The Only Song I Know..."
-}
-}
-],
-"22702": [
-{
-"quest": {
-"id": 9232,
-"name": "The Only Song I Know..."
-}
-}
-],
-"22707": [
-{
-"quest": {
-"id": 9230,
-"name": "Ramaladni's Icy Grasp"
 }
 }
 ],
@@ -45592,21 +42603,6 @@
 "quest": {
 "id": 9248,
 "name": "A Humble Offering"
-}
-}
-],
-"22736": [
-{
-"drop": {
-"npcId": 181207,
-"zoneId": 2017
-}
-},
-{
-"drop": {
-"difficulty": 1,
-"zoneId": 2017,
-"otherName": "Atiesh"
 }
 }
 ],
@@ -45945,27 +42941,12 @@
 }
 }
 ],
-"22809": [
-{
-"drop": {
-"npcId": 181366,
-"zoneId": 3456
-}
-}
-],
-"22811": [
-{
-"drop": {
-"npcId": 181366,
-"zoneId": 3456
-}
-}
-],
 "22843": [
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -45973,7 +42954,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -45981,7 +42963,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -45989,7 +42972,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -45997,7 +42981,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46005,7 +42990,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46013,7 +42999,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46021,7 +43008,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46029,7 +43017,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46037,7 +43026,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46045,7 +43035,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46053,7 +43044,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46061,7 +43053,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46069,7 +43062,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46077,7 +43071,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46085,7 +43080,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46093,7 +43089,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46101,7 +43098,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46109,7 +43107,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46117,7 +43116,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46125,7 +43125,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46133,7 +43134,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46141,7 +43143,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46149,7 +43152,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46157,7 +43161,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46165,7 +43170,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46173,7 +43179,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46181,7 +43188,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46189,7 +43197,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46197,7 +43206,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46205,7 +43215,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46213,7 +43224,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46222,44 +43234,6 @@
 "drop": {
 "zoneId": 2017,
 "npcId": 10811
-}
-}
-],
-"23025": [
-{
-"drop": {
-"npcId": 181366,
-"zoneId": 3456
-}
-}
-],
-"23027": [
-{
-"drop": {
-"npcId": 181366,
-"zoneId": 3456
-}
-}
-],
-"23044": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23069": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23071": [
-{
-"drop": {
-"npcId": 181366,
-"zoneId": 3456
 }
 }
 ],
@@ -46457,55 +43431,12 @@
 }
 }
 ],
-"23206": [
-{
-"quest": {
-"id": 9120,
-"name": "The Fall of Kel'Thuzad"
-}
-}
-],
-"23207": [
-{
-"quest": {
-"id": 9120,
-"name": "The Fall of Kel'Thuzad"
-}
-}
-],
-"23221": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23226": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23237": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23238": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
 "23243": [
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46513,7 +43444,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46521,7 +43453,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46529,7 +43462,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46537,7 +43471,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46545,7 +43480,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46553,7 +43489,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46561,7 +43498,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46569,7 +43507,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46577,7 +43516,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46585,7 +43525,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46593,7 +43534,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46601,7 +43543,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46609,7 +43552,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46617,7 +43561,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46625,7 +43570,8 @@
 {
 "soldBy": {
 "npcId": 12792,
-"npcName": "Lady Palanseer"
+"npcName": "Lady Palanseer",
+"zoneId": 1637
 }
 }
 ],
@@ -46633,7 +43579,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46641,7 +43588,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46649,7 +43597,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46657,7 +43606,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46665,7 +43615,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46673,7 +43624,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46681,7 +43633,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46689,7 +43642,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46697,7 +43651,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46705,7 +43660,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46713,7 +43669,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46721,7 +43678,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46729,7 +43687,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46737,7 +43696,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46745,7 +43705,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46753,7 +43714,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46761,7 +43723,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46769,7 +43732,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46777,7 +43741,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46785,7 +43750,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46793,7 +43759,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46801,7 +43768,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46809,7 +43777,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46817,7 +43786,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46825,7 +43795,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46833,7 +43804,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46841,7 +43813,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46849,7 +43822,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46857,7 +43831,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46865,7 +43840,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46873,7 +43849,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46881,7 +43858,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46889,7 +43867,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46897,7 +43876,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46905,7 +43885,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46913,7 +43894,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46921,7 +43903,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46929,7 +43912,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46937,7 +43921,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46945,7 +43930,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46953,7 +43939,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46961,7 +43948,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46969,7 +43957,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46977,7 +43966,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46985,7 +43975,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -46993,7 +43984,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -47001,7 +43993,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -47009,7 +44002,8 @@
 {
 "soldBy": {
 "npcId": 12777,
-"npcName": "Captain Dirgehammer"
+"npcName": "Captain Dirgehammer",
+"zoneId": 1519
 }
 }
 ],
@@ -47033,7 +44027,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -47041,7 +44036,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -47049,7 +44045,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -47057,7 +44054,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -47065,7 +44063,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -47073,7 +44072,8 @@
 {
 "soldBy": {
 "npcId": 12782,
-"npcName": "Captain O'Neal"
+"npcName": "Captain O'Neal",
+"zoneId": 1519
 }
 }
 ],
@@ -47081,7 +44081,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -47089,7 +44090,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -47097,7 +44099,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -47105,7 +44108,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -47113,7 +44117,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
@@ -47121,49 +44126,8 @@
 {
 "soldBy": {
 "npcId": 14581,
-"npcName": "Sergeant Thunderhorn"
-}
-}
-],
-"23663": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23664": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23665": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23666": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23667": [
-{
-"drop": {
-"zoneId": 3456
-}
-}
-],
-"23668": [
-{
-"drop": {
-"zoneId": 3456
+"npcName": "Sergeant Thunderhorn",
+"zoneId": 1637
 }
 }
 ],
