@@ -628,14 +628,28 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 
 NOT_ON_SERVER = {}  # item id -> why it isn't on Vanilla+ (item_sources.py), set by main()
 EXCLUDED = {}  # item id -> item: the NOT_ON_SERVER items taken out of the database (Part HF), for /removed
-# Creatures of instances that aren't on Vanilla+ yet (Lokiy 2026-10-30: "the instances aren't here yet", Part HG): no
-# /npc page, NPC search or api/npcs.json entry. The bosses (Wowhead's zones; Kurinnaxx is a world boss here and stays).
-# When an instance arrives, delete its line.
+# Creatures that aren't on Vanilla+ (yet): no /npc page, NPC search or api/npcs.json entry (Lokiy 2026-10-30: "the
+# instances aren't here yet", Parts HG / HH). Per instance: every creature Wowhead's classic zone page lists only in
+# that instance and pfQuest knows (Kurinnaxx, a world boss in Silithus here, is left out). Beetle, Scorpion and the
+# Anubisath Warrior / Swarmguard are in both AQs. When an instance arrives, delete its line.
 NPCS_NOT_ON_SERVER = {
-    "AQ20": {15341, 15340, 15370, 15369, 15339},  # Rajaxx, Moam, Buru, Ayamiss, Ossirian
-    "AQ40": {15263, 15544, 15511, 15543, 15516, 15510, 15299, 15509, 15276, 15275, 15517, 15727},  # Skeram .. C'Thun
-    "Naxxramas": {15956, 15953, 15952, 15954, 15936, 16011, 16061, 16060, 16062, 16063, 16064, 16065, 16028, 15931,
-                  15932, 15928, 15989, 15990},  # Anub'Rekhan .. Kel'Thuzad, incl. the Four Horsemen
+    "AQ20": {15168, 15318, 15319, 15320, 15323, 15324, 15325, 15327, 15333, 15335, 15336, 15338, 15339, 15340, 15341,
+             15343, 15344, 15355, 15369, 15370, 15385, 15386, 15387, 15388, 15389, 15390, 15391, 15392, 15461, 15462,
+             15471, 15473, 15475, 15476, 15505, 15514, 15521, 15527, 15537, 15538, 15546, 15555, 15934},
+    "AQ40": {15229, 15230, 15233, 15235, 15236, 15240, 15246, 15247, 15249, 15250, 15252, 15262, 15263, 15264, 15275,
+             15276, 15277, 15299, 15300, 15311, 15312, 15316, 15317, 15334, 15475, 15476, 15502, 15503, 15504, 15509,
+             15510, 15511, 15516, 15517, 15537, 15538, 15543, 15544, 15589, 15621, 15622, 15630, 15667, 15718, 15725,
+             15726, 15727, 15728, 15802, 15962, 15984},
+    "Naxxramas": {15928, 15929, 15930, 15931, 15932, 15936, 15952, 15953, 15954, 15956, 15974, 15975, 15976, 15977,
+                  15978, 15979, 15980, 15981, 15989, 15990, 16011, 16017, 16018, 16020, 16021, 16022, 16024, 16025,
+                  16028, 16029, 16030, 16034, 16036, 16037, 16056, 16057, 16060, 16061, 16062, 16063, 16064, 16065,
+                  16067, 16068, 16124, 16125, 16126, 16127, 16142, 16145, 16146, 16148, 16149, 16150, 16154, 16156,
+                  16157, 16158, 16163, 16164, 16165, 16167, 16168, 16193, 16194, 16215, 16216, 16236, 16243, 16244,
+                  16286, 16290, 16297, 16360, 16365, 16368, 16375, 16381, 16390, 16427, 16428, 16429, 16441, 16446,
+                  16447, 16448, 16449, 16451, 16452, 16453, 16486, 16505, 16506, 16573, 16698, 16803, 16861, 16981,
+                  16982, 16983, 16984, 16998, 17055},
+    "Maws": {15571},  # the AQ war event's Silithus boss
+    "Atiesh": {16387},  # the Atiesh quest line's demon in Stratholme
 }
 
 

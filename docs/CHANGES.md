@@ -5479,3 +5479,22 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - NPC pages 10187 -> 10152. Not removed (reported to Lokiy): ~74 AQ / Naxx trash creatures (pfQuest drops of AQ /
   Naxx items at >= 1%), Maws (Silithus, the AQ war event) and Atiesh (Stratholme).
 - Backup `gen_site.py.bak-2026-10-30d`.
+
+## Part HH — every AQ / Naxxramas creature, Maws and Atiesh left out; The Lobotomizer stays in the sim (2026-10-30)
+
+- Lokiy (via the hub): remove the AQ / Naxx trash pages too (the whole instances except Kurinnaxx), plus Maws and
+  Atiesh.
+- `gen_site.py` `NPCS_NOT_ON_SERVER` now has one line per instance: AQ20 43, AQ40 51, Naxxramas 103, Maws 1 and
+  Atiesh 1, 195 creatures in all. Each instance holds every creature that Wowhead's classic zone page
+  (zone=3429 / 3428 / 3456, fetched 2026-10-30) lists only in that instance and that pfQuest knows. pfQuest has no
+  spawn coordinates inside instances, so it can't tell which instance a creature is in. Kurinnaxx is left out.
+  Beetle, Scorpion and the Anubisath Warrior / Swarmguard are in both AQ lines. NPC pages 10152 -> 9992. A scan of
+  the built site finds no /npc/ link to a removed creature.
+- The Lobotomizer (19324) flipped in and out of the sim on every sync. `docs/gen_include.py` reads the sim's
+  current items from the last build (`pristine_db` = HEAD's db.json):
+  - An item in the sim was cut by the AV rule (its Wowhead classic sources are AV reputation).
+  - An item not in the sim went through the "new item" branch, which only had `AV_EXTRA_IDS`. Before Part HF the AV
+    loot table blocked it there (AQ / Naxx / AV tables only); Part HF removed that table, so it came back in.
+  - Fix: one `av(iid)` check for both branches. It skips items db.lokiy.dev has from Lokiy's own answers (source
+    "lokiy", LOKIY_ON_SERVER: The Lobotomizer from UBRS' Lord Valthalak), so those stay.
+- Backups `gen_site.py.bak-2026-10-30e`, `docs/gen_include.py.bak-2026-10-30`.

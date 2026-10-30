@@ -114,6 +114,12 @@ def main():
         return bool(tbls) and all(sd.IGNORED_TABLE.match(t) for t in tbls)
 
     renum_targets = set(renum.values())
+    # Items Lokiy confirmed on Vanilla+ (db.lokiy.dev's source "lokiy", e.g. The Lobotomizer from UBRS' Lord Valthalak)
+    # are never cut as Alterac Valley items, even when Wowhead's classic sources are AV reputation (Part HH)
+    confirmed = {int(k) for k, v in sd._sources().get("items", {}).items() if any(e.get("from") == "lokiy" for e in v)}
+
+    def av(iid):
+        return _alterac_valley(iid, sources_of(iid)) and iid not in confirmed and renum.get(iid, iid) not in confirmed
 
     def naxx(iid):
         return any(NAXX_TABLE.match(t) for t in tables_of(iid))
@@ -130,8 +136,7 @@ def main():
     for iid, it in pristine.items():
         name = it.get("name", "")
         server_id = renum.get(iid, iid)
-        if (_frost_resist(name) or _is_recipe(name) or sm_old(iid, it.get("ilvl")) or _alterac_valley(iid, sources_of(iid))
-                or naxx(iid)):
+        if _frost_resist(name) or _is_recipe(name) or sm_old(iid, it.get("ilvl")) or av(iid) or naxx(iid):
             continue
         if in_atlas(iid, name):
             included.add(server_id)
@@ -155,7 +160,7 @@ def main():
         name = pit.get("name", "")
         # (sm_old only applies to pristine items -- the dump carries no item level,
         #  and a dump-only SM item is the server's new lvl-60 version.)
-        if not pit.get("type") or _frost_resist(name) or _is_recipe(name) or iid in AV_EXTRA_IDS or naxx(iid):
+        if not pit.get("type") or _frost_resist(name) or _is_recipe(name) or av(iid) or naxx(iid):
             continue
         q = pit.get("quality")
         if in_atlas(iid, name):
