@@ -375,6 +375,9 @@ there is more to say.
 - **Confirm in game** (Part HY): Mark of the Veteran (warlock, 26167 / 26176): the sim keeps Corruption's 18 sec, so
   2 sec ticks give 9 ticks instead of 6 (Lokiy's assumption). If the game keeps 6 ticks (12 sec), change
   `sim/warlock/corruption.go` back to the same tick count.
+- Found in Part HY: 26408 Omega Orb and 26409 Explorers' League Commendation are trinkets on the server
+  (inventory type 12) but the sim DB has them as item types 13 and 2, so they don't show as trinkets. Check
+  `docs/parse_vplus.py` / the renumber map for these ids.
 - Later (Lokiy): a filter for defensive trinkets in the gear picker. The absorb trinkets of Part HY (Arena Grand
   Master, Talismans of Arathor / Defiler's Talismans, Leyguard Charm, Personal Harm Prevention Field Emitter) are
   usable by every spec for now.

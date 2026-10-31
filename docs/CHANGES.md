@@ -5852,10 +5852,9 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Already modeled, so nothing changed: Mark of the Veteran for warriors (Battle Shout +42 attack power,
   `sim/warrior/shouts.go`) and warlocks (Corruption ticks every 2 sec, `sim/warlock/corruption.go`). The warlock one
   keeps the 18 sec duration, so 9 ticks instead of 6: Lokiy's assumption, to confirm in game (docs/TODO.md).
-- `docs/gen_include.py`: items in `MANUAL_INCLUDE_IDS` that the sim DB didn't have yet never got in (they were
-  included but not added; 26408 Omega Orb and 26409 Explorers' League Commendation were listed but missing). They
-  are now added from the server dump too; Cuergo's Trusty Flask is on the list. Alchemists' Stone stays out
-  (Lokiy: not seen on Vanilla+).
+- `docs/gen_include.py`: items in `MANUAL_INCLUDE_IDS` that the sim DB didn't have yet never got in (included but
+  not added). They are now added from the server dump too; Cuergo's Trusty Flask is on the list (sim deploy
+  05649252c). Alchemists' Stone stays out (Lokiy: not seen on Vanilla+).
 - Still open (docs/TODO.md): the summons (Arcanite Dragonling, Cannonball Runner and four more), Six Demon Bag, the
   Orb of Chaotic Elements heal, threat / aggro / taunt effects, health-regen-only trinkets, and the procs that need
   an internal cooldown.
