@@ -76,7 +76,9 @@ and keep their item levels. The Scarlet Monastery raid's item levels were set by
 <b>recalculated</b> item level from its stats, priced like Blackwing Lair's items (the tier before: the median of its
 real minus model item levels is added to the model value), kept between Blackwing Lair's 10th percentile and its 90th
 + 5 ("model far off" where the stats would give more or less); an item with an effect the model can't price takes its
-comparable items' value. In the classic-like raids, an item Vanilla+ changed or added that is below most of the tier
+comparable items' value. Weapons are priced against Blackwing Lair's weapons by their DPS (and stats), may go above
+that range, and a physical weapon is at least as high as a Blackwing Lair weapon of its kind with less DPS. Set pieces
+take their set's highest piece (set bonuses aren't priced), and a few items have Lokiy's own value. In the classic-like raids, an item Vanilla+ changed or added that is below most of the tier
 before (its 10th percentile) is flagged "breaks the order" and gets a suggestion: the item level of comparable items in
 the same raid (same slot group, quality and role, similar stat value), a few levels higher only where its stats need it.</p>
 <table class="obs-table"><thead><tr><th>Tier</th><th>Items</th><th>Median ilvl</th><th>10-90%</th><th>Suggestions</th>

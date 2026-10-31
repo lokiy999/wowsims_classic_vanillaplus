@@ -5937,3 +5937,27 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Glory 71, Bullseye Shield 73, Bulwark of the Scarlet General 67.
 - `ilvl_model.py`, `ilvl_page.py` are LF now (Part HZ committed them CRLF).
 - Backups `ilvl_model.py.bak-2026-10-31c`, `ilvl_fit.json.bak-2026-10-31c`.
+
+## Part IB — item levels: SM weapons by DPS, set pieces, Lokiy's own values (2026-10-31)
+
+- Lokiy, on the per-slot check of the Scarlet Monastery raid against BWL: the Scarlet mail set can be 76 (the set
+  wasn't accounted for); Dog Training Gloves 70; Flintrock Shoulders 70 (first SM boss); weapons can be higher than
+  BWL because of their DPS; check shields with their armor and weapons with their DPS. Suggestions only: no item in
+  the database changes.
+- `ilvl_model.py` `recalc()`:
+  - Weapons are priced against the tier before's weapons (`weapon_offset` in the tier stats): with stats on the
+    combined model value + BWL weapons' median real - model (-0.6), without stats (DPS and an effect only) on the
+    DPS item level + BWL weapons' median real - DPS item level (-2.3). An effect no longer leaves a weapon
+    unpriced, and weapons aren't capped at BWL's 90th + 5.
+  - DPS floor: a physical weapon is at least as high as the highest BWL weapon of its group with less DPS
+    (caster / healer weapons excluded on both sides).
+  - Set pieces take their set's highest piece (`parse()` reads the set's name line; set bonuses aren't priced).
+  - `OVERRIDES` {item id: (ilvl, why)}: Lokiy's own values, applied last (Dog Training Gloves 70, Flintrock
+    Shoulders 70).
+  - Report rows carry `setname`, `dps`, `armor`, `dpil` (DPS item level), `stats`.
+- `ilvl_page.py`: the tier text says so.
+- Result: 37 SM items get a new suggested level; recalculated median 73 (10-90%: 69-77). Scarlet mail set all 76.
+  Weapons: Vicious Grip 78, Hand of Retribution 75, Torturing Poker 74, Relic Fight Club 73, Scorching Judgement
+  72, Bonegrinder / Ravager / Red Vigil 71, Blackwood Hacker / Sharpshooter's Longbow 70, Loksey's Training Stick
+  69, Purge 67 (caster staff: its stats are worth 65, held at BWL's 10th percentile).
+- Backup `ilvl_model.py.bak-2026-10-31d`.

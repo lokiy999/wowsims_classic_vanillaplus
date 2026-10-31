@@ -40,6 +40,10 @@ BUDGET_FLAG = 5  # levels between the real and the model item level that flag an
 # tiers whose item levels were set by hand (Lokiy 2026-10-31): the report suggests all of them from the stats; the
 # other tiers are classic-like anchors and keep theirs
 CALC_TIERS = {"Scarlet Monastery"}
+# Lokiy's own suggested item levels (2026-10-31), over the recalculated ones: {item id: (ilvl, why)}
+OVERRIDES = {26305: (70, "Lokiy: keeps 70"),  # Dog Training Gloves
+             26318: (70, "Lokiy: 70, it drops from the first Scarlet Monastery boss")}  # Flintrock Shoulders
+WEAPONS = ("W1", "W2", "WR", "WAND")
 
 # ---- tooltip parsing (classic Wowhead lines and the server's lines read the same)
 SLOT_GROUP = {"Head": "A", "Chest": "A", "Legs": "A", "Robe": "A", "Shoulder": "B", "Hands": "B", "Waist": "B",
@@ -139,6 +143,8 @@ def parse(lines):
             r["effect"] = True
         elif re.match(r"^\(\d+\) Set ?:", ln):
             r["set"] = True
+        elif re.match(r"^.+ \(\d+/\d+\)$", ln):  # the set's name line, "Chain of the Scarlet Crusade (0/6)"
+            r["setname"] = ln.rsplit(" (", 1)[0]
     if not r["slot"]:
         return None
     return finish(r)
@@ -497,11 +503,13 @@ def report(items, status, instances, model=None):
         if not r or r["group"] in ("T", "R"):
             continue
         r.update(id=iid, name=v["name"], q=v["q"], ilvl=v["ilvl"])
-        comb = model.predict(r)[2]
+        _, dpil, comb = model.predict(r)
         tiers = sorted({tier_of[i] for i in instances.get(iid, ()) if i in tier_of})
         recs[iid] = dict(id=iid, name=v["name"], q=v["q"], ilvl=v["ilvl"], req=r["req"], group=r["group"],
                          role=role(r), tier=tiers[0] if tiers else None, status=status.get(iid),
                          model=round(comb, 1) if comb is not None else None, effect=r["effect"], set=r["set"],
+                         setname=r.get("setname"), dps=r["dps"], armor=r["armor"],
+                         dpil=round(dpil, 1) if dpil is not None else None, stats=bool(r["stats"] or r["schools"]),
                          value=round(model.value(r, model.bonus_armor(r, r["ilvl"]), model.bonus_block(r, r["ilvl"]))
                                      / slot_mod(model.p, r), 1))
     # tier medians (real item level of the raid's blue / epic level-60 items) and the order flags
@@ -520,8 +528,15 @@ def report(items, status, instances, model=None):
             prev = [x for x in recs.values() if x["tier"] == n - 1 and x["q"] >= 3 and x["req"] >= 60
                     and x["model"] is not None and not x["effect"]]
             off = median([x["ilvl"] - x["model"] for x in prev])
-            recalc(recs, n, off, TIERS[n - 1].split("|")[0], tstat[n - 1]["p10"], tstat[n - 1]["p90"] + 5)
+            # weapons against the tier before's weapons: with stats on their combined value, without (all their
+            # budget in DPS and an effect) on their DPS item level alone
+            pw = [x for x in recs.values() if x["tier"] == n - 1 and x["q"] >= 3 and x["req"] >= 60
+                  and x["group"] in WEAPONS and x["dpil"] is not None]
+            woff = (median([x["ilvl"] - x["model"] for x in pw if x["stats"]]),
+                    median([x["ilvl"] - x["dpil"] for x in pw]))
+            recalc(recs, n, off, TIERS[n - 1].split("|")[0], tstat[n - 1]["p10"], tstat[n - 1]["p90"] + 5, woff, pw)
             tstat[n]["offset"] = round(off, 1)
+            tstat[n]["weapon_offset"] = [round(w, 1) for w in woff]
             new = sorted(x["suggest"] for x in recs.values() if x["tier"] == n and "suggest" in x)
             if new:
                 tstat[n]["suggested_median"] = new[len(new) // 2]
@@ -562,14 +577,37 @@ def report(items, status, instances, model=None):
     return sorted(rows, key=lambda x: (x["tier"] if x["tier"] is not None else 9, x["group"], -x["ilvl"])), tstat
 
 
-def recalc(recs, n, off, prev_name, lo, hi):
+def recalc(recs, n, off, prev_name, lo, hi, woff, pw):
     """Suggested item levels for tier n from the stats: the model value + the tier before's offset (how far above
     the classic budget it is priced), kept within lo..hi (the tier before's 10th percentile to its 90th + 5: the
     raid stays in the progression; an item held at the edge is flagged, its stats are far off the classic budget).
-    An item with an effect (no full price) takes its comparable items' value, at least its own lower bound."""
+    - Weapons: their DPS is priced, so an effect doesn't stop them, and they may go above hi (Lokiy: weapons can
+      be higher than BWL because of their DPS). Priced against the tier before's weapons (woff): a weapon with stats
+      on its combined value + woff[0], one without (DPS and an effect only) on its DPS item level + woff[1]. A
+      physical weapon is at least as high as the tier before's weapons (pw) of its group with less DPS.
+    - Other items with an effect (no full price) take their comparable items' value, at least their own lower bound.
+    - Set pieces: the set's highest piece (set bonuses aren't priced; Lokiy: the Scarlet mail set at 76).
+    - OVERRIDES (Lokiy's own levels) last."""
     tier = [x for x in recs.values() if x["tier"] == n and x["q"] >= 3 and x["req"] >= 60]
     for x in tier:
-        if x["model"] is not None and not x["effect"]:
+        wpn = x["group"] in WEAPONS and x["dpil"] is not None
+        if wpn:
+            v = round(x["model"] + woff[0] if x["stats"] else x["dpil"] + woff[1])
+            x["suggest"] = int(max(v, lo))
+            x["why"] = (f"{'DPS and stats' if x['stats'] else 'DPS'} priced like {prev_name}'s weapons "
+                        f"({woff[0] if x['stats'] else woff[1]:+.1f} levels)")
+            if x["effect"]:
+                x["why"] += "; its effect isn't priced"
+            if x["role"] not in ("caster", "healer"):
+                below = [y for y in pw if y["group"] == x["group"] and y["role"] not in ("caster", "healer")
+                         and y["dps"] <= x["dps"]]
+                top = max(below, key=lambda y: y["ilvl"], default=None)
+                if top and top["ilvl"] > x["suggest"]:
+                    x["suggest"] = top["ilvl"]
+                    x["why"] += f"; at least {top['name']} ({top['ilvl']}, {top['dps']:.1f} DPS)"
+            if v < lo:  # only the tier floor, not the DPS floor
+                x["far"] = f"worth {v}: held at {x['suggest']}"
+        elif x["model"] is not None and not x["effect"]:
             v = round(x["model"] + off)
             x["suggest"] = int(min(max(v, lo), hi))
             x["why"] = f"stats priced like {prev_name} ({off:+.1f} levels over the classic budget)"
@@ -589,6 +627,22 @@ def recalc(recs, n, off, prev_name, lo, hi):
         x["suggest"] = int(sug)
         x["why"] = "has an effect the model can't price: comparable items' recalculated level (at least its own)"
         x["comp"] = [[y["id"], y["name"], y["suggest"]] for y in comp]
+    sets = collections.defaultdict(list)
+    for x in tier:
+        if x.get("setname"):
+            sets[x["setname"]].append(x)
+    for name, xs in sets.items():
+        top = max(x.get("suggest", x["ilvl"]) for x in xs)
+        for x in xs:
+            if x.get("suggest", x["ilvl"]) != top:
+                x["suggest"] = top
+                x["why"] = f"set piece: {name}'s highest piece (set bonuses aren't priced)"
+                x.pop("far", None)
+    for x in tier:
+        if x["id"] in OVERRIDES or str(x["id"]) in map(str, OVERRIDES):
+            x["suggest"], x["why"] = next(v for k, v in OVERRIDES.items() if str(k) == str(x["id"]))
+            x.pop("far", None)
+            x.pop("comp", None)
 
 
 def suggest(x, recs, low=None, high=None):
