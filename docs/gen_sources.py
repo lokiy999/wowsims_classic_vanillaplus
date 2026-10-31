@@ -15,7 +15,9 @@ bosses) unless the Wowhead sources have another source: a drop outside the raids
 server doesn't have (AQ20, AQ40, Naxxramas) or a non-drop one (quest tomes, crafted plans).
 
 Writes assets/db_inputs/item_sources.json = {server_id: [UIItemSource, ...]} (db.json's camelCase JSON).
-gen_db replaces every item's `sources` with it.
+gen_db replaces every item's `sources` with it. Also assets/db_inputs/source_npcs.json (Part HV): every NPC those
+sources name that the sim's NPC roster (atlasloot_db.json) lacks, with db.lokiy.dev's name (api/npcs.json), so the
+item picker shows the NPC instead of "Multiple Sources"; gen_db adds them to the roster.
 """
 import json
 import os
@@ -25,9 +27,11 @@ import serverdata as sd
 
 REPO = sd.REPO
 OUT = os.path.join(REPO, "assets/db_inputs/item_sources.json")
+NPCS_OUT = os.path.join(REPO, "assets/db_inputs/source_npcs.json")
+ATLAS = os.path.join(REPO, "assets/db_inputs/atlasloot_db.json")
+DB_NPCS = os.path.join(os.path.dirname(sd.SOURCES_JSON), "npcs.json")
 RENUMBER = os.path.join(REPO, "assets/db_inputs/renumber.json")
 PHASES = os.path.join(REPO, "assets/db_inputs/item_phases.json")
-DB_JSON = os.path.join(REPO, "assets/database/db.json")
 
 WORLD_BOSS_ZONE_ID = 900001  # minted display-only zone; not a real WoW zone id
 WORLD_BOSS_ZONE_NAME = "World Boss"
@@ -112,7 +116,8 @@ def main():
     except OSError:
         phases = {}
 
-    npcs = sorted(json.load(open(DB_JSON))["npcs"], key=lambda n: n["id"])
+    # the roster itself (atlasloot_db.json), not db.json: that also holds the NPCs this script adds (source_npcs.json)
+    npcs = sorted(json.load(open(ATLAS, encoding="utf-8"))["npcs"], key=lambda n: n["id"])
     info = sd.table_info()
     wowhead = sd.wowhead_sources()
     npc_by_norm = {}
@@ -206,6 +211,23 @@ def main():
     for iid, srcs in wowhead.items():
         sources.setdefault(iid, srcs)
     json.dump({str(k): v for k, v in sorted(sources.items())}, open(OUT, "w"), indent=0)
+
+    roster = {n["id"] for n in json.load(open(ATLAS, encoding="utf-8"))["npcs"]}
+    pages = json.load(open(DB_NPCS, encoding="utf-8"))
+    extra = {}
+    for srcs in sources.values():
+        for s in srcs:
+            d = s.get("drop") or {}
+            nid = d.get("npcId")
+            if nid and nid not in roster and str(nid) in pages:
+                extra.setdefault(nid, {"id": nid, "name": pages[str(nid)]["name"], "zoneId": d.get("zoneId", 0)})
+                if not extra[nid]["zoneId"] and d.get("zoneId"):
+                    extra[nid]["zoneId"] = d["zoneId"]
+    with open(NPCS_OUT, "w", encoding="utf-8") as f:  # gen_db's layout: one entry per line
+        rows = [json.dumps({k: v for k, v in n.items() if v}, ensure_ascii=False, separators=(",", ":"))
+                for _, n in sorted(extra.items())]
+        f.write('{\n"npcs":[\n' + ",\n".join(rows) + ("\n" if rows else "") + "]\n}")
+    print(f"wrote {NPCS_OUT}: {len(extra)} NPCs the sources name beyond the roster")
     print(f"wrote {OUT}: {len(sources)} items, {n_tables} from the loot tables ({matched_npc} matched a known NPC, "
           f"{n_tables - matched_npc} a plain name), {len(sources) - n_tables} from the Wowhead sources")
 

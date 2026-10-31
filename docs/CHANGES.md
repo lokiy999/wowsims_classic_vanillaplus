@@ -5728,3 +5728,39 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Pillow, and 13516, 21044, 23051, 26021, 34048 (no name known). Quests 785, 2986, 5383, 5659, 7221, 7222, 8458, 8793,
   8794 (pfQuest has no record; only another quest's chain names them).
 - Backups `*.bak-2026-10-31b` / `-31c` / `-31` (import_pfquest.py, gen_site.py, npcs.py, spells.py).
+
+## Part HT — sim zone links to db.lokiy.dev (2026-10-31)
+
+- Lokiy (NEXT UP 1): zone links should go to db.lokiy.dev. `ActionId.makeZoneUrl` always went to Wowhead.
+- `tools/gen_db_npcs.py`: `db_npcs.json` also lists the zones db.lokiy.dev has a page for (`"zones"`, from its
+  api/zones.json: 73). `ui/core/db_npcs.ts` `dbZoneUrl()`; `makeZoneUrl` uses it and Wowhead only for the others.
+  `sync_sim.sh` also rebuilds when zones.json changes.
+- Nothing in the sim calls `makeZoneUrl` yet: zone names are shown inside the NPC / item link of a source. On
+  db.lokiy.dev the only zone link to Wowhead is the reference link on each zone page, which stays.
+
+## Part HV — Season of Discovery out of the sim's data (2026-10-31)
+
+- Lokiy (NEXT UP 2): Season of Discovery doesn't exist on Vanilla+; remove its data, links and lists. Checked
+  against the server first: Vanilla+'s spells end at 36341 (db.lokiy.dev api/spells.json), its items at 83167
+  (api/items.json). Its custom enchants 900101-900212 (sigils, arcanums) are not SoD and stay.
+- `tools/strip_sod.py` (new, run once, idempotent):
+  - `assets/db_inputs/atlasloot_db.json` (the sim's NPC / zone roster): the 21 SoD NPCs (ids >= 200000). 14 became
+    the classic NPC of the same name that db.lokiy.dev has a page for (Lady Sarevess 204068 -> 4831, Ghamoo-ra,
+    Aku'mai, Gelihast, Baron Aquanis, Lorgus Jett, Crowd Pummeler 9-60, Grubbis, Mekgineer Thermaplugg, Viscous
+    Fallout, Electrocutioner 6000, Shade of Eranikus, Atal'alarion, Avatar of Hakkar); 7 SoD-only ones went
+    ("Dreamscythe and Weaver", "Jammal'an and Ogom", "Morphaz and Hazzas", "Atal'ai Defenders", "The Mechanical
+    Menagerie", Festering Rotslime, "The Molten Core"). The SoD zone Demon Fall Canyon (15475) and 1,170 SoD items
+    (ids >= 200000) went.
+  - `tools/database/gen_db/main.go`: 551 SoD spell ids (>= 400000) out of the per-class spell lists. The sim DB's
+    spell icons go from 4,803 to 4,330; none from SoD left (the 13 >= 400000 are the server's enchants above).
+- 57 boss drops that named an SoD copy now name the classic boss (60 sim items' sources changed: Blackfathom Deeps,
+  Gnomeregan, Sunken Temple). The sim code itself has no SoD-only parts left (runes and Seal of Martyrdom went
+  earlier; the phases and level 60 are Vanilla+'s), so there was no code-level list for the hub. Two comments that
+  still called SoD spells a fallback were updated.
+- Found on the way: 175 drops (210 after this) named an NPC the sim's roster doesn't have, so the item picker showed
+  "Multiple Sources" instead of the NPC (mostly the pfQuest drops of Part HR). `docs/gen_sources.py` now also writes
+  `assets/db_inputs/source_npcs.json`: every NPC the sources name beyond the roster, with db.lokiy.dev's name and
+  the drop's zone (2,109); `gen_db` adds them. It matches loot tables against the roster itself
+  (`atlasloot_db.json`), not db.json, so its result doesn't change with the added NPCs (checked: same output on
+  repeated runs). Now 0 drops name an unknown NPC.
+- Backup `docs/gen_sources.py.bak-2026-10-31`.

@@ -22,6 +22,7 @@ HEALTH=${SIM_HEALTH_URL:-http://127.0.0.1:3333/classic/}
 GENERATED="assets/database/db.bin assets/database/db.json assets/database/leftover_db.bin assets/database/leftover_db.json
  assets/db_inputs/custom_items.json assets/db_inputs/renumber.json assets/db_inputs/included_items.json
  assets/db_inputs/add_items.json assets/db_inputs/item_phases.json assets/db_inputs/item_sources.json
+ assets/db_inputs/source_npcs.json
  assets/database/db_icons.json assets/database/db_spell_ids.json assets/spells
  assets/database/db_npcs.json"
 export PATH=$HOME/.nvm/versions/node/v20.20.2/bin:$PATH:/usr/local/go/bin:$HOME/go/bin

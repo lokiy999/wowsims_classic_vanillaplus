@@ -6,7 +6,7 @@
   assets/spells/<id // 1000>.json     {id: {name, icon, rank, hasBuff, tooltip}} per block of 1000 ids, loaded when a
                                       spell of the block is shown (same origin, so no CORS on db.lokiy.dev needed)
 
-Spells db.lokiy.dev doesn't have (Season of Discovery / later ones the sim DB names) keep Wowhead's data. Run by
+Spells db.lokiy.dev doesn't have (later-expansion ones the sim DB names) keep Wowhead's data. Run by
 tools/itemdb/sync_sim.sh. VPLUS_SPELLS overrides the input path.
 
 Usage (from the repo root):

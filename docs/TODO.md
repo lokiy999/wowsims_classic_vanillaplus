@@ -11,19 +11,11 @@ The generator parts (tools/itemdb) follow the Part HR rules: db.lokiy.dev is the
 back up before changing, and tell the Database chat if it is running. Short summary to the hub chat after each.
 Keep: the "Wowhead" reference link on every db.lokiy.dev page, and the sim's Wowhead gear-planner import / export.
 
-1. **Sim zone links to db.lokiy.dev.** `ActionId.makeZoneUrl` (ui/core/proto_utils/action_id.ts) always goes to
-   Wowhead. Use db.lokiy.dev/zone/<id> where a page exists (73 pages; the AQ / Naxx / AV zones are removed), and
-   Wowhead only where none does. Same for any other zone link to Wowhead in the sim or on db.lokiy.dev.
-2. **Remove everything from Season of Discovery** (Lokiy: "it doesn't exist" on Vanilla+). Known leftovers:
-   - ~490 SoD / later spells the sim links to Wowhead;
-   - SoD NPC IDs, e.g. ~60 boss drops linked to SoD copies (Ghamoo-ra, Aku'mai, Thermaplugg, Lady Sarevess ...);
-     Barebones and Rix Xizzix already went in Part HJ;
-   - SoD items;
-   - SoD-only parts of the sim UI (runes, SoD phases / presets, SoD buffs and consumes ...).
-   Data, links and lists: remove. Code-level removals (the rune system, SoD-only mechanics / UI): first send the hub
-   chat a list of what would go and how big it is, and wait for Lokiy's OK; it must not break the sims. Nothing on
-   Vanilla+ may be lost: check against the server's own data (Spell.csv, item cache, db.lokiy.dev) before calling
-   anything SoD.
+1. **Sim zone links to db.lokiy.dev**: done (Part HT). `makeZoneUrl` goes to db.lokiy.dev/zone/<id> for its 73
+   zone pages, Wowhead only for the others. db.lokiy.dev has no zone link to Wowhead besides the kept reference link.
+2. **Remove everything from Season of Discovery**: done for data, links and lists (Part HV). The sim code had no
+   SoD-only parts left (runes and Seal of Martyrdom went earlier, the phases and level 60 are Vanilla+'s), so no
+   code-level list was needed; only comments mention SoD. db.lokiy.dev's side: Part HU (Database chat).
 3. **Object (chest / node) pages on db.lokiy.dev**: done (Part HU, Database chat 2026-10-31). 620 /object pages
    with the loot tracker's chests as their own layer, item pages link to them, no link to a missing page. Still
    Wowhead (no page here): 11 items and 9 quests, listed in Part HU.
