@@ -16,11 +16,12 @@ def esc(s):
     return html.escape(str(s), quote=True)
 
 
-def write(out, page, items, status, instances):
+def write(out, page, items, status, instances, tables=None):
     """items: {id: {"name", "q", "ilvl", "lines"}} (api/items.json); status {id: search status}; instances {id: set of
-    instance names}. Returns (rows, number of suggestions per tier)."""
+    instance names}; tables {id: set of (loot table name, instance)}: the boss. Returns (rows, number of
+    suggestions per tier)."""
     fit = json.load(open(FIT, encoding="utf-8"))
-    rows, tstat = report(items, status, instances, Model.load())
+    rows, tstat = report(items, status, instances, Model.load(), tables)
     with open(os.path.join(out, "api", "ilvl.json"), "w", encoding="utf-8") as f:
         json.dump({"fit": fit, "tiers": tstat, "items": rows}, f, ensure_ascii=False, separators=(",", ":"))
     held = "".join(f'<tr><td>{"Green" if h["q"] == 2 else "Blue" if h["q"] == 3 else "Epic"}</td>'
@@ -87,6 +88,7 @@ the same raid (same slot group, quality and role, similar stat value), a few lev
 <section class="card"><h2>Vanilla+ changed and new items</h2>
 <form id="rep-filters" class="filters" autocomplete="off">
   <label>Raid<select name="tier"><option value="">Any</option>{''.join(f'<option value="{n}">{esc(t.replace("|", " / "))}</option>' for n, t in enumerate(TIERS))}<option value="none">Not in these raids</option></select></label>
+  <label>Boss<select name="boss"><option value="">Any</option></select></label>
   <label>Quality<select name="q"><option value="">Any</option><option value="2">Green</option><option value="3">Blue</option><option value="4">Epic</option></select></label>
   <label>Slot group<select name="group"><option value="">Any</option>{''.join(f'<option value="{k}">{esc(v)}</option>' for k, v in GROUP_LABEL.items())}</select></label>
   <label>Flag<select name="flag"><option value="">Any</option><option>recalculated</option><option>model far off</option><option>breaks the order</option><option>over budget</option>

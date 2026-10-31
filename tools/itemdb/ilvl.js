@@ -104,16 +104,29 @@
 	// ---- report; a click on a column head sorts by it (again: the other way), empty values last
 	let sortKey = null, sortDir = 1;
 	const SORT = {
-		name: r => r.name, tier: r => r.tier, group: r => D.groupLabel[r.group] || r.group, ilvl: r => r.ilvl,
+		name: r => r.name, tier: r => r.tier, boss: r => r.boss, group: r => D.groupLabel[r.group] || r.group, ilvl: r => r.ilvl,
 		model: r => r.model, diff: r => r.model == null ? null : r.model - r.ilvl, flags: r => r.flags.join(', ') || null,
 		suggest: r => r.suggest, comp: r => r.comp ? r.comp.length : null,
 	};
-	const TEXT_KEYS = ['name', 'group', 'flags'];
+	const TEXT_KEYS = ['name', 'boss', 'group', 'flags'];
+	// the boss list follows the raid filter; an item dropped by several bosses lists them all ("A, B")
+	function bossOptions() {
+		const f = $('rep-filters');
+		const keep = f.boss.value;
+		const bosses = new Set();
+		for (const r of D.items) {
+			if (r.boss && (f.tier.value === '' || r.tier === +f.tier.value)) r.boss.split(', ').forEach(b => bosses.add(b));
+		}
+		const list = [...bosses].sort();
+		f.boss.innerHTML = '<option value="">Any</option>' + list.map(b => `<option>${esc(b)}</option>`).join('');
+		f.boss.value = list.includes(keep) ? keep : '';
+	}
 	function repRender() {
 		const f = $('rep-filters');
 		const name = f.name.value.trim().toLowerCase();
 		const list = D.items.filter(r =>
 			(f.tier.value === '' || (f.tier.value === 'none' ? r.tier == null : r.tier === +f.tier.value)) &&
+			(f.boss.value === '' || (r.boss || '').split(', ').includes(f.boss.value)) &&
 			(f.q.value === '' || r.q === +f.q.value) &&
 			(f.group.value === '' || r.group === f.group.value) &&
 			(f.flag.value === '' || r.flags.includes(f.flag.value)) &&
@@ -134,6 +147,7 @@
 				`<a href="/item/${id}" data-item="${id}">${esc(nm)}</a> ${il}`).join('<br>')}</details>` : '';
 			return `<tr><td class="l"><a href="/item/${r.id}" data-item="${r.id}" style="color:${QC[r.q]}">${esc(r.name)}</a>` +
 				`${r.status === 3 ? ' <span class="tag">new</span>' : ''}</td><td class="l muted">${esc(tierName(r.tier))}</td>` +
+				`<td class="l muted">${esc(r.boss || '')}</td>` +
 				`<td class="l muted">${esc(D.groupLabel[r.group] || r.group)}</td><td>${r.ilvl}</td>` +
 				`<td>${r.model == null ? '' : r.model.toFixed(1)}</td><td>${diff > 0 ? '+' : ''}${diff}</td>` +
 				`<td class="l">${r.flags.map(x => `<span class="tag">${esc(x)}</span>`).join(' ')}${r.why ? `<br><span class="muted small">${esc(r.why)}</span>` : ''}</td>` +
@@ -141,10 +155,10 @@
 		}).join('');
 		const th = (key, label, cls = '') => `<th class="${cls}"><button type="button" data-sort="${key}">${label}` +
 			`${sortKey === key ? (sortDir < 0 ? ' &#9662;' : ' &#9652;') : ''}</button></th>`;
-		$('rep').innerHTML = '<thead><tr>' + th('name', 'Item', 'l') + th('tier', 'Raid', 'l') + th('group', 'Slot group', 'l') +
+		$('rep').innerHTML = '<thead><tr>' + th('name', 'Item', 'l') + th('tier', 'Raid', 'l') + th('boss', 'Boss', 'l') + th('group', 'Slot group', 'l') +
 			th('ilvl', 'Real ilvl') + th('model', 'Model') + th('diff', 'Model &minus; real') + th('flags', 'Flags', 'l') +
 			th('suggest', 'Suggested') + th('comp', 'Based on', 'l') + '</tr></thead>' +
-			`<tbody>${rows}</tbody>` + (list.length > 500 ? `<tfoot><tr><td colspan="9" class="muted">First 500 shown; filter to see the rest.</td></tr></tfoot>` : '');
+			`<tbody>${rows}</tbody>` + (list.length > 500 ? `<tfoot><tr><td colspan="10" class="muted">First 500 shown; filter to see the rest.</td></tr></tfoot>` : '');
 	}
 
 	fetch('/api/ilvl.json').then(r => r.json()).then(d => {
@@ -152,7 +166,11 @@
 		D.groupLabel = { A: 'Head / chest / legs', B: 'Shoulder / hands / waist / feet', C: 'Wrist / neck / back / finger',
 			S: 'Shield', W1: 'One-hand weapon', W2: 'Two-hand weapon', WR: 'Ranged weapon', WAND: 'Wand' };
 		calcInit();
-		$('rep-filters').addEventListener('input', repRender);
+		bossOptions();
+		$('rep-filters').addEventListener('input', e => {
+			if (e.target.name === 'tier') bossOptions();
+			repRender();
+		});
 		$('rep').addEventListener('click', e => {
 			const b = e.target.closest('[data-sort]');
 			if (!b) return;

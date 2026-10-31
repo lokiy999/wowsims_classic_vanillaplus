@@ -5969,3 +5969,12 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   suggested, based on) sorts by it, again the other way (arrow as on the search page); empty values always last.
   Filters keep the sort.
 - `style.css`: `#rep th button` like the search page's column heads. Backup `style.css.bak-2026-10-31e`.
+
+## Part ID — /ilvl report: Boss column and filter (2026-10-31)
+
+- Lokiy: compare the Scarlet Monastery raid's items per boss (aim: most items of a boss at the same item level,
+  weapons and sets above).
+- `ilvl_model.py` `report()` takes `tables` {id: set of (loot table name, instance)}; each row gets `boss`: the loot
+  tables of its raid tier that list it ("A, B" for several). `gen_site.py` passes them, `ilvl_page.py` hands them on.
+- `ilvl.js`: a Boss column (sortable) and a Boss filter, listing the bosses of the chosen raid.
+- Backup `gen_site.py.bak-2026-10-31g`.

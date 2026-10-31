@@ -1983,7 +1983,8 @@ your filters, so you can share a search.</p></section>
     # ---- /ilvl: the item level model's calculator and report (ilvl_model.py / ilvl_page.py, Part HZ)
     if os.path.exists(ILVL_FIT):
         il_rows, il_tiers = ilvl_page.write(out, page, api, {r[0]: r[9] for r in srows},
-                                            {i: {table_label(k)[1] for k in ks} for i, ks in sources.items()})
+                                            {i: {table_label(k)[1] for k in ks} for i, ks in sources.items()},
+                                            {i: {table_label(k) for k in ks} for i, ks in sources.items()})
         print(f"/ilvl: {len(il_rows)} changed / new items, suggestions per tier {il_tiers}")
     # ---- where items come from, for other projects (the sim reads only this): AtlasLoot tables incl. the loot
     # tracker's drops, then the Wowhead classic sources (sim gen_db -dumpWowheadSources, UIItemSource JSON by item id)

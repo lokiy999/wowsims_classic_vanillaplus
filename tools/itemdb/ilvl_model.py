@@ -488,10 +488,11 @@ def main_fit():
 
 
 # ---- applying the model to Vanilla+ items (gen_site.py)
-def report(items, status, instances, model=None):
+def report(items, status, instances, model=None, tables=None):
     """Rows for the /ilvl page: Vanilla+ changed (status 2) and new (3) items; every raid tier item is the comparison
     pool. items: {id: {"name", "q", "ilvl", "lines": [[class, text]]}} (api/items.json shape); status {id: search
-    status}; instances {id: set of instance names}. Returns (rows, tier stats)."""
+    status}; instances {id: set of instance names}; tables {id: set of (loot table name, instance)}: an item's
+    boss(es) in its raid tier ("boss"). Returns (rows, tier stats)."""
     model = model or Model.load()
     tier_of = {name: n for n, t in enumerate(TIERS) for name in t.split("|")}
     recs = {}
@@ -505,10 +506,11 @@ def report(items, status, instances, model=None):
         r.update(id=iid, name=v["name"], q=v["q"], ilvl=v["ilvl"])
         _, dpil, comb = model.predict(r)
         tiers = sorted({tier_of[i] for i in instances.get(iid, ()) if i in tier_of})
+        boss = sorted({nm for nm, i in (tables or {}).get(iid, ()) if tiers and tier_of.get(i) == tiers[0]})
         recs[iid] = dict(id=iid, name=v["name"], q=v["q"], ilvl=v["ilvl"], req=r["req"], group=r["group"],
                          role=role(r), tier=tiers[0] if tiers else None, status=status.get(iid),
                          model=round(comb, 1) if comb is not None else None, effect=r["effect"], set=r["set"],
-                         setname=r.get("setname"), dps=r["dps"], armor=r["armor"],
+                         setname=r.get("setname"), dps=r["dps"], armor=r["armor"], boss=", ".join(boss) or None,
                          dpil=round(dpil, 1) if dpil is not None else None, stats=bool(r["stats"] or r["schools"]),
                          value=round(model.value(r, model.bonus_armor(r, r["ilvl"]), model.bonus_block(r, r["ilvl"]))
                                      / slot_mod(model.p, r), 1))
