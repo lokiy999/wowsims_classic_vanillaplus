@@ -1,7 +1,7 @@
 // db.lokiy.dev/search: filter all items by name, quality, type, slot, level, class, binding, status, source and stats.
 // Data: /search.json {types, sections, cats, classes, stats, items: [[id, name, quality, type, section, level, slot,
 // bind, classMask, status, stats, cats, icon, hasRandomAffixes, affixStats {stat: [max, chance text]}, sources
-// (indexes into srcs: where it drops, matched by the name box like the header search)]], srcs}. The filter state lives in the URL, so a search can be linked.
+// (indexes into srcs: where it drops, matched by the name box like the header search), item level]], srcs}. The filter state lives in the URL, so a search can be linked.
 (() => {
 	const QC = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80'];
 	const QN = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
@@ -48,7 +48,7 @@
 		const p = new URLSearchParams(location.search);
 		form.q.value = p.get('q') || '';
 		for (const cb of form.querySelectorAll('[name=ql]')) cb.checked = (p.get('ql') || '').split(',').includes(cb.value);
-		for (const n of ['type', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax']) form[n].value = p.get(n) || '';
+		for (const n of ['type', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax', 'imin', 'imax']) form[n].value = p.get(n) || '';
 		fillSections();
 		form.sec.value = p.get('sec') || '';
 		$('stat-rows').innerHTML = '';
@@ -74,7 +74,7 @@
 		if (form.q.value.trim()) p.set('q', form.q.value.trim());
 		const ql = [...form.querySelectorAll('[name=ql]:checked')].map(cb => cb.value);
 		if (ql.length) p.set('ql', ql.join(','));
-		for (const n of ['type', 'sec', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax']) if (form[n].value) p.set(n, form[n].value);
+		for (const n of ['type', 'sec', 'slot', 'cls', 'bind', 'st', 'src', 'ra', 'lmin', 'lmax', 'imin', 'imax']) if (form[n].value) p.set(n, form[n].value);
 		const sf = statFilters();
 		if (sf.length) p.set('stats', sf.map(([k, v]) => (v ? `${k}:${v}` : k)).join(','));
 		if (!form.aff.checked) p.set('aff', '0');
@@ -109,6 +109,8 @@
 		const ra = form.ra.value;
 		const lmin = form.lmin.value === '' ? -1 : +form.lmin.value;
 		const lmax = form.lmax.value === '' ? 999 : +form.lmax.value;
+		const imin = form.imin.value === '' ? -1 : +form.imin.value;
+		const imax = form.imax.value === '' ? 999 : +form.imax.value;
 		const sf = statFilters().map(([k, v]) => [k, v === '' ? null : +v]);
 		return D.items.filter(it => {
 			const [id, name, quality, t, s, lv, sl, b, cm, status, stats, cats, , affix] = it;
@@ -127,6 +129,7 @@
 			if (src >= 0 && !(cats && cats.includes(src))) return false;
 			if (ra !== '' && String(affix || 0) !== ra) return false;
 			if (lv < lmin || lv > lmax) return false;
+			if ((imin >= 0 || imax < 999) && (it[16] < imin || it[16] > imax)) return false;
 			for (const [k, min] of sf) if (!statOf(it, k, min)) return false;
 			return true;
 		});
@@ -148,6 +151,7 @@
 		if (key === 'q') return it[2];
 		if (key === 'name') return it[1].toLowerCase();
 		if (key === 'lv') return it[5];
+		if (key === 'il') return it[16] || 0;
 		if (key === 'type') return D.sections[it[4]];
 		if (key === 'slot') return it[6] || '';
 		const s = statOf(it, key);
@@ -178,6 +182,7 @@
 			'<tr>' +
 			th('name', 'Item', 'l') +
 			th('lv', 'Req') +
+			th('il', 'iLvl') +
 			th('slot', 'Slot', 'l hide-s') +
 			th('type', 'Type', 'l hide-s') +
 			cols.map(k => th(k, shortLabel(k))).join('') +
@@ -193,7 +198,7 @@
 					`<span style="color:${QC[quality] || '#fff'}">${esc(name)}</span></a>` +
 					(q && !name.toLowerCase().includes(q) && String(id) !== q && srcMatch(it, q) !== undefined
 						? ` <span class="muted small">drops from ${esc(D.srcs[srcMatch(it, q)])}</span>` : '') + '</td>' +
-					`<td>${lv || ''}</td><td class="l hide-s">${esc(sl || '')}</td><td class="l hide-s muted">${esc(D.sections[s])}</td>` +
+					`<td>${lv || ''}</td><td>${it[16] || ''}</td><td class="l hide-s">${esc(sl || '')}</td><td class="l hide-s muted">${esc(D.sections[s])}</td>` +
 					cols.map(k => `<td>${statCell(it, k)}</td>`).join('') +
 					`<td class="hide-s">${tag}</td></tr>`
 				);

@@ -195,7 +195,9 @@ def add_cache_items(items):
                 SPELL_MAKERS.setdefault(raw[C_ITEM_TYPE + j], []).append((sid, raw[SPELL_NAME_COL]))
     for iid, rec in recs.items():
         lines = tooltip(rec, lk, recs)
-        items[iid] = {"id": iid, "name": lines[0], "quality": rec["quality"], "lines": lines[1:-1]}
+        items[iid] = {"id": iid, "name": lines[0], "quality": rec["quality"], "lines": lines[1:-1],
+                      # item level, item class and subclass (Part HW; api/items.json "ilvl" / "cls" / "sub")
+                      "ilvl": rec["itemLevel"], "cls": rec["class"], "sub": rec["subclass"]}
         # tooltip line -> spell id (Use / Equip / Chance on hit, set bonuses), for the links to /spell/<id>
         spell_lines = {TRIGGERS[sp["trigger"]] + lk.desc(sp["id"]): sp["id"] for sp in rec["spells"]
                        if sp["id"] and sp["trigger"] in TRIGGERS and lk.desc(sp["id"])}
@@ -1241,7 +1243,7 @@ def main():
 <article class="item-page">
   <div class="item-head">{icon_img(icon, 'large', 'icon-l')}
     <div><h1 style="color:{color}">{esc(it['name'])}</h1>
-    <div class="muted">{kind(iid)} {iid} &middot; <a href="/type/{page_key}#{slug(section)}">{esc(section)}</a>{wh_link}</div></div>
+    <div class="muted">{kind(iid)} {iid} &middot; <a href="/type/{page_key}#{slug(section)}">{esc(section)}</a>{f' &middot; Item level {it["ilvl"]}' if it.get("ilvl") else ''}{wh_link}</div></div>
   </div>
   {top_html}
   {src_html}
@@ -1864,7 +1866,8 @@ Items of content that isn't on the server are listed on <a href="/removed">Not o
                       info.get("b", ""), info.get("cl", ALL_CLASSES), status, info.get("st", 0), cats or 0, ic,
                       1 if affixes.get(i) or afx_rows_of(i) or dkp_suffixes.get(i) or seen_affixes(it["name"], loot_names.get(i, {})) else 0,
                       affix_stats.get(i, 0),
-                      [src_no(nm) for nm in dict.fromkeys(table_label(k)[0] for k in sources.get(i, []))] or 0])
+                      [src_no(nm) for nm in dict.fromkeys(table_label(k)[0] for k in sources.get(i, []))] or 0,
+                      it.get("ilvl", 0)])  # Part HW
     with open(os.path.join(out, "search.json"), "w", encoding="utf-8") as f:
         json.dump({"types": PAGES, "sections": sec_names, "cats": cats_all, "classes": CLASSES,
                    "stats": STAT_LABELS, "srcs": src_names, "items": srows}, f, separators=(",", ":"))
@@ -1880,6 +1883,7 @@ your filters, so you can share a search.</p></section>
   <label>Slot<select name="slot"></select></label>
   <label>Usable by<select name="cls"></select></label>
   <label>Required level<span class="range"><input name="lmin" type="number" min="0" max="60" placeholder="min" aria-label="Minimum level"><span class="muted">-</span><input name="lmax" type="number" min="0" max="60" placeholder="max" aria-label="Maximum level"></span></label>
+  <label>Item level<span class="range"><input name="imin" type="number" min="0" max="100" placeholder="min" aria-label="Minimum item level"><span class="muted">-</span><input name="imax" type="number" min="0" max="100" placeholder="max" aria-label="Maximum item level"></span></label>
   <label>Binds<select name="bind"></select></label>
   <label>Vanilla Plus<select name="st"><option value="">Any</option><option value="vp">New or changed</option><option value="new">New items</option><option value="changed">Changed from classic</option><option value="same">Same as classic</option><option value="unseen">Not seen on Vanilla+ yet</option></select></label>
   <label>Drops in<select name="src"></select></label>
@@ -1928,6 +1932,10 @@ your filters, so you can share a search.</p></section>
             e["custom"] = 1
         if i in classic_only:
             e["classicOnly"] = 1  # classic tooltip; no Vanilla+ client has seen the item yet
+        if it.get("ilvl"):  # Part HW: the server's item level / class / subclass (classic items: Wowhead's level only)
+            e["ilvl"] = it["ilvl"]
+        if "cls" in it:
+            e["cls"], e["sub"] = it["cls"], it["sub"]
         rows_i = afx_rows_of(i)
         if rows_i:  # [[suffix id, name, [effect lines]]] from the DBCs, incl. tracker-seen and group-borrowed ones
             e["affixes"] = [[sid, name, effs] for sid, name, effs, *_ in rows_i]

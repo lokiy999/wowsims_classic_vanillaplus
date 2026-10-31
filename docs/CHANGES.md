@@ -5764,3 +5764,26 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   (`atlasloot_db.json`), not db.json, so its result doesn't change with the added NPCs (checked: same output on
   repeated runs). Now 0 drops name an unknown NPC.
 - Backup `docs/gen_sources.py.bak-2026-10-31`.
+
+## Part HW — item level, item class and subclass in api/items.json; item level on the site (2026-10-31)
+
+- Lokiy (via the hub): for disenchanting on lokiy.dev/loot (LootTracker builds it) and for the site.
+- `api/items.json`, new fields per item (the existing ones are unchanged):
+  - `ilvl`: item level (number). From the server's item cache record (`itemLevel`) for every item a client has
+    seen. For the 111 classic-only items it is Wowhead's "Item Level" line. Left out when the level is 0 or unknown:
+    171 of 14,097 items (keys, quest items, letters and a few test items), so 13,926 have it.
+  - `cls`: item class (number, WoW 1.12 ItemClass): 0 consumable, 1 container, 2 weapon, 3 gem, 4 armor, 5 reagent,
+    6 projectile, 7 trade goods, 9 recipe, 11 quiver, 12 quest, 13 key, 15 miscellaneous.
+  - `sub`: item subclass (number, per class as in the game's ItemSubClass). Armor (4): 0 misc (rings, trinkets,
+    necks, off-hands), 1 cloth, 2 leather, 3 mail, 4 plate, 6 shield, 7 libram, 8 idol, 9 totem. Weapon (2): 0 axe,
+    1 two-hand axe, 2 bow, 3 gun, 4 mace, 5 two-hand mace, 6 polearm, 7 sword, 8 two-hand sword, 10 staff,
+    13 fist, 14 misc, 15 dagger, 16 thrown, 18 crossbow, 19 wand, 20 fishing pole.
+  - `cls` / `sub` are only from the item cache (13,978 items). The 111 classic-only items and 8 items known only from
+    the loot tracker don't have them.
+  - For disenchanting: an item can be disenchanted when `cls` is 2 (weapon) or 4 (armor) and `q` (quality) is 2-4.
+    The result depends on `ilvl`, `q` and weapon vs armor.
+  - `api/items.json` grew from 6.5 to 6.9 MB.
+- Site: item pages show "Item level N" in the header. The item search has an "Item level" min / max filter (URL
+  `imin` / `imax`) and an iLvl column you can sort by. `search.json` rows get the item level as their last value
+  (index 16).
+- Backups `*.bak-2026-10-31d` (gen_site.py, search.js).
