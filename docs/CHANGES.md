@@ -5655,3 +5655,30 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Checked live: Hunter page with every tab and the item picker open, then the start page. 262 images from
   db.lokiy.dev, none from Wowhead, none broken. Wowhead's tooltip script (`tooltips.js`) stays, for tooltips of
   things db.lokiy.dev doesn't have.
+
+## Part HR — drops from pfQuest and the loot tracker, none from Wowhead (2026-10-31)
+
+- Lokiy (via the hub): the drop data in `api/sources.json` ("wowhead" map, the sim's only source data) still came
+  from Wowhead classic on 1,939 items (3,091 entries). All loot data should come from the database. Lokiy: items
+  neither our data nor pfQuest has a good drop source for get none.
+- Compared first, per item (pfQuest + tracker vs Wowhead's NPC ids): 1,299 the same NPCs, 38 the same plus more,
+  7 partly the same, 39 different NPCs, 275 where Wowhead gave only a zone / name and pfQuest names NPCs, 281 with
+  no replacement (67 of those an NPC not on Vanilla+). That needed the next point: before it, 1,284 had none.
+- `import_pfquest.py`: drops through a reference loot table (pfQuest "R") used by at most `MAX_LIST` (8) NPCs are
+  drops of those NPCs. That is how vmangos stores most dungeon and raid boss loot (VanCleef's, for one), which
+  `pfquest_sources.json` didn't list before. The chance is the item's chance in that table, or null when the table
+  rolls evenly. Larger reference tables (world-drop pools) still only count in "n". Re-run on the PC
+  (`data\pfquest`, pfQuest 7.0.1): 6,602 items with NPC drops (was 3,145). `pfquest_npcs.json` and
+  `pfquest_quests.json` came out the same.
+- `item_sources.py` `_pfquest()`: no "%" when the chance is unknown.
+- `gen_site.py` (new `WORLD_DROP` = 10): every drop entry in the "wowhead" map is replaced by pfQuest's droppers
+  plus the NPCs of the loot tracker's mobs. Only NPCs with a page here count (no AQ / Naxx / AV or Season of
+  Discovery NPC), with their zone. An item more than 10 kinds of mobs drop is a world drop and gets no NPC list,
+  as on the item pages. Quest, vendor, craft and rep entries stay as they were.
+- Result (the rebuild prints it): 3,063 items with drops from our data. Of Wowhead's 1,939: 1,545 replaced, 394
+  without a drop source (359 of them in a loot table, so the sim shows the table's source anyway; 121 world drops).
+  The 35 outside every loot table: 864, 913, 1824-1832, 2267, 2277, 2899, 3041, 3108, 3421, 4788, 5109, 5110, 6367,
+  7734, 9359, 9489, 12065, 17523, 19028, 20692-20696, 20720-20722 (1832, 3421, 12065 and 17523 keep a quest or
+  vendor source). 1,518 items have a drop source they didn't have (1,157 outside the loot tables, mostly trade
+  goods and quest items).
+- Backups `*.bak-2026-10-31` (gen_site.py, item_sources.py, import_pfquest.py).

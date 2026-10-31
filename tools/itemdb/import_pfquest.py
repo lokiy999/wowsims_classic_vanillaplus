@@ -8,7 +8,9 @@ the loot tracker) has a source for, marked "classic data (pfQuest)".
 Writes {"items": {item id: {"drops": [[npc id, name, zone, chance %, level]], "n": NPCs in all, "lvl": [min, max]
 level of those NPCs, "vendors": [[npc id, name, zone]], "objects": [[object id, name, zone]]}}, "npcs": {npc id:
 [name, zone]}, "zones": {area id: name}}; drops by chance, at most MAX_LIST of each. Drops through a reference loot
-table (pfQuest "R", shared world-drop pools) count in "n" without a chance. "npcs" / "zones" name the NPCs and zones
+table (pfQuest "R") used by at most MAX_LIST NPCs (a boss's own table, like most dungeon and raid boss loot) are drops
+of those NPCs, with the item's chance in that table, or null when the table rolls its items evenly (chance 0); larger
+reference tables (shared world-drop pools) only count in "n". "npcs" / "zones" name the NPCs and zones
 of the Wowhead sources.
 
 Also writes pfquest_npcs.json (Part GJ, db.lokiy.dev's /npc/<id> pages): {npc id: {"name", "lvl" ("60" / "60-61"),
@@ -109,10 +111,15 @@ def main(folder):
         rec = {}
         drops = dict(e.get("U") or {})
         all_units = set(drops)
-        for ref in (e.get("R") or {}):
-            all_units |= set((refloot.get(ref) or {}).get("U") or {})
+        ref = e.get("R") or {}
+        for r, c in (ref.items() if isinstance(ref, dict) else ((r, 0) for r in ref)):
+            ref_units = set((refloot.get(r) or {}).get("U") or {})
+            all_units |= ref_units
+            if len(ref_units) <= MAX_LIST:  # a boss's own table, not a world-drop pool (Part HR)
+                for u in ref_units - set(e.get("U") or {}):
+                    drops[u] = max(drops.get(u) or 0, c) or None
         if drops:
-            rows = sorted(drops.items(), key=lambda kv: -kv[1])[:MAX_LIST]
+            rows = sorted(drops.items(), key=lambda kv: -(kv[1] or 0))[:MAX_LIST]
             rec["drops"] = [[u, unit_names.get(u, f"NPC {u}"), zone(units.get(u)), c,
                              "-".join(str(x) for x in sorted(set(level(u))))] for u, c in rows]
         if all_units:

@@ -735,6 +735,7 @@ AV_REPS = {729, 730}  # Frostwolf Clan, Stormpike Guard
 RANK_VENDORS = {12777: ("Captain Dirgehammer", 1519), 12782: ("Captain O'Neal", 1519), 12805: ("Officer Areyn", 1519),
                 12792: ("Lady Palanseer", 1637), 14581: ("Sergeant Thunderhorn", 1637),
                 12799: ("Sergeant Ba'sha", 1637)}
+WORLD_DROP = 10  # more kinds of mobs than this drop an item: a world drop (as in item_sources._pfquest)
 SOD_NPC_MIN = 200000  # Season of Discovery creature ids (Barebones, Rix Xizzix): not on Vanilla+
 QUESTCACHE = os.path.expanduser("~/questcache/quests.json")  # the game's quest cache (questcache_sync.py, Part HK)
 
@@ -1992,6 +1993,34 @@ your filters, so you can share a search.</p></section>
             wh_api[k] = v
         else:
             wh_api.pop(k, None)
+    # Part HR: drops come from our own data only, never Wowhead's: pfQuest's droppers (a boss's reference table
+    # included, import_pfquest.py) and the loot tracker's mobs, each with an NPC page here (so no AQ / Naxx / AV or
+    # Season of Discovery NPC). An item more than WORLD_DROP kinds of mobs drop is a world drop: no NPC list, as on the
+    # item pages. An item neither has gets no drop source.
+    tracked = {}
+    for m in mob_loot:
+        if m["name"] in mob_npc:
+            for r in m["items"]:
+                tracked.setdefault(str(r[0]), set()).add(mob_npc[m["name"]])
+    wh_drops = {k for k, v in wh_api.items() if any("drop" in e for e in v)}
+    hr_drops = set()
+    for k in {str(i) for i in items} | set(wh_api):
+        pf = srcs.pf.get(k, {})
+        nids = {n for n in tracked.get(k, set()) | {d[0] for d in pf.get("drops", [])} if n in npc_api and n < SOD_NPC_MIN}
+        if pf.get("n", 0) > WORLD_DROP or len(nids) > WORLD_DROP:
+            nids = set()
+        v = [e for e in wh_api.get(k, []) if "drop" not in e] + [
+            {"drop": {"npcId": n, **({"zoneId": npcs[n]["zid"]} if npcs.get(n, {}).get("zid") else {})}}
+            for n in sorted(nids)]
+        if nids:
+            hr_drops.add(k)
+        if v:
+            wh_api[k] = v
+        else:
+            wh_api.pop(k, None)
+    print(f"api/sources.json drops (Part HR): {len(hr_drops)} items from pfQuest / the loot tracker; Wowhead had "
+          f"{len(wh_drops)}: {len(wh_drops & hr_drops)} replaced, {len(wh_drops - hr_drops)} now without a drop source, "
+          f"{len(hr_drops - wh_drops)} new")
     src_api["wowhead"] = wh_api
     wh_quest_items = sum(1 for v in wh_api.values() if any("quest" in e and e["quest"].get("id") not in qcache for e in v))
     page_wh_quest = sum(1 for i in all_items if item_srcs[i] and all(e["from"] == "wowhead" for e in item_srcs[i])

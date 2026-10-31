@@ -317,9 +317,9 @@ there is more to say.
     crafting quests, so Wowhead's "crafted" is probably wrong.
   - Reps in no AtlasLoot table: done (Part HP). The 8 talismans are on the League of Arathor / Defilers tables, with
     their standing (Friendly) set by hand.
-  - Drops: Wowhead classic drop sources on 1,939 items (3,091 entries). The item pages show them only when no own
-    layer has the item (5 items). Replace with pfQuest's drops (`pfquest_sources.json`) plus the loot tracker, which
-    covers the same NPC IDs.
+  - Drops: done (Part HR). No Wowhead drops left: 3,063 items have drops from pfQuest / the loot tracker; 394 of
+    Wowhead's 1,939 have no drop source now (Lokiy: fine, the database has no good source for them), 35 of them
+    outside every loot table.
   - Quest rewards: replaced from the client's `WDB/questcache.wdb` uploads since Part HK (only quests a client has
     opened). Still Wowhead after the first upload (177 quests, 2026-10-30): quest rewards on 1,161 items in the map
     (was 1,227) and 915 item pages whose only source is a Wowhead quest reward (was 949). Each rebuild prints the

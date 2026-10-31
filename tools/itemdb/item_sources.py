@@ -613,7 +613,7 @@ class Sources:
         many = n > 10
         for npc, name, zone, chance, lvl in drops[:3 if many else 5]:
             where = ", ".join(x for x in (zone, f"level {lvl}" if lvl else "") if x)
-            out.append({"text": f"{name}{f' ({where})' if where else ''}: {chance:g}%", "type": "drop",
+            out.append({"text": f"{name}{f' ({where})' if where else ''}{f': {chance:g}%' if chance else ''}", "type": "drop",
                         "from": "pfquest", "href": f"https://www.wowhead.com/classic/npc={npc}"})
         if many:
             lv = pf.get("lvl")
