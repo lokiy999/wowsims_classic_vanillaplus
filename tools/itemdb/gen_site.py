@@ -70,7 +70,7 @@ from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot,
                        merge_tiers, seen_affixes)
 from wdb_tooltip import C_EFFECT, C_ITEM_TYPE, TRIGGERS, Lookups, tooltip  # noqa: E402
 from npcs import JUNK, RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
-import ilvl_page  # noqa: E402  (/ilvl, Part HY)
+import ilvl_page  # noqa: E402  (/ilvl, Part HZ)
 from ilvl_model import FIT as ILVL_FIT  # noqa: E402
 from objects import Objects  # noqa: E402
 from quests import WH_QUEST, Quests  # noqa: E402
@@ -1980,7 +1980,7 @@ your filters, so you can share a search.</p></section>
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(api, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(tmp, os.path.join(out, "api", "items.json"))
-    # ---- /ilvl: the item level model's calculator and report (ilvl_model.py / ilvl_page.py, Part HY)
+    # ---- /ilvl: the item level model's calculator and report (ilvl_model.py / ilvl_page.py, Part HZ)
     if os.path.exists(ILVL_FIT):
         il_rows, il_tiers = ilvl_page.write(out, page, api, {r[0]: r[9] for r in srows},
                                             {i: {table_label(k)[1] for k in ks} for i, ks in sources.items()})

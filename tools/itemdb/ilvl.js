@@ -1,4 +1,4 @@
-// db.lokiy.dev/ilvl (sim repo Part HY): the item level calculator and the report table, from /api/ilvl.json
+// db.lokiy.dev/ilvl (sim repo Part HZ): the item level calculator and the report table, from /api/ilvl.json
 // (ilvl_page.py). The calculator repeats ilvl_model.py's Model.predict() with the saved fit.
 (() => {
 	const $ = id => document.getElementById(id);

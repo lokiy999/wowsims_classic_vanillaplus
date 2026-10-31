@@ -1,4 +1,4 @@
-"""db.lokiy.dev/ilvl: the item level model's calculator and the report on Vanilla+ items (sim repo Part HY).
+"""db.lokiy.dev/ilvl: the item level model's calculator and the report on Vanilla+ items (sim repo Part HZ).
 
 /ilvl.html (calculator + report; ilvl.js does both in the browser) and /api/ilvl.json: {"fit": the saved fit
 (ilvl_fit.json: weights, slot modifiers, budget lines, base armor, DPS lines, held-out misses, data counts), "tiers":

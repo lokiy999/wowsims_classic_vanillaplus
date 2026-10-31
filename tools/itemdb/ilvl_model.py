@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Item level model for db.lokiy.dev's /ilvl page (sim repo Part HY; Lokiy 2026-10-31).
+"""Item level model for db.lokiy.dev's /ilvl page (sim repo Part HZ; Lokiy 2026-10-31).
 
     python3 ilvl_model.py --fit      # fit on classic items, 5-fold held-out check -> ilvl_fit.json (commit it)
 

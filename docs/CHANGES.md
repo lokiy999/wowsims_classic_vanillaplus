@@ -5864,7 +5864,7 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Augur's Regalia, Demoniac's Threads, Madcap's Outfit and Vindicator's Battlegear, which contain the charms).
   Hunter, Enhancement Shaman and DPS Warrior tests failed before this change already and are left alone.
 
-## Part HY — item level calculator: db.lokiy.dev/ilvl (2026-10-31)
+## Part HZ — item level calculator: db.lokiy.dev/ilvl (2026-10-31)
 
 - Lokiy (via the hub): an item level calculator built on classic items, applied to Vanilla+'s changed and custom
   items, with suggestions that respect the raid order ZG -> MC / Onyxia -> BWL -> Scarlet Monastery raid.
