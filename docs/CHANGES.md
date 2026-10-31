@@ -5961,3 +5961,11 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   72, Bonegrinder / Ravager / Red Vigil 71, Blackwood Hacker / Sharpshooter's Longbow 70, Loksey's Training Stick
   69, Purge 67 (caster staff: its stats are worth 65, held at BWL's 10th percentile).
 - Backup `ilvl_model.py.bak-2026-10-31d`.
+
+## Part IC — /ilvl report: sortable columns (2026-10-31)
+
+- Lokiy: the /ilvl page sortable by its columns.
+- `ilvl.js`: a click on a report column head (item, raid, slot group, real ilvl, model, model - real, flags,
+  suggested, based on) sorts by it, again the other way (arrow as on the search page); empty values always last.
+  Filters keep the sort.
+- `style.css`: `#rep th button` like the search page's column heads. Backup `style.css.bak-2026-10-31e`.

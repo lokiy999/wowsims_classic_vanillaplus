@@ -101,7 +101,14 @@
 			(h ? ` &middot; typical miss for ${esc(QN[q].toLowerCase())} items here: ${h.median} (90% within ${h.p90})` : '') + '</p>';
 	}
 
-	// ---- report
+	// ---- report; a click on a column head sorts by it (again: the other way), empty values last
+	let sortKey = null, sortDir = 1;
+	const SORT = {
+		name: r => r.name, tier: r => r.tier, group: r => D.groupLabel[r.group] || r.group, ilvl: r => r.ilvl,
+		model: r => r.model, diff: r => r.model == null ? null : r.model - r.ilvl, flags: r => r.flags.join(', ') || null,
+		suggest: r => r.suggest, comp: r => r.comp ? r.comp.length : null,
+	};
+	const TEXT_KEYS = ['name', 'group', 'flags'];
 	function repRender() {
 		const f = $('rep-filters');
 		const name = f.name.value.trim().toLowerCase();
@@ -111,6 +118,14 @@
 			(f.group.value === '' || r.group === f.group.value) &&
 			(f.flag.value === '' || r.flags.includes(f.flag.value)) &&
 			(!name || r.name.toLowerCase().includes(name)));
+		if (sortKey) {
+			const f = SORT[sortKey];
+			list.sort((a, b) => {
+				const x = f(a), y = f(b);
+				if (x == null || y == null) return (x == null) - (y == null);
+				return (typeof x === 'string' ? x.localeCompare(y) : x - y) * sortDir;
+			});
+		}
 		$('rep-count').textContent = `${list.length.toLocaleString()} item${list.length === 1 ? '' : 's'}`;
 		const tierName = t => t == null ? '' : D.tiers[t].tier.split('|')[0];
 		const rows = list.slice(0, 500).map(r => {
@@ -124,8 +139,11 @@
 				`<td class="l">${r.flags.map(x => `<span class="tag">${esc(x)}</span>`).join(' ')}${r.why ? `<br><span class="muted small">${esc(r.why)}</span>` : ''}</td>` +
 				`<td>${r.suggest == null ? '' : `<b>${r.suggest}</b>`}</td><td class="l small">${comp}</td></tr>`;
 		}).join('');
-		$('rep').innerHTML = '<thead><tr><th class="l">Item</th><th class="l">Raid</th><th class="l">Slot group</th><th>Real ilvl</th>' +
-			'<th>Model</th><th>Model &minus; real</th><th class="l">Flags</th><th>Suggested</th><th class="l">Based on</th></tr></thead>' +
+		const th = (key, label, cls = '') => `<th class="${cls}"><button type="button" data-sort="${key}">${label}` +
+			`${sortKey === key ? (sortDir < 0 ? ' &#9662;' : ' &#9652;') : ''}</button></th>`;
+		$('rep').innerHTML = '<thead><tr>' + th('name', 'Item', 'l') + th('tier', 'Raid', 'l') + th('group', 'Slot group', 'l') +
+			th('ilvl', 'Real ilvl') + th('model', 'Model') + th('diff', 'Model &minus; real') + th('flags', 'Flags', 'l') +
+			th('suggest', 'Suggested') + th('comp', 'Based on', 'l') + '</tr></thead>' +
 			`<tbody>${rows}</tbody>` + (list.length > 500 ? `<tfoot><tr><td colspan="9" class="muted">First 500 shown; filter to see the rest.</td></tr></tfoot>` : '');
 	}
 
@@ -135,6 +153,17 @@
 			S: 'Shield', W1: 'One-hand weapon', W2: 'Two-hand weapon', WR: 'Ranged weapon', WAND: 'Wand' };
 		calcInit();
 		$('rep-filters').addEventListener('input', repRender);
+		$('rep').addEventListener('click', e => {
+			const b = e.target.closest('[data-sort]');
+			if (!b) return;
+			const k = b.dataset.sort;
+			if (sortKey === k) sortDir = -sortDir;
+			else {
+				sortKey = k;
+				sortDir = TEXT_KEYS.includes(k) || k === 'tier' ? 1 : -1;
+			}
+			repRender();
+		});
 		repRender();
 	});
 })();

@@ -203,6 +203,8 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .results td.l:first-child { white-space: normal; }
 .results th button { all: unset; cursor: pointer; color: var(--muted); font-weight: 600; font-size: .8rem; }
 .results th button:hover { color: var(--text); }
+#rep th button { all: unset; cursor: pointer; color: var(--muted); font-weight: 600; font-size: .85rem; }
+#rep th button:hover { color: var(--text); }
 .results tbody tr:hover { background: var(--panel-2); }
 
 /* random affixes */
