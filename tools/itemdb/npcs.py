@@ -68,9 +68,11 @@ def load_journal():
 class NpcMatcher:
     def __init__(self, npcs, logged=None):
         self.npcs = npcs
-        self.by_name = {}
+        self.by_name, self.by_name_cc = {}, {}
         for nid, n in npcs.items():
-            if not n.get("vplus"):
+            if n.get("cconly"):  # only in the creature cache (Part HX): used when no pfQuest NPC has the name, since
+                self.by_name_cc.setdefault(n["name"].lower(), []).append(nid)  # the server has copies of classic ones
+            elif not n.get("vplus"):
                 self.by_name.setdefault(n["name"].lower(), []).append(nid)
         self.logged = {}  # (name, zone) -> [creature ids seen in combat logs]
         for nid, r in (logged or {}).items():
@@ -92,7 +94,7 @@ class NpcMatcher:
             if ids:
                 self.unmatched[name] = f"several creatures of this name in the {z} combat logs ({', '.join(map(str, ids))})"
                 return None
-        cands = self.by_name.get((name or "").lower(), [])
+        cands = self.by_name.get((name or "").lower(), []) or self.by_name_cc.get((name or "").lower(), [])
         if not cands:
             self.unmatched[name] = "not in pfQuest (a Vanilla+ NPC, or named differently)"
             return None

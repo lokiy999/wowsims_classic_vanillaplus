@@ -282,3 +282,5 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 .type-tabs a.on .muted { color: inherit; }
 #results .loot li { flex-wrap: wrap; column-gap: 6px; row-gap: 0; }
 #results .loot li > .item { flex-shrink: 0; max-width: 100%; }
+/* an NPC's subname under its name, as in the game (Part HX) */
+.npc-sub { margin: -4px 0 6px; color: #ffd100; }

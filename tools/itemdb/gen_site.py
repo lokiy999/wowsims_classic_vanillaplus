@@ -741,6 +741,18 @@ RANK_VENDORS = {12777: ("Captain Dirgehammer", 1519), 12782: ("Captain O'Neal", 
 WORLD_DROP = 10  # more kinds of mobs than this drop an item: a world drop (as in item_sources._pfquest)
 SOD_NPC_MIN = 200000  # Season of Discovery creature ids (Barebones, Rix Xizzix): not on Vanilla+
 QUESTCACHE = os.path.expanduser("~/questcache/quests.json")  # the game's quest cache (questcache_sync.py, Part HK)
+CREATURECACHE = os.path.expanduser("~/creaturecache/creatures.json")  # the creature cache (creaturecache_sync.py, HX)
+CREATURE_TYPES = {1: "Beast", 2: "Dragonkin", 3: "Demon", 4: "Elemental", 5: "Giant", 6: "Undead", 7: "Humanoid",
+                  8: "Critter", 9: "Mechanical", 11: "Totem"}
+
+
+def load_creaturecache():
+    """{creature id: record (wdb_creatures.py)} from Lokiy's creaturecache.wdb uploads; {} before the first one."""
+    try:
+        with open(CREATURECACHE, encoding="utf-8") as f:
+            return {int(k): v["creature"] for k, v in json.load(f)["creatures"].items()}
+    except (OSError, ValueError, KeyError):
+        return {}
 
 
 def load_questcache():
@@ -972,6 +984,23 @@ def main():
     for nid, r in logged.items():
         if nid not in npcs:
             npcs[nid] = {"name": r["name"], "lvl": "", "zone": r["zone"], "vplus": True, **({"rank": 3} if r.get("boss") else {})}
+    # the game's creature cache (Part HX): the server's own record of every creature a client has met. It marks an
+    # NPC as seen on Vanilla+ (subname, type) and adds the ones we have no page for (Vanilla+'s own creatures); an NPC
+    # missing from it stays (the cache only holds what a client has met)
+    ccache = {c: r for c, r in load_creaturecache().items() if c not in NOT_ON_SERVER_NPCS and c < SOD_NPC_MIN
+              and not JUNK.search(r["name"])}
+    n_cc_new = 0
+    for cid, c in ccache.items():
+        # a creature only the cache knows gets a page unless it is a server helper: type 10 (not specified: void
+        # zones, visuals, triggers) or a "Dummy" / "Script" subname
+        helper = c.get("type") == 10 or re.search(r"dummy|script", c.get("subname", ""), re.I)
+        if cid not in npcs and helper:
+            continue
+        if cid not in npcs:
+            npcs[cid] = {"name": c["name"], "lvl": "", "zone": "", "cconly": True,
+                         **({"rank": c["rank"]} if c.get("rank") else {})}
+            n_cc_new += 1
+        npcs[cid]["cc"] = c
     matcher = NpcMatcher(npcs, logged)
     mob_npc = {}
     for m in mob_loot:
@@ -1455,7 +1484,9 @@ or their own page.</p>{rough_note}</section>
             rank = "Boss"
         zone = n["zone"] or (main_zone(m) if m and m["zones"] else "") or (table_label(keys[0])[1] if keys else "")
         level = n["lvl"] or (m["level"] if m else "")
-        info = " &middot; ".join(esc(x) for x in (f"Level {level}" if level else "", rank, zone) if x)
+        cc = n.get("cc") or {}
+        info = " &middot; ".join(esc(x) for x in (f"Level {level}" if level else "", rank, zone,
+                                                   CREATURE_TYPES.get(cc.get("type"), "")) if x)
         parts = journal_html(nid)
         if m:
             parts.append(mob_drops_html(m, "Lokiy's loot"))
@@ -1481,10 +1512,12 @@ or their own page.</p>{rough_note}</section>
         body = f"""
 <article>
   <div class="crumbs"><a href="/npcs">NPCs</a>{zone_crumb(zone)}</div>
-  <h1>{esc(n['name'])}</h1>
+  <h1>{esc(n['name'])}</h1>{f'<p class="npc-sub">&lt;{esc(cc["subname"])}&gt;</p>' if cc.get("subname") else ''}
   <p class="muted">{info}{' &middot; ' if info else ''}NPC {nid} &middot;
   {'<span class="tag">Vanilla+ NPC</span> creature ID from combat logs' if n.get('vplus') else
-   f'<a href="https://www.wowhead.com/classic/npc={nid}" rel="noopener">Wowhead</a>'}</p>
+   f'<a href="https://www.wowhead.com/classic/npc={nid}" rel="noopener">Wowhead</a>'}{
+   ' &middot; <span class="tag" title="In the game\'s creature cache (uploaded by Lokiy): the server has this creature">'
+   'Seen on Vanilla+</span>' if cc else ''}</p>
   {''.join(parts) or '<p class="muted">No loot or vendor data.</p>'}
 </article>"""
         with open(os.path.join(out, "npc", f"{nid}.html"), "w", encoding="utf-8") as f:
@@ -2075,6 +2108,7 @@ your filters, so you can share a search.</p></section>
         by_from[f] = by_from.get(f, 0) + 1
     print(f"{len(classic_only)} classic items not seen on Vanilla+ yet added "
           f"({sum(1 for i in classic_only if types[i][0] in ('weapons', 'ranged', 'cloth', 'leather', 'mail', 'plate', 'accessories', 'shields'))} gear)")
+    print(f"creature cache: {len(ccache)} creatures, {n_cc_new} NPC pages from it alone")
     print(f"{len(npc_api)} NPC pages; matched {len(mob_npc)}/{len(mob_loot)} tracker mobs, {len(table_npc)} boss tables; "
           f"{len(matcher.unmatched)} names not matched")
     print(f"sources by layer: {by_from}; {len(NOT_ON_SERVER)} items not on Vanilla+; {len(spells)} spells "

@@ -5787,3 +5787,36 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   `imin` / `imax`) and an iLvl column you can sort by. `search.json` rows get the item level as their last value
   (index 16).
 - Backups `*.bak-2026-10-31d` (gen_site.py, search.js).
+
+## Part HX — Vanilla+ creatures from the game's creature cache (creaturecache.wdb uploads) (2026-10-31)
+
+- Lokiy (via the hub): upload the client's `WDB\creaturecache.wdb` like the quest cache (Part HK) for Vanilla+'s own
+  creature IDs and proof that an NPC exists on the server. Upload side: LootTracker HISTORY 30 ("WMOB" files go to
+  `~/loot-upload/data/creaturecache/incoming/`, plus an NPCs card on lokiy.dev/admin/upload).
+- `tools/itemdb/wdb_creatures.py` (new): parses creaturecache.wdb (build 5875). Header "BOMW" + 16 bytes, then
+  records (id, size, record): name, three more name forms, subname, then type flags, creature type, family, rank,
+  unknown, pet spell data, display id, and two bytes. The file has no level and no zone.
+- `tools/itemdb/creaturecache_sync.py` (new, from `sync_db.sh` with `--pickup`): the same as `questcache_sync.py`.
+  It writes `~/creaturecache/creatures.json` ({"creatures": {id: {"creature", "firstSeen", "changed", "seen"}}},
+  newest file wins, nothing ever removed), `changes.jsonl` and the page's
+  `~/loot-upload/data/creaturecache/status.json`.
+- `gen_site.py`:
+  - Every creature in the cache that is on Vanilla+ (not in `NPCS_NOT_ON_SERVER`, below 200000, not a `JUNK` name)
+    marks its NPC page "Seen on Vanilla+", and shows its subname ("<Accessories Quartermaster>") and creature type.
+  - A creature we had no page for gets one (`cconly`), unless it is a server helper (type 10 "not specified":
+    visuals, void zones, triggers; or a "Dummy" / "Script" subname).
+  - `npcs.py` `NpcMatcher` uses cache-only creatures for a name only when no pfQuest NPC has it, because the server
+    keeps copies of classic creatures (Magmadar 20006, Crimson Battle Mage 160003-160005, ...).
+  - A missing creature is never removed: the cache only holds what a client has met.
+- First import (the live client's file, 2026-10-31): 3,817 creatures (102 with Vanilla+ ids), 3,813 on Vanilla+.
+  45 new NPC pages, e.g. the Azshara Crater Battlemasters (9-12, 15), Firebird / Rattlesnake Supply Officers (16,
+  17), Brohtos the Armorer, the Arena Organizers (25129-25131), the SM raid trash (25200-25220), Brother Pablo,
+  Landro Longshot. NPC pages 9546 -> 9591. Tracker mobs matched 596 -> 597, boss tables 276 -> 277.
+- From the hub's list:
+  - Azus the Bloodseeker 25031, the Blood Globes 25035 / 25036 and Scarlet Sharpshooter 25230 are confirmed.
+  - 25034 (a second Azus) and 25233 (Sharpshooter "Dummy") are helpers and get no page.
+  - Not in this client's cache yet: Timberweb Lurker (Azshara Crater), Winterax Envoy, The Nameless Hermit,
+    Caverngloom Crocolisk, and the rank vendors Captain Dirgehammer, Captain O'Neal, Lady Palanseer and Sergeant
+    Thunderhorn. Areyn and Ba'sha are in it.
+- WSG and AB stay on db.lokiy.dev (Lokiy: they are on Vanilla+); only AV went (Part HI).
+- Backups `*.bak-2026-10-31b/-e` (gen_site.py, npcs.py), `sync_db.sh.bak-2026-10-31`, `style.css.bak-2026-10-31`.
