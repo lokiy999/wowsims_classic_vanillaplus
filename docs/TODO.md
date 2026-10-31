@@ -5,6 +5,31 @@ Things either of us raised that are still open. Finished, answered or decided it
 
 _Cleaned up 2026-09-25 (after Part DH)._
 
+## NEXT UP: approved by Lokiy 2026-10-31 (start on these; sent from the hub chat)
+
+The generator parts (tools/itemdb) follow the Part HR rules: db.lokiy.dev is the only source, the sim keeps reading it,
+back up before changing, and tell the Database chat if it is running. Short summary to the hub chat after each.
+Keep: the "Wowhead" reference link on every db.lokiy.dev page, and the sim's Wowhead gear-planner import / export.
+
+1. **Sim zone links to db.lokiy.dev.** `ActionId.makeZoneUrl` (ui/core/proto_utils/action_id.ts) always goes to
+   Wowhead. Use db.lokiy.dev/zone/<id> where a page exists (73 pages; the AQ / Naxx / AV zones are removed), and
+   Wowhead only where none does. Same for any other zone link to Wowhead in the sim or on db.lokiy.dev.
+2. **Remove everything from Season of Discovery** (Lokiy: "it doesn't exist" on Vanilla+). Known leftovers:
+   - ~490 SoD / later spells the sim links to Wowhead;
+   - SoD NPC IDs, e.g. ~60 boss drops linked to SoD copies (Ghamoo-ra, Aku'mai, Thermaplugg, Lady Sarevess ...);
+     Barebones and Rix Xizzix already went in Part HJ;
+   - SoD items;
+   - SoD-only parts of the sim UI (runes, SoD phases / presets, SoD buffs and consumes ...).
+   Data, links and lists: remove. Code-level removals (the rune system, SoD-only mechanics / UI): first send the hub
+   chat a list of what would go and how big it is, and wait for Lokiy's OK; it must not break the sims. Nothing on
+   Vanilla+ may be lost: check against the server's own data (Spell.csv, item cache, db.lokiy.dev) before calling
+   anything SoD.
+3. **Object (chest / node) pages on db.lokiy.dev** from pfQuest's object data: /object/<id> with name, zones and
+   contents. Item pages link 2,897 "In <object>" sources to Wowhead objects (e.g. "In Large Solid Chest",
+   object=153462); point them to the new pages. Leave out objects that are only in removed instances. If the loot
+   tracker's chest data (loot.json `chests`: 38 chests, 138 openings) can add observed contents, add it as its own
+   layer. Also list the ~20 NPC / item links that still go to Wowhead because we have no page for them.
+
 ## Lokiy's list: implement next time Lokiy asks what to implement (added 2026-09-30)
 
 Do not start these on your own; bring them up when Lokiy asks what to work on next.
