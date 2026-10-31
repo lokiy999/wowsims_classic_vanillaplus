@@ -24,11 +24,13 @@ ADD_ITEMS_FILE = "assets/db_inputs/add_items.json"
 
 
 def item_icons():
-    """{item_id: icon name} from db.lokiy.dev's icon URLs (Wowhead CDN ones only; the sim loads icons from there)."""
+    """{item_id: icon name} from db.lokiy.dev's icon URLs: its own /icons/<name>.jpg (since 2026-10-25) or, for the
+    few it doesn't host, Wowhead's CDN. The sim UI shows every name db.lokiy.dev has from there (ui/core/db_icons.ts)."""
     icons = {}
     with open(sd.ITEMS_JSON, encoding="utf8") as f:
         for iid, it in json.load(f).items():
-            m = re.match(r'^https://wow\.zamimg\.com/images/wow/icons/\w+/([^/.]+)\.jpg$', it.get("icon") or "")
+            m = re.match(r'^https://(?:db\.lokiy\.dev/icons|wow\.zamimg\.com/images/wow/icons/\w+)/([^/.]+)\.jpg$',
+                         it.get("icon") or "")
             if m:
                 icons[int(iid)] = m.group(1)
     return icons
