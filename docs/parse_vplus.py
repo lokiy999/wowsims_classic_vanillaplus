@@ -614,6 +614,15 @@ def main():
                 kept = True
         n_kept_shape += kept
     print(f"kept the full entry of {n_kept_shape} items not in the Wowhead data")
+    # Every entry's icon is db.lokiy.dev's, on every run: an entry kept from an earlier run would otherwise keep the
+    # icon it had then, or none (95 server items had none while db.lokiy.dev's own URLs weren't read, until 2026-10-31)
+    n_icon = 0
+    for e in out:
+        icon = MANUAL_CONSUMABLE_ITEMS.get(e["id"]) or icons.get(e["id"])
+        if icon and e.get("icon") != icon:
+            e["icon"] = icon
+            n_icon += 1
+    print(f"icons from db.lokiy.dev: {n_icon} entries set or changed")
 
     json.dump({"items": out}, open(OUT, "w"), indent=1)
     renum_path = "assets/db_inputs/renumber.json"
