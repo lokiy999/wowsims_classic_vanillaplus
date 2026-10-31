@@ -50,11 +50,15 @@ ITEM_TOKEN = re.compile(r"\[item:(\d+)\]")
 ENCHANT_TOKEN = re.compile(r"\[enchant:\d+\]\s*")
 
 
-def link_tokens(text, item_names):
-    """Escaped field text with the generator's [spell:N] Name / [item:N] / [enchant:N] Name tokens as links."""
-    text = SPELL_TOKEN.sub(lambda m: f'<a href="/spell/{m.group(1)}">{m.group(2) or "#" + m.group(1)}</a>', text)
-    text = ITEM_TOKEN.sub(lambda m: f'<a href="/item/{m.group(1)}">{item_names.get(int(m.group(1)), "Item " + m.group(1))}</a>',
-                          text)
+def link_tokens(text, item_names, spell_ids=None):
+    """Escaped field text with the generator's [spell:N] Name / [item:N] / [enchant:N] Name tokens as links (a spell
+    only when spell_ids has it: one without a page stays text)."""
+    text = SPELL_TOKEN.sub(lambda m: f'<a href="/spell/{m.group(1)}">{m.group(2) or "#" + m.group(1)}</a>'
+                           if spell_ids is None or int(m.group(1)) in spell_ids else (m.group(2) or "#" + m.group(1)),
+                           text)
+    # an item the database has gets a link; anything else (a class mask in an Item field, a removed item) stays text
+    text = ITEM_TOKEN.sub(lambda m: f'<a href="/item/{m.group(1)}">{item_names[int(m.group(1))]}</a>'
+                          if int(m.group(1)) in item_names else m.group(1), text)
     return ENCHANT_TOKEN.sub("", text)
 
 

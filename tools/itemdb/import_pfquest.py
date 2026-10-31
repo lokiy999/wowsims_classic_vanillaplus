@@ -18,6 +18,9 @@ Also writes pfquest_npcs.json (Part GJ, db.lokiy.dev's /npc/<id> pages): {npc id
 chance %]] (direct drops only, by chance), "sells": [item ids]}} for every unit with a name. Since Part GO also
 "zid" (the zone's area id, for /zone/<id>).
 
+And pfquest_objects.json (Part HU, db.lokiy.dev's /object/<id> pages): {object id: {"name", "zones": [area ids by
+spawn count], "spawns", "items": [[item id, chance %]]}} for every object that holds an item.
+
 And pfquest_quests.json (Part GO, db.lokiy.dev's /quest/<id> and /zone/<id> pages): {quest id: {"name", "goal"
 (objective text), "desc", "lvl", "min", "race" / "class" (bit masks), "skill" (profession id), "pre" (quest ids
 before it), "close" (quests it rules out), "event", "start" / "end" / "needs": {"U": npc ids, "O": object ids,
@@ -141,6 +144,32 @@ def main(folder):
                   ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     print(f"{len(out)} items: {sum('drops' in r for r in out.values())} with NPC drops, "
           f"{sum('vendors' in r for r in out.values())} sold, {sum('objects' in r for r in out.values())} in objects")
+
+    # per object, for db.lokiy.dev's /object/<id> pages (Part HU): every object that holds an item (chests, ore,
+    # herbs, ...): its name, the zones it spawns in (by spawn count) and every item it holds with the classic chance
+    # (an item through a reference loot table gets that table's chance)
+    by_obj = {}
+    for iid, e in items.items():
+        if not isinstance(e, dict):
+            continue
+        for o, c in (e.get("O") or {}).items():
+            held = by_obj.setdefault(o, {})
+            held[iid] = max(held.get(iid, 0), c or 0)
+        ref = e.get("R") or {}
+        for r, c in (ref.items() if isinstance(ref, dict) else ((r, 0) for r in ref)):
+            for o in (refloot.get(r) or {}).get("O") or {}:
+                held = by_obj.setdefault(o, {})
+                held[iid] = max(held.get(iid, 0), c or 0)
+    obj_out = {}
+    for o, held in by_obj.items():
+        coords = (objects.get(o) or {}).get("coords") or []
+        zs = Counter(c[2] for c in (coords.values() if isinstance(coords, dict) else coords) if len(c) > 2)
+        obj_out[str(o)] = {"name": obj_names.get(o, f"Object {o}"),
+                           "zones": [z for z, _ in zs.most_common()], "spawns": sum(zs.values()),
+                           "items": sorted(([i, c] for i, c in held.items()), key=lambda r: (-r[1], r[0]))}
+    with open(os.path.join(HERE, "pfquest_objects.json"), "w", encoding="utf-8") as f:
+        json.dump(obj_out, f, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    print(f"{len(obj_out)} objects that hold items")
 
     # per NPC, for db.lokiy.dev's /npc/<id> pages (Part GJ): every unit with a name, its level, rank, faction, zone,
     # every item it drops (classic chance %) and sells

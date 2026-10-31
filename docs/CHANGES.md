@@ -5697,3 +5697,34 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   icon db.lokiy.dev has instead of Wowhead's (e.g. 13348 Demonshear, 25015 / 25039 / 25063 helmets). Sim deploy
   `ac9a0e15c` (117 items changed). Checked live: Shroud of the Supreme shows `inv_misc_cape_05` from db.lokiy.dev.
 - Backup `docs/parse_vplus.py.bak-2026-10-31`.
+
+## Part HU — object pages; no link to a missing page or to Wowhead for what we have (2026-10-31)
+
+- Lokiy, NEXT UP 3 (split with the Simulator chat: it does 1 zone links and 2 Season of Discovery).
+- `import_pfquest.py` also writes `pfquest_objects.json`: {object id: {"name", "zones" (area ids by spawn count),
+  "spawns", "items": [[item, chance %]]}} for every object that holds an item, through direct or reference loot.
+  637 objects. Re-run on the PC (`data\pfquest`); the other three pfQuest files came out the same.
+- `objects.py` (new) `Objects`: builds /object/<id> pages and /objects (a list; "Objects" in the Search menu).
+  - Items not in the database are left out, as are objects that then hold nothing and objects that only spawn in
+    zones that aren't on Vanilla+ (AQ, Naxx, AV).
+  - A page shows the zones (linked when a zone page exists) and the contents with the classic chance (80 rows, the
+    rest counted). It has its own "Seen by Lokiy's loot tracker" layer from loot.json `chests` (kind object):
+    opened n times, drops and per opening. The addon only knows the name, so it is matched by name, and by zone when
+    several objects share it.
+  - 620 pages, 31 with tracker data. Tracker objects with no pfQuest object (no page): Bonfire, Chest of The Seven,
+    Relic Coffer Door, Secret Safe, Shadowforge Gate, plus a player's name the addon logged as an object.
+- `gen_site.py` `local_source()`: an "In <object>" source links to /object/<id> instead of Wowhead's object page.
+  3,532 links on the site; none to a Wowhead object is left.
+- `npcs.py` `JUNK`: "zz" and "OLD " only in their dev spelling (the regex is case-insensitive, so real NPCs like Old
+  Icebeard, Old Murk-Eye, Old Man Heming and Zzarc' Vul had no page; 12 come back), and "[UNUSED]" names go (238
+  unused NPCs had pages). NPC pages 9772 -> 9546. `kept_source()` also drops item source lines from Season of
+  Discovery creatures (id >= 200000) and from such test / unused NPCs (e.g. "Sold by [UNUSED] Bazaar Merchant TEST").
+- No link to a page that doesn't exist (a scan of the built site finds none; there were 2,080):
+  - `spells.py` `link_tokens()`: an Item field links only to an item the database has. Spell pages showed class masks
+    (33554432, 256, ...) as item links. A spell link goes only to a spell with a page (`spell_ids`).
+  - DungeonJournal adds link only to creatures with a page (one: 25119).
+- Still Wowhead (we have no page for them): items 2023 Monster - Spear, Rusty, 5623 Amethyst Phial, 5845 Flank of
+  Meat, 6766 Flayed Demon Skin (old2), 8589 Old Whistle of the Ivory Raptor, 18950 Chambermaid Pillaclencher's
+  Pillow, and 13516, 21044, 23051, 26021, 34048 (no name known). Quests 785, 2986, 5383, 5659, 7221, 7222, 8458, 8793,
+  8794 (pfQuest has no record; only another quest's chain names them).
+- Backups `*.bak-2026-10-31b` / `-31c` / `-31` (import_pfquest.py, gen_site.py, npcs.py, spells.py).

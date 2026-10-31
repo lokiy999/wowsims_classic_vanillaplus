@@ -13,7 +13,9 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 RANKS = {1: "Elite", 2: "Rare elite", 3: "Boss", 4: "Rare"}
 # pfQuest units that are no real NPC (GM waypoints, triggers, placeholders)
-JUNK = re.compile(r"\(Only GM|\bDND\b|\[DND\]|Trigger|\[PH\]|^zz|^OLD |Dummy|\bTEST\b|\(UNUSED\)", re.I)
+# test / placeholder NPCs; "zz" and "OLD " only in their dev spelling (Part HU: Old Icebeard, Zzarc' Vul are real)
+JUNK = re.compile(r"\(Only GM|\bDND\b|\[DND\]|Trigger|\[PH\]|(?-i:^zz)|(?-i:^OLD )|Dummy|\bTEST\b|\(UNUSED\)|"
+                  r"\[UNUSED\]", re.I)
 
 
 def norm_zone(z):

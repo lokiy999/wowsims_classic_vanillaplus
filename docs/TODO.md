@@ -24,11 +24,9 @@ Keep: the "Wowhead" reference link on every db.lokiy.dev page, and the sim's Wow
    chat a list of what would go and how big it is, and wait for Lokiy's OK; it must not break the sims. Nothing on
    Vanilla+ may be lost: check against the server's own data (Spell.csv, item cache, db.lokiy.dev) before calling
    anything SoD.
-3. **Object (chest / node) pages on db.lokiy.dev** from pfQuest's object data: /object/<id> with name, zones and
-   contents. Item pages link 2,897 "In <object>" sources to Wowhead objects (e.g. "In Large Solid Chest",
-   object=153462); point them to the new pages. Leave out objects that are only in removed instances. If the loot
-   tracker's chest data (loot.json `chests`: 38 chests, 138 openings) can add observed contents, add it as its own
-   layer. Also list the ~20 NPC / item links that still go to Wowhead because we have no page for them.
+3. **Object (chest / node) pages on db.lokiy.dev**: done (Part HU, Database chat 2026-10-31). 620 /object pages
+   with the loot tracker's chests as their own layer, item pages link to them, no link to a missing page. Still
+   Wowhead (no page here): 11 items and 9 quests, listed in Part HU.
 
 ## Lokiy's list: implement next time Lokiy asks what to implement (added 2026-09-30)
 

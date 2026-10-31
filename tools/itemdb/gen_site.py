@@ -69,7 +69,8 @@ from item_stats import ALL_CLASSES, CLASSES, STAT_LABELS, parse as parse_stats  
 from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot, load_random_affixes, load_rolls,  # noqa: E402
                        merge_tiers, seen_affixes)
 from wdb_tooltip import C_EFFECT, C_ITEM_TYPE, TRIGGERS, Lookups, tooltip  # noqa: E402
-from npcs import RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
+from npcs import JUNK, RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
+from objects import Objects  # noqa: E402
 from quests import WH_QUEST, Quests  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
 from affixes import Affixes  # noqa: E402
@@ -90,7 +91,7 @@ GREEN = ("Equip:", "Use:", "Chance on hit:", "(", "Set:")
 HERE = os.path.dirname(os.path.abspath(__file__))
 # Server-made icons extracted from the client's patch MPQs (<name>.jpg 56px, <name>_s.jpg 18px): the first 42 by hand
 # in tools/itemdb/icons/ (git), the rest uploaded by Lokiy's PC to CSV's/icons/ (ItemCacheSync upload_itemcache.py,
-# asks itemcache_sync.py --missing-icons). Everything else comes from the public icon CDN.
+# asks itemcache_sync.py --missing-icons). Since Part HQ db.lokiy.dev hosts every icon it uses itself.
 ICON_DIRS = [os.path.join(HERE, "icons"), os.path.join(os.path.dirname(os.path.dirname(HERE)), "CSV's", "icons")]
 LOCAL_ICONS = {f[:-4] for d in ICON_DIRS if os.path.isdir(d) for f in os.listdir(d)
                if f.endswith(".jpg") and not f.endswith("_s.jpg")}
@@ -653,7 +654,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/changes">Changes</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/changes">Changes</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/objects">Objects</a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items, NPCs, spells, quests, zones..." aria-label="Search everything" autocomplete="off">
   </form>
@@ -756,7 +757,9 @@ def kept_source(e):
     m = re.search(r"(?:/npc/|npc=)(\d+)", h)
     q = re.search(r"quest=(\d+)", h)
     return not ("(Alterac Valley" in e.get("text", "") or (m and int(m.group(1)) in NOT_ON_SERVER_NPCS)
-                or (q and int(q.group(1)) in NOT_ON_SERVER_QUESTS))
+                or (q and int(q.group(1)) in NOT_ON_SERVER_QUESTS)
+                # Part HU: Season of Discovery creatures and test / unused NPCs (npcs.py JUNK) aren't a source
+                or (m and int(m.group(1)) >= SOD_NPC_MIN) or (e.get("from") == "pfquest" and JUNK.search(e.get("text", ""))))
 
 
 def kept_wowhead(e):
@@ -995,6 +998,12 @@ def main():
     # DungeonJournal's abilities / tactics (npcs.load_journal; Part GN), on the NPC pages
     journal, journal_flags = load_journal()
     quests = Quests(npcs, NOT_ON_SERVER_QUESTS, ZONES_NOT_ON_SERVER, qcache)  # quest / zone pages (Parts GO, HK)
+    # object pages (objects.py, Part HU): chests, ore, herbs ... from pfQuest, plus the loot tracker's opened objects
+    try:
+        loot_chests = json.load(open("/var/www/lokiy/loot/loot.json", encoding="utf-8")).get("chests", [])
+    except (OSError, ValueError):
+        loot_chests = []
+    objects = Objects(items, quests.zones, ZONES_NOT_ON_SERVER | {3428, 3429, 3456}, loot_chests)
     quests.add_rewards(item_srcs)
 
     def journal_icon(path):
@@ -1019,7 +1028,7 @@ def main():
 
     def add_li(a):
         nm = esc(a["name"])
-        if a.get("npcId"):
+        if a.get("npcId") and a["npcId"] in npcs:  # only creatures with a page here (Part HU)
             nm = f'<a href="/npc/{a["npcId"]}">{nm}</a>'
         return f'<li>{nm}{" x" + str(a["count"]) if a.get("count") else ""}</li>'
 
@@ -1066,12 +1075,15 @@ def main():
 
     # item sources: db.lokiy.dev's NPC pages instead of Wowhead's, and the NPC behind a loot table (Part GN)
     WH_NPC = "https://www.wowhead.com/classic/npc="
+    WH_OBJECT = "https://www.wowhead.com/classic/object="
 
     def local_source(e):
         e = dict(e)
         h = e.get("href", "")
         if h.startswith(WH_NPC) and h[len(WH_NPC):].isdigit() and int(h[len(WH_NPC):]) in npcs:
             e["href"] = f"/npc/{h[len(WH_NPC):]}"
+        elif h.startswith(WH_OBJECT) and h[len(WH_OBJECT):].isdigit() and objects.href(int(h[len(WH_OBJECT):])):
+            e["href"] = objects.href(int(h[len(WH_OBJECT):]))
         elif "/quest=" in h and h.rsplit("=", 1)[1].isdigit() and quests.href(int(h.rsplit("=", 1)[1])):
             e["href"] = quests.href(int(h.rsplit("=", 1)[1]))
         elif h.startswith("/loot/") and h[6:] in table_npc:
@@ -1532,6 +1544,10 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
         if nm and table_groups.get(key) in ("Instances", "WorldBosses"):
             zone_tables.setdefault(cat, []).append((key, nm))
     n_quests, n_zones = quests.write(out, page, item_cell, npc_api, zone_tables)
+    zone_pages = {int(f[:-5]) for f in os.listdir(os.path.join(out, "zone")) if f[:-5].isdigit()}
+    n_objects = objects.write(out, page, item_cell, zone_pages)
+    print(f"{n_objects} object pages ({len(objects.seen)} with loot tracker data); tracker objects without a page: "
+          f"{sorted(set(objects.unmatched))}")
     print(f"{n_quests} quest pages, {n_zones} zone pages")
 
     # ---- spell pages, the spell search and api/spells.json (spells.py; Part GE); spells loaded above
@@ -1543,7 +1559,7 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
     item_names = {i: esc(items[i]["name"]) for i in all_items}
 
     def field_rows(rows):
-        return "".join(f'<tr><th>{esc(k)}</th><td>{link_tokens(esc(v), item_names)}</td></tr>' for k, v in rows)
+        return "".join(f'<tr><th>{esc(k)}</th><td>{link_tokens(esc(v), item_names, spells)}</td></tr>' for k, v in rows)
 
     for sid, sp in spells.items():
         title = sp["name"] + (f" ({sp['rank']})" if sp["rank"] else "")
@@ -1566,8 +1582,8 @@ drop to tell them apart. They keep their /mob or /loot page.</p><ul class="loot 
         badge = f'<span class="tag spell-{status}">{STATUS_LABEL[status]}</span>' if status else ""
         diff_html = ""
         if sp["diff"]:
-            trs = "".join(f'<tr><th>{esc(r[0])}</th><td class="old">{link_tokens(esc(r[1] or "—"), item_names)}</td>'
-                          f'<td>{link_tokens(esc(r[2] or "—"), item_names)}'
+            trs = "".join(f'<tr><th>{esc(r[0])}</th><td class="old">{link_tokens(esc(r[1] or "—"), item_names, spells)}</td>'
+                          f'<td>{link_tokens(esc(r[2] or "—"), item_names, spells)}'
                           + (f'<div class="muted small">{esc(r[3])}</div>' if len(r) > 3 and r[3] else "") + '</td></tr>'
                           for r in sp["diff"])
             diff_html = (f'<section class="card"><h2>Changed from classic</h2><table class="spell-diff"><thead><tr><th></th>'
