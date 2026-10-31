@@ -193440,10 +193440,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Handstitched Leather Boots",
+   "icon": "inv_boots_04",
    "quality": 1,
    "type": 10,
-   "armorType": 2,
-   "icon": "inv_boots_04"
+   "armorType": 2
   },
   {
    "id": 2303,
@@ -193498,10 +193498,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Handstitched Leather Pants",
+   "icon": "inv_pants_wolf",
    "quality": 1,
    "type": 9,
-   "armorType": 2,
-   "icon": "inv_pants_wolf"
+   "armorType": 2
   },
   {
    "id": 2314,
@@ -193556,10 +193556,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Toughened Leather Armor",
+   "icon": "inv_chest_leather_10",
    "quality": 1,
    "type": 5,
-   "armorType": 2,
-   "icon": "inv_chest_leather_10"
+   "armorType": 2
   },
   {
    "id": 2568,
@@ -193614,10 +193614,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Brown Linen Vest",
+   "icon": "inv_shirt_05",
    "quality": 1,
    "type": 5,
-   "armorType": 1,
-   "icon": "inv_shirt_05"
+   "armorType": 1
   },
   {
    "id": 2569,
@@ -193672,10 +193672,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Linen Boots",
+   "icon": "inv_boots_09",
    "quality": 1,
    "type": 10,
-   "armorType": 1,
-   "icon": "inv_boots_09"
+   "armorType": 1
   },
   {
    "id": 2570,
@@ -193730,9 +193730,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Linen Cloak",
+   "icon": "inv_misc_cape_14",
    "quality": 1,
-   "type": 4,
-   "icon": "inv_misc_cape_14"
+   "type": 4
   },
   {
    "id": 2582,
@@ -193787,10 +193787,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Green Woolen Vest",
+   "icon": "inv_chest_cloth_39",
    "quality": 1,
    "type": 5,
-   "armorType": 1,
-   "icon": "inv_chest_cloth_39"
+   "armorType": 1
   },
   {
    "id": 2844,
@@ -193848,11 +193848,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Mace",
+   "icon": "inv_mace_01",
    "quality": 1,
    "type": 13,
    "weaponType": 4,
-   "handType": 1,
-   "icon": "inv_mace_01"
+   "handType": 1
   },
   {
    "id": 2845,
@@ -193910,11 +193910,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Axe",
+   "icon": "inv_axe_23",
    "quality": 1,
    "type": 13,
    "weaponType": 1,
-   "handType": 1,
-   "icon": "inv_axe_23"
+   "handType": 1
   },
   {
    "id": 2847,
@@ -193972,11 +193972,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Shortsword",
+   "icon": "inv_sword_26",
    "quality": 1,
    "type": 13,
    "weaponType": 9,
-   "handType": 1,
-   "icon": "inv_sword_26"
+   "handType": 1
   },
   {
    "id": 2848,
@@ -194034,11 +194034,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bronze Mace",
+   "icon": "inv_mace_08",
    "quality": 1,
    "type": 13,
    "weaponType": 4,
-   "handType": 1,
-   "icon": "inv_mace_08"
+   "handType": 1
   },
   {
    "id": 2849,
@@ -194096,11 +194096,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bronze Axe",
+   "icon": "inv_axe_17",
    "quality": 1,
    "type": 13,
    "weaponType": 1,
-   "handType": 1,
-   "icon": "inv_axe_17"
+   "handType": 1
   },
   {
    "id": 2850,
@@ -194158,11 +194158,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bronze Shortsword",
+   "icon": "inv_sword_04",
    "quality": 1,
    "type": 13,
    "weaponType": 9,
-   "handType": 1,
-   "icon": "inv_sword_04"
+   "handType": 1
   },
   {
    "id": 2851,
@@ -194217,10 +194217,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Chain Belt",
+   "icon": "inv_belt_02",
    "quality": 1,
    "type": 8,
-   "armorType": 3,
-   "icon": "inv_belt_02"
+   "armorType": 3
   },
   {
    "id": 2852,
@@ -194275,10 +194275,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Chain Pants",
+   "icon": "inv_pants_03",
    "quality": 1,
    "type": 9,
-   "armorType": 3,
-   "icon": "inv_pants_03"
+   "armorType": 3
   },
   {
    "id": 2853,
@@ -194333,10 +194333,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Bracers",
+   "icon": "inv_bracer_03",
    "quality": 1,
    "type": 6,
-   "armorType": 3,
-   "icon": "inv_bracer_03"
+   "armorType": 3
   },
   {
    "id": 2857,
@@ -194391,10 +194391,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Runed Copper Belt",
+   "icon": "inv_belt_03",
    "quality": 1,
    "type": 8,
-   "armorType": 3,
-   "icon": "inv_belt_03"
+   "armorType": 3
   },
   {
    "id": 2866,
@@ -194449,10 +194449,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Rough Bronze Cuirass",
+   "icon": "inv_chest_chain_08",
    "quality": 1,
    "type": 5,
-   "armorType": 3,
-   "icon": "inv_chest_chain_08"
+   "armorType": 3
   },
   {
    "id": 3469,
@@ -194507,10 +194507,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Chain Boots",
+   "icon": "inv_boots_01",
    "quality": 1,
    "type": 10,
-   "armorType": 3,
-   "icon": "inv_boots_01"
+   "armorType": 3
   },
   {
    "id": 3480,
@@ -194565,10 +194565,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Rough Bronze Shoulders",
+   "icon": "inv_shoulder_05",
    "quality": 1,
    "type": 3,
-   "armorType": 3,
-   "icon": "inv_shoulder_05"
+   "armorType": 3
   },
   {
    "id": 3719,
@@ -194623,9 +194623,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Hillman's Cloak",
+   "icon": "inv_misc_cape_07",
    "quality": 1,
-   "type": 4,
-   "icon": "inv_misc_cape_07"
+   "type": 4
   },
   {
    "id": 3835,
@@ -194680,10 +194680,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Green Iron Bracers",
+   "icon": "inv_bracer_06",
    "quality": 1,
    "type": 6,
-   "armorType": 3,
-   "icon": "inv_bracer_06"
+   "armorType": 3
   },
   {
    "id": 4237,
@@ -194738,10 +194738,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Handstitched Leather Belt",
+   "icon": "inv_belt_04",
    "quality": 1,
    "type": 8,
-   "armorType": 2,
-   "icon": "inv_belt_04"
+   "armorType": 2
   },
   {
    "id": 4308,
@@ -194796,10 +194796,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Green Linen Bracers",
+   "icon": "inv_bracer_12",
    "quality": 1,
    "type": 6,
-   "armorType": 1,
-   "icon": "inv_bracer_12"
+   "armorType": 1
   },
   {
    "id": 4314,
@@ -194854,10 +194854,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Double-stitched Woolen Shoulders",
+   "icon": "inv_shoulder_06",
    "quality": 1,
    "type": 3,
-   "armorType": 1,
-   "icon": "inv_shoulder_06"
+   "armorType": 1
   },
   {
    "id": 4396,
@@ -194912,9 +194912,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Mechanical Dragonling",
+   "icon": "inv_misc_head_dragon_01",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_misc_head_dragon_01"
+   "type": 12
   },
   {
    "id": 4397,
@@ -194969,9 +194969,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Gnomish Cloaking Device",
+   "icon": "inv_gizmo_01",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_gizmo_01"
+   "type": 12
   },
   {
    "id": 5957,
@@ -195026,10 +195026,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Handstitched Leather Vest",
+   "icon": "inv_chest_wolf",
    "quality": 1,
    "type": 5,
-   "armorType": 2,
-   "icon": "inv_chest_wolf"
+   "armorType": 2
   },
   {
    "id": 6786,
@@ -195084,9 +195084,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Simple Dress",
+   "icon": "inv_shirt_12",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_shirt_12"
+   "type": 5
   },
   {
    "id": 6787,
@@ -195141,10 +195141,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "White Woolen Dress",
+   "icon": "inv_shirt_12",
    "quality": 1,
    "type": 5,
-   "armorType": 1,
-   "icon": "inv_shirt_12"
+   "armorType": 1
   },
   {
    "id": 7026,
@@ -195199,10 +195199,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Linen Belt",
+   "icon": "inv_belt_05",
    "quality": 1,
    "type": 8,
-   "armorType": 1,
-   "icon": "inv_belt_05"
+   "armorType": 1
   },
   {
    "id": 7048,
@@ -195257,10 +195257,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Azure Silk Hood",
+   "icon": "inv_helmet_29",
    "quality": 1,
    "type": 1,
-   "armorType": 1,
-   "icon": "inv_helmet_29"
+   "armorType": 1
   },
   {
    "id": 7058,
@@ -195315,10 +195315,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Crimson Silk Vest",
+   "icon": "inv_shirt_04",
    "quality": 1,
    "type": 5,
-   "armorType": 1,
-   "icon": "inv_shirt_04"
+   "armorType": 1
   },
   {
    "id": 7062,
@@ -195373,10 +195373,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Crimson Silk Pantaloons",
+   "icon": "inv_pants_06",
    "quality": 1,
    "type": 9,
-   "armorType": 1,
-   "icon": "inv_pants_06"
+   "armorType": 1
   },
   {
    "id": 7148,
@@ -195431,9 +195431,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Goblin Jumper Cables",
+   "icon": "inv_misc_enggizmos_10",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_misc_enggizmos_10"
+   "type": 12
   },
   {
    "id": 7166,
@@ -195491,11 +195491,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Dagger",
+   "icon": "inv_weapon_shortblade_14",
    "quality": 1,
    "type": 13,
    "weaponType": 2,
-   "handType": 2,
-   "icon": "inv_weapon_shortblade_14"
+   "handType": 2
   },
   {
    "id": 7276,
@@ -195550,9 +195550,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Handstitched Leather Cloak",
+   "icon": "inv_helmet_48",
    "quality": 1,
-   "type": 4,
-   "icon": "inv_helmet_48"
+   "type": 4
   },
   {
    "id": 7277,
@@ -195607,10 +195607,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Handstitched Leather Bracers",
+   "icon": "inv_bracer_08",
    "quality": 1,
    "type": 6,
-   "armorType": 2,
-   "icon": "inv_bracer_08"
+   "armorType": 2
   },
   {
    "id": 7955,
@@ -195668,11 +195668,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Copper Claymore",
+   "icon": "inv_sword_21",
    "quality": 1,
    "type": 13,
    "weaponType": 9,
-   "handType": 4,
-   "icon": "inv_sword_21"
+   "handType": 4
   },
   {
    "id": 9444,
@@ -195727,11 +195727,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Techbot CPU Shell",
+   "icon": "inv_shield_09",
    "quality": 1,
    "type": 13,
    "weaponType": 7,
-   "handType": 3,
-   "icon": "inv_shield_09"
+   "handType": 3
   },
   {
    "id": 10035,
@@ -195786,10 +195786,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Tuxedo Pants",
+   "icon": "inv_pants_01",
    "quality": 1,
    "type": 9,
-   "armorType": 1,
-   "icon": "inv_pants_01"
+   "armorType": 1
   },
   {
    "id": 10036,
@@ -195844,10 +195844,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Tuxedo Jacket",
+   "icon": "inv_shirt_black_01",
    "quality": 1,
    "type": 5,
-   "armorType": 1,
-   "icon": "inv_shirt_black_01"
+   "armorType": 1
   },
   {
    "id": 10040,
@@ -195902,10 +195902,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "White Wedding Dress",
+   "icon": "inv_chest_cloth_04",
    "quality": 1,
    "type": 5,
-   "armorType": 1,
-   "icon": "inv_chest_cloth_04"
+   "armorType": 1
   },
   {
    "id": 10045,
@@ -195960,10 +195960,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Simple Linen Pants",
+   "icon": "inv_pants_11",
    "quality": 1,
    "type": 9,
-   "armorType": 1,
-   "icon": "inv_pants_11"
+   "armorType": 1
   },
   {
    "id": 10046,
@@ -196018,10 +196018,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Simple Linen Boots",
+   "icon": "inv_boots_05",
    "quality": 1,
    "type": 10,
-   "armorType": 1,
-   "icon": "inv_boots_05"
+   "armorType": 1
   },
   {
    "id": 10047,
@@ -196076,10 +196076,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Simple Kilt",
+   "icon": "inv_pants_11",
    "quality": 1,
    "type": 9,
-   "armorType": 1,
-   "icon": "inv_pants_11"
+   "armorType": 1
   },
   {
    "id": 10053,
@@ -196134,9 +196134,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Simple Black Dress",
+   "icon": "inv_chest_cloth_21",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_21"
+   "type": 5
   },
   {
    "id": 10421,
@@ -196191,10 +196191,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Rough Copper Vest",
+   "icon": "inv_chest_chain",
    "quality": 1,
    "type": 5,
-   "armorType": 3,
-   "icon": "inv_chest_chain"
+   "armorType": 3
   },
   {
    "id": 10576,
@@ -196249,9 +196249,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Mithril Mechanical Dragonling",
+   "icon": "inv_misc_head_dragon_01",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_misc_head_dragon_01"
+   "type": 12
   },
   {
    "id": 10577,
@@ -196306,9 +196306,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Goblin Mortar",
+   "icon": "inv_musket_01",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_musket_01"
+   "type": 12
   },
   {
    "id": 10587,
@@ -196363,9 +196363,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Goblin Bomb Dispenser",
+   "icon": "inv_gizmo_06",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_gizmo_06"
+   "type": 12
   },
   {
    "id": 10645,
@@ -196420,9 +196420,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Gnomish Death Ray",
+   "icon": "inv_gizmo_08",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_gizmo_08"
+   "type": 12
   },
   {
    "id": 10716,
@@ -196477,9 +196477,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Gnomish Shrink Ray",
+   "icon": "inv_gizmo_09",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_gizmo_09"
+   "type": 12
   },
   {
    "id": 10720,
@@ -196534,9 +196534,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Gnomish Net-o-Matic Projector",
+   "icon": "inv_misc_net_01",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_misc_net_01"
+   "type": 12
   },
   {
    "id": 10725,
@@ -196591,9 +196591,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Gnomish Battle Chicken",
+   "icon": "spell_magic_polymorphchicken",
    "quality": 1,
-   "type": 12,
-   "icon": "spell_magic_polymorphchicken"
+   "type": 12
   },
   {
    "id": 10727,
@@ -196648,9 +196648,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Goblin Dragon Gun",
+   "icon": "spell_fire_flamebolt",
    "quality": 1,
-   "type": 12,
-   "icon": "spell_fire_flamebolt"
+   "type": 12
   },
   {
    "id": 18587,
@@ -196705,9 +196705,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Goblin Jumper Cables XL",
+   "icon": "inv_misc_enggizmos_11",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_misc_enggizmos_11"
+   "type": 12
   },
   {
    "id": 18747,
@@ -196762,10 +196762,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Item Properties Test",
+   "icon": "inv_shoulder_02",
    "quality": 3,
    "type": 3,
-   "armorType": 1,
-   "icon": "inv_shoulder_02"
+   "armorType": 1
   },
   {
    "id": 19292,
@@ -196823,11 +196823,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Last Month's Mutton",
+   "icon": "inv_misc_food_18",
    "quality": 1,
    "type": 13,
    "weaponType": 4,
-   "handType": 2,
-   "icon": "inv_misc_food_18"
+   "handType": 2
   },
   {
    "id": 19293,
@@ -196885,11 +196885,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Last Year's Mutton",
+   "icon": "inv_misc_food_18",
    "quality": 1,
    "type": 13,
    "weaponType": 4,
-   "handType": 2,
-   "icon": "inv_misc_food_18"
+   "handType": 2
   },
   {
    "id": 19295,
@@ -196944,11 +196944,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Darkmoon Flower",
+   "icon": "inv_misc_herb_19",
    "quality": 1,
    "type": 13,
    "weaponType": 5,
-   "handType": 3,
-   "icon": "inv_misc_herb_19"
+   "handType": 3
   },
   {
    "id": 19879,
@@ -197006,11 +197006,11 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Alex's Test Beatdown Staff",
+   "icon": "inv_staff_31",
    "quality": 4,
    "type": 13,
    "weaponType": 8,
-   "handType": 4,
-   "icon": "inv_staff_31"
+   "handType": 4
   },
   {
    "id": 20391,
@@ -197065,9 +197065,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Gnome Mask",
+   "icon": "inv_misc_head_gnome_01",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_gnome_01"
+   "type": 1
   },
   {
    "id": 20392,
@@ -197122,9 +197122,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Gnome Mask",
+   "icon": "inv_misc_head_gnome_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_gnome_02"
+   "type": 1
   },
   {
    "id": 20445,
@@ -197179,9 +197179,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Test Defense Ring +120",
+   "icon": "inv_jewelry_ring_26",
    "quality": 3,
-   "type": 11,
-   "icon": "inv_jewelry_ring_26"
+   "type": 11
   },
   {
    "id": 20446,
@@ -197236,9 +197236,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Test Defense Ring +80",
+   "icon": "inv_jewelry_ring_26",
    "quality": 3,
-   "type": 11,
-   "icon": "inv_jewelry_ring_26"
+   "type": 11
   },
   {
    "id": 20561,
@@ -197293,9 +197293,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Dwarf Mask",
+   "icon": "inv_misc_head_dwarf_01",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_dwarf_01"
+   "type": 1
   },
   {
    "id": 20562,
@@ -197350,9 +197350,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Dwarf Mask",
+   "icon": "inv_misc_head_dwarf_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_dwarf_02"
+   "type": 1
   },
   {
    "id": 20563,
@@ -197407,9 +197407,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Nightelf Mask",
+   "icon": "inv_misc_head_elf_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_elf_02"
+   "type": 1
   },
   {
    "id": 20564,
@@ -197464,9 +197464,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Nightelf Mask",
+   "icon": "ability_ambush",
    "quality": 1,
-   "type": 1,
-   "icon": "ability_ambush"
+   "type": 1
   },
   {
    "id": 20565,
@@ -197521,9 +197521,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Human Mask",
+   "icon": "inv_misc_head_human_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_human_02"
+   "type": 1
   },
   {
    "id": 20566,
@@ -197578,9 +197578,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Human Mask",
+   "icon": "inv_misc_head_scourge_01",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_scourge_01"
+   "type": 1
   },
   {
    "id": 20567,
@@ -197635,9 +197635,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Troll Mask",
+   "icon": "inv_misc_head_troll_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_troll_02"
+   "type": 1
   },
   {
    "id": 20568,
@@ -197692,9 +197692,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Troll Mask",
+   "icon": "inv_misc_head_troll_01",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_troll_01"
+   "type": 1
   },
   {
    "id": 20569,
@@ -197749,9 +197749,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Orc Mask",
+   "icon": "inv_misc_head_orc_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_orc_02"
+   "type": 1
   },
   {
    "id": 20570,
@@ -197806,9 +197806,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Orc Mask",
+   "icon": "ability_warrior_warcry",
    "quality": 1,
-   "type": 1,
-   "icon": "ability_warrior_warcry"
+   "type": 1
   },
   {
    "id": 20571,
@@ -197863,9 +197863,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Tauren Mask",
+   "icon": "inv_misc_head_tauren_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_tauren_02"
+   "type": 1
   },
   {
    "id": 20572,
@@ -197920,9 +197920,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Tauren Mask",
+   "icon": "inv_misc_head_tauren_01",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_tauren_01"
+   "type": 1
   },
   {
    "id": 20573,
@@ -197977,9 +197977,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Male Undead Mask",
+   "icon": "inv_misc_head_undead_01",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_undead_01"
+   "type": 1
   },
   {
    "id": 20574,
@@ -198034,9 +198034,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Flimsy Female Undead Mask",
+   "icon": "inv_misc_head_undead_02",
    "quality": 1,
-   "type": 1,
-   "icon": "inv_misc_head_undead_02"
+   "type": 1
   },
   {
    "id": 21154,
@@ -198091,9 +198091,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festival Dress",
+   "icon": "inv_chest_cloth_56",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_56"
+   "type": 5
   },
   {
    "id": 21157,
@@ -198148,9 +198148,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festive Green Dress",
+   "icon": "inv_chest_cloth_57",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_57"
+   "type": 5
   },
   {
    "id": 21538,
@@ -198205,9 +198205,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festive Pink Dress",
+   "icon": "inv_chest_cloth_58",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_58"
+   "type": 5
   },
   {
    "id": 21539,
@@ -198262,9 +198262,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festive Purple Dress",
+   "icon": "inv_chest_cloth_59",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_59"
+   "type": 5
   },
   {
    "id": 21541,
@@ -198319,9 +198319,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festive Black Pant Suit",
+   "icon": "inv_chest_cloth_53",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_53"
+   "type": 5
   },
   {
    "id": 21542,
@@ -198376,9 +198376,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festival Suit",
+   "icon": "inv_chest_cloth_55",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_55"
+   "type": 5
   },
   {
    "id": 21543,
@@ -198433,9 +198433,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festive Teal Pant Suit",
+   "icon": "inv_chest_cloth_54",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_54"
+   "type": 5
   },
   {
    "id": 21544,
@@ -198490,9 +198490,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Festive Blue Pant Suit",
+   "icon": "inv_chest_cloth_52",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_52"
+   "type": 5
   },
   {
    "id": 22276,
@@ -198547,9 +198547,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Lovely Red Dress",
+   "icon": "inv_chest_cloth_24",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_24"
+   "type": 5
   },
   {
    "id": 22277,
@@ -198604,9 +198604,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Red Dinner Suit",
+   "icon": "inv_shirt_red_01",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_shirt_red_01"
+   "type": 5
   },
   {
    "id": 22278,
@@ -198661,9 +198661,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Lovely Blue Dress",
+   "icon": "inv_chest_cloth_23",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_23"
+   "type": 5
   },
   {
    "id": 22279,
@@ -198718,9 +198718,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Lovely Black Dress",
+   "icon": "inv_chest_cloth_50",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_50"
+   "type": 5
   },
   {
    "id": 22280,
@@ -198775,9 +198775,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Lovely Purple Dress",
+   "icon": "inv_chest_cloth_17",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_chest_cloth_17"
+   "type": 5
   },
   {
    "id": 22281,
@@ -198832,9 +198832,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Blue Dinner Suit",
+   "icon": "inv_shirt_blue_01",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_shirt_blue_01"
+   "type": 5
   },
   {
    "id": 22282,
@@ -198889,9 +198889,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Purple Dinner Suit",
+   "icon": "inv_shirt_purple_01",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_shirt_purple_01"
+   "type": 5
   },
   {
    "id": 22742,
@@ -198946,9 +198946,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bloodsail Shirt",
+   "icon": "inv_shirt_08",
    "quality": 1,
-   "type": 5,
-   "icon": "inv_shirt_08"
+   "type": 5
   },
   {
    "id": 22743,
@@ -199003,9 +199003,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bloodsail Sash",
+   "icon": "inv_misc_bandana_03",
    "quality": 1,
-   "type": 8,
-   "icon": "inv_misc_bandana_03"
+   "type": 8
   },
   {
    "id": 22744,
@@ -199060,9 +199060,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bloodsail Boots",
+   "icon": "inv_boots_05",
    "quality": 1,
-   "type": 10,
-   "icon": "inv_boots_05"
+   "type": 10
   },
   {
    "id": 22745,
@@ -199117,9 +199117,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Bloodsail Pants",
+   "icon": "inv_pants_cloth_02",
    "quality": 1,
-   "type": 9,
-   "icon": "inv_pants_cloth_02"
+   "type": 9
   },
   {
    "id": 23323,
@@ -199174,10 +199174,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Crown of the Fire Festival",
+   "icon": "inv_helmet_08",
    "quality": 1,
    "type": 1,
-   "armorType": 1,
-   "icon": "inv_helmet_08"
+   "armorType": 1
   },
   {
    "id": 23324,
@@ -199232,10 +199232,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Mantle of the Fire Festival",
+   "icon": "inv_shoulder_23",
    "quality": 1,
    "type": 3,
-   "armorType": 1,
-   "icon": "inv_shoulder_23"
+   "armorType": 1
   },
   {
    "id": 24358,
@@ -199290,9 +199290,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "QATest +1000 Spell Dmg Ring",
+   "icon": "inv_jewelry_ring_38",
    "quality": 4,
-   "type": 11,
-   "icon": "inv_jewelry_ring_38"
+   "type": 11
   },
   {
    "id": 26209,
@@ -199347,9 +199347,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Berserker's Blood Sample Test",
+   "icon": "inv_potion_49",
    "quality": 4,
-   "type": 12,
-   "icon": "inv_potion_49"
+   "type": 12
   },
   {
    "id": 34003,
@@ -199404,9 +199404,9 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Crater Survival Kit",
+   "icon": "inv_misc_bag_09_red",
    "quality": 1,
-   "type": 12,
-   "icon": "inv_misc_bag_09_red"
+   "type": 12
   },
   {
    "id": 34006,
@@ -199461,10 +199461,10 @@
    "phase": 1,
    "ilvl": 66,
    "name": "Azsharite Boots of Travel",
+   "icon": "ability_rogue_sprint",
    "quality": 1,
    "type": 10,
-   "armorType": 1,
-   "icon": "ability_rogue_sprint"
+   "armorType": 1
   }
  ]
 }
