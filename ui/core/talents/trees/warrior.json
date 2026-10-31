@@ -1,7 +1,7 @@
 [
   {
     "name": "Arms",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/161.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_161.jpg",
     "talents": [
       {
         "fieldName": "improvedHeroicStrike",
@@ -387,7 +387,7 @@
   },
   {
     "name": "Fury",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/164.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_164.jpg",
     "talents": [
       {
         "fieldName": "combatEndurance",
@@ -771,7 +771,7 @@
   },
   {
     "name": "Protection",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/163.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_163.jpg",
     "talents": [
       {
         "fieldName": "improvedBloodrage",

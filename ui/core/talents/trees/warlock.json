@@ -1,7 +1,7 @@
 [
   {
     "name": "Affliction",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/302.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_302.jpg",
     "talents": [
       {
         "fieldName": "felConcentration",
@@ -381,7 +381,7 @@
   },
   {
     "name": "Demonology",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/303.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_303.jpg",
     "talents": [
       {
         "fieldName": "improvedImp",
@@ -755,7 +755,7 @@
   },
   {
     "name": "Destruction",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/301.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_301.jpg",
     "talents": [
       {
         "fieldName": "destructiveReach",

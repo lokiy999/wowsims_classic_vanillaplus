@@ -58,7 +58,7 @@ log "data $SHA: building the sim"
 	python3 docs/parse_vplus.py && python3 docs/gen_include.py && python3 docs/parse_vplus.py &&
 		python3 docs/gen_phases.py && python3 docs/gen_sources.py &&
 		python3 tools/gen_db_spells.py && go run ./tools/database/gen_db -outDir=./assets -gen=db &&
-		python3 tools/gen_db_icons.py && python3 tools/gen_db_npcs.py
+		python3 tools/import_icons.py && python3 tools/gen_db_icons.py && python3 tools/gen_db_npcs.py
 } >/tmp/sim-sync-pipeline.log 2>&1 || fail "pipeline, see /tmp/sim-sync-pipeline.log"
 
 SUMMARY=$(python3 tools/itemdb/sim_check.py)

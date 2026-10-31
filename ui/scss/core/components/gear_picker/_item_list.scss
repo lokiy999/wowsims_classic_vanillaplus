@@ -154,6 +154,16 @@
 }
 
 // All of these icon widths are the original image sizes. They're too small that scaling them up looks horrible.
+// The marks are the game client's (db.lokiy.dev/icons/ui/, not all square): shrunk into the box, never stretched.
+.item-source-icon-drop,
+.item-source-icon-vendor,
+.item-source-icon-profession,
+.item-source-icon-quest,
+.item-source-icon-alliance,
+.item-source-icon-horde {
+	object-fit: contain;
+}
+
 .item-source-icon-drop {
 	// Original image is 12 x 16 but for nice alignment add 2px padding for a total width of 16px
 	width: 16px;

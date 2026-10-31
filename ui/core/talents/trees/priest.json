@@ -1,7 +1,7 @@
 [
   {
     "name": "Discipline",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/201.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_201.jpg",
     "talents": [
       {
         "fieldName": "silentResolve",
@@ -369,7 +369,7 @@
   },
   {
     "name": "Holy",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/202.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_202.jpg",
     "talents": [
       {
         "fieldName": "holyFocus",
@@ -745,7 +745,7 @@
   },
   {
     "name": "Shadow",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/203.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_203.jpg",
     "talents": [
       {
         "fieldName": "shadowAffinity",

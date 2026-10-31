@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """assets/database/db_icons.json = sorted list of the icon names db.lokiy.dev has (/icons/<name>.jpg 56 px and
-<name>_s.jpg 18 px: every icon of the game client plus the server-made ones). The sim UI (ui/core/db_icons.ts) shows
-those from db.lokiy.dev and only the others (later-expansion / Season of Discovery icons) from Wowhead's CDN.
-Run by tools/itemdb/sync_sim.sh with the item pipeline. ICONS_DIR overrides the folder.
+<name>_s.jpg 18 px: every icon of the game client, the server-made ones and the ones tools/import_icons.py added).
+The sim UI (ui/core/db_icons.ts) builds the list in and shows every listed icon from db.lokiy.dev.
+Run by tools/itemdb/sync_sim.sh with the item pipeline, after import_icons.py. ICONS_DIR overrides the folder.
 
 Usage (from the repo root):
   python3 tools/gen_db_icons.py

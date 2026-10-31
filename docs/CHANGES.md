@@ -5631,3 +5631,27 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Effect on the sim's data: 10 items changed (the vendors and crafts mostly matched Wowhead already). They are now
   backed by our own data.
 - Backups `*.bak-2026-10-30k` (gen_site.py, item_sources.py).
+
+## Part HQ — every sim icon from db.lokiy.dev (2026-10-31)
+
+- Lokiy: icons should all be in the database and come from there automatically. Before, the Hunter page still
+  loaded 19 images from Wowhead (after opening every tab).
+- New on db.lokiy.dev (`/icons/`, kept in `CSV's/icons/`, copied by `gen_site.py`):
+  - From the game client (ItemCacheSync `extract_ui_images.py`): `class_<class>.jpg` (9 class icons, from the
+    character-create class sheet), `ui/talent_<tab id>.jpg` (27 talent tree backgrounds, from TalentFrame) and
+    `ui/boss|quest|alliance|horde|vendor|profession.png` (item source marks).
+  - `tools/import_icons.py` (new): every icon name the sim's DB (`assets/database/*db.json`) or UI code uses that
+    the client doesn't have (later-expansion and Season of Discovery icons) is copied once from Wowhead's icon CDN.
+    60 now. Names the CDN lacks go in `CSV's/icons/missing.json` (none). `sync_sim.sh` runs it before
+    `gen_db_icons.py`, so a new name is added automatically.
+- Sim UI:
+  - `ui/core/db_icons.ts`: the name list (`db_icons.json`, now 4,176) is built into the page instead of loaded with
+    the database. Icons drawn before the database loaded (the talent tree icons in the header) used Wowhead before.
+    Wowhead is used only for a name not on the list (an item or spell looked up on Wowhead while the page runs).
+  - Hard-coded Wowhead URLs (class / spec icons in `utils.ts` and `ui/index.html`, pet and resource icons in
+    `action_id.ts`, talent backgrounds in `ui/core/talents/trees/*.json` + `tools/dbc_to_talents.py`, the source
+    marks in `item_list.tsx`) and the vendor / profession marks from wowpedia point at db.lokiy.dev.
+  - `_item_list.scss`: the marks keep their shape (`object-fit: contain`).
+- Checked live: Hunter page with every tab and the item picker open, then the start page. 262 images from
+  db.lokiy.dev, none from Wowhead, none broken. Wowhead's tooltip script (`tooltips.js`) stays, for tooltips of
+  things db.lokiy.dev doesn't have.

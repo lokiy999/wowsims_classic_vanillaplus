@@ -1,23 +1,15 @@
-// Icons come from db.lokiy.dev (extracted from the game client: <name>.jpg 56 px, <name>_s.jpg 18 px); Wowhead's CDN
-// only for names it doesn't have (later-expansion / Season of Discovery icons). The name list is
-// assets/database/db_icons.json (tools/gen_db_icons.py), loaded together with the database. Until it is loaded, icons
-// come from Wowhead.
+// Icons come from db.lokiy.dev (<name>.jpg 56 px, <name>_s.jpg 18 px): the game client's icons plus every other icon
+// name the sim's DB and UI use (tools/import_icons.py adds those to its set). The name list
+// (assets/database/db_icons.json, tools/gen_db_icons.py) is built into the page, so it's known from the first icon on.
+// Only a name it doesn't list (an item or spell the DB doesn't have, looked up on Wowhead while the page runs) still
+// shows Wowhead's icon.
+import DB_ICONS from '../../assets/database/db_icons.json';
+
 const DB_ICON_URL = 'https://db.lokiy.dev/icons/';
-const DB_ICON_LIST = '/classic/assets/database/db_icons.json';
-
-let dbIcons: Set<string> | null = null;
-
-export async function loadDbIcons(): Promise<void> {
-	try {
-		const response = await fetch(DB_ICON_LIST);
-		if (response.ok) dbIcons = new Set(await response.json());
-	} catch {
-		// keep the Wowhead icons
-	}
-}
+const dbIcons = new Set<string>(DB_ICONS);
 
 export function iconUrl(name: string, size: 'small' | 'medium' | 'large' = 'large'): string {
 	const icon = name.toLowerCase().replace(/\.(jpg|png)$/, '');
-	if (dbIcons?.has(icon)) return `${DB_ICON_URL}${icon}${size === 'small' ? '_s' : ''}.jpg`;
+	if (dbIcons.has(icon)) return `${DB_ICON_URL}${icon}${size === 'small' ? '_s' : ''}.jpg`;
 	return `https://wow.zamimg.com/images/wow/icons/${size}/${icon}.jpg`;
 }

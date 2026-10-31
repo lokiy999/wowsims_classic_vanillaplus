@@ -1,7 +1,7 @@
 [
   {
     "name": "Elemental",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/261.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_261.jpg",
     "talents": [
       {
         "fieldName": "stormReach",
@@ -393,7 +393,7 @@
   },
   {
     "name": "Enhancement",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/263.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_263.jpg",
     "talents": [
       {
         "fieldName": "elementalWeapons",
@@ -779,7 +779,7 @@
   },
   {
     "name": "Restoration",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/262.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_262.jpg",
     "talents": [
       {
         "fieldName": "naturesGuidance",

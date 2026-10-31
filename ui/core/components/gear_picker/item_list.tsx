@@ -683,7 +683,7 @@ export default class ItemList<T extends ItemListType> {
 			return makeAnchor(
 				ActionId.makeItemUrl(item.id),
 				<div className="d-flex">
-					<img src="https://static.wikia.nocookie.net/wowpedia/images/1/1f/Pointer_buy_on_32x32.png" width="16" height="16" />
+					<img src="https://db.lokiy.dev/icons/ui/vendor.png" width="16" height="16" />
 					<div className="d-flex flex-column">
 						{factions.map(faction => (
 							<div className="d-flex">
@@ -732,26 +732,26 @@ export default class ItemList<T extends ItemListType> {
 	}
 
 	private getDropSourceIcon(): Element {
-		return <img src="https://wow.zamimg.com/images/icons/boss.gif" className="item-source-icon-drop me-1" />;
+		return <img src="https://db.lokiy.dev/icons/ui/boss.png" className="item-source-icon-drop me-1" />;
 	}
 
 	private getVendorSourceIcon(): Element {
-		return <img src="https://static.wikia.nocookie.net/wowpedia/images/1/1f/Pointer_buy_on_32x32.png" className="item-source-icon-vendor me-1" />;
+		return <img src="https://db.lokiy.dev/icons/ui/vendor.png" className="item-source-icon-vendor me-1" />;
 	}
 
 	private getProfessionSourceIcon(): Element {
-		return <img src="https://static.wikia.nocookie.net/wowpedia/images/6/63/Pointer_repair_off_32x32.png" className="item-source-icon-profession me-1" />;
+		return <img src="https://db.lokiy.dev/icons/ui/profession.png" className="item-source-icon-profession me-1" />;
 	}
 
 	private getQuestSourceIcon(): Element {
-		return <img src="https://wow.zamimg.com/images/wow/icons/tiny/quest-start.gif" className="item-source-icon-quest" />;
+		return <img src="https://db.lokiy.dev/icons/ui/quest.png" className="item-source-icon-quest" />;
 	}
 
 	private getAllianceSourceIcon(): Element {
-		return <img src="https://wow.zamimg.com/images/icons/alliance.png" className="item-source-icon-alliance" />;
+		return <img src="https://db.lokiy.dev/icons/ui/alliance.png" className="item-source-icon-alliance" />;
 	}
 
 	private getHordeSourceIcon(): Element {
-		return <img src="https://wow.zamimg.com/images/icons/horde.png" className="item-source-icon-horde" />;
+		return <img src="https://db.lokiy.dev/icons/ui/horde.png" className="item-source-icon-horde" />;
 	}
 }

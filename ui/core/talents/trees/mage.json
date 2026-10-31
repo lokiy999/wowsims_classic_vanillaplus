@@ -1,7 +1,7 @@
 [
   {
     "name": "Arcane",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/81.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_81.jpg",
     "talents": [
       {
         "fieldName": "wandSpecialization",
@@ -395,7 +395,7 @@
   },
   {
     "name": "Fire",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/41.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_41.jpg",
     "talents": [
       {
         "fieldName": "fireWarding",
@@ -779,7 +779,7 @@
   },
   {
     "name": "Frost",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/61.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_61.jpg",
     "talents": [
       {
         "fieldName": "frostWarding",

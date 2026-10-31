@@ -1,7 +1,7 @@
 [
   {
     "name": "Holy",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/382.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_382.jpg",
     "talents": [
       {
         "fieldName": "improvedSealOfRighteousness",
@@ -385,7 +385,7 @@
   },
   {
     "name": "Protection",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/383.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_383.jpg",
     "talents": [
       {
         "fieldName": "improvedHammerOfJustice",
@@ -765,7 +765,7 @@
   },
   {
     "name": "Retribution",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/381.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_381.jpg",
     "talents": [
       {
         "fieldName": "improvedJudgement",

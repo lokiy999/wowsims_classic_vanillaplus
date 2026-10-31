@@ -1,7 +1,7 @@
 [
   {
     "name": "Balance",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/283.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_283.jpg",
     "talents": [
       {
         "fieldName": "starlightWrath",
@@ -361,7 +361,7 @@
   },
   {
     "name": "Feral Combat",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/281.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_281.jpg",
     "talents": [
       {
         "fieldName": "ferocity",
@@ -725,7 +725,7 @@
   },
   {
     "name": "Restoration",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/282.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_282.jpg",
     "talents": [
       {
         "fieldName": "accuracy",

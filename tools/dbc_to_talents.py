@@ -36,7 +36,8 @@ TALENT_COL_PREREQ = 13
 TAB_COL_ID, TAB_COL_NAME, TAB_COL_CLASSMASK, TAB_COL_ORDER = 0, 1, 12, 13
 SPELL_COL_ID, SPELL_COL_NAME = 0, 120
 
-BACKGROUND_URL = "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/{tab}.jpg"
+# the client's talent backgrounds on db.lokiy.dev (ItemCacheSync extract_ui_images.py)
+BACKGROUND_URL = "https://db.lokiy.dev/icons/ui/talent_{tab}.jpg"
 
 
 def load_rows(path):

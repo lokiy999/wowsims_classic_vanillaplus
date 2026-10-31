@@ -1,7 +1,7 @@
 [
   {
     "name": "Assassination",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/182.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_182.jpg",
     "talents": [
       {
         "fieldName": "improvedEviscerate",
@@ -377,7 +377,7 @@
   },
   {
     "name": "Combat",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/181.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_181.jpg",
     "talents": [
       {
         "fieldName": "improvedGouge",
@@ -759,7 +759,7 @@
   },
   {
     "name": "Subtlety",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/183.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_183.jpg",
     "talents": [
       {
         "fieldName": "improvedSap",

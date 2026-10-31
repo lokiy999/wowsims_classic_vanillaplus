@@ -1,7 +1,7 @@
 [
   {
     "name": "Beast Mastery",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/361.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_361.jpg",
     "talents": [
       {
         "fieldName": "improvedAspectOfTheMonkey",
@@ -379,7 +379,7 @@
   },
   {
     "name": "Marksmanship",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/363.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_363.jpg",
     "talents": [
       {
         "fieldName": "improvedHuntersMark",
@@ -759,7 +759,7 @@
   },
   {
     "name": "Survival",
-    "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/362.jpg",
+    "backgroundUrl": "https://db.lokiy.dev/icons/ui/talent_362.jpg",
     "talents": [
       {
         "fieldName": "deflection",
