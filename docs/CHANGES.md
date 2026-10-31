@@ -5907,3 +5907,33 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   order (1 MC: Flarecore Wraps, ilvl 64 with stats worth about 100; 15 BWL: the BWL items at 78-83 sit above the
   Scarlet Monastery raid, whose items stop at 75).
 - Backups `gen_site.py.bak-2026-10-31f`, `style.css.bak-2026-10-31b`.
+
+## Part IA — item levels: Scarlet Monastery raid recalculated, model fixes (weapons, shields) (2026-10-31)
+
+- Lokiy: keep Blackwing Lair classic-like and bump the Scarlet Monastery raid ("I guessed SM last time, so you can
+  adjust it based on calculations").
+- `ilvl_model.py`:
+  - Weapons: the 59 weapons whose Classic Era DPS is above 1.12's (Blizzard's later caster weapon buffs) are fitted
+    with their 1.12 tooltip DPS (`dps_1_12` in the fit). Caster / healer weapons get their own budget line
+    (`budget_c`) and take the higher of the DPS and stats item level.
+  - Shields: the shield's own "N Block" line was read as block value. It is now a base like armor (`block`: linear
+    per quality); only block above it counts, at the block value weight.
+  - `predict()`: bonus armor / block depend on the item level, and the two-step guess diverged on shields (base
+    shield armor rises about 35 a level, so a shield with weak stats priced from a low guess got all its armor as
+    bonus: Aegis of the Scarlet Commander 295). It now bisects for the item level whose budget its value meets
+    (st(x) - x only falls as x rises). `ilvl.js` does the same.
+  - Refit: 4,642 classic items. Held-out median / 90% miss: green 0.9 / 2.7, blue 1.5 / 6.1, epic 1.8 / 4.8;
+    shields green 1.0 / 3.5, blue 1.6 / 5.3 (was 59.6), epic 2.7 / 4.4.
+  - Report: `CALC_TIERS` (the Scarlet Monastery raid) gets a "recalculated" item level for every item: model value
+    + the tier before's offset (BWL's median real - model, +2.3), kept between BWL's 10th percentile and its 90th
+    + 5 ("model far off" where held). Items with an effect take their comparable items' recalculated level (2+
+    comparables), never below their own model value. Classic tiers are anchors and never flagged for sitting
+    above a later tier. Only item classes 2 / 4 (recipes carried the made item's stats). The order check uses
+    10th / 90th percentiles.
+- `ilvl_page.py`: tier table "Recalculated median (10-90%)" column; the shield block field in the calculator; the
+  "recalculated" and "model far off" flags in the report filter.
+- Result: Scarlet Monastery raid recalculated median 75 (10-90%: 70-78; real 73) over BWL's 73; 29 items
+  recalculated, none held at the edge. Shields: Aegis of the Scarlet Commander 71, Sunshield 73, Aegis of Highborn
+  Glory 71, Bullseye Shield 73, Bulwark of the Scarlet General 67.
+- `ilvl_model.py`, `ilvl_page.py` are LF now (Part HZ committed them CRLF).
+- Backups `ilvl_model.py.bak-2026-10-31c`, `ilvl_fit.json.bak-2026-10-31c`.

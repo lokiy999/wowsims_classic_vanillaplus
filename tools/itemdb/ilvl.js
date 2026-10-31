@@ -1,4 +1,4 @@
-// db.lokiy.dev/ilvl (sim repo Part HZ): the item level calculator and the report table, from /api/ilvl.json
+// db.lokiy.dev/ilvl (sim repo Part HY): the item level calculator and the report table, from /api/ilvl.json
 // (ilvl_page.py). The calculator repeats ilvl_model.py's Model.predict() with the saved fit.
 (() => {
 	const $ = id => document.getElementById(id);
@@ -19,9 +19,10 @@
 
 	// ---- the model (ilvl_model.py Model)
 	const armorKey = (atype, slot, q) => `${slot === 'Back' ? 'Cloak' : atype}|${slot}|${q}`;
-	function value(r, barmor) {
+	function value(r, barmor, bblock) {
 		const p = D.fit.params;
 		const parts = r.stats.map(([k, n]) => n * p['w_' + k]);
+		if (bblock > 0) parts.push(bblock * p.w_bv);
 		const sch = r.schools.slice().sort((a, b) => b - a);
 		if (sch.length) parts.push(sch[0] * p.w_school + sch.slice(1).reduce((s, x) => s + x * p.w_school * p.f_school2, 0));
 		if (barmor > 0) parts.push(barmor * p.w_barmor);
@@ -34,19 +35,30 @@
 		const base = ab[0] * ilvl + ab[1];
 		return r.armor - base > 0.15 * base ? r.armor - base : 0;
 	}
-	// a caster / healer weapon: its own slot modifier, and the higher of the DPS and the stats item level
-	// (ilvl_model.py caster / slot_mod)
+	// a shield's own block value is base like armor: only what is above the fitted base counts (ilvl_model.py)
+	function bonusBlock(r, ilvl) {
+		const ab = r.sblock && D.fit.block && D.fit.block[r.q];
+		if (!ab) return 0;
+		const base = ab[0] * ilvl + ab[1];
+		return r.sblock - base > 0.15 * base ? r.sblock - base : 0;
+	}
+	// a caster / healer weapon: its own slot modifier, and the higher of the DPS and the stats item level (in 1.12
+	// it spends its budget on spell power or on DPS; ilvl_model.py caster / slot_mod)
 	const caster = r => (r.group === 'W1' || r.group === 'W2') &&
 		(r.schools.length > 0 || r.stats.some(([k]) => ['heal', 'sd', 'scrit', 'shit', 'spen'].includes(k)));
 	function predict(r) {
-		const [a, b] = D.fit.budget[r.q];
+		const [a, b] = (caster(r) && D.fit.budget_c && D.fit.budget_c[r.q]) || D.fit.budget[r.q];
 		const mod = D.fit.params['m_' + r.group + (caster(r) ? 'C' : '')];
-		let st = null, guess = 60;
+		let st = null;
 		if (r.stats.length || r.schools.length) {
-			for (let i = 0; i < 2; i++) {
-				st = (value(r, bonusArmor(r, guess)) / mod - b) / a;
-				guess = st;
+			// bonus armor / block depend on the ilvl: bisect for the level whose budget the value meets (ilvl_model.py)
+			const stAt = x => (value(r, bonusArmor(r, x), bonusBlock(r, x)) / mod - b) / a;
+			let lo = -50, hi = 250;
+			for (let i = 0; i < 40; i++) {
+				const mid = (lo + hi) / 2;
+				if (stAt(mid) > mid) lo = mid; else hi = mid;
 			}
+			st = (lo + hi) / 2;
 		}
 		const ab = D.fit.dps[`${r.group}|${r.q}`];
 		const dp = ab && r.dps && ab[0] ? (r.dps - ab[1]) / ab[0] : null;
@@ -68,7 +80,7 @@
 		const opt = f.slot.selectedOptions[0];
 		const q = +f.q.value;
 		const r = { slot: opt.value, group: opt.dataset.g, atype: f.atype.value || null, q, armor: +f.armor.value || 0,
-			dps: +f.dps.value || 0, set: f.set.checked, stats: [], schools: [] };
+			dps: +f.dps.value || 0, sblock: +f.sblock.value || 0, set: f.set.checked, stats: [], schools: [] };
 		if (r.slot === 'Wand') r.slot = 'Ranged';
 		for (const inp of $('stat-inputs').querySelectorAll('input')) {
 			const n = +inp.value;

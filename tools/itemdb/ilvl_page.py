@@ -1,4 +1,4 @@
-"""db.lokiy.dev/ilvl: the item level model's calculator and the report on Vanilla+ items (sim repo Part HZ).
+"""db.lokiy.dev/ilvl: the item level model's calculator and the report on Vanilla+ items (sim repo Part HY).
 
 /ilvl.html (calculator + report; ilvl.js does both in the browser) and /api/ilvl.json: {"fit": the saved fit
 (ilvl_fit.json: weights, slot modifiers, budget lines, base armor, DPS lines, held-out misses, data counts), "tiers":
@@ -30,7 +30,9 @@ def write(out, page, items, status, instances):
     tiers = "".join(f'<tr><td>{n + 1}. {esc(t["tier"].replace("|", " / "))}</td><td class="rate">{t["n"]}</td>'
                     f'<td class="rate">{t["median"]}</td><td class="rate">{t["p10"]}-{t["p90"]}</td>'
                     f'<td class="rate">{sum(1 for r in rows if r["tier"] == n and "suggest" in r)}</td>'
-                    f'<td class="muted small">{"its median is below the tier before&#39;s: the tier breaks the order" if t.get("below_prev") else ""}</td></tr>'
+                    + (f'<td class="rate"><b>{t["suggested_median"]}</b> ({t["suggested_p10"]}-{t["suggested_p90"]}; '
+                       f'{t["offset"]:+.1f} over the classic budget)</td></tr>' if "suggested_median" in t
+                       else f'<td class="muted small">{"its median is below the tier before&#39;s" if t.get("below_prev") else ""}</td></tr>')
                     for n, t in enumerate(tstat))
     body = f"""
 <section class="intro"><h1>Item level calculator</h1>
@@ -49,14 +51,16 @@ changed by this page.</p></section>
     <option value="4" selected>Epic</option></select></label>
   <label>Armor<input name="armor" type="number" min="0"></label>
   <label>Weapon DPS<input name="dps" type="number" min="0" step="0.1"></label>
+  <label>Shield block<input name="sblock" type="number" min="0" title="The shield's own &quot;N Block&quot; line"></label>
   <label class="chk"><input name="set" type="checkbox"> Set piece</label>
   <label class="chk"><input name="effect" type="checkbox"> Has a Use / proc effect</label>
   <fieldset class="stats-in"><legend>Stats (Equip bonuses as the tooltip shows them)</legend><div id="stat-inputs"></div></fieldset>
 </form>
 <div id="calc-out" class="calc-out"></div>
 <p class="muted small">Stat value = (&Sigma; (amount &times; weight)<sup>1.5</sup>)<sup>2/3</sup> &divide; slot modifier, read
-off a straight budget line per quality; armor above the normal armor for the slot counts as bonus armor; weapons also
-get an item level from their DPS (70 / 30 with the stats). Use / proc effects aren't priced: with one, the model item
+off a straight budget line per quality; armor above the normal armor for the slot counts as bonus armor, and a shield's
+block above the normal block as block value; weapons also get an item level from their DPS (70 / 30 with the stats; a
+caster / healer weapon takes the higher of the two, with its own budget line). Use / proc effects aren't priced: with one, the model item
 level is a lower bound.</p></section>
 
 <section class="card"><h2>How well it fits</h2>
@@ -67,27 +71,31 @@ predicts the fifth. Misses in item levels.</p>
 
 <section class="card"><h2>Raid tiers</h2>
 <p class="muted">Progression order (Lokiy): item levels should go up from tier to tier, outliers allowed. Real item
-levels of each raid's blue / epic level-60 items. An item Vanilla+ changed or added that is below the tier before or above
-the tier after is flagged "breaks the order" and gets a suggestion: the item level of comparable items in the same
-raid (same slot group, quality and role, similar stat value), a few levels higher only where its stats need it.
-"Outliers allowed": only items below most of the tier before (its 10th percentile) or above most of the tier after (its
-90th) are flagged; a tier whose median is below the tier before is marked as a whole instead.</p>
+levels of each raid's blue / epic level-60 items. Zul'Gurub, Molten Core / Onyxia and Blackwing Lair are classic-like
+and keep their item levels. The Scarlet Monastery raid's item levels were set by hand, so every item there gets a
+<b>recalculated</b> item level from its stats, priced like Blackwing Lair's items (the tier before: the median of its
+real minus model item levels is added to the model value), kept between Blackwing Lair's 10th percentile and its 90th
++ 5 ("model far off" where the stats would give more or less); an item with an effect the model can't price takes its
+comparable items' value. In the classic-like raids, an item Vanilla+ changed or added that is below most of the tier
+before (its 10th percentile) is flagged "breaks the order" and gets a suggestion: the item level of comparable items in
+the same raid (same slot group, quality and role, similar stat value), a few levels higher only where its stats need it.</p>
 <table class="obs-table"><thead><tr><th>Tier</th><th>Items</th><th>Median ilvl</th><th>10-90%</th><th>Suggestions</th>
-<th></th></tr></thead><tbody>{tiers}</tbody></table></section>
+<th>Recalculated median (10-90%)</th></tr></thead><tbody>{tiers}</tbody></table></section>
 
 <section class="card"><h2>Vanilla+ changed and new items</h2>
 <form id="rep-filters" class="filters" autocomplete="off">
   <label>Raid<select name="tier"><option value="">Any</option>{''.join(f'<option value="{n}">{esc(t.replace("|", " / "))}</option>' for n, t in enumerate(TIERS))}<option value="none">Not in these raids</option></select></label>
   <label>Quality<select name="q"><option value="">Any</option><option value="2">Green</option><option value="3">Blue</option><option value="4">Epic</option></select></label>
   <label>Slot group<select name="group"><option value="">Any</option>{''.join(f'<option value="{k}">{esc(v)}</option>' for k, v in GROUP_LABEL.items())}</select></label>
-  <label>Flag<select name="flag"><option value="">Any</option><option>breaks the order</option><option>over budget</option>
+  <label>Flag<select name="flag"><option value="">Any</option><option>recalculated</option><option>model far off</option><option>breaks the order</option><option>over budget</option>
     <option>under budget</option><option>can't price</option></select></label>
   <label>Name<input name="name" type="search"></label>
 </form>
 <p class="muted small" id="rep-count"></p>
 <div class="tbl"><table class="obs-table" id="rep"></table></div>
 <p class="muted small">Model = the item level its stats are worth (over / under budget: more than {BUDGET_FLAG} levels from
-the real one). Suggested = only for items that break the tier order, with the comparable items it is based on.</p></section>
+the real one). Suggested = the recalculated item level (Scarlet Monastery raid), or for items that break the tier order,
+with the comparable items it is based on.</p></section>
 <script src="/ilvl.js" defer></script>"""
     with open(os.path.join(out, "ilvl.html"), "w", encoding="utf-8") as f:
         f.write(page("Item level calculator", body, path="/ilvl",
