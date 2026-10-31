@@ -284,3 +284,8 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 #results .loot li > .item { flex-shrink: 0; max-width: 100%; }
 /* an NPC's subname under its name, as in the game (Part HX) */
 .npc-sub { margin: -4px 0 6px; color: #ffd100; }
+/* /ilvl calculator (Part HY) */
+.calc .stats-in { grid-column: 1 / -1; }
+.calc .stats-in > div { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px 12px; }
+.calc .chk { flex-direction: row; align-items: center; gap: 6px; }
+.calc-out .big { font-size: 1.3rem; margin: 8px 0 4px; }

@@ -5863,3 +5863,47 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   item tests that use these items were updated (Sanctified Orb, Hazza'rah's Charm of Destruction, and the ZG sets
   Augur's Regalia, Demoniac's Threads, Madcap's Outfit and Vindicator's Battlegear, which contain the charms).
   Hunter, Enhancement Shaman and DPS Warrior tests failed before this change already and are left alone.
+
+## Part HY — item level calculator: db.lokiy.dev/ilvl (2026-10-31)
+
+- Lokiy (via the hub): an item level calculator built on classic items, applied to Vanilla+'s changed and custom
+  items, with suggestions that respect the raid order ZG -> MC / Onyxia -> BWL -> Scarlet Monastery raid.
+- `tools/itemdb/ilvl_model.py` (new). `--fit` fits the model and writes `ilvl_fit.json` (committed); gen_site.py only
+  applies the saved fit.
+  - Training data: 4,723 classic items (quality 2-4, required level 10+, with stats or weapon damage, no test
+    items). All take Blizzard's classic item data (`assets/db_inputs/wago_db2_items.csv`, Classic Era): item level,
+    slot, required level, primary stats, armor, resistances, weapon damage / speed, set. Wowhead's classic tooltips
+    supply what that file lacks: the Equip lines (spell damage, crit, mp5, ...), Use / proc effects and the armor
+    type. No item had to come from Wowhead alone. The Era file differs from 1.12 on some items (armor on 585, DPS on
+    70: Blizzard's later caster weapon buffs, e.g. Benediction).
+  - Model:
+    - stat value = (sum of (amount x weight) ^ 1.5) ^ (2/3) / slot modifier, read off a straight budget line per
+      quality (green 0.52 x ilvl - 4.3 ...).
+    - Bonus armor: armor above a fitted base per armor type / slot / quality.
+    - Shields: block value as a stat, their own modifier. "All Resistances" counts as the five resistances.
+    - Set pieces: a factor. A second spell school counts at a fraction.
+    - Weapons: an item level from DPS (linear per weapon group and quality), 70 / 30 with the stats. Caster / healer
+      weapons have their own slot modifier and take the higher of the two, since they spend their budget either on
+      DPS or on spell power.
+    - Use / proc effects are flagged "can't price": the model value is a lower bound.
+  - 5-fold held-out check (classic items without effects; median / 90% miss in item levels): green 1.0 / 3.1,
+    blue 1.5 / 6.1, epic 1.6 / 4.4. Weak spots: green / blue shields (3.8 / 18.9, 5.7 / 9.7) and some epic
+    two-handers (1.3 / 25.5).
+  - `report()`: every Vanilla+ changed (search status 2) or new (3) weapon / armor piece (2,649):
+    - Fields: real ilvl, model ilvl, flags. "over / under budget" = more than 5 levels from the model; "can't
+      price" = has an effect.
+    - Raid tiers: from the AtlasLoot tables' instances (`TIERS`, editable), with each tier's median and 10-90% of
+      its level-60 blue / epic items.
+    - "Breaks the order": below the tier before's 10th percentile, or above the tier after's 90th (outliers
+      allowed). A next tier whose median is below this one marks that tier instead.
+    - Suggestions (Lokiy's rule): the median item level of comparable items in the same raid (slot group, quality,
+      role from the stats, stat value within 20%), up to 4 levels higher only where its stats need it, kept
+      inside the order. The comparison items are listed.
+- `tools/itemdb/ilvl_page.py` (new) writes /ilvl.html (calculator, fit table, tiers, report) and `api/ilvl.json`
+  ({fit, tiers, items}). `ilvl.js` (new) runs the calculator (the same model with the saved fit) and the report
+  filters (raid, quality, slot group, flag, name). "Item levels" is in the Search menu. Model and suggested values
+  are labeled as estimates; no real item level is changed.
+- First report: 722 over budget (mostly Vanilla+'s buffed blues), 124 under budget, 410 can't price, 16 break the
+  order (1 MC: Flarecore Wraps, ilvl 64 with stats worth about 100; 15 BWL: the BWL items at 78-83 sit above the
+  Scarlet Monastery raid, whose items stop at 75).
+- Backups `gen_site.py.bak-2026-10-31f`, `style.css.bak-2026-10-31b`.

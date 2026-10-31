@@ -70,6 +70,8 @@ from loot_sync import (load_affix_ids, load_loot, load_mob_drops, load_mob_loot,
                        merge_tiers, seen_affixes)
 from wdb_tooltip import C_EFFECT, C_ITEM_TYPE, TRIGGERS, Lookups, tooltip  # noqa: E402
 from npcs import JUNK, RANKS, NpcMatcher, load_journal, load_logged, load_npcs  # noqa: E402
+import ilvl_page  # noqa: E402  (/ilvl, Part HY)
+from ilvl_model import FIT as ILVL_FIT  # noqa: E402
 from objects import Objects  # noqa: E402
 from quests import WH_QUEST, Quests  # noqa: E402
 from spells import MAIN_FIELDS, STATUS_LABEL, link_tokens, load_spells, tooltip_lines  # noqa: E402
@@ -656,7 +658,7 @@ def page(title, body, *, description="", image="", color="#a335ee", path="", ext
 <header class="top">
   <a class="home" href="https://lokiy.dev" title="Back to lokiy.dev">&larr; lokiy.dev</a>
   <a class="brand" href="/">{icon_img('inv_misc_book_09', 'small', 'brand-icon')}<span>{SITE_NAME}</span></a>
-  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/changes">Changes</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/objects">Objects</a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
+  <nav class="nav"><a href="/">Database</a><a href="/reworked">Reworked</a><a href="/type/weapons">Types</a><a href="/instances">Instances</a><a href="/zones">Zones</a><a href="/unseen">Unseen</a><a href="/changes">Changes</a><a href="/removed">Not on V+</a><div class="nav-drop"><button type="button" aria-expanded="false" aria-haspopup="true">Search &#9662;</button><div class="drop"><a href="/search">Items <span class="muted">filters, stats</span></a><a href="/npcs">NPCs</a><a href="/spells">Spells</a><a href="/quests">Quests</a><a href="/objects">Objects</a><a href="/ilvl">Item levels <span class="muted">calculator</span></a><a href="/zones">Zones</a><a href="/instances">Loot tables</a></div></div></nav>
   <form class="search" action="/" method="get" role="search">
     <input type="search" name="q" placeholder="Search items, NPCs, spells, quests, zones..." aria-label="Search everything" autocomplete="off">
   </form>
@@ -1978,6 +1980,11 @@ your filters, so you can share a search.</p></section>
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(api, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(tmp, os.path.join(out, "api", "items.json"))
+    # ---- /ilvl: the item level model's calculator and report (ilvl_model.py / ilvl_page.py, Part HY)
+    if os.path.exists(ILVL_FIT):
+        il_rows, il_tiers = ilvl_page.write(out, page, api, {r[0]: r[9] for r in srows},
+                                            {i: {table_label(k)[1] for k in ks} for i, ks in sources.items()})
+        print(f"/ilvl: {len(il_rows)} changed / new items, suggestions per tier {il_tiers}")
     # ---- where items come from, for other projects (the sim reads only this): AtlasLoot tables incl. the loot
     # tracker's drops, then the Wowhead classic sources (sim gen_db -dumpWowheadSources, UIItemSource JSON by item id)
     src_api = {"tables": {}, "wowhead": {}, "webdkp": {i: a for i, a in dkp_api.items() if i in items},
@@ -2093,7 +2100,7 @@ your filters, so you can share a search.</p></section>
         with open(os.path.join(out, "tt", f"{n}.json"), "w", encoding="utf-8") as f:
             json.dump(chunk, f, separators=(",", ":"))
 
-    for asset in ("style.css", "site.js", "search.js"):
+    for asset in ("style.css", "site.js", "search.js", "ilvl.js"):
         shutil.copy(os.path.join(HERE, asset), os.path.join(out, asset))
     shutil.rmtree(os.path.join(out, "icons"), ignore_errors=True)
     for d in ICON_DIRS:
