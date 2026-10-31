@@ -32,7 +32,7 @@ cd "$REPO" || exit 1
 log() { echo "$(date -u '+%F %T') $*" >>"$LOG"; }
 
 SHA=$(cat "$DB_API/items.json" "$DB_API/sources.json" "$DB_API/spells.json" "$DB_API/npcs.json" "$DB_API/mobs.json" \
-	"$DB_API/quests.json" 2>/dev/null | sha256sum | cut -c1-16)
+	"$DB_API/quests.json" "$DB_API/zones.json" 2>/dev/null | sha256sum | cut -c1-16)
 if [ -z "$FORCE" ]; then
 	[ "$SHA" = "$(cat "$BUILT" 2>/dev/null)" ] && exit 0
 	[ "$SHA" = "$(cat "$FAILED" 2>/dev/null)" ] && exit 0

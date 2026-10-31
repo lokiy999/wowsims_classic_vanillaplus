@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """assets/database/db_npcs.json = the NPC pages db.lokiy.dev has, for the sim UI's NPC links (ui/core/db_npcs.ts):
 
-  {"ids": {creature id: page}, "names": {name: page}, "quests": [quest ids]}
-  (page = the URL's path on db.lokiy.dev, e.g. "/npc/11502"; quests = the ones with a /quest/<id> page, Part GO)
+  {"ids": {creature id: page}, "names": {name: page}, "quests": [quest ids], "zones": [zone ids]}
+  (page = the URL's path on db.lokiy.dev, e.g. "/npc/11502"; quests = the ones with a /quest/<id> page, Part GO;
+  zones = the ones with a /zone/<id> page, from its api/zones.json, Part HT)
 
 ids from its api/npcs.json (every NPC with a page); names for the sources the sim shows by name only (bosses without
 a creature id in the sim DB, the server's own bosses): its bosses in api/npcs.json with a unique name, then
@@ -41,11 +42,16 @@ def main():
     if os.path.exists(os.path.join(DB_API, "quests.json")):
         with open(os.path.join(DB_API, "quests.json"), encoding="utf-8") as f:
             quests = sorted(int(k) for k in json.load(f))
+    zones = []
+    if os.path.exists(os.path.join(DB_API, "zones.json")):
+        with open(os.path.join(DB_API, "zones.json"), encoding="utf-8") as f:
+            zones = sorted(int(k) for k in json.load(f))
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump({"ids": {str(k): ids[k] for k in sorted(ids)}, "names": dict(sorted(names.items())), "quests": quests},
+        json.dump({"ids": {str(k): ids[k] for k in sorted(ids)}, "names": dict(sorted(names.items())), "quests": quests,
+                   "zones": zones},
                   f, ensure_ascii=False, separators=(",", ":"))
         f.write("\n")
-    print(f"wrote {OUT}: {len(ids)} NPC ids, {len(names)} names, {len(quests)} quests")
+    print(f"wrote {OUT}: {len(ids)} NPC ids, {len(names)} names, {len(quests)} quests, {len(zones)} zones")
 
 
 if __name__ == "__main__":

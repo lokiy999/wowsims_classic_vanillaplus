@@ -6,7 +6,7 @@ import { ResourceType } from '../proto/api';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common';
 import { IconData, UIItem as Item } from '../proto/ui';
 import { iconUrl } from '../db_icons';
-import { dbNpcUrl, dbQuestUrl } from '../db_npcs';
+import { dbNpcUrl, dbQuestUrl, dbZoneUrl } from '../db_npcs';
 import { DB_SPELL_URL, isDbSpell } from '../db_spells';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';
@@ -212,7 +212,10 @@ export class ActionId {
 		const langPrefix = getWowheadLanguagePrefix();
 		return `https://wowhead.com/classic/${langPrefix}npc=${id}`;
 	}
+	// Zone page: db.lokiy.dev for every zone it has a page for (Part HT), Wowhead only for the others.
 	static makeZoneUrl(id: number): string {
+		const dbUrl = dbZoneUrl(id);
+		if (dbUrl) return dbUrl;
 		const langPrefix = getWowheadLanguagePrefix();
 		return `https://wowhead.com/classic/${langPrefix}zone=${id}`;
 	}
