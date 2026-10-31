@@ -48,7 +48,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
+					Duration: time.Minute * 2, // server: 2 min cooldown
 				},
 			},
 
@@ -105,7 +105,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    mage.NewTimer(),
-					Duration: time.Minute * 3,
+					Duration: time.Minute * 2, // server: 2 min cooldown
 				},
 				SharedCD: core.Cooldown{
 					Timer:    mage.GetOffensiveTrinketCD(),

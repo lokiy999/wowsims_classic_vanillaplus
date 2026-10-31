@@ -37,7 +37,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    rogue.NewTimer(),
-					Duration: time.Second * 180,
+					Duration: time.Minute * 2, // server: 2 min cooldown
 				},
 				SharedCD: core.Cooldown{
 					Timer:    rogue.GetOffensiveTrinketCD(),
@@ -68,12 +68,12 @@ func init() {
 		aura := rogue.GetOrRegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 23726},
 			Label:    "Venomous Totem",
-			Duration: time.Second * 20,
+			Duration: time.Second * 30, // server: poisons are guaranteed to apply for 30 sec (Part HY)
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.additivePoisonBonusChance += 0.3
+				rogue.additivePoisonBonusChance += 1
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.additivePoisonBonusChance -= 0.3
+				rogue.additivePoisonBonusChance -= 1
 			},
 		})
 
@@ -89,7 +89,7 @@ func init() {
 				},
 				SharedCD: core.Cooldown{
 					Timer:    rogue.GetOffensiveTrinketCD(),
-					Duration: time.Second * 20,
+					Duration: time.Second * 30,
 				},
 			},
 

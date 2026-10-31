@@ -94,34 +94,39 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=19956/wushoolays-charm-of-spirits
-	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (3 Min Cooldown)
+	// Wushoolay's Charm of Spirits: the server changed it (spell 34959): Use: Gives your next spell a 100% critical strike
+	// chance. Lasts 30 sec, one charge. (2 Min Cooldown) (Part HY; was classic's Lightning Shield +100% for 20 sec)
 	core.NewItemEffect(WushoolaysCharmOfSpirits, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
-		duration := time.Second * 20
+		duration := time.Second * 30
 		actionID := core.ActionID{ItemID: WushoolaysCharmOfSpirits}
 
 		var affectedSpells []*core.Spell
+		isAffected := func(spell *core.Spell) bool {
+			return spell.Flags.Matches(core.SpellFlagAPL) && spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellHealing)
+		}
 
 		aura := shaman.RegisterAura(core.Aura{
-			ActionID: actionID,
+			ActionID: core.ActionID{SpellID: 34959},
 			Label:    "Wushoolay's Charm of Spirits",
-			Duration: time.Second * 20,
+			Duration: duration,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells = core.FilterSlice(
-					shaman.LightningShieldProcs,
-					func(spell *core.Spell) bool { return spell != nil },
-				)
+				affectedSpells = core.FilterSlice(shaman.Spellbook, isAffected)
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
-					spell.DamageMultiplier *= 2
+					spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
-					spell.DamageMultiplier /= 2
+					spell.BonusCritRating -= 100 * core.SpellCritRatingPerCritChance
+				}
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if isAffected(spell) {
+					aura.Deactivate(sim)
 				}
 			},
 		})
@@ -134,7 +139,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    shaman.NewTimer(),
-					Duration: time.Minute * 3,
+					Duration: time.Minute * 2, // server: 2 min cooldown
 				},
 				SharedCD: core.Cooldown{
 					Timer:    shaman.GetOffensiveTrinketCD(),

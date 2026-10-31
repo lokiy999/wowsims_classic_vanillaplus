@@ -110,8 +110,8 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     the full periodic damage of the Immolate (all 5 ticks), what is left of it, or something else? And does it cost
     mana?
 
-- **Item procs only partly modeled** (Part DX): Hookfang Shanker and The Cruel Hand of Timmy stack up to 3 times on
-  the server (the sim applies one stack); Rivenspike's armor proc rate is unknown (kept at 2 per minute).
+- **Item procs only partly modeled** (Part DX): Rivenspike's armor proc rate is unknown (kept at 2 per minute).
+  Hookfang Shanker and The Cruel Hand of Timmy stack to 3 now (Part HY).
 
 
 - **Enchants not modeled exactly** (Part DN): Greater Arcanum of Avoidance is "reduced the chance you are hit by
@@ -366,7 +366,15 @@ there is more to say.
 - Arcanite Dragonling and Cannonball Runner (summons, no pet data), Six Demon Bag (random effects), Grace of Earth and
   Two-Faced Medallion use effects (threat / aggro radius), Banner of Challenge (taunt). The Orb of Chaotic Elements
   heal is assumed to equal the damage dealt (question 4).
-- Cooldowns assumed from classic where the server changed the effect: Gri'lek's, Wushoolay's and Hazza'rah's charms
-  (3 min), Aegis of Preservation (5 min). Confirm in game.
-- Shard of the Flame (17082) has no stats in the DB (server: 16 health per 5 sec, no DPS effect); Scrolls of Blinding
-  Light (19343) is not in the server data.
+- Shard of the Flame (17082) and Scarlet Triage Kit (26339): health regen only, no DPS effect, not modeled.
+- More summons with no pet data (Part HY list): Barov Peasant Caller, Defender of the Timbermaw's Ancestor, The
+  Wall's Chime, Scarlet Hound Whistle. Also not modeled: Chronomirage (5 sec back in time), the PvP / utility
+  trinkets (insignias, reflectors, recombobulators, teleporters).
+- **Needs an internal cooldown** (Lokiy 2026-10-31: no ICD work yet, the sim keeps what it has): Darkmoon Card:
+  Heroism, Darkmoon Card: Maelstrom, Heart of Wyrmthalak, Reactive Auto-Recaster, Rivenspike.
+- **Confirm in game** (Part HY): Mark of the Veteran (warlock, 26167 / 26176): the sim keeps Corruption's 18 sec, so
+  2 sec ticks give 9 ticks instead of 6 (Lokiy's assumption). If the game keeps 6 ticks (12 sec), change
+  `sim/warlock/corruption.go` back to the same tick count.
+- Later (Lokiy): a filter for defensive trinkets in the gear picker. The absorb trinkets of Part HY (Arena Grand
+  Master, Talismans of Arathor / Defiler's Talismans, Leyguard Charm, Personal Harm Prevention Field Emitter) are
+  usable by every spec for now.

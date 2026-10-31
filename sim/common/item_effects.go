@@ -1490,23 +1490,29 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 				if result.Landed() {
-					spell.Dot(target).Apply(sim)
+					dot := spell.Dot(target)
+					dot.ApplyOrRefresh(sim)
+					if dot.GetStacks() < dot.MaxStacks {
+						dot.AddStack(sim)
+					}
+					dot.TakeSnapshot(sim, false)
 				}
 			},
 			Dot: core.DotConfig{
 				NumberOfTicks: 10,
 				TickLength:    time.Second * 3,
 				Aura: core.Aura{
-					Label: "Corrosive Poison",
-					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Armor: -50})
-					},
-					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Armor: 50})
+					Label:     "Corrosive Poison",
+					MaxStacks: 3, // server (spell 13526): stacks up to 3 times, 10 damage and -50 armor per stack
+					OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+						aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Armor: -50 * float64(newStacks-oldStacks)})
 					},
 				},
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 10*float64(max(dot.GetStacks(), 1)), isRollover) // server: 10 every 3 sec per stack
+				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, target, 10, dot.OutcomeTick) // server: 10 every 3 sec
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				},
 			},
 		})
@@ -2265,7 +2271,7 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(TeebusBlazingLongsword, "Teebu's Blazing Longsword", 1.0, 18086, core.SpellSchoolFire, 150, 0, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=13401/the-cruel-hand-of-timmy
-	// Chance on hit: Lowers all attributes of target by 15 for 1 min.
+	// Chance on hit: Lowers all attributes of target by 15 for 1 min. Stacks up to 3 times (server spell 17505, Part HY).
 	// 0.65 PPM from Armaments Discord
 	core.NewItemEffect(TheCruelHandOfTimmy, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -2273,25 +2279,18 @@ func init() {
 
 		debuffAuraArray := character.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 			return target.GetOrRegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 17505},
-				Label:    "Curse of Timmy",
-				Duration: time.Minute * 1,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				ActionID:  core.ActionID{SpellID: 17505},
+				Label:     "Curse of Timmy",
+				Duration:  time.Minute * 1,
+				MaxStacks: 3,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					v := -15 * float64(newStacks-oldStacks)
 					aura.Unit.AddStatsDynamic(sim, stats.Stats{
-						stats.Agility:   -15,
-						stats.Intellect: -15,
-						stats.Stamina:   -15,
-						stats.Spirit:    -15,
-						stats.Strength:  -15,
-					})
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.AddStatsDynamic(sim, stats.Stats{
-						stats.Agility:   15,
-						stats.Intellect: 15,
-						stats.Stamina:   15,
-						stats.Spirit:    15,
-						stats.Strength:  15,
+						stats.Agility:   v,
+						stats.Intellect: v,
+						stats.Stamina:   v,
+						stats.Spirit:    v,
+						stats.Strength:  v,
 					})
 				},
 			})
@@ -2305,7 +2304,9 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			PPM:               0.65,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				debuffAuraArray.Get(result.Target).Activate(sim)
+				aura := debuffAuraArray.Get(result.Target)
+				aura.Activate(sim)
+				aura.AddStack(sim)
 			},
 		})
 	})
@@ -2630,7 +2631,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=22268/draconic-infused-emblem
 	// Use: Increases your spell damage by up to 100 and your healing by up to 190 for 15 sec. (1 Min, 30 Sec Cooldown)
-	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 100, stats.HealingPower: 190}, time.Second*15, time.Second*90)
+	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 100, stats.HealingPower: 190}, time.Second*15, time.Second*75) // server: 75 sec cooldown
 
 	// https://www.wowhead.com/classic/item=19288/darkmoon-card-blue-dragon
 	// Equip: 2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec.
@@ -2918,7 +2919,7 @@ func init() {
 	core.NewSimpleStatOffensiveTrinketEffect(NatPaglesBrokenReel, stats.Stats{
 		stats.SpellHit:         10 * core.SpellHitRatingPerHitChance,
 		stats.SpellPenetration: 50, // server
-	}, time.Second*25, time.Second*90)
+	}, time.Second*25, time.Second*60) // server: 1 min cooldown
 
 	// https://www.wowhead.com/classic/item=19812/rune-of-the-dawn
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.

@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 393.36544
-  tps: 559.82493
+  dps: 390.61976
+  tps: 556.25554
  }
 }
 dps_results: {

@@ -100,7 +100,7 @@ dps_results: {
  key: "TestRestorationShaman-Phase1-AllItems-Augur'sRegalia"
  value: {
   tps: 11.47357
-  hps: 341.05129
+  hps: 350.95673
  }
 }
 dps_results: {

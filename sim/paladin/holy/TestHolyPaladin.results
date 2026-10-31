@@ -142,7 +142,7 @@ dps_results: {
  key: "TestHolyPaladin-Phase1-AllItems-SanctifiedOrb-20512"
  value: {
   tps: 9.03734
-  hps: 335.04563
+  hps: 334.31134
  }
 }
 dps_results: {

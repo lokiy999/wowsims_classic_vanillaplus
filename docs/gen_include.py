@@ -51,7 +51,9 @@ FROST_RESIST_SETS = {"Icebane", "Glacial", "Polar", "Icy Scale"}
 # MANUAL_CONSUMABLE_ITEMS for the matching hand-added db entries.
 MANUAL_INCLUDE_IDS = {81010, 81011, 81012, 81013, 81014, 81015,
                       # level-60 server greens no loot table lists (Rule 1b needs blue+)
-                      26406, 26407, 26408, 26409}
+                      26406, 26407, 26408, 26409,
+                      # Cuergo's Trusty Flask (green trinket, Lokiy 2026-10-31, sim Part HY)
+                      80006}
 
 # Recipe items (crafting plans/patterns/schematics/etc.) are not equippable gear --
 # AtlasLoot Crafting tables list the recipe drop itself, which would otherwise pass
@@ -195,6 +197,11 @@ def main():
             n_preset += 1
 
     included |= MANUAL_INCLUDE_IDS
+    # manual items the sim DB doesn't have yet are added from the dump too (Part HY)
+    for iid in blocks:
+        sid = renum.get(iid, iid)
+        if sid in MANUAL_INCLUDE_IDS and iid not in pristine and sid not in pristine:
+            add.setdefault(sid, 1)
     included -= USER_EXCLUDE_IDS
     # add_items only lists items that end up included (the user-excluded ones used to stay in it).
     add = {k: v for k, v in add.items() if k in included}

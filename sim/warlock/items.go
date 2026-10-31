@@ -51,7 +51,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
-					Duration: time.Minute * 3,
+					Duration: time.Minute * 2, // server: 2 min cooldown
 				},
 				SharedCD: core.Cooldown{
 					Timer:    warlock.GetOffensiveTrinketCD(),

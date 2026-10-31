@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 )
 
@@ -60,6 +61,23 @@ const (
 	OnyxEgg                          = 83003
 	BlueMottledEgg                   = 83006
 	PinkSpeckledEgg                  = 83007
+	// Part HY (values from the server's item cache and spell data)
+	ScrollsOfBlindingLight             = 19343
+	HolyWaterFlask                     = 26386
+	EnamoredWaterSpirit                = 20503
+	MarkOfPrimalVitality               = 26313
+	CuergosTrustyFlask                 = 80006
+	ArenaGrandMaster                   = 19024
+	TalismanOfArathor                  = 20071
+	TalismanOfArathorA                 = 21117
+	TalismanOfArathorB                 = 21118
+	TalismanOfArathorC                 = 21119
+	DefilersTalisman                   = 20072
+	DefilersTalismanA                  = 21115
+	DefilersTalismanB                  = 21116
+	DefilersTalismanC                  = 21120
+	LeyguardCharm                      = 26365
+	PersonalHarmPreventionFieldEmitter = 26224
 )
 
 var allResistances = []stats.Stat{stats.ArcaneResistance, stats.FireResistance, stats.FrostResistance, stats.NatureResistance, stats.ShadowResistance}
@@ -147,6 +165,43 @@ func registerOnUseDamage(itemID int32, spellID int32, school core.SpellSchool, m
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
+	})
+}
+
+// registerOnUseAbsorb makes an on-use shield that absorbs min-max damage of any school for `duration` (Part HY).
+// manaPerDamage > 0: each point absorbed costs that much mana, and the shield only holds while there is mana.
+func registerOnUseAbsorb(itemID int32, spellID int32, label string, minAbsorb, maxAbsorb float64, duration, cooldown time.Duration, manaPerDamage float64) {
+	core.NewItemEffect(itemID, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		manaMetrics := character.NewManaMetrics(core.ActionID{SpellID: spellID})
+		remaining := 0.0
+		shield := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: spellID},
+			Label:    label,
+			Duration: duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				remaining = sim.Roll(minAbsorb, maxAbsorb)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				remaining = 0
+			},
+		})
+		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			if !shield.IsActive() || result.Damage <= 0 {
+				return
+			}
+			absorbed := min(remaining, result.Damage)
+			if manaPerDamage > 0 {
+				absorbed = min(absorbed, character.CurrentMana()/manaPerDamage)
+				character.SpendMana(sim, absorbed*manaPerDamage, manaMetrics)
+			}
+			result.Damage -= absorbed
+			remaining -= absorbed
+			if remaining <= 0 || (manaPerDamage > 0 && character.CurrentMana() < manaPerDamage) {
+				shield.Deactivate(sim)
+			}
+		})
+		registerOnUseAura(character, itemID, shield, cooldown, core.CooldownTypeSurvival)
 	})
 }
 
@@ -373,11 +428,135 @@ func init() {
 				}
 			},
 		})
-		registerOnUseAura(character, MarlisEye, aura, time.Minute*3, core.CooldownTypeMana)
+		registerOnUseAura(character, MarlisEye, aura, time.Minute*2, core.CooldownTypeMana) // server: 2 min cooldown
 	})
 
 	// Blessed Prayer Beads: Use: Increases healing done by spells and effects by up to 190 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(BlessedPrayerBeads, stats.Stats{stats.HealingPower: 190}, time.Second*20, time.Minute*2)
+
+	// Scrolls of Blinding Light (paladin): Use: Energizes a Paladin with light, increasing melee attack speed by 25% and
+	// spell casting speed by 33% for 20 sec. (5 Min Cooldown) (db.lokiy.dev tooltip; Part HY)
+	core.NewItemEffect(ScrollsOfBlindingLight, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: ScrollsOfBlindingLight},
+			Label:    "Blinding Light",
+			Duration: time.Second * 20,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyMeleeSpeed(sim, 1.25)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyMeleeSpeed(sim, 1/1.25)
+			},
+		}).AttachMultiplyCastSpeed(&character.Unit, 1.33)
+		registerOnUseAura(character, ScrollsOfBlindingLight, aura, time.Minute*5, core.CooldownTypeDPS)
+	})
+
+	// Cuergo's Trusty Flask: Use: Increases your attack speed by 3% for 30 sec. (spell 839, Mod Haste: melee; 5 min)
+	core.NewItemEffect(CuergosTrustyFlask, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 839},
+			Label:    "Cuergo's Trusty Flask",
+			Duration: time.Second * 30,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyMeleeSpeed(sim, 1.03)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyMeleeSpeed(sim, 1/1.03)
+			},
+		})
+		registerOnUseAura(character, CuergosTrustyFlask, aura, time.Minute*5, core.CooldownTypeDPS)
+	})
+
+	// Mark of Primal Vitality: Use: Increases healing done by spells and effects by up to 220 and all healing received by
+	// 10% for 20 sec. (80 sec cooldown) The healing received part is left out: the sim doesn't model incoming heals.
+	core.NewSimpleStatOffensiveTrinketEffect(MarkOfPrimalVitality, stats.Stats{stats.HealingPower: 220}, time.Second*20, time.Second*80)
+
+	// Enamored Water Spirit: Use: Summons a Mana Spring Totem for 36 sec that restores 27 mana every 2 seconds to group
+	// members within 40 yards. (3 Min Cooldown) Modeled for the wearer only.
+	core.NewItemEffect(EnamoredWaterSpirit, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 24854}
+		manaMetrics := character.NewManaMetrics(actionID)
+		var pa *core.PendingAction
+		aura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Enamored Water Spirit",
+			Duration: time.Second * 36,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 2,
+					NumTicks: 18,
+					OnAction: func(sim *core.Simulation) {
+						character.AddMana(sim, 27, manaMetrics)
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if pa != nil {
+					pa.Cancel(sim)
+				}
+			},
+		})
+		registerOnUseAura(character, EnamoredWaterSpirit, aura, time.Minute*3, core.CooldownTypeMana)
+	})
+
+	// Holy Water Flask: Use: Inflicts 222 to 263 Holy damage to enemies within 10 yards. Deals triple damage to Undead
+	// and Demon targets. (spell 36231; 3 Min Cooldown)
+	core.NewItemEffect(HolyWaterFlask, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 36231},
+			SpellSchool:      core.SpellSchoolHoly,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 3,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					damage := sim.Roll(222, 263)
+					if aoeTarget.MobType == proto.MobType_MobTypeUndead || aoeTarget.MobType == proto.MobType_MobTypeDemon {
+						damage *= 3
+					}
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	// Absorb shields (Part HY; Lokiy: usable by anyone for now). Values and cooldowns from the server's item data.
+	// Arena Grand Master: Use: Absorbs 750 to 1250 damage. Lasts 20 sec. (30 Min Cooldown)
+	registerOnUseAbsorb(ArenaGrandMaster, 23506, "Aura of Protection", 750, 1250, time.Second*20, time.Minute*30, 0)
+	// Talisman of Arathor / Defiler's Talisman: Use: Absorbs X to Y damage. Lasts 15 sec. (3 Min Cooldown)
+	for _, t := range []struct {
+		id       int32
+		spellID  int32
+		min, max float64
+	}{
+		{TalismanOfArathor, 23991, 495, 605}, {DefilersTalisman, 23991, 495, 605},
+		{TalismanOfArathorA, 25746, 392, 478}, {DefilersTalismanA, 25746, 392, 478},
+		{TalismanOfArathorB, 25747, 310, 378}, {DefilersTalismanB, 25747, 310, 378},
+		{TalismanOfArathorC, 25750, 248, 302}, {DefilersTalismanC, 25750, 248, 302},
+	} {
+		registerOnUseAbsorb(t.id, t.spellID, "Damage Absorb", t.min, t.max, time.Second*15, time.Minute*3, 0)
+	}
+	// Personal Harm Prevention Field Emitter: Use: Absorbs 900 damage. Lasts 20 sec. (2 Min Cooldown)
+	registerOnUseAbsorb(PersonalHarmPreventionFieldEmitter, 35332, "Harm Prevention Field", 900, 900, time.Second*20, time.Minute*2, 0)
+	// Leyguard Charm: Use: Shields you for 30 sec, absorbing up to 1200 damage while you have mana. Costs 0.5 mana per
+	// damage absorbed. (2 Min Cooldown)
+	registerOnUseAbsorb(LeyguardCharm, 36300, "Leyguard", 1200, 1200, time.Second*30, time.Minute*2, 0.5)
 
 	// Defensive trinkets.
 	// Blazing Emblem: Use: Increases Fire resistance by 50 and reduces all Fire damage taken by up to 25 for 15 sec. (10 Min Cooldown)

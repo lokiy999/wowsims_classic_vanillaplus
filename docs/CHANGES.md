@@ -5820,3 +5820,47 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
     Thunderhorn. Areyn and Ba'sha are in it.
 - WSG and AB stay on db.lokiy.dev (Lokiy: they are on Vanilla+); only AV went (Part HI).
 - Backups `*.bak-2026-10-31b/-e` (gen_site.py, npcs.py), `sync_db.sh.bak-2026-10-31`, `style.css.bak-2026-10-31`.
+
+## Part HY — trinkets: server cooldowns and effects, new trinkets, weapon proc stacks (2026-10-31)
+
+- Lokiy (via the hub): make the sim work on trinkets. Listed all 208 trinkets in the sim DB (85 with effect code, plus
+  the ones class code checks with `HasTrinketEquipped`) against the server's item cache (`~/itemcache/items.json`:
+  item spells and their cooldowns) and spell data (`/var/www/lokiy/spells/db`, db.lokiy.dev's spell pages). No
+  internal cooldowns changed (Lokiy: not yet).
+- **Cooldowns from the server's item data** (the sim had classic or guessed ones): Mar'li's Eye 3 -> 2 min, Nat
+  Pagle's Broken Reel 90 -> 60 sec, Draconic Infused Emblem 90 -> 75 sec, Fire Ruby 3 -> 2 min, Sanctified Orb 3 ->
+  6 min, and the ZG charms Gri'lek's Charm of Might, Renataki's Charm of Beasts / Trickery, Wushoolay's Charm of
+  Spirits, Hazza'rah's Charm of Destruction / Magic 3 -> 2 min. Confirmed as they were: Gri'lek's Charm of Valor,
+  Wushoolay's Charm of Nature, Hazza'rah's Charm of Concentration (2 min), Aegis of Preservation (5 min).
+- **Effects the server changed**: Venomous Totem (23726) makes poisons always apply for 30 sec (was +30% for 20 sec).
+  Wushoolay's Charm of Spirits (34959) gives the next damage or healing spell a 100% crit chance within 30 sec (was
+  classic's Lightning Shield +100% for 20 sec).
+- **Weapon procs stack to 3** (server spell data "Stacks 3", Part DX's open item): Hookfang Shanker's Corrosive
+  Poison (10 Nature damage per 3 sec and -50 armor per stack) and The Cruel Hand of Timmy's Curse of Timmy (-15 all
+  attributes per stack).
+- **New trinket effects**: Scrolls of Blinding Light (now in the server data: +25% melee attack speed and +33% cast
+  speed for 20 sec, 5 min); Cuergo's Trusty Flask (80006, spell 839: +3% melee attack speed for 30 sec, 5 min);
+  Holy Water Flask (222-263 Holy damage to every target, triple against Undead and Demons, 3 min); Arcane Infused
+  Gem (hunter: the next Arcane Shot within 10 sec detonates for 275-331 Arcane damage on every target, 2 min);
+  Enamored Water Spirit (27 mana every 2 sec for 36 sec, 3 min; the wearer only); Mark of Primal Vitality (+220
+  healing for 20 sec, 80 sec; the +10% healing received is not modeled).
+- **Absorb trinkets** (Lokiy: add them, usable by anyone for now; a defensive-trinket filter may come later):
+  Arena Grand Master (750-1250, 20 sec, 30 min), Talisman of Arathor / Defiler's Talisman (495-605, 392-478,
+  310-378, 248-302; 15 sec, 3 min), Personal Harm Prevention Field Emitter (900, 20 sec, 2 min), Leyguard Charm
+  (up to 1200 for 30 sec while there is mana, 0.5 mana per point absorbed, 2 min). New helper
+  `registerOnUseAbsorb` in `sim/common/item_effects/vplus_trinkets.go`.
+- Already modeled, so nothing changed: Mark of the Veteran for warriors (Battle Shout +42 attack power,
+  `sim/warrior/shouts.go`) and warlocks (Corruption ticks every 2 sec, `sim/warlock/corruption.go`). The warlock one
+  keeps the 18 sec duration, so 9 ticks instead of 6: Lokiy's assumption, to confirm in game (docs/TODO.md).
+- `docs/gen_include.py`: items in `MANUAL_INCLUDE_IDS` that the sim DB didn't have yet never got in (they were
+  included but not added; 26408 Omega Orb and 26409 Explorers' League Commendation were listed but missing). They
+  are now added from the server dump too; Cuergo's Trusty Flask is on the list. Alchemists' Stone stays out
+  (Lokiy: not seen on Vanilla+).
+- Still open (docs/TODO.md): the summons (Arcanite Dragonling, Cannonball Runner and four more), Six Demon Bag, the
+  Orb of Chaotic Elements heal, threat / aggro / taunt effects, health-regen-only trinkets, and the procs that need
+  an internal cooldown.
+- Tests: `sim/trinkets_test.go` (new) checks the cooldowns above, the 3 stacks, Venomous Totem's duration,
+  Wushoolay's sure-crit charge, Holy Water Flask's triple damage and the absorb shields. The expected results of the
+  item tests that use these items were updated (Sanctified Orb, Hazza'rah's Charm of Destruction, and the ZG sets
+  Augur's Regalia, Demoniac's Threads, Madcap's Outfit and Vindicator's Battlegear, which contain the charms).
+  Hunter, Enhancement Shaman and DPS Warrior tests failed before this change already and are left alone.

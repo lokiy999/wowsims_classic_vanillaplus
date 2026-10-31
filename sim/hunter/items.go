@@ -19,6 +19,7 @@ const (
 	BloodGuardsChainVices           = 22862
 	MarkOfTheVeteranHunterA         = 26162
 	MarkOfTheVeteranHunterB         = 26171
+	ArcaneInfusedGem                = 19336
 )
 
 func init() {
@@ -102,7 +103,7 @@ func init() {
 			},
 		}))
 	})
-	// Use: Instantly clears the cooldowns of Aimed Shot, Multishot, Volley, and Arcane Shot. (cooldown 3 min)
+	// Use: Instantly clears the cooldowns of Aimed Shot, Multishot, Volley, and Arcane Shot. (server: 2 min cooldown)
 	core.NewItemEffect(RenatakisCharmofBeasts, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 
@@ -114,7 +115,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    hunter.NewTimer(),
-					Duration: time.Second * 180,
+					Duration: time.Minute * 2, // server: 2 min cooldown
 				},
 				SharedCD: core.Cooldown{
 					Timer:    hunter.GetOffensiveTrinketCD(),
@@ -134,6 +135,67 @@ func init() {
 		hunter.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
+		})
+	})
+
+	// Arcane Infused Gem: Use: Infuses you with Arcane energy, causing your next Arcane Shot fired within 10 sec to
+	// detonate at the target. The Arcane Detonation (spell 23722) will deal 275 to 331 damage to enemies near the
+	// target (8 yd) and slow them. (server: 2 min cooldown; Part HY) Every target counts as near the main one.
+	core.NewItemEffect(ArcaneInfusedGem, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		detonation := hunter.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 23722},
+			SpellSchool:      core.SpellSchoolArcane,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(275, 331), spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		aura := hunter.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 23721},
+			Label:    "Arcane Infused",
+			Duration: time.Second * 10,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellCode == SpellCode_HunterArcaneShot && result.Landed() {
+					aura.Deactivate(sim)
+					detonation.Cast(sim, result.Target)
+				}
+			},
+		})
+
+		spell := hunter.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: ArcaneInfusedGem},
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    hunter.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    hunter.GetOffensiveTrinketCD(),
+					Duration: time.Second * 10,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		hunter.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+			ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+				return hunter.ArcaneShot != nil && hunter.ArcaneShot.TimeToReady(sim) < time.Second*8
+			},
 		})
 	})
 

@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 419.52354
-  tps: 447.87197
+  dps: 416.34358
+  tps: 444.69201
  }
 }
 dps_results: {
