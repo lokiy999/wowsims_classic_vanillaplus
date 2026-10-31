@@ -5682,3 +5682,18 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   vendor source). 1,518 items have a drop source they didn't have (1,157 outside the loot tables, mostly trade
   goods and quest items).
 - Backups `*.bak-2026-10-31` (gen_site.py, item_sources.py, import_pfquest.py).
+
+## Part HS — item icons from db.lokiy.dev's own URLs (2026-10-31)
+
+- Lokiy: items like Mark of the Veteran and Shroud of the Supreme still had no icon in the sim.
+- Cause: `docs/parse_vplus.py` `item_icons()` took icon names only from Wowhead CDN URLs in `api/items.json`. Since
+  db.lokiy.dev hosts its own icons (2026-10-25) those URLs are `https://db.lokiy.dev/icons/<name>.jpg`, so no
+  server item got an icon name. Also, an icon was set only when an item was first added, and later runs kept the
+  earlier entry: 95 sim items (server items Wowhead doesn't know) had none, and the page then asked Wowhead for
+  them, which doesn't have them.
+- `item_icons()` reads both URL forms. Every `custom_items.json` entry now takes its icon from db.lokiy.dev on
+  every run (`MANUAL_CONSUMABLE_ITEMS` still wins), not only new items.
+- Result: 0 sim items without an icon (was 95), and every item icon is on db.lokiy.dev. 22 items now show the
+  icon db.lokiy.dev has instead of Wowhead's (e.g. 13348 Demonshear, 25015 / 25039 / 25063 helmets). Sim deploy
+  `ac9a0e15c` (117 items changed). Checked live: Shroud of the Supreme shows `inv_misc_cape_05` from db.lokiy.dev.
+- Backup `docs/parse_vplus.py.bak-2026-10-31`.
