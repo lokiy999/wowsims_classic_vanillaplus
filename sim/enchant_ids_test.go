@@ -16,7 +16,11 @@ func TestLegacyEnchantIDs(t *testing.T) {
 		if _, ok := core.EnchantsByEffectID[old]; ok {
 			t.Errorf("old id %d is still in the sim DB", old)
 		}
-		itemID := int32(16829) // any item: the Go side doesn't check the slot
+		var itemID int32 // any item: the Go side doesn't check the slot
+		for id := range core.ItemsByID {
+			itemID = id
+			break
+		}
 		for _, spec := range []int32{old, id} {
 			item := core.NewItem(core.ItemSpec{ID: itemID, Enchant: spec})
 			if item.Enchant.EffectID != id {
