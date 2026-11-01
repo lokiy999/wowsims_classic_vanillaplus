@@ -6029,3 +6029,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Crimson Ring sigils (2765-2767, 2770, 2771, 2773, 2776-2781, 2784, 2785) and the +45 school damage enchants
   (2749-2754). Listed in docs/TODO.md.
 - Test: `sim/enchant_ids_test.go` (every new id is in the DB, no old id is, and both ids give the new enchant).
+
+## Part IH — two more custom enchants: Enchant Gloves - Arcane Power, Sigil of Speed: Boots (2026-11-01)
+
+- Lokiy (via the SimExporter session): "add arcane power and the stam/speed on boots. just ignore the speed for now,
+  and the rest will be to-do for later."
+- `tools/database/enchant_overrides.go` / `overrides.go`: Enchant Gloves - Arcane Power (effect 2723, spell 34350:
+  +20 Arcane damage, like Nature Power) and Sigil of Speed: Boots (effect 2784, spell 35474: Minor Speed and +5
+  Stamina; only the Stamina is modeled). Checked as in Part IG: each spell's "Enchant Item" effect names the enchant
+  in the server's spell data, and SpellItemEnchantment.dbc gives 2723 = spell 34352 (+20 Arcane damage done) and
+  2784 = spells 13889 (Minor Speed) + 7503 (+5 Stamina).
+- Test: `TestCustomEnchantsIH` in `sim/enchant_ids_test.go`.

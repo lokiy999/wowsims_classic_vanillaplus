@@ -179,6 +179,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	// EffectId/SpellId minted in the 900xxx synthetic range, per user 2026-09-12).
 	// (No ItemId: the formula item, VPlus id 26020, is a recipe and excluded from the item DB.)
 	{EffectId: 2722, SpellId: 34347, Name: "Enchant Gloves - Nature Power", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.NaturePower: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
+	{EffectId: 2723, SpellId: 34350, Name: "Enchant Gloves - Arcane Power", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.ArcanePower: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands}, // Part IH
 	// Crimson Ring reputation vendor (private-server custom, VPlusItemDB.lua ids
 	// 26255-26275, per user 2026-09-12). Only the flat-stat sigils are wired up here;
 	// the proc/debuff/resist sigils (health-regen, hit/mana-cost reduction, CC-resist,
@@ -203,6 +204,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 929, SpellId: 20020, Name: "Enchant Boots - Greater Stamina", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Stamina: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
 	{EffectId: 851, SpellId: 20024, Name: "Enchant Boots - Spirit", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Spirit: 5}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
 	{EffectId: 1887, SpellId: 20023, Name: "Enchant Boots - Greater Agility", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Agility: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
+	{EffectId: 2784, SpellId: 35474, Name: "Sigil of Speed: Boots", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Stamina: 5}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet}, // Part IH: Minor Speed / +5 Stamina; the speed is left out (Lokiy)
 
 	// Weapon
 	{EffectId: 36, SpellId: 6296, Name: "Fiery Blaze Enchantment", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
