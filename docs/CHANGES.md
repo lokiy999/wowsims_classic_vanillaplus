@@ -6092,6 +6092,7 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   applies. Anything else (Use:, procs, Battle Shout / Corruption / threat effects, ...) is N/A.
 - `ui/core/components/gear_picker/item_list.tsx`: trinket slots now show the EP column: the value for stat-only
   trinkets, "N/A" (with a hover note) for the rest, deltas only between two valued trinkets; sorting by EP puts the
-  N/A ones last. The default trinket sort stays by item level.
+  N/A ones last. Trinket lists now sort by EP by default (Lokiy; was item level): stat-only trinkets by value,
+  then the N/A ones by item level.
 - Result: 53 of the 209 trinkets get an EP value (e.g. Neltharion's Tear 55 with the shadow priest's weights), 156
   are N/A. Checked in the browser.

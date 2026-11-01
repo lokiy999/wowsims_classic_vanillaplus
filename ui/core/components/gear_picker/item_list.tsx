@@ -349,11 +349,9 @@ export default class ItemList<T extends ItemListType> {
 			return true;
 		});
 
-		if (
-			[ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) ||
-			(this.slot === ItemSlot.ItemSlotRanged && [Class.ClassShaman, Class.ClassPaladin, Class.ClassDruid].includes(this.player.getClass()))
-		) {
-			// Trinket, Totem, Idol, and Libram EP is weird so just sort by ilvl instead.
+		if (this.slot === ItemSlot.ItemSlotRanged && [Class.ClassShaman, Class.ClassPaladin, Class.ClassDruid].includes(this.player.getClass())) {
+			// Totem, Idol, and Libram EP is weird so just sort by ilvl instead. Trinkets sort by EP (Lokiy, Part IK):
+			// stat-only ones by their value, the N/A ones (Use: / proc effects) after them by item level.
 			this.sortBy = ItemListSortBy.ILVL;
 		} else {
 			this.sortBy = ItemListSortBy.EP;
