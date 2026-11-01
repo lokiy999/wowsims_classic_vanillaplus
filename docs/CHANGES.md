@@ -6080,3 +6080,18 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   index.html is made from `ui/index_template.html`, which links the page's own stylesheet).
 - Checked in the browser: the page loads as "Smite Priest", the switcher lists Shadow / Smite / Healing, a sim casts
   only Holy Fire and Smite, settings are saved under the new key and the Shadow page's are untouched.
+
+## Part IK — EP for stat-only trinkets in the gear picker (2026-11-01)
+
+- Lokiy: trinkets should get an EP value for their regular stats (e.g. Neltharion's Tear for a priest); ones with a
+  Use: effect are N/A. Before, the gear picker showed no EP column for trinket slots at all.
+- `ui/core/proto_utils/trinket_ep.ts` (new): a trinket counts as stat-only when every green (effect) line of its
+  tooltip is a plain stat line (`+N Attack Power`, spell damage / healing, school damage, hit, crit, spell
+  penetration, defense, dodge, parry, block, MP5 / HP5, resistances, all attributes; plus lines that do nothing in a
+  fight: stealth detection, mount / indoor speed). Those are in the item's stats already, so the normal item EP
+  applies. Anything else (Use:, procs, Battle Shout / Corruption / threat effects, ...) is N/A.
+- `ui/core/components/gear_picker/item_list.tsx`: trinket slots now show the EP column: the value for stat-only
+  trinkets, "N/A" (with a hover note) for the rest, deltas only between two valued trinkets; sorting by EP puts the
+  N/A ones last. The default trinket sort stays by item level.
+- Result: 53 of the 209 trinkets get an EP value (e.g. Neltharion's Tear 55 with the shadow priest's weights), 156
+  are N/A. Checked in the browser.

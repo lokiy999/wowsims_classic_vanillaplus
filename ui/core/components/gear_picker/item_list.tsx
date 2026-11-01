@@ -12,6 +12,7 @@ import { Class, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../../
 import { DatabaseFilters, RepSource, UIEnchant, UIFaction, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getUniqueEnchantString } from '../../proto_utils/enchants';
+import { TRINKET_EP_NA_TOOLTIP, trinketHasOnlyStats } from '../../proto_utils/trinket_ep';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { professionNames, REP_LEVEL_NAMES } from '../../proto_utils/names';
 import { isAllianceFaction, isHordeFaction } from '../../proto_utils/utils';
@@ -270,11 +271,23 @@ export default class ItemList<T extends ItemListType> {
 		}
 	}
 
+	// EP of a list entry; null (shown as N/A) for a trinket with a Use: or proc effect (Part IK).
+	private listEP(item: T): number | null {
+		if (
+			this.label === SelectorModalTabs.Items &&
+			[ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) &&
+			!trinketHasOnlyStats(item as unknown as UIItem)
+		) {
+			return null;
+		}
+		return this.computeEP(item);
+	}
+
 	public updateSelected() {
 		const newEquippedItem = this.gearData.getEquippedItem();
 		const newItem = this.equippedToItemFn(newEquippedItem);
 		const newItemId = this.getItemIdByItemType(newItem);
-		const newEP = newItem ? this.computeEP(newItem) : 0;
+		const newEP = newItem ? this.listEP(newItem) : 0;
 
 		this.scroller.elementUpdate(item => {
 			const idx = (item as HTMLElement).dataset.idx!;
@@ -287,8 +300,8 @@ export default class ItemList<T extends ItemListType> {
 			if (epDeltaElem) {
 				epDeltaElem.textContent = '';
 				if (itemData.item) {
-					const listItemEP = this.computeEP(itemData.item);
-					if (newEP !== listItemEP) {
+					const listItemEP = this.listEP(itemData.item);
+					if (newEP !== null && listItemEP !== null && newEP !== listItemEP) {
 						formatDeltaTextElem(epDeltaElem, newEP, listItemEP, 0);
 					}
 				}
@@ -369,7 +382,8 @@ export default class ItemList<T extends ItemListType> {
 		let sortFn = (itemA: T, itemB: T) => {
 			const first = this.sortDirection === SortDirection.DESC ? itemB : itemA;
 			const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
-			const diff = this.computeEP(first) - this.computeEP(second);
+			// N/A trinkets (Part IK) go last
+			const diff = (this.listEP(first) ?? -1e9) - (this.listEP(second) ?? -1e9);
 			// if EP is same, sort by ilvl
 			if (Math.abs(diff) < 0.01) return (first as unknown as UIItem).ilvl - (second as unknown as UIItem).ilvl;
 			return diff;
@@ -412,11 +426,11 @@ export default class ItemList<T extends ItemListType> {
 
 	private createItemElem(item: ItemDataWithIdx<T>): JSX.Element {
 		const itemData = item.data;
-		const itemEP = this.computeEP(itemData.item);
+		const itemEP = this.listEP(itemData.item);
 
 		const equippedItem = this.equippedToItemFn(this.gearData.getEquippedItem());
 		const equippedItemID = this.getItemIdByItemType(equippedItem);
-		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0;
+		const equippedItemEP = equippedItem ? this.listEP(equippedItem) : 0;
 
 		const nameElem = ref<HTMLLabelElement>();
 		const anchorElem = ref<HTMLAnchorElement>();
@@ -444,17 +458,27 @@ export default class ItemList<T extends ItemListType> {
 						<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as UIItem).ilvl}</div>
 					</>
 				)}
-				{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) && (
-					<div className="selector-modal-list-item-ep">
+				<div className="selector-modal-list-item-ep">
+					{itemEP === null ? (
+						<span className="selector-modal-list-item-ep-value" title={TRINKET_EP_NA_TOOLTIP}>
+							N/A
+						</span>
+					) : (
 						<span className="selector-modal-list-item-ep-value">
 							{itemEP < 9.95 ? itemEP.toFixed(1).toString() : Math.round(itemEP).toString()}
 						</span>
-						<span
-							className="selector-modal-list-item-ep-delta"
-							ref={e => itemData.item && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
-						/>
-					</div>
-				)}
+					)}
+					<span
+						className="selector-modal-list-item-ep-delta"
+						ref={e =>
+							itemData.item &&
+							itemEP !== null &&
+							equippedItemEP !== null &&
+							equippedItemEP !== itemEP &&
+							formatDeltaTextElem(e, equippedItemEP, itemEP, 0)
+						}
+					/>
+				</div>
 				<div className="selector-modal-list-item-favorite-container">
 					<button className="selector-modal-list-item-favorite btn btn-link p-0" ref={favoriteElem}>
 						<i ref={favoriteIconElem} className="far fa-star fa-xl" />
