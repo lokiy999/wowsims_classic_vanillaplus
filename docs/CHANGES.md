@@ -6010,3 +6010,22 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Fairbanks 73), Aegis of the Scarlet Commander (71, Mograine 75), Scorching Judgement (72) and Purge (67) below
   Whitemane's 75.
 - Backups `ilvl_model.py.bak-2026-11-01b`, `ilvl_page.py.bak-2026-11-01`.
+
+## Part IG — custom Vanilla+ enchants use the game's enchant ids (2026-11-01)
+
+- From the SimExporter addon session: its gear export carries each item link's SpellItemEnchantment id, and the
+  Import > Addon window matches that against the sim's `effectId` / `itemId` / `spellId`. The 13 custom Vanilla+
+  enchants had made-up ids (900101-900212), so an import dropped them.
+- `tools/database/enchant_overrides.go` / `overrides.go`: they now use the game's ids, checked against the hub's
+  `data\dbc\SpellItemEnchantment.dbc` and the server's spell data (each spell's "[enchant:N]" effect):
+  Nature Power 2722 / 34347, Savagery 2724 / 34628, Spellblasting 2725 / 34632, Greater Arcanum of Accuracy
+  2726 / 34635, Concentration 2727 / 34637, Avoidance 2728 / 34639, Sigil of Sturdiness: Belt 2772 / 35462, Sigil
+  of Power: Gloves 2768 / 35458 (AP) and 2769 / 35459 (SP), Bracer 2774 / 35464 and 2775 / 35465, Chest 2782 / 35472
+  and 2783 / 35473 (effect id / spell id). The stats were already right; Avoidance is "-1% Attacker Hit" in the
+  DBC, which the sim still gives as +1% dodge (docs/TODO.md, Part DN).
+- Saved gear and links with an old 900xxx id still load: `core.LegacyEnchantIDs` (sim/core/database.go) and
+  `LEGACY_ENCHANT_IDS` (ui/core/proto_utils/database.ts) map them to the new ids. No built-in preset used them.
+- Not in the sim at all (an import shows them as not found): Enchant Gloves - Arcane Power (2723), the other
+  Crimson Ring sigils (2765-2767, 2770, 2771, 2773, 2776-2781, 2784, 2785) and the +45 school damage enchants
+  (2749-2754). Listed in docs/TODO.md.
+- Test: `sim/enchant_ids_test.go` (every new id is in the DB, no old id is, and both ids give the new enchant).

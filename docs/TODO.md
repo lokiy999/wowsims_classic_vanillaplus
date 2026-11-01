@@ -114,6 +114,9 @@ Things only you can answer; everything else I keep working on. Newest at the bot
   Hookfang Shanker and The Cruel Hand of Timmy stack to 3 now (Part HY).
 
 
+- **Enchants the sim doesn't have** (Part IG; an addon import shows them as not found): Enchant Gloves - Arcane
+  Power (2723), the other Crimson Ring sigils (2765-2767, 2770, 2771, 2773, 2776-2781, 2784, 2785) and the +45
+  school damage enchants (2749-2754). Add them if they are in use.
 - **Enchants not modeled exactly** (Part DN): Greater Arcanum of Avoidance is "reduced the chance you are hit by
   attacks and spells by 1%" (sim: +1% dodge); Greater Arcanum of Concentration's 10 health per 5 sec; Sigils of Awe,
   Concentration (cost -1%), Speed and the Sturdiness health regen ones are not in the sim.

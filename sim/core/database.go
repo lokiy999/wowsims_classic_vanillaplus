@@ -14,6 +14,24 @@ var WITH_DB = false
 
 var rwMutex = sync.RWMutex{}
 var ItemsByID = map[int32]Item{}
+
+// The custom Vanilla+ enchants had made-up 900xxx ids until Part IG; they now use the game's SpellItemEnchantment
+// ids (what item links carry). Saved gear and links with an old id still load.
+var LegacyEnchantIDs = map[int32]int32{
+	900101: 2722,
+	900102: 2724,
+	900103: 2725,
+	900210: 2726,
+	900211: 2727,
+	900212: 2728,
+	900202: 2772,
+	900204: 2768,
+	900205: 2769,
+	900206: 2774,
+	900207: 2775,
+	900208: 2782,
+	900209: 2783,
+}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 
@@ -252,6 +270,9 @@ func NewItem(itemSpec ItemSpec) Item {
 	}
 
 	if itemSpec.Enchant != 0 {
+		if newID, ok := LegacyEnchantIDs[itemSpec.Enchant]; ok {
+			itemSpec.Enchant = newID
+		}
 		if enchant, ok := EnchantsByEffectID[itemSpec.Enchant]; ok {
 			item.Enchant = enchant
 		}

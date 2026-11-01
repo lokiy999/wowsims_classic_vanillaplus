@@ -18,6 +18,24 @@ const RANK_REGEX = /Rank ([0-9]+)/g;
 const REQ_LEVEL_ITEMS_REGEX = /\<!\-\-rlvl\-\-\>([0-9]+)/g;
 const REQ_LEVEL_SPELLS_REGEX = /Requires level ([0-9]+)/g;
 
+// The custom Vanilla+ enchants had made-up 900xxx ids until Part IG; they now use the game's SpellItemEnchantment
+// ids (what item links carry). Saved gear and links with an old id still load. Same list as sim/core/database.go.
+const LEGACY_ENCHANT_IDS = new Map<number, number>([
+	[900101, 2722],
+	[900102, 2724],
+	[900103, 2725],
+	[900210, 2726],
+	[900211, 2727],
+	[900212, 2728],
+	[900202, 2772],
+	[900204, 2768],
+	[900205, 2769],
+	[900206, 2774],
+	[900207, 2775],
+	[900208, 2782],
+	[900209, 2783],
+]);
+
 export class Database {
 	private static loadPromise: Promise<Database> | null = null;
 	static get(): Promise<Database> {
@@ -182,10 +200,11 @@ export class Database {
 
 		let enchant: Enchant | null = null;
 		if (itemSpec.enchant) {
+			const enchantId = LEGACY_ENCHANT_IDS.get(itemSpec.enchant) ?? itemSpec.enchant;
 			const slots = getEligibleItemSlots(item);
 			for (let i = 0; i < slots.length; i++) {
 				enchant =
-					(this.enchantsBySlot[slots[i]] || []).find(enchant => [enchant.effectId, enchant.itemId, enchant.spellId].includes(itemSpec.enchant)) ||
+					(this.enchantsBySlot[slots[i]] || []).find(enchant => [enchant.effectId, enchant.itemId, enchant.spellId].includes(enchantId)) ||
 					null;
 				if (enchant) {
 					break;
