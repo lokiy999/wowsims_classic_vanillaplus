@@ -6076,6 +6076,7 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   icon, spec-switcher entry and browser storage prefix (`__classic_smite_priest`, so it never touches the Shadow
   page's saved gear and settings). Used by `individual_sim_ui.ts` (`getStorageKey`) and `sim_title_dropdown.tsx`
   (title, icon, and the extra link under the class). Also linked on the start page (`ui/index.html`) and in the
-  makefile's page list.
+  makefile's page list.  reuses the Shadow Priest styles (the page's index.html is
+  made from , which links the page's own stylesheet).
 - Checked in the browser: the page loads as "Smite Priest", the switcher lists Shadow / Smite / Healing, a sim casts
   only Holy Fire and Smite, settings are saved under the new key and the Shadow page's are untouched.
