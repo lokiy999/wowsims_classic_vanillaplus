@@ -2,7 +2,21 @@ package stats
 
 import (
 	"fmt"
+	"math"
 )
+
+// Primary stats are whole numbers in the game: the server rounds them down after percentage bonuses (e.g. an Undead
+// priest with 259 Intellect and Mental Strength's +15% has 297, not 297.85; mana and crit then use 297; Part II).
+var PrimaryStats = [...]Stat{Strength, Agility, Stamina, Intellect, Spirit}
+
+func IsPrimaryStat(s Stat) bool {
+	return s <= Spirit
+}
+
+// floorStat rounds a primary stat down; the small epsilon keeps float error (e.g. 29.999999) from losing a point.
+func floorStat(v float64) float64 {
+	return math.Floor(v + 1e-6)
+}
 
 // This stat list is arranged such that evaluating dependencies in this order
 // is always safe, given the set of dependencies actually used in the game.
@@ -234,14 +248,26 @@ func (sdm *StatDependencyManager) IsFinalized() bool {
 	return sdm.finalized
 }
 
+// ApplyStatDependencies applies every enabled dependency. Primary stats are rounded down once their own multipliers
+// are applied (before any other stat is derived from them), like the server does.
 func (sdm *StatDependencyManager) ApplyStatDependencies(s Stats) Stats {
+	var floored [Spirit + 1]bool
 	for _, dep := range sdm.deps {
 		if dep.enabled {
 			if dep.src == dep.dst {
 				s[dep.dst] *= dep.amount
 			} else {
+				if IsPrimaryStat(dep.src) && !floored[dep.src] {
+					s[dep.src] = floorStat(s[dep.src])
+					floored[dep.src] = true
+				}
 				s[dep.dst] += s[dep.src] * dep.amount
 			}
+		}
+	}
+	for _, p := range PrimaryStats {
+		if !floored[p] {
+			s[p] = floorStat(s[p])
 		}
 	}
 	return s

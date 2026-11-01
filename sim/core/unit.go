@@ -235,9 +235,16 @@ func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
 		panic("Not finalized, use AddStats instead!")
 	}
 
-	unit.statsWithoutDeps.AddInplace(&bonus)
-
-	bonus = unit.ApplyStatDependencies(bonus)
+	if bonus[stats.Strength] != 0 || bonus[stats.Agility] != 0 || bonus[stats.Stamina] != 0 || bonus[stats.Intellect] != 0 || bonus[stats.Spirit] != 0 {
+		// Primary stats are rounded down after their multipliers (Part II), which isn't linear: the change is the
+		// difference between the stats before and after, not the bonus run through the dependencies on its own.
+		before := unit.ApplyStatDependencies(unit.statsWithoutDeps)
+		unit.statsWithoutDeps.AddInplace(&bonus)
+		bonus = unit.ApplyStatDependencies(unit.statsWithoutDeps).Subtract(before)
+	} else {
+		unit.statsWithoutDeps.AddInplace(&bonus)
+		bonus = unit.ApplyStatDependencies(bonus)
+	}
 
 	if sim.Log != nil {
 		unit.Log(sim, "Dynamic stat change: %s", bonus.FlatString())

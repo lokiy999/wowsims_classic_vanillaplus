@@ -6040,3 +6040,25 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   in the server's spell data, and SpellItemEnchantment.dbc gives 2723 = spell 34352 (+20 Arcane damage done) and
   2784 = spells 13889 (Minor Speed) + 7503 (+5 Stamina).
 - Test: `TestCustomEnchantsIH` in `sim/enchant_ids_test.go`.
+
+## Part II — primary stats rounded down like the server (2026-11-01)
+
+- Lokiy compared an imported Undead shadow priest with the game (BetterCharacterStats): the sim showed Intellect 298,
+  Mana 5564, Spell Crit 5.80% and spell damage 682; the game 297, 5551, 5.79% and 681.
+- Cause: the sim kept fractional primary stats. 118 base + 141 gear Intellect with Mental Strength's +15% is 297.85;
+  the server rounds it down to 297, and mana (1096 + 297 x 15 = 5551) and crit (0.80% + 297 / 59.5) follow from 297.
+  BetterCharacterStats also rounds each spell damage part down (Intellect / 3, Mark of the Veteran's 8% of
+  Intellect, Spiritual Guidance), which explains the rest of the 1 point of spell damage.
+- `sim/core/stats/deps.go`: `ApplyStatDependencies` rounds Strength, Agility, Stamina, Intellect and Spirit down once
+  their own multipliers are applied, before any other stat is derived from them. `sim/core/unit.go`
+  `AddStatsDynamic`: a buff that changes a primary stat now adds the difference between the full stats before and
+  after (rounding isn't linear); other buffs work as before.
+- Test: `sim/primary_stats_test.go` builds Lokiy's priest (gear, talents, Undead) and checks the in-game Intellect
+  297, Stamina 290, Spirit 186, Mana 5551, Health 4117 and Spell Crit 5.79%, plus a +31 Intellect buff (333, then 297
+  again).
+- Every class's results move a little (816 values, median 0.05%, the largest 3% in a few rotation tests where the
+  random rolls shift). Expected results updated, except Hunter, Enhancement Shaman and DPS Warrior, which failed
+  before this change for other reasons and are left as they were.
+- Not changed: the sim's stat panel shows no spell penetration (40 in game: 20 gear + 20 Spell Focus; the sim has
+  it), haste (25%: Improved Memory, modeled) or healing for a shadow spec; BetterCharacterStats' "Regen 160" is its
+  own mana regen estimate, not the sim's gear MP5 (13).
