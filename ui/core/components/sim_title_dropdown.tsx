@@ -16,6 +16,7 @@ import {
 	textCssClassForSpec,
 	titleIcons,
 } from '../proto_utils/utils.js';
+import { currentSimPageVariant, getSimPageVariantUrl, SimPageVariant, simPageVariants } from '../sim_pages.js';
 import { Component } from './component.js';
 
 interface ClassOptions {
@@ -136,6 +137,15 @@ export class SimTitleDropdown extends Component {
 
 			listItem.appendChild(link);
 			dropdownMenu.appendChild(listItem);
+
+			// Extra pages that reuse this spec's sim (Part IJ)
+			simPageVariants
+				.filter(variant => variant.spec == specIndex)
+				.forEach(variant => {
+					const variantItem = document.createElement('li');
+					variantItem.appendChild(this.buildVariantLink(variant));
+					dropdownMenu.appendChild(variantItem);
+				});
 		});
 
 		dropdownFragment.innerHTML = `
@@ -151,7 +161,9 @@ export class SimTitleDropdown extends Component {
 	private buildRootSimLink(data: SpecOptions | RaidOptions): Element {
 		let label;
 
+		const variant = data.type == 'Spec' ? currentSimPageVariant() : undefined;
 		if (data.type == 'Raid') label = raidSimLabel;
+		else if (variant && variant.spec == data.index) label = variant.title;
 		else {
 			const classIndex = specToClass[data.index];
 			if (getLaunchedSimsForClass(classIndex).length > 1)
@@ -164,7 +176,10 @@ export class SimTitleDropdown extends Component {
 		return (
 			<a href="javascript:void(0)" className={clsx('sim-link', this.getContextualKlass(data))} dataset={{ bsToggle: 'dropdown', bsTrigger: 'click' }}>
 				<div className="sim-link-content">
-					<img src={this.getSimIconPath(data)} className="sim-link-icon" />
+					<img
+						src={variant && data.type == 'Spec' && variant.spec == data.index ? variant.icon : this.getSimIconPath(data)}
+						className="sim-link-icon"
+					/>
 					<div className="d-flex flex-column">
 						<span className="sim-link-label text-white">WoWSims - Classic</span>
 						<span className="sim-link-title">{label}</span>
@@ -228,6 +243,21 @@ export class SimTitleDropdown extends Component {
 						<span className="sim-link-label">{classNames[specToClass[specIndex]]}</span>
 						<span className="sim-link-title">{this.specLabels[specIndex]}</span>
 						{this.launchStatusLabel({ type: 'Spec', index: specIndex })}
+					</div>
+				</div>
+			</a>
+		);
+	}
+
+	private buildVariantLink(variant: SimPageVariant): Element {
+		return (
+			<a href={getSimPageVariantUrl(variant)} className={clsx('sim-link', this.getContextualKlass({ type: 'Spec', index: variant.spec }))}>
+				<div className="sim-link-content">
+					<img src={variant.icon} className="sim-link-icon" />
+					<div className="d-flex flex-column">
+						<span className="sim-link-label">{classNames[specToClass[variant.spec]]}</span>
+						<span className="sim-link-title">{variant.label}</span>
+						{this.launchStatusLabel({ type: 'Spec', index: variant.spec })}
 					</div>
 				</div>
 			</a>

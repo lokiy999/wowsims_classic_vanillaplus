@@ -44,6 +44,7 @@ import { ItemSwapGear } from './proto_utils/gear';
 import { professionNames } from './proto_utils/names';
 import { Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, isHealingSpec, isTankSpec, SpecOptions, SpecRotation, specToEligibleRaces, specToLocalStorageKey } from './proto_utils/utils';
+import { currentSimPageVariant } from './sim_pages';
 import { SimUI, SimWarning } from './sim_ui';
 import { EventID, TypedEvent } from './typed_event';
 
@@ -482,6 +483,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	getStorageKey(keyPart: string): string {
 		// Local storage is shared by all sites under the same domain, so we need to use
 		// different keys for each spec site.
+		// A page that reuses another spec's sim (e.g. Smite Priest) keeps its own settings (Part IJ).
+		const variant = currentSimPageVariant();
+		if (variant && variant.spec == this.player.spec) return variant.storageKey + keyPart;
 		return specToLocalStorageKey[this.player.spec] + keyPart;
 	}
 

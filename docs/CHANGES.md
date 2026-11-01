@@ -6062,3 +6062,20 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Not changed: the sim's stat panel shows no spell penetration (40 in game: 20 gear + 20 Spell Focus; the sim has
   it), haste (25%: Improved Memory, modeled) or healing for a shadow spec; BetterCharacterStats' "Regen 160" is its
   own mana regen estimate, not the sim's gear MP5 (13).
+
+## Part IJ — Smite Priest page (2026-11-01)
+
+- Lokiy: a new priest page for a Smite priest; default rotation Holy Fire when available, then Smite.
+- `ui/smite_priest/` (https://sim.lokiy.dev/classic/smite_priest/): runs the Shadow Priest sim
+  (`Spec.SpecShadowPriest`); Smite and Holy Fire are base priest spells and that sim has nothing shadow-only (Inner
+  Fire is an option, Shadowform a talent), so no Go change. Its own presets: rotation "Smite (Holy Fire when ready)"
+  (`apls/smite.apl.json`: Holy Fire rank 8, then Smite rank 8; also what "Auto" uses), the Shadow page's gear sets,
+  Holy instead of Shadow damage in the stat list and EP weights, empty talents like every other spec (TODO
+  question 1). No raid sim presets (the raid sim uses the Shadow page's).
+- `ui/core/sim_pages.ts` (new): extra pages that reuse another spec's sim, with their own address, header title,
+  icon, spec-switcher entry and browser storage prefix (`__classic_smite_priest`, so it never touches the Shadow
+  page's saved gear and settings). Used by `individual_sim_ui.ts` (`getStorageKey`) and `sim_title_dropdown.tsx`
+  (title, icon, and the extra link under the class). Also linked on the start page (`ui/index.html`) and in the
+  makefile's page list.
+- Checked in the browser: the page loads as "Smite Priest", the switcher lists Shadow / Smite / Healing, a sim casts
+  only Holy Fire and Smite, settings are saved under the new key and the Shadow page's are untouched.

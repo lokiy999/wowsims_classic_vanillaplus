@@ -1,0 +1,31 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [],
+  "priorityList": [
+    {
+      "action": {
+        "autocastOtherCooldowns": {}
+      }
+    },
+    {
+      "action": {
+        "castSpell": {
+          "spellId": {
+            "spellId": 15261,
+            "rank": 8
+          }
+        }
+      }
+    },
+    {
+      "action": {
+        "castSpell": {
+          "spellId": {
+            "spellId": 10934,
+            "rank": 8
+          }
+        }
+      }
+    }
+  ]
+}
