@@ -25,3 +25,4 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 ## 2026-10-31
 
 - db.lokiy.dev / sim: Ring of Critical Testing 1-4 (18968, 18970, 18971, 18982) are test items, left out (`item_sources.py` `TEST_ITEM_IDS`, Lokiy). The sim never had them.
+- 2026-11-01: /ilvl, Lokiy's item level values (`OVERRIDES`, suggestions only): Ragnaros Core 65 -> 72 (+20 Fire Resistance and a random affix: worth about 64 with a typical roll, 72 with a resistance roll), Ancient Cornerstone Grimoire 76 -> 70 (stats worth about 62; Onyxia's other drops 71-75).

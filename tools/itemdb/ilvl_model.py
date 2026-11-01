@@ -46,7 +46,10 @@ OVERRIDES = {26305: (70, "Lokiy: keeps 70"),  # Dog Training Gloves
              26318: (70, "Lokiy: 70, it drops from the first Scarlet Monastery boss"),  # Flintrock Shoulders
              # Nefarian's other drops are 78; these keep classic's 83 / 81 with weaker Vanilla+ stats (2026-11-01)
              19375: (78, "Lokiy: 78 like Nefarian's other drops"),  # Mish'undare, Circlet of the Mind Flayer
-             19356: (78, "Lokiy: 78 like Nefarian's other drops")}  # Staff of the Shadow Flame
+             19356: (78, "Lokiy: 78 like Nefarian's other drops"),  # Staff of the Shadow Flame
+             # +20 Fire Resistance and a random affix: worth about 64 with a typical roll, 72 with a resistance roll
+             17982: (72, "Lokiy: 72, its best (resistance) roll"),  # Ragnaros Core
+             17067: (70, "Lokiy: 70, below Onyxia's other drops (stats worth about 62)")}  # Ancient Cornerstone Grimoire
 WEAPONS = ("W1", "W2", "WR", "WAND")
 
 # ---- tooltip parsing (classic Wowhead lines and the server's lines read the same)
