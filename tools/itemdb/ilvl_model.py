@@ -49,7 +49,9 @@ OVERRIDES = {26305: (70, "Lokiy: keeps 70"),  # Dog Training Gloves
              19356: (78, "Lokiy: 78 like Nefarian's other drops"),  # Staff of the Shadow Flame
              # +20 Fire Resistance and a random affix: worth about 64 with a typical roll, 72 with a resistance roll
              17982: (72, "Lokiy: 72, its best (resistance) roll"),  # Ragnaros Core
-             17067: (70, "Lokiy: 70, below Onyxia's other drops (stats worth about 62)")}  # Ancient Cornerstone Grimoire
+             17067: (70, "Lokiy: 70, below Onyxia's other drops (stats worth about 62)"),  # Ancient Cornerstone Grimoire
+             # Vanilla+ added +152 attack power in Cat and Bear forms (stats worth 64.5 before, about 89 now)
+             19944: (71, "Lokiy: 71, Zul'Gurub's top level, for its added feral attack power")}  # Nat Pagle's Fish Terminator
 WEAPONS = ("W1", "W2", "WR", "WAND")
 
 # ---- tooltip parsing (classic Wowhead lines and the server's lines read the same)

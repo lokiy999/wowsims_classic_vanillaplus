@@ -29,3 +29,4 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 ## 2026-11-01
 
 - db.lokiy.dev /ilvl: Lokiy's item level values (`OVERRIDES`, suggestions only): Ragnaros Core 65 -> 72 (+20 Fire Resistance and a random affix: worth about 64 with a typical roll, 72 with a resistance roll), Ancient Cornerstone Grimoire 76 -> 70 (stats worth about 62; Onyxia's other drops 71-75).
+- db.lokiy.dev /ilvl: Lokiy's value Nat Pagle's Fish Terminator 65 -> 71 (Vanilla+ added +152 attack power in Cat and Bear forms: stats worth 64.5 before, about 89 now; Zul'Gurub's top level). The rest of Zul'Gurub stays as it is (Lokiy).
