@@ -5978,3 +5978,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   tables of its raid tier that list it ("A, B" for several). `gen_site.py` passes them, `ilvl_page.py` hands them on.
 - `ilvl.js`: a Boss column (sortable) and a Boss filter, listing the bosses of the chosen raid.
 - Backup `gen_site.py.bak-2026-10-31g`.
+
+## Part IE — item levels: Lokiy's own values in any raid; Nefarian's Mish'undare and Staff at 78 (2026-11-01)
+
+- Lokiy: Mish'undare, Circlet of the Mind Flayer (83) and Staff of the Shadow Flame (81) should be 78 like
+  Nefarian's other drops. They keep classic's item levels with weaker Vanilla+ stats (worth about 76 and 71).
+  Suggestions only: no item in the database changes.
+- `ilvl_model.py`: `OVERRIDES` now apply in every raid tier, not only the recalculated one (in the report rows,
+  after the order check), and add the flag "Lokiy's value" where they differ from the real item level. New:
+  19375 Mish'undare 78, 19356 Staff of the Shadow Flame 78.
+- `ilvl_page.py`: "Lokiy's value" in the flag filter; the tier text says so.
+- Backup `ilvl_model.py.bak-2026-11-01`.

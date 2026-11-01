@@ -40,9 +40,13 @@ BUDGET_FLAG = 5  # levels between the real and the model item level that flag an
 # tiers whose item levels were set by hand (Lokiy 2026-10-31): the report suggests all of them from the stats; the
 # other tiers are classic-like anchors and keep theirs
 CALC_TIERS = {"Scarlet Monastery"}
-# Lokiy's own suggested item levels (2026-10-31), over the recalculated ones: {item id: (ilvl, why)}
+# Lokiy's own suggested item levels (2026-10-31), over the recalculated ones and in any tier (flag "Lokiy's
+# value"): {item id: (ilvl, why)}
 OVERRIDES = {26305: (70, "Lokiy: keeps 70"),  # Dog Training Gloves
-             26318: (70, "Lokiy: 70, it drops from the first Scarlet Monastery boss")}  # Flintrock Shoulders
+             26318: (70, "Lokiy: 70, it drops from the first Scarlet Monastery boss"),  # Flintrock Shoulders
+             # Nefarian's other drops are 78; these keep classic's 83 / 81 with weaker Vanilla+ stats (2026-11-01)
+             19375: (78, "Lokiy: 78 like Nefarian's other drops"),  # Mish'undare, Circlet of the Mind Flayer
+             19356: (78, "Lokiy: 78 like Nefarian's other drops")}  # Staff of the Shadow Flame
 WEAPONS = ("W1", "W2", "WR", "WAND")
 
 # ---- tooltip parsing (classic Wowhead lines and the server's lines read the same)
@@ -574,6 +578,12 @@ def report(items, status, instances, model=None, tables=None):
                 flags.append("breaks the order")
                 x["why"] = why
                 suggest(x, recs, low if why.startswith("below") else None, high if why.startswith("above") else None)
+        ov = OVERRIDES.get(int(x["id"]))
+        if ov:  # a recalculated tier has it from recalc() already
+            x["suggest"], x["why"] = ov
+            x.pop("comp", None)
+            if ov[0] != x["ilvl"]:
+                flags.append("Lokiy's value")
         x["flags"] = flags
         rows.append(x)
     return sorted(rows, key=lambda x: (x["tier"] if x["tier"] is not None else 9, x["group"], -x["ilvl"])), tstat

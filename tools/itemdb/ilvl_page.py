@@ -79,7 +79,8 @@ real minus model item levels is added to the model value), kept between Blackwin
 + 5 ("model far off" where the stats would give more or less); an item with an effect the model can't price takes its
 comparable items' value. Weapons are priced against Blackwing Lair's weapons by their DPS (and stats), may go above
 that range, and a physical weapon is at least as high as a Blackwing Lair weapon of its kind with less DPS. Set pieces
-take their set's highest piece (set bonuses aren't priced), and a few items have Lokiy's own value. In the classic-like raids, an item Vanilla+ changed or added that is below most of the tier
+take their set's highest piece (set bonuses aren't priced). A few items, in any raid, have Lokiy's own value
+("Lokiy's value"). In the classic-like raids, an item Vanilla+ changed or added that is below most of the tier
 before (its 10th percentile) is flagged "breaks the order" and gets a suggestion: the item level of comparable items in
 the same raid (same slot group, quality and role, similar stat value), a few levels higher only where its stats need it.</p>
 <table class="obs-table"><thead><tr><th>Tier</th><th>Items</th><th>Median ilvl</th><th>10-90%</th><th>Suggestions</th>
@@ -91,7 +92,7 @@ the same raid (same slot group, quality and role, similar stat value), a few lev
   <label>Boss<select name="boss"><option value="">Any</option></select></label>
   <label>Quality<select name="q"><option value="">Any</option><option value="2">Green</option><option value="3">Blue</option><option value="4">Epic</option></select></label>
   <label>Slot group<select name="group"><option value="">Any</option>{''.join(f'<option value="{k}">{esc(v)}</option>' for k, v in GROUP_LABEL.items())}</select></label>
-  <label>Flag<select name="flag"><option value="">Any</option><option>recalculated</option><option>model far off</option><option>breaks the order</option><option>over budget</option>
+  <label>Flag<select name="flag"><option value="">Any</option><option>recalculated</option><option>model far off</option><option>breaks the order</option><option>Lokiy's value</option><option>over budget</option>
     <option>under budget</option><option>can't price</option></select></label>
   <label>Name<input name="name" type="search"></label>
 </form>
