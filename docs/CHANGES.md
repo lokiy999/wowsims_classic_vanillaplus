@@ -5989,3 +5989,24 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   19375 Mish'undare 78, 19356 Staff of the Shadow Flame 78.
 - `ilvl_page.py`: "Lokiy's value" in the flag filter; the tier text says so.
 - Backup `ilvl_model.py.bak-2026-11-01`.
+
+## Part IF — item levels: Scarlet Monastery per-boss levels, "stats off boss" (2026-11-01)
+
+- Lokiy: model SM like ZG, where many bosses are optional and harder or easier per group. Server results: Doan
+  and Mograine are the hardest, the other bosses are manageable for most groups. Mograine and Whitemane are one
+  encounter. As a 10-man (faster gearing than 40-man, like ZG's 20-man under BWL), the finale is no higher than
+  Ragnaros (75). Suggestions only: no item in the database changes.
+- `ilvl_model.py`:
+  - `BOSS_LEVELS` {tier: {loot table name: ilvl}}: Loksey 70, Brigitte Abbendis 71, Vishas 72, Herod 73, Brother
+    Michael 73, Fairbanks 73, Doan 75, Renault Mograine 75, Sally Whitemane 75.
+  - `recalc()`: an item of a listed boss takes its boss's level (the highest of several); a weapon the higher of
+    that and its DPS price; set pieces their set's highest piece (the Scarlet mail set 75); `OVERRIDES` last.
+  - "stats off boss" (`OFF_BOSS` = 3 levels): stats worth 3+ above or below the boss's level; above only for items
+    with an effect or set pieces (unpriced effect / set bonus), below only for weapons. The reason says how much.
+- `ilvl_page.py`: the flag in the filter; the tier text explains the boss levels.
+- Result: SM suggested median 73 (10-90%: 70-75). 10 items flagged: Flintrock Shoulders (worth 79, Loksey 70),
+  Bulwark of the Scarlet General (67, Brigitte 71), Sunblaze Coif / Truestrike Bracers (77) and Loop of Cosmic
+  Balance (79) above Brother Michael's 73, Sandals of the Impure Saint (68) below it, Branded Leather Bracers (76,
+  Fairbanks 73), Aegis of the Scarlet Commander (71, Mograine 75), Scorching Judgement (72) and Purge (67) below
+  Whitemane's 75.
+- Backups `ilvl_model.py.bak-2026-11-01b`, `ilvl_page.py.bak-2026-11-01`.

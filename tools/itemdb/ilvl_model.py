@@ -53,6 +53,13 @@ OVERRIDES = {26305: (70, "Lokiy: keeps 70"),  # Dog Training Gloves
              # Vanilla+ added +152 attack power in Cat and Bear forms (stats worth 64.5 before, about 89 now)
              19944: (71, "Lokiy: 71, Zul'Gurub's top level, for its added feral attack power")}  # Nat Pagle's Fish Terminator
 WEAPONS = ("W1", "W2", "WR", "WAND")
+# per-boss item levels of a recalculated tier (Lokiy 2026-11-01), like ZG: the bosses most groups manage climb with
+# the route, the hard ones (server results) are higher; a 10-man's finale no higher than Ragnaros (75), since a small
+# raid gears its players faster. Mograine and Whitemane are one encounter. {tier: {loot table name: ilvl}}
+BOSS_LEVELS = {"Scarlet Monastery": {"Loksey": 70, "Brigitte Abbendis": 71, "Vishas": 72, "Herod": 73,
+                                     "Brother Michael": 73, "Fairbanks": 73, "Doan": 75,
+                                     "Renault Mograine": 75, "Sally Whitemane": 75}}
+OFF_BOSS = 3  # levels between an item's stats and its boss's level that flag it "stats off boss"
 
 # ---- tooltip parsing (classic Wowhead lines and the server's lines read the same)
 SLOT_GROUP = {"Head": "A", "Chest": "A", "Legs": "A", "Robe": "A", "Shoulder": "B", "Hands": "B", "Waist": "B",
@@ -568,6 +575,9 @@ def report(items, status, instances, model=None, tables=None):
             if x.get("far"):
                 flags.append("model far off")
                 x["why"] += "; " + x["far"]
+            if x.get("off_boss"):
+                flags.append("stats off boss")
+                x["why"] += "; " + x["off_boss"]
         elif t is not None and x["q"] >= 3 and x["req"] >= 60 and TIERS[t] not in CALC_TIERS:
             # outliers allowed: only below the tier before's 10th percentile or above the tier after's 90th; a
             # classic-like tier is never flagged for being above a later one (Lokiy: BWL stays as is)
@@ -603,6 +613,9 @@ def recalc(recs, n, off, prev_name, lo, hi, woff, pw):
       on its combined value + woff[0], one without (DPS and an effect only) on its DPS item level + woff[1]. A
       physical weapon is at least as high as the tier before's weapons (pw) of its group with less DPS.
     - Other items with an effect (no full price) take their comparable items' value, at least their own lower bound.
+    - BOSS_LEVELS: an item of a listed boss takes its boss's level (the highest of several), a weapon the higher of
+      that and its DPS price; "stats off boss" where its stats are worth OFF_BOSS or more levels away (above only,
+      for an item with an effect or a set piece, whose set bonus isn't priced; below only, for a weapon).
     - Set pieces: the set's highest piece (set bonuses aren't priced; Lokiy: the Scarlet mail set at 76).
     - OVERRIDES (Lokiy's own levels) last."""
     tier = [x for x in recs.values() if x["tier"] == n and x["q"] >= 3 and x["req"] >= 60]
@@ -644,6 +657,27 @@ def recalc(recs, n, off, prev_name, lo, hi, woff, pw):
         x["suggest"] = int(sug)
         x["why"] = "has an effect the model can't price: comparable items' recalculated level (at least its own)"
         x["comp"] = [[y["id"], y["name"], y["suggest"]] for y in comp]
+    levels = BOSS_LEVELS.get(TIERS[n], {})
+    for x in tier:
+        tg = [(levels[b], b) for b in (x["boss"] or "").split(", ") if b in levels]
+        if not tg:
+            continue
+        tgt, boss = max(tg)
+        x.pop("comp", None)
+        x.pop("far", None)
+        if x["group"] in WEAPONS and x["dpil"] is not None:
+            worth = x["suggest"]
+            x["suggest"] = max(tgt, worth)
+            x["why"] = f"{boss}'s level {tgt}; its DPS{' and stats' if x['stats'] else ''} are worth {worth}"
+            if worth <= tgt - OFF_BOSS:
+                x["off_boss"] = f"weapon worth {worth}, below {boss}'s {tgt}"
+            continue
+        worth = round(x["model"] + off) if x["model"] is not None else None
+        x["suggest"] = tgt
+        x["why"] = f"{boss}'s level"
+        if worth is not None and (worth >= tgt + OFF_BOSS or (worth <= tgt - OFF_BOSS and not x["effect"] and not x.get("setname"))):
+            x["off_boss"] = (f"{'stats alone' if x['effect'] else 'stats'} worth {worth}, "
+                             f"{'above' if worth > tgt else 'below'} {boss}'s {tgt}")
     sets = collections.defaultdict(list)
     for x in tier:
         if x.get("setname"):
