@@ -67,3 +67,26 @@ What it implies (749 bonus healing, no talent multiplier):
 
 Still needed: Heal r4 min / max / typical (does it never go below 1461?), r1 and r3 the same way, the bonus healing
 shown for each, and the Spiritual Healing rank.
+
+### Heal rank 2 test: 50-100 casts (Lokiy 2026-11-02)
+
+Lokiy cast Heal rank 2 about 50-100 times (non-crit, bonus healing 749) and saw **958-1019**.
+
+- Spread 61: the base roll is 429-491 (62), so the bonus part is constant and no healing multiplier applies. This fits
+  the talents below: Spiritual Healing 0, Improved Healing 0.
+- Bonus part = 958 - 429 = 529 and 1019 - 491 = 528, about **528.5**. Coefficient = 528.5 / 749 = **0.706**
+  (classic rule 0.857 would give 1071-1133).
+- Nearest neat value is 0.714 (2.5 / 3.5), which would need 740 bonus healing instead of 749 (or 535 at 749, giving
+  964-1026). Divine Fury 5/5 makes Heal 2.5 sec, so one idea is that the coefficient uses the shortened cast time, but
+  rank 4's 1461 (above 1446 at 0.857, so 0.88 or more) does not fit 0.714 unless it came with different bonus healing.
+  Open: rank 4 and rank 1 / 3 data, and whether 749 was exact for these casts.
+
+Talents `320230005002332005-23020500500202` decoded (sim order): Holy Focus 2, Improved Renew 3, Spell Focus 2,
+Divine Fury 5, Holy Specialization 5, Purifying Light 2, Spiritual Guidance 2, Spiritual Healing 0, Improved
+Healing 0; Discipline part as in the SimExporter string.
+
+SimExporter export of the character used for these tests:
+
+```json
+{"exporter":"SimExporter 1.0","name":"Lokiy","realm":"Hogger","level":60,"class":"Priest","race":"Undead","talents":"320230005002332005-23020500500202","professions":[{"name":"Enchanting","level":300},{"name":"Tailoring","level":300}],"gear":{"version":"1.0","items":[{"id":25183,"enchant":2544},{"id":1315},{"id":22082,"enchant":2483},{"id":18510,"enchant":1888},{"id":22083,"enchant":1893},{"id":25176,"enchant":1886},{"id":19369,"enchant":931},{"id":25177,"enchant":2772},{"id":25181,"enchant":2590},{"id":25179,"enchant":929},{"id":19138},{"id":17982,"randomSuffix":409},{"id":26104},{"id":26208},{"id":19360,"enchant":2504},{"id":20582},{"id":19435}]}}
+```
