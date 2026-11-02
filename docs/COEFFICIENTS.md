@@ -115,3 +115,22 @@ pattern: linear in the rank's level, +0.015 per level (0.706 at level 22, 0.886 
 749 bonus healing: **Heal r3** (level 28) about 0.80 -> 1162-1238; **Heal r1** (level 16) about 0.62 -> 756-802
 (lower if the below-level-20 penalty applies on top). Matches -> look for a level-based rule; misses -> the
 coefficients are per spell and each rank is measured.
+
+### Heal rank 3 test (Lokiy 2026-11-02)
+
+Heal rank 3, non-crit, bonus healing 749 (Spiritual Guidance included): **1190-1265** (so far).
+
+- Spread 75; the base roll is 566-642 (76). Constant bonus part again.
+- Bonus part = 1190 - 566 = 624 and 1265 - 642 = 623, about **623.5**. Coefficient = 623.5 / 749 = **0.833**
+  (classic 0.857 would give 1208-1284; the linear guess 0.80 gave 1162-1238, so the linear pattern is wrong).
+
+Heal so far (749 bonus healing):
+
+| Rank | Level | Base roll | Seen | Bonus part | Coefficient |
+|---|---|---|---|---|---|
+| 2 | 22 | 429-491 | 958-1019 | 528.5 | 0.706 |
+| 3 | 28 | 566-642 | 1190-1265 | 623.5 | 0.833 |
+| 4 | 34 | 712-804 | 1376-1467 | 663.5 | 0.886 |
+
+The coefficient rises with rank but flattens: +0.127 from r2 to r3, +0.053 from r3 to r4. No formula yet. Rank 1
+(level 16) would be the fourth point; a rough curve through the three points suggests about 0.5 (673-719).
