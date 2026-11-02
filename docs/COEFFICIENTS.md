@@ -212,3 +212,6 @@ Greater Heal r5, 15 casts, bonus healing taken as 749 (Spirit buff up): **3614-3
 - **4 / 3.5 = 1.143** sits in the middle of that range: bonus 856, range 3608-3927 (seen 3614-3919 is inside it).
   The capped classic 1.0 and the 1.034 guess are ruled out.
 - Best single estimate: bonus 855 (middle of 848-862), coefficient about 1.14.
+
+Confirmed by Lokiy: the 15-cast Greater Heal r5 sample (3614-3919) ran at **749** bonus healing, so its coefficient is
+**1.132-1.151** (the 741 column above does not apply to it). Which earlier tests (if any) ran at 741 is still unknown.
