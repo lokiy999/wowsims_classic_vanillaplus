@@ -49,18 +49,21 @@ Not looked at yet: Holy Nova's heal, Desperate Prayer, Lightwell (spell IDs did 
 
 ## Measurements (Lokiy, in game)
 
-Bonus healing assumed 749 for all of these (talents and crit flags not recorded yet).
+Bonus healing 749 (all non-crit unless noted; Lokiy 2026-11-02, corrected from a first, wrong note).
 
-| Date | Spell | Seen | Classic rule predicts (749 bonus, no talents) |
-|---|---|---|---|
-| 2026-11-02 | Heal r2 (level 22) | usually under 900, once 1010 | 1071-1133 |
-| 2026-11-02 | Heal r4 (level 34) | 1461 once | 1354-1446 (1461 is above the max) |
+| Spell | Seen | Classic rule predicts (749 bonus, no talents) |
+|---|---|---|
+| Heal r2 (level 22) | usually 950-1010 | 1071-1133 (coefficient 0.857) |
+| Heal r4 (level 34) | 1461 once (not a crit) | 1354-1446 (0.857) |
 
-Reading so far: rank 2 comes out well below the classic prediction, rank 4 slightly above it, so no single
-coefficient formula fits both yet. Rank 2's base roll is only 429-491 (a 62 spread), so "under 900" and 1010 cannot
-both be normal non-crit casts at the same bonus healing: the 1010 was a crit, a different bonus healing (buff / proc),
-or the server's base range is wider than the DBC. If both were crits (x1.5), they imply bonus parts of about 213 (r2)
-and 216 (r4), i.e. a coefficient near 0.29 for both. Needs more data to tell.
+What it implies (749 bonus healing, no talent multiplier):
+- Rank 2: base roll 429-491 is a 62 spread and the observed 950-1010 is a 60 spread, so the bonus part is steady at
+  about 520 (950-429 = 521, 1010-491 = 519). Coefficient = 520 / 749 = **0.69**, not 0.857. The matching spread also
+  suggests no Spiritual Healing multiplier (1.15 would widen it to about 71).
+- Rank 4: 1461 is above the classic maximum of 1446, so its coefficient is at least 0.877. 1461 is exactly
+  712 + 749, the minimum base roll with coefficient 1.0 (then rank 4 would be 1461-1553).
+- So Heal's coefficient differs by rank by more than the level-below-20 rule explains (r2 about 0.69, r4 about
+  0.88-1.0). Could be a Vanilla+ change per rank, or a downranking rule.
 
-Still needed for each cast: bonus healing shown at that moment, Spiritual Healing rank (it multiplies the result),
-crit or not, and 10+ non-crit numbers per rank (min, max, typical).
+Still needed: Heal r4 min / max / typical (does it never go below 1461?), r1 and r3 the same way, the bonus healing
+shown for each, and the Spiritual Healing rank.
