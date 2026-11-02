@@ -172,3 +172,16 @@ Heal's did (0.886 / 0.857 = 1.034), the bonus is 774 instead of 749.
 
 If a rank lands below its row, Greater Heal has a lower coefficient or a rank rule like Heal's low ranks. Test rank 5
 first (the one in use), then rank 1.
+
+### Greater Heal rank 5 quick sample: 7 casts (Lokiy 2026-11-02)
+
+Greater Heal r5, 7 casts, bonus healing 749: **3628-3913**. Base roll 2752-3071.
+
+- With a constant bonus b, the real min is 2752 + b and the real max 3071 + b, and a sample cannot go outside them:
+  min seen 3628 means b <= 876, max seen 3913 means b >= 842. So the coefficient is between **1.124 and 1.170**.
+- That rules out the capped classic value 1.0 (3501-3820) and 1.034 (3526-3845).
+- **4 / 3.5 = 1.143** fits: bonus 856, range 3608-3927 (the seen 3628-3913 sits inside it). That is the cast time
+  without the 3.5 sec cap, and without Divine Fury shortening it (3.5 / 3.5 would be 1.0).
+- Caveat: 7 casts. More casts narrow the range. Greater Heal r4 / r1 not measured yet.
+- Open question: Heal r4 came out at 0.886, above the uncapped cast-time value 3 / 3.5 = 0.857, so Heal and Greater Heal
+  do not follow one simple rule yet.
