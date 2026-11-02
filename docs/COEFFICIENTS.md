@@ -90,3 +90,18 @@ SimExporter export of the character used for these tests:
 ```json
 {"exporter":"SimExporter 1.0","name":"Lokiy","realm":"Hogger","level":60,"class":"Priest","race":"Undead","talents":"320230005002332005-23020500500202","professions":[{"name":"Enchanting","level":300},{"name":"Tailoring","level":300}],"gear":{"version":"1.0","items":[{"id":25183,"enchant":2544},{"id":1315},{"id":22082,"enchant":2483},{"id":18510,"enchant":1888},{"id":22083,"enchant":1893},{"id":25176,"enchant":1886},{"id":19369,"enchant":931},{"id":25177,"enchant":2772},{"id":25181,"enchant":2590},{"id":25179,"enchant":929},{"id":19138},{"id":17982,"randomSuffix":409},{"id":26104},{"id":26208},{"id":19360,"enchant":2504},{"id":20582},{"id":19435}]}}
 ```
+
+### Heal rank 4 test: about 50 casts (Lokiy 2026-11-02)
+
+Heal rank 4, about 50 casts (non-crit, bonus healing 749, same gear and talents as above): **1376-1467**.
+
+- Spread 91; the base roll is 712-804 (92). Again a constant bonus part and no multiplier.
+- Bonus part = 1376 - 712 = 664 and 1467 - 804 = 663, about **663.5**. Coefficient = 663.5 / 749 = **0.886**
+  (classic 0.857 would give 1354-1446). The earlier single 1461 sits inside this range.
+- Heal r2 gave 0.706 and r4 gives 0.886 from the same 749, so the two ranks differ by a factor of 0.80 (r2 / r4).
+  The classic below-level-20 rule does not explain that (both ranks are above level 20).
+- Lead: Spiritual Guidance is 2/5 in these talents. The sim (`sim/priest/talents.go`) takes it as **10% of Spirit as
+  spell power per rank** (20% here, from the DBC). If the 749 shown in game does not include that, the real bonus
+  healing is higher than 749 and every coefficient above is a bit lower (r4 would be exactly 0.857 at 774 bonus
+  healing, which needs Spirit of about 125 at 20%; the real Spirit is higher, so it would sit below 0.857). Needs the
+  Spirit shown in game during the tests to settle.
