@@ -215,3 +215,22 @@ Greater Heal r5, 15 casts, bonus healing taken as 749 (Spirit buff up): **3614-3
 
 Confirmed by Lokiy: the 15-cast Greater Heal r5 sample (3614-3919) ran at **749** bonus healing, so its coefficient is
 **1.132-1.151** (the 741 column above does not apply to it). Which earlier tests (if any) ran at 741 is still unknown.
+
+### Cast times during the tests: Divine Fury 5/5 + Improved Memory 5/5 (Lokiy 2026-11-02)
+
+All Heal tests (r1-r4) ran with Heal at **1.96 sec**; the Greater Heal tests with Greater Heal at **2.75 sec**.
+Talents: Divine Fury 5/5 (-0.5 sec on Heal / Greater Heal), Improved Memory 5/5 (25% casting speed in the DBC).
+
+| Spell | DBC cast | - Divine Fury | / 1.25 (sim's model) | Seen in game |
+|---|---|---|---|---|
+| Heal | 3.0 | 2.5 | 2.00 | 1.96 |
+| Greater Heal | 4.0 | 3.5 | 2.80 | 2.75 |
+
+- Both fit "(base - 0.5) x 0.785", i.e. a total casting speed of about **1.274 (27.4%)**, not 1.25. About 2.4% haste
+  is unexplained (another haste source on the gear / buffs, or the server rounds differently). The sim has 25%, so its
+  Heal / Greater Heal casts are about 2% slow. Open: find the source.
+- **The coefficient does not follow the shortened cast time.** Greater Heal r5 fits 4.0 / 3.5 = 1.143 (the DBC cast
+  time); the Divine Fury time (3.5 / 3.5 = 1.0) and the hasted time (2.75 / 3.5 = 0.79) are both ruled out. So talents
+  and haste do not change a spell's coefficient, which matches the classic rule that it comes from the base cast time.
+- Heal does not fit its base cast time (3.0 / 3.5 = 0.857) rank by rank: 0.566 / 0.706 / 0.833 / 0.886. Not explained by
+  haste either: 1.96 / 3.5 = 0.56 would fit rank 1 only.
