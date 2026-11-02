@@ -155,3 +155,20 @@ Step between ranks: +0.140, +0.127, +0.053. Close to +0.022 per level for ranks 
 rank 4 falls well short of that line (it would give 0.97) and looks capped near 0.886. Rank 1 / 0.85 (the level-16
 penalty) = 0.666, which may be a coincidence. No clean formula yet; the coefficients may be set per rank by the server.
 Better source if available: the server's own spell bonus table (a spell_bonus_data-style table in its world database).
+
+### Greater Heal expectations at 749 bonus healing (not measured yet; 2026-11-02)
+
+Greater Heal ranks are levels 40-60, above Heal r4 (level 34, which looked capped at 0.886), so all five ranks are
+expected at the cap. Classic rule: 4 sec capped at 3.5 / 3.5 = **1.0**. If the server's cap sits 3.4% above classic like
+Heal's did (0.886 / 0.857 = 1.034), the bonus is 774 instead of 749.
+
+| Rank | Level | Base roll | Coefficient 1.0 (+749) | Coefficient 1.034 (+774) |
+|---|---|---|---|---|
+| 1 | 40 | 1263-1423 | 2012-2172 | 2037-2197 |
+| 2 | 46 | 1611-1807 | 2360-2556 | 2385-2581 |
+| 3 | 52 | 2011-2252 | 2760-3001 | 2785-3026 |
+| 4 | 58 | 2516-2808 | 3265-3557 | 3290-3582 |
+| 5 | 60 | 2752-3071 | 3501-3820 | 3526-3845 |
+
+If a rank lands below its row, Greater Heal has a lower coefficient or a rank rule like Heal's low ranks. Test rank 5
+first (the one in use), then rank 1.
