@@ -234,3 +234,10 @@ Talents: Divine Fury 5/5 (-0.5 sec on Heal / Greater Heal), Improved Memory 5/5 
   and haste do not change a spell's coefficient, which matches the classic rule that it comes from the base cast time.
 - Heal does not fit its base cast time (3.0 / 3.5 = 0.857) rank by rank: 0.566 / 0.706 / 0.833 / 0.886. Not explained by
   haste either: 1.96 / 3.5 = 0.56 would fit rank 1 only.
+
+**Correction (Lokiy 2026-11-02): the extra ~2.4% haste is the gloves enchant.** Lokiy has a 2% haste enchant
+(Enchant Gloves - Lesser Haste, enchant 931 on the gloves in the export above; the sim models it as 2% spell haste).
+Casting speed 1.25 x 1.02 = **1.275**: Heal (3.0 - 0.5) / 1.275 = 1.96 sec and Greater Heal (4.0 - 0.5) / 1.275 =
+2.745 sec, which is what the game shows. The sim multiplies enchant haste into the cast speed
+(`sim/core/character.go`), so its Heal / Greater Heal cast times already match; the "sim is about 2% slow" note
+above does not apply, and the haste gap is not an open item. Coefficient conclusions are unchanged.
