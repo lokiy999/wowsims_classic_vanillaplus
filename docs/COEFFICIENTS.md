@@ -185,3 +185,20 @@ Greater Heal r5, 7 casts, bonus healing 749: **3628-3913**. Base roll 2752-3071.
 - Caveat: 7 casts. More casts narrow the range. Greater Heal r4 / r1 not measured yet.
 - Open question: Heal r4 came out at 0.886, above the uncapped cast-time value 3 / 3.5 = 0.857, so Heal and Greater Heal
   do not follow one simple rule yet.
+
+### Caveat (Lokiy 2026-11-02): some tests may have run at 741 bonus healing, not 749
+
+A Spirit buff fell off during testing; Spiritual Guidance (20% of Spirit as spell power at 2/5) then gave 8 less, so
+some casts had **741** instead of 749. Which tests is not known yet. The bonus part (measured from the spread) stays
+the same; only the coefficient (bonus part / bonus healing) changes, by about 1%:
+
+| Spell | Bonus part | Coefficient at 749 | Coefficient at 741 |
+|---|---|---|---|
+| Heal r1 | 424 | 0.566 | 0.572 |
+| Heal r2 | 528.5 | 0.706 | 0.713 (2.5 / 3.5 = 0.714) |
+| Heal r3 | 623.5 | 0.833 | 0.841 |
+| Heal r4 | 663.5 | 0.886 | 0.895 |
+| Greater Heal r5 (7 casts) | 842-876 | 1.124-1.170 | 1.136-1.182 |
+
+Greater Heal r5 at 4 / 3.5 = 1.143 and 741 bonus healing: bonus 847, range 3599-3918, still contains the seen
+3628-3913. For future tests: note the bonus healing shown, and test with the Spirit buff up.
