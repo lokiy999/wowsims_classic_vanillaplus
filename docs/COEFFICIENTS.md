@@ -202,3 +202,13 @@ the same; only the coefficient (bonus part / bonus healing) changes, by about 1%
 
 Greater Heal r5 at 4 / 3.5 = 1.143 and 741 bonus healing: bonus 847, range 3599-3918, still contains the seen
 3628-3913. For future tests: note the bonus healing shown, and test with the Spirit buff up.
+
+### Greater Heal rank 5: 15 casts (Lokiy 2026-11-02; replaces the 7-cast sample above, which is to be ignored)
+
+Greater Heal r5, 15 casts, bonus healing taken as 749 (Spirit buff up): **3614-3919**. Base roll 2752-3071.
+
+- Min seen 3614 means bonus <= 3614 - 2752 = 862; max seen 3919 means bonus >= 3919 - 3071 = 848.
+  So the bonus is **848-862** and the coefficient **1.132-1.151** (at 741 bonus healing: 1.144-1.163).
+- **4 / 3.5 = 1.143** sits in the middle of that range: bonus 856, range 3608-3927 (seen 3614-3919 is inside it).
+  The capped classic 1.0 and the 1.034 guess are ruled out.
+- Best single estimate: bonus 855 (middle of 848-862), coefficient about 1.14.
