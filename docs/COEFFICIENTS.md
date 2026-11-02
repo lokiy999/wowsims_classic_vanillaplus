@@ -250,3 +250,16 @@ seen max is 1 under that range's top.
 
 Next: Greater Heal rank 1 (level 40, base 1263-1423). If the coefficient is also 1.143 (bonus 856) it should show
 about **2119-2279**; clearly lower means Greater Heal's low ranks have a rank rule like Heal's.
+
+### Greater Heal rank 1: 20 casts (Lokiy 2026-11-02)
+
+Greater Heal r1 (level 40, base roll 1263-1423), 20 casts, non-crit: **2166-2311**. Bonus healing assumed 749 (to confirm).
+
+- Min seen 2166 means bonus <= 2166 - 1263 = 903; max seen 2311 means bonus >= 2311 - 1423 = 888. So the bonus is
+  **888-903** and the coefficient **1.186-1.206** at 749 bonus healing.
+- That is above Greater Heal r5 (1.1415-1.151) and above 4 / 3.5 = 1.143 (which would give 2119-2279; seen is
+  32-47 higher). Greater Heal r1 and r5 cannot share a coefficient at the same bonus healing.
+- If the coefficient were 1.143, the bonus healing during this test would have been **777-790**, not 749 (28-41 more).
+  Either the bonus healing was higher during the GH1 test (buff / proc / trinket), or Greater Heal's coefficient falls
+  with rank (the opposite of Heal, whose coefficient rises with rank).
+- Need: the bonus healing shown during the GH1 test, then a repeat of GH5 or GH1 with the same buffs to compare.
