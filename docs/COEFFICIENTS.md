@@ -105,3 +105,13 @@ Heal rank 4, about 50 casts (non-crit, bonus healing 749, same gear and talents 
   healing is higher than 749 and every coefficient above is a bit lower (r4 would be exactly 0.857 at 774 bonus
   healing, which needs Spirit of about 125 at 20%; the real Spirit is higher, so it would sit below 0.857). Needs the
   Spirit shown in game during the tests to settle.
+
+### Update (Lokiy 2026-11-02): Spiritual Guidance is already in the 749
+
+So the Spiritual Guidance lead above is closed; the measured coefficients stand: **Heal r2 0.706, Heal r4 0.886**.
+
+No known formula gives them (classic: cast time / 3.5, penalty only under level 20, would be 0.857 for both). Simplest
+pattern: linear in the rank's level, +0.015 per level (0.706 at level 22, 0.886 at level 34). Predictions to test at
+749 bonus healing: **Heal r3** (level 28) about 0.80 -> 1162-1238; **Heal r1** (level 16) about 0.62 -> 756-802
+(lower if the below-level-20 penalty applies on top). Matches -> look for a level-based rule; misses -> the
+coefficients are per spell and each rank is measured.
