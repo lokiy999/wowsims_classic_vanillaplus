@@ -64,21 +64,3 @@ and 216 (r4), i.e. a coefficient near 0.29 for both. Needs more data to tell.
 
 Still needed for each cast: bonus healing shown at that moment, Spiritual Healing rank (it multiplies the result),
 crit or not, and 10+ non-crit numbers per rank (min, max, typical).
-
-## Measurements (Lokiy, in game)
-
-Bonus healing assumed 749 for all of these (talents and crit flags not recorded yet).
-
-| Date | Spell | Seen | Classic rule predicts (749 bonus, no talents) |
-|---|---|---|---|
-| 2026-11-02 | Heal r2 (level 22) | usually under 900, once 1010 | 1071-1133 |
-| 2026-11-02 | Heal r4 (level 34) | 1461 once | 1354-1446 (1461 is above the max) |
-
-Reading so far: rank 2 comes out well below the classic prediction, rank 4 slightly above it, so no single
-coefficient formula fits both yet. Rank 2's base roll is only 429-491 (a 62 spread), so "under 900" and 1010 cannot
-both be normal non-crit casts at the same bonus healing: the 1010 was a crit, a different bonus healing (buff / proc),
-or the server's base range is wider than the DBC. If both were crits (x1.5), they imply bonus parts of about 213 (r2)
-and 216 (r4), i.e. a coefficient near 0.29 for both. Needs more data to tell.
-
-Still needed for each cast: bonus healing shown at that moment, Spiritual Healing rank (it multiplies the result),
-crit or not, and 10+ non-crit numbers per rank (min, max, typical).
