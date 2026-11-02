@@ -263,3 +263,10 @@ Greater Heal r1 (level 40, base roll 1263-1423), 20 casts, non-crit: **2166-2311
   Either the bonus healing was higher during the GH1 test (buff / proc / trinket), or Greater Heal's coefficient falls
   with rank (the opposite of Heal, whose coefficient rises with rank).
 - Need: the bonus healing shown during the GH1 test, then a repeat of GH5 or GH1 with the same buffs to compare.
+
+### Greater Heal rank 1: updated sample 2162-2314 (Lokiy 2026-11-02)
+
+Min seen 2162 means bonus <= 2162 - 1263 = 899; max seen 2314 means bonus >= 2314 - 1423 = 891. So the bonus is
+**891-899** and the coefficient **1.190-1.200** at 749 bonus healing (1.2 would be bonus 898.8, range 2162-2322).
+Still above Greater Heal r5 (1.1415-1.151), so the question stands: higher bonus healing during the rank 1 test
+(at 1.143 it would be 780-787) or a coefficient that falls with rank.
