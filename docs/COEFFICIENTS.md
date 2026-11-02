@@ -270,3 +270,28 @@ Min seen 2162 means bonus <= 2162 - 1263 = 899; max seen 2314 means bonus >= 231
 **891-899** and the coefficient **1.190-1.200** at 749 bonus healing (1.2 would be bonus 898.8, range 2162-2322).
 Still above Greater Heal r5 (1.1415-1.151), so the question stands: higher bonus healing during the rank 1 test
 (at 1.143 it would be 780-787) or a coefficient that falls with rank.
+
+### Greater Heal rank 1: updated sample 2158-2314, bonus healing 749 confirmed (Lokiy 2026-11-02)
+
+Min seen 2158 means bonus <= 2158 - 1263 = 895; max seen 2314 means bonus >= 2314 - 1423 = 891. So the bonus is
+**891-895** and the coefficient **1.190-1.195** at 749 bonus healing (confirmed 749 for the rank 1 casts; the earlier
+"2162-2314" and "2166-2311" samples above are superseded). 1.2 is ruled out (bonus 898.8 > 895).
+
+So Greater Heal's coefficient is about **1.19 at rank 1 and 1.146 at rank 5**: it falls slightly with rank (-4%), the
+opposite of Heal.
+
+Every measured rank against its base cast time rule (cast time / 3.5, uncapped: Heal 0.857, Greater Heal 1.143),
+at 749 bonus healing (the Heal rows carry the 741 uncertainty, about +1%):
+
+| Spell | Level | Coefficient | / base rule |
+|---|---|---|---|
+| Heal r1 | 16 | 0.566 | 0.66 |
+| Heal r2 | 22 | 0.706 | 0.82 |
+| Heal r3 | 28 | 0.833 | 0.97 |
+| Heal r4 | 34 | 0.886 | 1.03 |
+| Greater Heal r1 | 40 | 1.192 | 1.04 |
+| Greater Heal r5 | 60 | 1.146 | 1.00 |
+
+Read against spell level, the ratio rises steeply through the low levels, peaks around 1.04 near levels 34-40, then
+settles back to 1.00 at level 60. One smooth level curve times the base cast time fits all six points, but that is
+a reading of six points, not a formula. Greater Heal ranks 2-4 (levels 46, 52, 58) and Flash Heal would test it.
