@@ -241,3 +241,12 @@ Casting speed 1.25 x 1.02 = **1.275**: Heal (3.0 - 0.5) / 1.275 = 1.96 sec and G
 2.745 sec, which is what the game shows. The sim multiplies enchant haste into the cast speed
 (`sim/core/character.go`), so its Heal / Greater Heal cast times already match; the "sim is about 2% slow" note
 above does not apply, and the haste gap is not an open item. Coefficient conclusions are unchanged.
+
+### Greater Heal rank 5: updated sample 3614-3926 (Lokiy 2026-11-02, 749 bonus healing)
+
+Min seen 3614 means bonus <= 3614 - 2752 = 862; max seen 3926 means bonus >= 3926 - 3071 = 855. So the bonus is
+**855-862** and the coefficient **1.1415-1.1509**. 4 / 3.5 = 1.1429 (bonus 856, range 3608-3927) is inside it; the
+seen max is 1 under that range's top.
+
+Next: Greater Heal rank 1 (level 40, base 1263-1423). If the coefficient is also 1.143 (bonus 856) it should show
+about **2119-2279**; clearly lower means Greater Heal's low ranks have a rank rule like Heal's.
