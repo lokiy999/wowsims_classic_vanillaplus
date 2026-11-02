@@ -30,3 +30,7 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 
 - db.lokiy.dev /ilvl: Lokiy's item level values (`OVERRIDES`, suggestions only): Ragnaros Core 65 -> 72 (+20 Fire Resistance and a random affix: worth about 64 with a typical roll, 72 with a resistance roll), Ancient Cornerstone Grimoire 76 -> 70 (stats worth about 62; Onyxia's other drops 71-75).
 - db.lokiy.dev /ilvl: Lokiy's value Nat Pagle's Fish Terminator 65 -> 71 (Vanilla+ added +152 attack power in Cat and Bear forms: stats worth 64.5 before, about 89 now; Zul'Gurub's top level). The rest of Zul'Gurub stays as it is (Lokiy).
+
+## 2026-11-02
+
+- docs/COEFFICIENTS.md (new): working document for spell coefficients, started with priest healing (classic-rule coefficients, expected healing with 408 bonus healing, open items). Greater Heal and Prayer of Healing are 4 sec baseline (Lokiy); the sim still has 3 sec (open item, not changed yet).
