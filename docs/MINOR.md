@@ -33,4 +33,4 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 
 ## 2026-11-02
 
-- docs/COEFFICIENTS.md (new): working document for spell coefficients, started with priest healing (classic-rule coefficients, expected healing with 408 bonus healing, open items). Greater Heal and Prayer of Healing are 4 sec baseline (Lokiy); the sim still has 3 sec (open item, not changed yet).
+- docs/COEFFICIENTS.md (new): working document for spell coefficients, started with priest healing (classic-rule coefficients, expected healing with 408 bonus healing, open items). Greater Heal and Prayer of Healing are 4 sec baseline (Lokiy); the sim still has 3 sec (open item, not changed yet). Added first in-game measurements (Heal r2, r4).
