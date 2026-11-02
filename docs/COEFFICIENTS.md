@@ -134,3 +134,24 @@ Heal so far (749 bonus healing):
 
 The coefficient rises with rank but flattens: +0.127 from r2 to r3, +0.053 from r3 to r4. No formula yet. Rank 1
 (level 16) would be the fourth point; a rough curve through the three points suggests about 0.5 (673-719).
+
+### Heal rank 1 test (Lokiy 2026-11-02)
+
+Heal rank 1, non-crit, bonus healing 749: **719-765** (so far).
+
+- Spread 46; the base roll is 295-341 (46). Bonus part = 719 - 295 = 424 and 765 - 341 = 424: **424**.
+  Coefficient = 424 / 749 = **0.566** (my rough curve guessed 0.5; classic with the level-16 penalty would be 0.729).
+
+Heal, all four ranks (749 bonus healing, Spiritual Guidance included, no healing multipliers):
+
+| Rank | Level | Base roll | Seen | Bonus part | Coefficient | Classic rule |
+|---|---|---|---|---|---|---|
+| 1 | 16 | 295-341 | 719-765 | 424 | 0.566 | 0.729 |
+| 2 | 22 | 429-491 | 958-1019 | 528.5 | 0.706 | 0.857 |
+| 3 | 28 | 566-642 | 1190-1265 | 623.5 | 0.833 | 0.857 |
+| 4 | 34 | 712-804 | 1376-1467 | 663.5 | 0.886 | 0.857 |
+
+Step between ranks: +0.140, +0.127, +0.053. Close to +0.022 per level for ranks 1-3 (about (level + 9.5) / 45), then
+rank 4 falls well short of that line (it would give 0.97) and looks capped near 0.886. Rank 1 / 0.85 (the level-16
+penalty) = 0.666, which may be a coincidence. No clean formula yet; the coefficients may be set per rank by the server.
+Better source if available: the server's own spell bonus table (a spell_bonus_data-style table in its world database).
