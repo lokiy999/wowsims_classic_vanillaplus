@@ -7,6 +7,7 @@ let byId: Record<string, string> = {};
 let byName: Record<string, string> = {};
 let quests = new Set<number>();
 let zones = new Set<number>();
+let zoneAliases: Record<string, number> = {};
 
 export async function loadDbNpcs(): Promise<void> {
 	try {
@@ -17,6 +18,7 @@ export async function loadDbNpcs(): Promise<void> {
 		byName = data.names ?? {};
 		quests = new Set<number>(data.quests ?? []);
 		zones = new Set<number>(data.zones ?? []);
+		zoneAliases = data.zoneAliases ?? {};
 	} catch {
 		// keep Wowhead's NPC links
 	}
@@ -33,9 +35,10 @@ export function dbQuestUrl(questId: number): string | undefined {
 	return quests.has(questId) ? `${DB_SITE}/quest/${questId}` : undefined;
 }
 
-// db.lokiy.dev's zone page (Part HT), if it has one.
+// db.lokiy.dev's zone page (Part HT), if it has one; a few sim zones have another id there (Part IN).
 export function dbZoneUrl(zoneId: number): string | undefined {
-	return zones.has(zoneId) ? `${DB_SITE}/zone/${zoneId}` : undefined;
+	const id = zoneAliases[String(zoneId)] ?? zoneId;
+	return zones.has(id) ? `${DB_SITE}/zone/${id}` : undefined;
 }
 
 // db.lokiy.dev's page for a source shown by name only (a boss without a creature id, the server's own bosses).

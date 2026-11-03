@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """assets/database/db_npcs.json = the NPC pages db.lokiy.dev has, for the sim UI's NPC links (ui/core/db_npcs.ts):
 
-  {"ids": {creature id: page}, "names": {name: page}, "quests": [quest ids], "zones": [zone ids]}
+  {"ids": {creature id: page}, "names": {name: page}, "quests": [quest ids], "zones": [zone ids],
+   "zoneAliases": {sim zone id: db.lokiy.dev zone id}}
   (page = the URL's path on db.lokiy.dev, e.g. "/npc/11502"; quests = the ones with a /quest/<id> page, Part GO;
-  zones = the ones with a /zone/<id> page, from its api/zones.json, Part HT)
+  zones = the ones with a /zone/<id> page, from its api/zones.json, Part HT; zoneAliases = sim zones whose id differs
+  from db.lokiy.dev's for the same name, e.g. Zul'Gurub 1977 -> 19, Part IN)
 
 ids from its api/npcs.json (every NPC with a page); names for the sources the sim shows by name only (bosses without
 a creature id in the sim DB, the server's own bosses): its bosses in api/npcs.json with a unique name, then
@@ -20,6 +22,7 @@ import os
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_API = os.environ.get("DB_API", "/var/www/db/api")
 OUT = os.path.join(REPO, "assets/database/db_npcs.json")
+SIM_DB = os.path.join(REPO, "assets/database/db.json")
 SITE = "https://db.lokiy.dev"
 
 
@@ -42,16 +45,22 @@ def main():
     if os.path.exists(os.path.join(DB_API, "quests.json")):
         with open(os.path.join(DB_API, "quests.json"), encoding="utf-8") as f:
             quests = sorted(int(k) for k in json.load(f))
-    zones = []
+    zones, aliases = [], {}
     if os.path.exists(os.path.join(DB_API, "zones.json")):
         with open(os.path.join(DB_API, "zones.json"), encoding="utf-8") as f:
-            zones = sorted(int(k) for k in json.load(f))
+            db_zones = json.load(f)
+        zones = sorted(int(k) for k in db_zones)
+        by_name = {v["name"]: int(k) for k, v in db_zones.items()}
+        with open(SIM_DB, encoding="utf-8") as f:
+            for z in json.load(f).get("zones", []):
+                if z["id"] not in db_zones and str(z["id"]) not in db_zones and z.get("name") in by_name:
+                    aliases[str(z["id"])] = by_name[z["name"]]
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump({"ids": {str(k): ids[k] for k in sorted(ids)}, "names": dict(sorted(names.items())), "quests": quests,
-                   "zones": zones},
+                   "zones": zones, "zoneAliases": aliases},
                   f, ensure_ascii=False, separators=(",", ":"))
         f.write("\n")
-    print(f"wrote {OUT}: {len(ids)} NPC ids, {len(names)} names, {len(quests)} quests, {len(zones)} zones")
+    print(f"wrote {OUT}: {len(ids)} NPC ids, {len(names)} names, {len(quests)} quests, {len(zones)} zones, {len(aliases)} zone aliases")
 
 
 if __name__ == "__main__":

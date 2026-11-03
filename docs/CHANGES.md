@@ -6136,3 +6136,17 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   value: the enum has gaps, so Casting Speed (34) fell outside it and showed NaN.
 - Checked in the browser on the shadow priest: Casting Speed 25.00% (Talents), Spell Pen 40, Spell Crit tooltip Holy
   10.79%.
+
+## Part IN — gear picker: zone names link to db.lokiy.dev (2026-11-03)
+
+- Lokiy: sim zone links to db.lokiy.dev. Part HT made `makeZoneUrl` / `dbZoneUrl` point there, but nothing showed a
+  zone link: in the gear picker's source column the zone name was plain text inside the boss's link.
+- `ui/core/components/gear_picker/item_list.tsx`: a drop source with a zone is two links now, the zone name to its
+  db.lokiy.dev zone page (plain text when it has none, never Wowhead) and the boss to its own page as before.
+- Three sim zones have another id on db.lokiy.dev for the same name: Zul'Gurub 1977 -> 19, Zul'Farrak 1176 -> 978,
+  Gnomeregan 721 -> 133. `tools/gen_db_npcs.py` writes them as `zoneAliases` in `db_npcs.json` (sim zones not on
+  db.lokiy.dev, matched by name to its api/zones.json); `ui/core/db_npcs.ts` `dbZoneUrl()` follows them.
+- Of the 42 zones items drop in, 41 link now; "World Boss" (900001) has no page and stays plain text.
+- Checked on sim.lokiy.dev (mage, Neck): Zul'Gurub -> /zone/19, Gnomeregan -> /zone/133, Molten Core -> /zone/2717,
+  Onyxia's Lair, Dire Maul, Scarlet Monastery and others.
+

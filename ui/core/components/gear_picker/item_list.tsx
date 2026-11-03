@@ -1,4 +1,4 @@
-import { dbNpcUrlByName } from '../../db_npcs.js';
+import { dbNpcUrlByName, dbZoneUrl } from '../../db_npcs.js';
 import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
@@ -616,6 +616,29 @@ export default class ItemList<T extends ItemListType> {
 				</a>
 			);
 		};
+		// A drop's zone and boss as two links: the zone to its db.lokiy.dev page (plain text when it has none), the boss
+		// to its own page.
+		const makeDropSource = (zoneId: number, zoneName: string, href: string, name: string) => {
+			const zoneUrl = dbZoneUrl(zoneId);
+			return (
+				<div className="d-flex">
+					{this.getDropSourceIcon()}
+					<small>
+						{zoneUrl ? (
+							<a href={zoneUrl} target="_blank" dataset={{ whtticon: 'false' }}>
+								{zoneName}
+							</a>
+						) : (
+							zoneName
+						)}
+						<br />
+						<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>
+							{name}
+						</a>
+					</small>
+				</div>
+			);
+		};
 
 		if (!item.sources || item.sources.length == 0) {
 			if (item.randomSuffixOptions.length) {
@@ -647,14 +670,14 @@ export default class ItemList<T extends ItemListType> {
 			const zone = sim.db.getZone(src.zoneId);
 			const npc = sim.db.getNpc(src.npcId);
 
-			if (npc) {
+			if (npc && zone) {
+				return makeDropSource(zone.id, zone.name, ActionId.makeNpcUrl(npc.id), npc.name + (src.category ? ` - ${src.category}` : ''));
+			} else if (npc) {
 				return makeAnchor(
 					ActionId.makeNpcUrl(npc.id),
 					<div className="d-flex">
 						{this.getDropSourceIcon()}
 						<span>
-							{zone && zone.name}
-							{zone && <br />}
 							{npc.name}
 							{src.category && ` - ${src.category}`}
 						</span>
@@ -662,16 +685,11 @@ export default class ItemList<T extends ItemListType> {
 				);
 			} else if (zone) {
 				// A boss shown by name only (no creature id): its db.lokiy.dev page when it has one, else the item's.
-				return makeAnchor(
+				return makeDropSource(
+					zone.id,
+					zone.name,
 					(src.otherName && dbNpcUrlByName(src.otherName)) || ActionId.makeItemUrl(item.id),
-					<div className="d-flex">
-						{this.getDropSourceIcon()}
-						<span>
-							{zone.name}
-							<br />
-							{src.otherName ? src.otherName : 'Multiple Sources'}
-						</span>
-					</div>,
+					src.otherName ? src.otherName : 'Multiple Sources',
 				);
 			}
 			return makeAnchor(
