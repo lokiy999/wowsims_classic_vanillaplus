@@ -210,3 +210,6 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 - `private-server-item-rules.md` "Known implementation wrinkles" no longer says `gen_phases.py` only scans
   `Instances/` (Part FK).
 - Talent hit/crit (Spell Focus, Force of Will, Holy Specialization) not on the sidebar: shown (Part IM, 2026-11-03).
+- Zone links to db.lokiy.dev (Part HT), Season of Discovery out of the sim and db.lokiy.dev (Parts HV / HU, incl.
+  the ~60 boss drops linked to SoD NPC ids), object pages on db.lokiy.dev (Part HU): the 2026-10-31 NEXT UP list,
+  moved from TODO.md 2026-11-03.

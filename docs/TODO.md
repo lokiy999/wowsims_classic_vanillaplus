@@ -5,21 +5,6 @@ Things either of us raised that are still open. Finished, answered or decided it
 
 _Cleaned up 2026-09-25 (after Part DH)._
 
-## NEXT UP: approved by Lokiy 2026-10-31 (start on these; sent from the hub chat)
-
-The generator parts (tools/itemdb) follow the Part HR rules: db.lokiy.dev is the only source, the sim keeps reading it,
-back up before changing, and tell the Database chat if it is running. Short summary to the hub chat after each.
-Keep: the "Wowhead" reference link on every db.lokiy.dev page, and the sim's Wowhead gear-planner import / export.
-
-1. **Sim zone links to db.lokiy.dev**: done (Part HT). `makeZoneUrl` goes to db.lokiy.dev/zone/<id> for its 73
-   zone pages, Wowhead only for the others. db.lokiy.dev has no zone link to Wowhead besides the kept reference link.
-2. **Remove everything from Season of Discovery**: done for data, links and lists (Part HV). The sim code had no
-   SoD-only parts left (runes and Seal of Martyrdom went earlier, the phases and level 60 are Vanilla+'s), so no
-   code-level list was needed; only comments mention SoD. db.lokiy.dev's side: Part HU (Database chat).
-3. **Object (chest / node) pages on db.lokiy.dev**: done (Part HU, Database chat 2026-10-31). 620 /object pages
-   with the loot tracker's chests as their own layer, item pages link to them, no link to a missing page. Still
-   Wowhead (no page here): 11 items and 9 quests, listed in Part HU.
-
 ## Lokiy's list: implement next time Lokiy asks what to implement (added 2026-09-30)
 
 Do not start these on your own; bring them up when Lokiy asks what to work on next.
@@ -238,8 +223,6 @@ the sim.
 - Loot-table sources only cover dungeons, raids and world bosses; crafted, faction, PvP, quest and vendor sources are
   db.lokiy.dev's Wowhead classic ones (Part FK). The database could build those from its AtlasLoot `Crafting/`,
   `Factions/` and `PvP/` tables instead.
-- The sim's NPC list (Wowhead-derived) links about 60 boss drops to Season of Discovery NPC ids (Ghamoo-ra, Aku'mai,
-  Thermaplugg, Lady Sarevess ...) where only that copy exists. NPC ids from db.lokiy.dev would fix it.
 
 ## Class notes still open (from the 2026-09-19/20 audits; checked against the code 2026-09-29, Part DO)
 
@@ -320,6 +303,8 @@ there is more to say.
 
 ## Item database site db.lokiy.dev (Parts EN-ET)
 
+- **Still on Wowhead (no db.lokiy.dev page):** 11 items and 9 quests, listed in Part HU; 5 crafts and 4 vendor items
+  still come from Wowhead.
 - Crafted / faction sources from AtlasLoot: done (Part HB). Still from Wowhead on 2026-10-30, counting only items still
   on db.lokiy.dev (after Parts HF-HI). Each line is open; Lokiy picks which comes next.
   - PvP rank items: done (Part HJ). All 282 now name a rank vendor from our NPC data. Check later that Dirgehammer,
