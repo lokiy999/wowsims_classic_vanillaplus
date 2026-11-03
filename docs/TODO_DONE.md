@@ -213,3 +213,5 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
 - Zone links to db.lokiy.dev (Part HT), Season of Discovery out of the sim and db.lokiy.dev (Parts HV / HU, incl.
   the ~60 boss drops linked to SoD NPC ids), object pages on db.lokiy.dev (Part HU): the 2026-10-31 NEXT UP list,
   moved from TODO.md 2026-11-03.
+- 26408 Omega Orb / 26409 Explorers League Commendation show as trinkets (Part IP, 2026-11-03).
+- Hunter / Enhancement Shaman / DPS Warrior tests pass again (Part IO, 2026-11-03).
