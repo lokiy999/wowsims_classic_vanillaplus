@@ -327,8 +327,9 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
 	}
+	// Without stats derived from other stats, but with each stat's own multipliers (Part IL).
 	measureRawStats := func() *proto.UnitStats {
-		return &proto.UnitStats{Stats: character.stats.ToFloatArray()}
+		return &proto.UnitStats{Stats: character.ApplyStatMultipliers(character.stats).ToFloatArray()}
 	}
 
 	applyRaceEffects(agent)

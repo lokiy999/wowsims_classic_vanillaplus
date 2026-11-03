@@ -273,6 +273,21 @@ func (sdm *StatDependencyManager) ApplyStatDependencies(s Stats) Stats {
 	return s
 }
 
+// ApplyStatMultipliers applies only the enabled multipliers of a stat on itself (Kings, +15% Intellect, ...), not
+// stats derived from other stats; primary stats are rounded down. The stat tooltip uses it so a multiplier shows
+// under its own source (Talents, Buffs) rather than "From other stats" (Part IL).
+func (sdm *StatDependencyManager) ApplyStatMultipliers(s Stats) Stats {
+	for _, dep := range sdm.deps {
+		if dep.enabled && dep.src == dep.dst {
+			s[dep.dst] *= dep.amount
+		}
+	}
+	for _, p := range PrimaryStats {
+		s[p] = floorStat(s[p])
+	}
+	return s
+}
+
 func (sdm *StatDependencyManager) SortAndApplyStatDependencies(s Stats) Stats {
 	sdm.sortDeps()
 	return sdm.ApplyStatDependencies(s)

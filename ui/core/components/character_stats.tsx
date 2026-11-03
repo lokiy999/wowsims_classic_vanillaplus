@@ -170,7 +170,8 @@ export class CharacterStats extends Component {
 		const bonusStats = player.getBonusStats();
 
 		// Each source is shown without stat dependencies (an item's own armor, not the armor from its Agility); what
-		// the dependencies add (armor from Agility, AP from Strength, Kings, ...) is shown as "From other stats".
+		// the dependencies add (armor from Agility, AP from Strength, ...) is shown as "From other stats". A stat's own
+		// multiplier (Kings, Physical Prowess) counts toward its source (Part IL).
 		const hasRaw = !!playerStats.consumesStatsRaw;
 		const raw = (s: typeof playerStats.baseStats, fallback: Stats) => (hasRaw && s ? Stats.fromProto(s) : fallback);
 		const baseRaw = raw(playerStats.baseStatsRaw, baseStats);

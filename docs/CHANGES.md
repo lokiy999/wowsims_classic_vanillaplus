@@ -6096,3 +6096,15 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   then the N/A ones by item level.
 - Result: 53 of the 209 trinkets get an EP value (e.g. Neltharion's Tear 55 with the shadow priest's weights), 156
   are N/A. Checked in the browser.
+
+## Part IL — stat multipliers shown under their own source in the stat tooltip (2026-11-03)
+
+- Lokiy: the rogue talent Physical Prowess (+100% Strength at 2/2) showed in the Strength tooltip as "From other
+  stats" (145), with Talents 0. The tooltip's per-source rows used the stats with no dependencies at all, so every
+  stat multiplier (talents, Kings, ...) ended up in "From other stats".
+- `sim/core/stats/deps.go`: new `ApplyStatMultipliers`, which applies only the enabled multipliers of a stat on itself
+  and rounds primary stats down (Part II); stats derived from other stats are left out.
+- `sim/core/character.go`: the per-phase raw stats (`*StatsRaw`) now include those multipliers, so a multiplier counts
+  toward the phase that added it: Physical Prowess and +15% Intellect under Talents, Kings under Buffs. "From other
+  stats" is now only stats derived from other stats (AP from Strength, armor from Agility, mana from Intellect, ...).
+- `sim/stat_sources_test.go` (new): with Physical Prowess 2/2, the talent phase has twice the gear phase's Strength.
