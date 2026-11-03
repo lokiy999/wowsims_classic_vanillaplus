@@ -50,10 +50,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatFirePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatSpellPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 		// Elemental Precision: +5%/rank hit with Fire, Frost and Nature spells, applied per spell in the sim so it is not in
@@ -63,7 +64,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFire, hit);
 		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitFrost, hit);
 		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitNature, hit);
-		return { talents: stats };
+		// Call of Thunder (+2%/rank) and Tidal Mastery (+1%/rank): crit on Lightning Bolt and Chain Lightning.
+		const talents = player.getTalents();
+		return { talents: stats, schoolCrit: { lightning: talents.callOfThunder * 2 + talents.tidalMastery * 1 } };
 	},
 
 	defaults: {

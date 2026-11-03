@@ -50,9 +50,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatShadowPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {
 		const talents = player.getTalents();

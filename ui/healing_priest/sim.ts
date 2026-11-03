@@ -2,7 +2,7 @@ import * as ConsumablesInputs from '../core/components/inputs/consumables';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
-import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as HealingPriestInputs from './inputs.js';
@@ -23,7 +23,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 	epReferenceStat: Stat.StatHealingPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5, Stat.StatArmor],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
+
+	// Holy Specialization: +1%/rank crit on Holy spells (all priest heals), applied per spell in the sim.
+	modifyDisplayStats: (player: Player<Spec.SpecHealingPriest>) => ({ schoolCrit: { holy: player.getTalents().holySpecialization * 1 } }),
 
 	defaults: {
 		// Default equipped gear.

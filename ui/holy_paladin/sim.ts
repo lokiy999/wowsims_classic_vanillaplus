@@ -2,7 +2,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation } from '../core/proto/apl.js';
-import { BlessingOfKingsType, Class, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../core/proto/common.js';
+import { BlessingOfKingsType, Class, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as HolyPaladinInputs from './inputs.js';
@@ -22,7 +22,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	epReferenceStat: Stat.StatHealingPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	modifyDisplayStats: (player: Player<Spec.SpecHolyPaladin>) => {
 		// Holy Power: +2%/rank crit on Holy spells only (applied per school in the sim), shown in the Spell Crit tooltip.

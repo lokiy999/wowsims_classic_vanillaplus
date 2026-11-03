@@ -6117,3 +6117,22 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - `sim/stat_sources_test.go` (new): Physical Prowess adds the gear-phase Strength again under Talents; Deadliness 5/5
   is 1/6 of the final Attack Power; Spiritual Guidance 2/2 is 20% of Spirit; the attributed primary stats equal the
   final ones.
+
+## Part IM — sidebar: talent crit, spell penetration and casting speed (2026-11-03)
+
+- Lokiy picked two quick items: talent hit / crit in the sidebar, and spell penetration and haste in the stats panel
+  (the sim used them, e.g. 40 spell penetration and 25% casting speed on the shadow priest, but didn't show them).
+- Talent hit / crit: Spell Focus, Force of Will, Shadow Focus, and the mage, warlock, elemental and balance hit /
+  crit talents were already shown (earlier parts). Missing ones added to the Spell Crit tooltip: Holy Specialization
+  (+1%/rank Holy crit) on the shadow, smite and healing priest pages; Arctic Gale (+2%/rank Frost crit) on the mage
+  page; Call of Thunder and Tidal Mastery on the elemental page as a new "Lightning" row (they only apply to Lightning
+  Bolt and Chain Lightning; `SchoolCritMods.lightning`). Spell-specific ones (Incinerate, Improved Moonfire, Bring
+  the Pain, Call of Flame, ...) aren't shown.
+- Spell penetration: added to the stat list of the DPS caster pages (shadow, smite, mage, warlock, elemental,
+  balance).
+- Casting speed: `GetPseudoStatsProto` (sim/core/character.go) now sends `CastSpeedMultiplier`, and the per-phase raw
+  stats (Part IL) carry pseudo stats too. The sidebar shows it as haste % (1.25 = 25.00%, split by source) on every
+  caster page, DPS and healer. `ui/core/proto_utils/stats.ts`: the pseudo-stat array is now sized by the largest enum
+  value: the enum has gaps, so Casting Speed (34) fell outside it and showed NaN.
+- Checked in the browser on the shadow priest: Casting Speed 25.00% (Talents), Spell Pen 40, Spell Crit tooltip Holy
+  10.79%.

@@ -11,9 +11,16 @@ import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
 // schoolCrit: extra spell crit % that only applies to one school (e.g. Critical Mass for Fire), shown in the Spell Crit tooltip.
-export type SchoolCritMods = { arcane?: number; fire?: number; frost?: number; holy?: number; nature?: number; shadow?: number };
+// lightning: Lightning Bolt and Chain Lightning only (Call of Thunder, Tidal Mastery).
+export type SchoolCritMods = { arcane?: number; fire?: number; frost?: number; holy?: number; nature?: number; shadow?: number; lightning?: number };
 // rangedCrit: extra crit % that only applies to ranged attacks (e.g. Lethal Shots), shown in the Melee Crit tooltip.
 export type StatMods = { talents?: Stats; buffs?: Stats; schoolCrit?: SchoolCritMods; rangedCrit?: number };
+
+// Casting speed comes from the sim as a multiplier (1.25 = 25% faster); shown as haste % so the sources add up (Part IM).
+function asHaste(s: Stats): Stats {
+	const v = s.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
+	return s.withPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier, v ? v - 1 : 0);
+}
 
 const statGroups = new Map<string, Array<UnitStat>>([
 	['Primary', [UnitStat.fromStat(Stat.StatHealth), UnitStat.fromStat(Stat.StatMana)]],
@@ -161,11 +168,11 @@ export class CharacterStats extends Component {
 		if (!statMods.talents) statMods.talents = new Stats();
 		if (!statMods.buffs) statMods.buffs = new Stats();
 
-		const baseStats = Stats.fromProto(playerStats.baseStats);
-		const gearStats = Stats.fromProto(playerStats.gearStats);
-		const talentsStats = Stats.fromProto(playerStats.talentsStats);
-		const buffsStats = Stats.fromProto(playerStats.buffsStats);
-		const consumesStats = Stats.fromProto(playerStats.consumesStats);
+		const baseStats = asHaste(Stats.fromProto(playerStats.baseStats));
+		const gearStats = asHaste(Stats.fromProto(playerStats.gearStats));
+		const talentsStats = asHaste(Stats.fromProto(playerStats.talentsStats));
+		const buffsStats = asHaste(Stats.fromProto(playerStats.buffsStats));
+		const consumesStats = asHaste(Stats.fromProto(playerStats.consumesStats));
 		const debuffStats = this.getDebuffStats();
 		const bonusStats = player.getBonusStats();
 
@@ -174,7 +181,7 @@ export class CharacterStats extends Component {
 		// Multipliers and conversions from talents, buffs, etc. (Physical Prowess, Kings, Spiritual Guidance) count
 		// toward that source (Part IL).
 		const hasRaw = !!playerStats.consumesStatsRaw;
-		const raw = (s: typeof playerStats.baseStats, fallback: Stats) => (hasRaw && s ? Stats.fromProto(s) : fallback);
+		const raw = (s: typeof playerStats.baseStats, fallback: Stats) => (hasRaw && s ? asHaste(Stats.fromProto(s)) : fallback);
 		const baseRaw = raw(playerStats.baseStatsRaw, baseStats);
 		const gearRaw = raw(playerStats.gearStatsRaw, gearStats);
 		const talentsRaw = raw(playerStats.talentsStatsRaw, talentsStats);
@@ -188,7 +195,7 @@ export class CharacterStats extends Component {
 		const consumesDelta = consumesRaw.subtract(buffsRaw);
 		const derivedDelta = consumesStats.subtract(consumesRaw);
 
-		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(statMods.buffs).add(debuffStats);
+		const finalStats = asHaste(Stats.fromProto(playerStats.finalStats)).add(statMods.talents).add(statMods.buffs).add(debuffStats);
 
 		let idx = 0;
 		this.stats.forEach(stat => {
@@ -354,6 +361,7 @@ export class CharacterStats extends Component {
 					['Holy', schoolCrit.holy],
 					['Nature', schoolCrit.nature],
 					['Shadow', schoolCrit.shadow],
+					['Lightning', schoolCrit.lightning],
 				];
 				tooltipContent.appendChild(
 					<div className="ps-2">

@@ -3,7 +3,8 @@ import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
 
 const STATS_LEN = getEnumValues(Stat).length;
-const PSEUDOSTATS_LEN = getEnumValues(PseudoStat).length;
+// The enum has gaps (Casting Speed is 34), so the array is sized by the largest value, not the count (Part IM).
+const PSEUDOSTATS_LEN = Math.max(...(getEnumValues(PseudoStat) as Array<number>)) + 1;
 
 export class UnitStat {
 	private readonly stat: Stat | null;

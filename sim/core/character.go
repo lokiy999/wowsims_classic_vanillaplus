@@ -334,7 +334,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	measureRawStats := func() *proto.UnitStats {
 		rawStats = append(rawStats, character.stats)
 		depSnaps = append(depSnaps, character.SnapshotStatDeps())
-		return &proto.UnitStats{}
+		return &proto.UnitStats{PseudoStats: character.GetPseudoStatsProto()}
 	}
 
 	applyRaceEffects(agent)
@@ -669,6 +669,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
+		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   float64(character.PseudoStats.CastSpeedMultiplier),
 		proto.PseudoStat_PseudoStatBlockValuePerStrength: float64(character.PseudoStats.BlockValuePerStrength),
 
 		proto.PseudoStat_BonusPhysicalDamage: float64(character.PseudoStats.BonusPhysicalDamage),

@@ -209,3 +209,4 @@ The class notes in TODO.md had items that were already done in earlier parts; mo
   db.lokiy.dev's api/sources.json; its own AtlasLoot parse and the Wowhead / upstream sources are gone (Part FK).
 - `private-server-item-rules.md` "Known implementation wrinkles" no longer says `gen_phases.py` only scans
   `Instances/` (Part FK).
+- Talent hit/crit (Spell Focus, Force of Will, Holy Specialization) not on the sidebar: shown (Part IM, 2026-11-03).

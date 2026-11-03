@@ -62,11 +62,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatHolyPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatSpellPenetration,
 		Stat.StatMP5,
 		// Defensive
 		Stat.StatArmor,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();
@@ -79,6 +80,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 		return {
 			talents: stats,
+			// Holy Specialization: +1%/rank crit on Holy spells (Smite, Holy Fire, heals).
+			schoolCrit: { holy: talents.holySpecialization * 1 },
 		};
 	},
 

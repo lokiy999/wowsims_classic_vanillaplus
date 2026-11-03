@@ -47,10 +47,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatSpellPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	modifyDisplayStats: (player: Player<Spec.SpecBalanceDruid>) => {
 		// Omnipresence: -2%/rank resist chance for Balance spells (Wrath, Starfire, Moonfire, Insect Swarm), applied per spell

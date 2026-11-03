@@ -47,10 +47,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatFrostPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatSpellPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	defaults: {
 		// Default equipped gear.
@@ -99,7 +100,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		return {
 			talents: stats,
 			// Critical Mass: +1%/rank crit on Fire spells only, shown in the Spell Crit tooltip.
-			schoolCrit: { arcane: 0, fire: talents.criticalMass * 1, frost: 0 },
+			// Arctic Gale: +2%/rank crit on Frost spells.
+			schoolCrit: { arcane: 0, fire: talents.criticalMass * 1, frost: talents.arcticGale * 2 },
 		};
 	},
 

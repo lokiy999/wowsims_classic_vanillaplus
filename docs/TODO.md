@@ -290,8 +290,6 @@ there is more to say.
 **Priest**
 - Power Word: Requital coefficient is a placeholder (1.5/3.5).
 - Spirit Tap never procs (needs kills); Blackout, Blur, Focused Casting, Insanity and the other utility talents.
-- Talent hit/crit (Spell Focus, Force of Will, Holy Specialization) is applied per spell, so it does not show on the
-  sidebar Spell Hit/Crit lines.
 
 ## Buffs
 
