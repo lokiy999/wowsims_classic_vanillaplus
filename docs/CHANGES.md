@@ -6165,3 +6165,13 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   db.lokiy.dev data since 19:00 today ("repo has uncommitted work"). Restored to git's version; the edited copy is
   `ui/index.html.bak-2026-11-03`.
 
+## Part IP — Omega Orb and Explorers' League Commendation are trinkets (2026-11-03)
+
+- Found in Part HY: 26408 Omega Orb and 26409 Explorers' League Commendation are trinkets on the server, but the sim
+  had them as an off-hand (type 13) and a neck (type 2), green, item level 41, so they never showed as trinkets.
+- Cause: `docs/parse_vplus.py`'s name pass took them for renumbered classic items (classic 7749 Omega Orb is an
+  off-hand, 7746 Explorers' League Commendation a neck), so the sim kept the classic item's slot, quality and level.
+- `parse_vplus.py`: a name match needs the same slot. A sim item whose slot isn't the server's (only these two, checked
+  over every item) comes in again as a new item with the server's slot, quality (rare) and db.lokiy.dev's item level
+  (70); its renumbering is dropped. Nothing else in `custom_items.json` changes.
+

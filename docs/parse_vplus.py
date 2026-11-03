@@ -440,6 +440,18 @@ def main():
     out = []
     used_db_ids = set()
     renumber = {}   # {old sim id: new server id} for pieces the server renumbered
+
+    # A server item that only shares its name with a classic one is a different item: Omega Orb (26408) and
+    # Explorers' League Commendation (26409) are trinkets on Vanilla+, classic's 7749 / 7746 an off-hand and a neck.
+    # Name matches need the same slot (Part IP). Earlier runs renumbered such items onto the classic entry, which then
+    # kept the classic slot, quality and item level: any sim item whose slot isn't the server's comes in again as a
+    # new item (pass 3) with the server's values (checked 2026-11-03: only these two).
+    def other_slot(sim_type, server_id):
+        server_type = lua_parsed[server_id].get("type") if server_id in lua_parsed else None
+        return bool(sim_type and server_type and sim_type != server_type)
+    readd = {it["id"] for it in db_items if other_slot(it.get("type"), it["id"])}
+    if readd:
+        print(f"renumbered onto another slot, added as new items: {sorted(readd)}")
     n_id = n_name = n_setslot = n_shape = n_new = 0
     ambiguous = []
 
@@ -455,7 +467,7 @@ def main():
     #    also carries a higher "server" id (>=24000) for the same name -- that means
     #    the server renumbered the piece and pass 2 should map old -> new instead.
     for iid, lines in sorted(lua.items()):
-        if iid not in have:
+        if iid not in have or iid in readd:
             continue
         newer = lua_by_name.get(lines[0])
         if newer is not None and newer != iid and newer >= 24000 and newer not in have:
@@ -471,6 +483,8 @@ def main():
             continue
         lua_id = lua_by_name.get(it["name"])
         if lua_id is None or lua_id in have:
+            continue
+        if other_slot(it.get("type"), lua_id):
             continue
         if db_name_counts[it["name"]] > 1:
             ambiguous.append((it["id"], it["name"]))
@@ -560,8 +574,10 @@ def main():
     except OSError:
         add_items = {}
     renumber_targets = set(renumber.values())
+    with open(sd.ITEMS_JSON, encoding="utf-8") as f:
+        server_ilvl = {int(k): v.get("ilvl") for k, v in json.load(f).items() if int(k) in readd}
     for iid, lines in sorted(lua.items()):
-        if iid in have or iid in used_db_ids or iid in renumber_targets:
+        if (iid in have and iid not in readd) or iid in used_db_ids or iid in renumber_targets:
             continue
         entry, it = _entry_for(iid, lines)
         if "type" not in it and iid not in MANUAL_CONSUMABLE_ITEMS:
@@ -576,6 +592,9 @@ def main():
             entry["ilvl"] = {1: 66, 2: 66, 3: 76, 4: 80}.get(add_items[iid], 66)
         elif iid in MANUAL_CONSUMABLE_ITEMS:
             entry["phase"], entry["ilvl"] = 1, 60
+        elif iid in readd:
+            # item level from db.lokiy.dev (Part HW); the phase comes from gen_phases.py as for every item
+            entry["phase"], entry["ilvl"] = 1, server_ilvl.get(iid) or 60
         else:
             continue
         entry["name"] = it["name"]
@@ -630,7 +649,7 @@ def main():
     # nothing to renumber; without this the old classic ids come back as duplicates and presets break.
     if os.path.exists(renum_path):
         for k, v in json.load(open(renum_path)).items():
-            if int(k) not in renumber and v in lua:
+            if int(k) not in renumber and v in lua and v not in readd:
                 renumber[int(k)] = v
     json.dump({str(k): v for k, v in sorted(renumber.items())},
               open(renum_path, "w"), indent=0)
