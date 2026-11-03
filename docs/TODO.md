@@ -112,7 +112,7 @@ Things only you can answer; everything else I keep working on. Newest at the bot
     1330, Judgement 8-piece proc (23590) 334 vs 148, Consecration tick about 131 vs 95; Judgement of Command crits
     higher too. Exorcism, Crusader Strike and the Fireball proc match. Lokiy: wait before changing these.
 
-## Talents not in the sim code (regenerated 2026-09-29, Part DO: unchanged since Part DH)
+## Talents not in the sim code (regenerated 2026-11-03, Part IN: 147 left)
 
 Every talent field that no Go code reads (`Talents.<Name>` never used under `sim/`). Regenerate with a grep of
 `Talents\.` in `sim/<class>/` against `ui/core/talents/trees/<class>.json` (per class: some names like Survival
@@ -126,8 +126,9 @@ judgement) are left out on purpose. Still open for a DPS sim:
 - **Improved Hunter's Mark**: covered by the "improved" Hunter's Mark debuff option (+20%/rank, 2/2 = +40%);
   the hunter doesn't cast the mark itself, so the talent field itself stays unused.
 - **Wand Specialization** (mage, priest): wands aren't used by any rotation.
-- Needs numbers: Shaman Shamanism (chance), Hunter Thrill of the Hunt (chance), Mage Ice Shards (cast time, mana cost
-  and spell power coefficient; Cold Grip depends on it).
+- Needs numbers: Shaman Shamanism (chance), Hunter Thrill of the Hunt (chance; every rank's spell says 100%).
+- Added in Part IN with no spell power scaling (confirm in game whether spell damage adds): Ice Shards (60 Frost per
+  shard at 60) and Death and Decay (60 Shadow per tick at 60).
 - Needs a new mechanic: freeze for Shatter / Frostbite / Deep Freeze, Chain Reaction, Earthquake, Berserker's Blood
   (needs the player's health).
 
@@ -149,14 +150,14 @@ can be added now; only threat waits):
 - To check in game: Slam flat threat 140, Rockbiter Weapon threat, Shen'dralar Badge of Deterrence and threat-reducing
   trinket effects (Fetish of the Sand Reaver, Grace of Earth, Two-Faced Medallion use effects).
 
-- **Druid** (11 of 59): Cycle Of Life, Mighty Roots, Hurricane, Starfall, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Custody Of The Nature, Catharsis
+- **Druid** (9 of 59): Cycle Of Life, Mighty Roots, Starfall, Brutal Impact, Feral Charge, Leap, Untamed Heart, Natures Focus, Custody Of The Nature
 - **Hunter** (20 of 60): Improved Mend Pet, Aspect Mastery, Improved Revive Pet, Intimidation, Bestial Swiftness, Survival Instincts, Team Play, Terrifying Roar, Improved Hunters Mark, Improved Concussive Shot, Vantage Point, Hawk Eye, Improved Distracting Shot, Scatter Shot, Deterrence, Improved Wing Clip, Trapper, Thrill Of The Hunt, Deep Freeze, Wyvern Sting
-- **Mage** (21 of 60): Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Flame Throwing, Impact, Blazing Speed, Chain Reaction, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Cold Grip, Ice Mirror, Ice Shards, Ice Barrier, Advanced Ice Shielding
+- **Mage** (19 of 60): Wand Specialization, Practical Defensive Magic, Practical Offensive Magic, Flame Throwing, Impact, Blazing Speed, Chain Reaction, Frost Warding, Permafrost, Cryo Core, Frostbite, Improved Frost Nova, Cold Blood, Ice Block, Arctic Reach, Shatter, Ice Mirror, Ice Barrier, Advanced Ice Shielding
 - **Paladin** (11 of 60): Aura Mastery, Spiritual Focus, Inner Light, Unyielding Faith, Holy Purge, Improved Hammer Of Justice, Dominance, Improved Concentration Aura, Pursuit Of Justice, Divine Might, Repentance
 - **Priest** (19 of 60): Pilgrimage, Wand Specialization, Martyrdom, Improved Dispel Magic, Focused Casting, Stratagem, Holy Focus, Lights Grace, Blessed Recovery, Holy Nova, Holy Reach, Spirit Of Redemption, Holy Link, Blackout, Improved Psychic Scream, Shadow Word Numb, Improved Shadow Word Silence, Blur, Insanity
 - **Rogue** (19 of 60): Remorseless Attacks, Seek And Destroy, Vitality, Improved Kidney Shot, Total Control, Improved Gouge, Improved Sprint, Improved Kick, Dazing Bolts, Survivor, Improved Sap, Master Of Deception, Thug Life, Setup, Camouflage, Heightened Senses, Shadow Cut, Cloak Of Shadows, Enveloping Shadows
 - **Shaman** (15 of 60): Storm Reach, Earths Grasp, Sand Blast, Eye Of The Storm, Earthquake, Earth Shield, Improved Ghost Wolf, Shamanism, Spiritwalking, Totemic Mastery, Tidal Barrier, Nature Focus, Ancestral Healing, Focused Mind, Cleansing Wave
-- **Warlock** (16 of 60): Fel Concentration, Jinx, Dread, Black Speech, Withering Shroud, Death And Decay, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Master Conjuror, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Aftermath, Pyroclasm, Shock And Awe
+- **Warlock** (14 of 60): Fel Concentration, Jinx, Dread, Black Speech, Withering Shroud, Improved Healthstone, Improved Health Funnel, Improved Voidwalker, Damned Vanguard, Improved Felhunter, Improved Enslave Demon, Aftermath, Pyroclasm, Shock And Awe
 - **Warrior** (11 of 60): Improved Charge, Improved Hamstring, Combat Endurance, Piercing Howl, Blood Craze, Berserkers Blood, Mocker, Improved Defensive Stance, Concussion Blow, Iron Will, Shield Toss
 
 ## Healers (added 2026-09-24)

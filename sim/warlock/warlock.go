@@ -120,6 +120,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSearingPainSpell()
 	warlock.registerDrainLifeSpell()
 	warlock.registerRainOfFireSpell()
+	warlock.registerDeathAndDecaySpell()
 	warlock.registerDeathCoilSpell()
 
 	warlock.registerCurseOfElementsSpell()

@@ -53,9 +53,14 @@ func (warlock *Warlock) applyWeaponImbue() {
 	}
 	if warlock.Options.WeaponImbue == proto.WarlockOptions_Spellstone {
 		if level >= 55 {
-			warlock.AddStat(stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
+			// Master Conjuror (18767 / 18768): +25%/rank Spellstone and Firestone effectiveness.
+			warlock.AddStat(stats.SpellCrit, 1*warlock.masterConjurorMultiplier()*core.SpellCritRatingPerCritChance)
 		}
 	}
+}
+
+func (warlock *Warlock) masterConjurorMultiplier() float64 {
+	return 1 + 0.25*float64(warlock.Talents.MasterConjuror)
 }
 
 func (warlock *Warlock) applyFirestone() {
@@ -71,7 +76,7 @@ func (warlock *Warlock) applyFirestone() {
 	// TODO: Test PPM
 	ppm := warlock.AutoAttacks.NewPPMManager(8, core.ProcMaskMelee)
 
-	firestoneMulti := 1.0 + float64(int32(0) /*removed*/)*0.15
+	firestoneMulti := warlock.masterConjurorMultiplier()
 
 	if level >= 56 {
 		warlock.AddStat(stats.FirePower, 21*firestoneMulti)

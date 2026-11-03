@@ -7,7 +7,14 @@ import (
 	"github.com/wowsims/classic/sim/core"
 )
 
+// Hurricane is a talent on the server, Moonkin Form only: a 2 sec cast (not channeled) that leaves a 10 sec storm, so
+// the druid can keep casting while it ticks. Ranks from the server data (16914 / 17401 / 17402): damage per second
+// grows per level up to the rank's max level; 2 min cooldown.
 func (druid *Druid) registerHurricaneSpell() {
+	if !druid.Talents.Hurricane {
+		return
+	}
+
 	ranks := []struct {
 		level      int32
 		spellID    int32
@@ -16,9 +23,9 @@ func (druid *Druid) registerHurricaneSpell() {
 		damage     float64
 		scale      float64
 	}{
-		{level: 40, spellID: 16914, manaCost: 880, scaleLevel: 46, damage: 70, scale: 0.2},
-		{level: 50, spellID: 17401, manaCost: 1180, scaleLevel: 56, damage: 100, scale: 0.2},
-		{level: 60, spellID: 17402, manaCost: 1495, scaleLevel: 66, damage: 134, scale: 0.3},
+		{level: 20, spellID: 16914, manaCost: 500, scaleLevel: 30, damage: 22, scale: 0.2},
+		{level: 40, spellID: 17401, manaCost: 880, scaleLevel: 50, damage: 70, scale: 0.4},
+		{level: 60, spellID: 17402, manaCost: 1495, scaleLevel: 70, damage: 134, scale: 0.6},
 	}
 
 	for i, rank := range ranks {
@@ -27,11 +34,11 @@ func (druid *Druid) registerHurricaneSpell() {
 		}
 
 		damage := rank.damage + float64(min(druid.Level, rank.scaleLevel)-rank.level)*rank.scale
-		spell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+		spell := druid.RegisterSpell(Moonkin, core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       SpellFlagOmen | core.SpellFlagChanneled | core.SpellFlagBinary | core.SpellFlagAPL,
+			Flags:       SpellFlagOmen | core.SpellFlagBinary | core.SpellFlagAPL,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
@@ -41,7 +48,8 @@ func (druid *Druid) registerHurricaneSpell() {
 			},
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
-					GCD: core.GCDDefault,
+					CastTime: time.Second * 2,
+					GCD:      core.GCDDefault,
 				},
 				CD: core.Cooldown{
 					Timer:    druid.NewTimer(),
@@ -73,7 +81,6 @@ func (druid *Druid) registerHurricaneSpell() {
 			},
 
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				druid.AutoAttacks.CancelAutoSwing(sim)
 				spell.AOEDot().Apply(sim)
 			},
 		})

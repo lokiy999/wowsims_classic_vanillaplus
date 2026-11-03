@@ -1,6 +1,8 @@
 package druid
 
 import (
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 )
 
@@ -18,6 +20,26 @@ func (druid *Druid) registerInnervateCD() {
 	innervateCD := core.InnervateCD
 
 	innervateAura := core.InnervateAura(innervateTargetChar, actionID.Tag)
+
+	// Catharsis (33790-33792): an Innervate on someone else also gives the druid 10/20/30 sec of Innervate.
+	var catharsisAura *core.Aura
+	if druid.Talents.Catharsis > 0 && innervateTarget != &druid.Unit {
+		catharsisAura = druid.RegisterAura(core.Aura{
+			Label:    "Catharsis Innervate",
+			ActionID: core.ActionID{SpellID: []int32{0, 34242, 34243, 34244}[druid.Talents.Catharsis]},
+			Duration: time.Second * 10 * time.Duration(druid.Talents.Catharsis),
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				druid.PseudoStats.SpiritRegenMultiplier += 3 // like Innervate: +300%
+				druid.PseudoStats.ForceFullSpiritRegen = true
+				druid.UpdateManaRegenRates()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				druid.PseudoStats.SpiritRegenMultiplier -= 3
+				druid.PseudoStats.ForceFullSpiritRegen = false
+				druid.UpdateManaRegenRates()
+			},
+		})
+	}
 	var innervateManaThreshold float64
 
 	druid.RegisterResetEffect(func(sim *core.Simulation) {
@@ -58,6 +80,9 @@ func (druid *Druid) registerInnervateCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			innervateAura.Activate(sim)
+			if catharsisAura != nil {
+				catharsisAura.Activate(sim)
+			}
 		},
 	})
 

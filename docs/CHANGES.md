@@ -6175,3 +6175,26 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   over every item) comes in again as a new item with the server's slot, quality (rare) and db.lokiy.dev's item level
   (70); its renumbering is dropped. Nothing else in `custom_items.json` changes.
 
+## Part IN — talents not in the sim yet: Ice Shards, Cold Grip, Death and Decay, Hurricane, Master Conjuror, Catharsis (2026-11-03)
+
+- Lokiy: start on the talents that aren't added yet. The sim didn't read 153 talents (same list as Part DO); 147 are
+  left. Most of those are PvP, movement, crowd control (bosses are immune) or threat (waits, Lokiy 2026-09-24), or
+  have no numbers in the server data. The six below have the data and change damage or mana.
+- **Ice Shards** (mage, `sim/mage/ice_shards.go`, 35714): instant, 10 sec cooldown, 28% of base mana, four shards of
+  Frost damage equal to the mage's level, each rolling hit and crit; no threat. **Cold Grip** (11185 / 12487):
+  +15%/rank damage, -25%/rank cooldown (Cone of Cold, the other spell it boosts, isn't in the sim).
+- **Death and Decay** (warlock, `sim/warlock/death_and_decay.go`, 33926): instant, 5 min cooldown, 50% of base mana;
+  Shadow damage equal to the warlock's level every 2 sec for 30 sec to every target; no threat.
+- Both damage values are server scripts ("equal to your level") with no spell power coefficient in the data, so none
+  is used; confirm in game whether spell damage adds to them (TODO questions).
+- **Hurricane** (druid, `sim/druid/hurricane.go`): was given to every druid, as a 10 sec channel, in Humanoid or
+  Moonkin form, with classic ranks. On the server it's a talent, Moonkin Form only, a 2 sec cast (not channeled)
+  that leaves a 10 sec storm, so the druid keeps casting while it ticks. Ranks from the server data: 16914 (level 20,
+  22 + 0.2 per level to 30, 500 mana), 17401 (40, 70 + 0.4 to 50, 880 mana), 17402 (60, 134 + 0.6 to 70, 1495
+  mana); 2 min cooldown. The 0.03 per tick spell damage coefficient is unchanged.
+- **Master Conjuror** (warlock, 18767 / 18768): +25%/rank Firestone (damage and Fire damage bonus) and Spellstone
+  (spell crit) effectiveness. Replaces the removed Improved Firestone placeholder.
+- **Catharsis** (druid, 33790-33792): an Innervate cast on someone else also gives the druid 10/20/30 sec of
+  Innervate (+300% mana regeneration, all of it while casting).
+- `sim/talents_in_test.go` (new): Ice Shards (5 casts in 20 sec with Cold Grip 2/2, damage per shard), Death and Decay
+  (15 ticks of at most 60), Hurricane (one cast, 10 ticks of at least 134), Master Conjuror (Spellstone 1% -> 1.5%).
