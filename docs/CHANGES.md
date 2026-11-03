@@ -6150,3 +6150,18 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Checked on sim.lokiy.dev (mage, Neck): Zul'Gurub -> /zone/19, Gnomeregan -> /zone/133, Molten Core -> /zone/2717,
   Onyxia's Lair, Dire Maul, Scarlet Monastery and others.
 
+## Part IO — Hunter, Enhancement Shaman and DPS Warrior tests pass again (2026-11-03)
+
+- These three tests had failed since late October (noted in Part HY as failing before it). The cause: all three
+  gear sets wear Savage Gladiator Chain (11726), which got its Vanilla+ values from db.lokiy.dev (+13 Strength /
+  Agility / Stamina, 376 armor; classic had 13 / 14 / 15, 375). The data is right; the expected results were from
+  before. DPS moved by about 0.1%.
+- Found by bisecting from 273ec1111 (the last results update, 2026-09-30); the bisect needs
+  `make sim/core/proto/api.pb.go` at each step (the generated proto files aren't in git), else every step fails to
+  build. Then `.results` updated for only these three packages (not `make update-tests`, which deletes every
+  `.results` without a fresh `.tmp`).
+- `go test ./sim/...` passes in full.
+- `ui/index.html` had an uncommitted whitespace-only edit (2026-11-02) that stopped `sync_sim.sh` from building new
+  db.lokiy.dev data since 19:00 today ("repo has uncommitted work"). Restored to git's version; the edited copy is
+  `ui/index.html.bak-2026-11-03`.
+
