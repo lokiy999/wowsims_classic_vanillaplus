@@ -6097,14 +6097,23 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
 - Result: 53 of the 209 trinkets get an EP value (e.g. Neltharion's Tear 55 with the shadow priest's weights), 156
   are N/A. Checked in the browser.
 
-## Part IL — stat multipliers shown under their own source in the stat tooltip (2026-11-03)
+## Part IL — stat tooltip: talents, buffs and racials under their own source (2026-11-03)
 
 - Lokiy: the rogue talent Physical Prowess (+100% Strength at 2/2) showed in the Strength tooltip as "From other
   stats" (145), with Talents 0. The tooltip's per-source rows used the stats with no dependencies at all, so every
-  stat multiplier (talents, Kings, ...) ended up in "From other stats".
-- `sim/core/stats/deps.go`: new `ApplyStatMultipliers`, which applies only the enabled multipliers of a stat on itself
-  and rounds primary stats down (Part II); stats derived from other stats are left out.
-- `sim/core/character.go`: the per-phase raw stats (`*StatsRaw`) now include those multipliers, so a multiplier counts
-  toward the phase that added it: Physical Prowess and +15% Intellect under Talents, Kings under Buffs. "From other
-  stats" is now only stats derived from other stats (AP from Strength, armor from Agility, mana from Intellect, ...).
-- `sim/stat_sources_test.go` (new): with Physical Prowess 2/2, the talent phase has twice the gear phase's Strength.
+  stat multiplier or conversion ended up in "From other stats". Lokiy asked to check the other talents too: the same
+  happened to every multiplier (Mental Strength, Arcane Mind, Divine Strength / Intellect, Deadliness, Vitality,
+  Ancestral Knowledge, Primal Endurance, Heart of the Wild, Steadfast Determination, ...), every talent conversion
+  (Spiritual Guidance, Mind Mastery, Crusade, Nature Spirit, Animism, Arcane Resilience), Kings and racials.
+- `sim/core/stats/deps.go`: `SnapshotStatDeps` (the combined enabled dependencies per stat pair) and
+  `AttributeStatDeps`, which applies them in the same order and with the same rounding as `ApplyStatDependencies`
+  and returns what each build phase's new dependencies added. A multiplier on a derived stat counts in full (Deadliness
+  is 20% of all Attack Power, not only the gear part); rounding a primary stat down goes with its last multiplier.
+- `sim/core/character.go`: after the build phases (base, gear, talents, buffs, consumes) the per-phase raw stats
+  (`*StatsRaw`) get each phase's attributed dependencies. Racial multipliers count as Base, talents as Talents, Kings
+  as Buffs, set bonuses (e.g. Int to spell damage) as Gear. "From other stats" is now only the class's own
+  conversions: AP from Strength / Agility, armor from Agility, crit from Agility / Intellect, mana from Intellect,
+  health from Stamina. Display only: the sim's stats are unchanged.
+- `sim/stat_sources_test.go` (new): Physical Prowess adds the gear-phase Strength again under Talents; Deadliness 5/5
+  is 1/6 of the final Attack Power; Spiritual Guidance 2/2 is 20% of Spirit; the attributed primary stats equal the
+  final ones.

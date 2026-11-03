@@ -327,9 +327,14 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
 	}
-	// Without stats derived from other stats, but with each stat's own multipliers (Part IL).
+	// The stats each phase added, without dependencies; the dependencies each phase added (talent multipliers, Kings,
+	// Spiritual Guidance, ...) are attributed to it at the end (Part IL).
+	var rawStats []stats.Stats
+	var depSnaps []stats.StatDepsSnapshot
 	measureRawStats := func() *proto.UnitStats {
-		return &proto.UnitStats{Stats: character.ApplyStatMultipliers(character.stats).ToFloatArray()}
+		rawStats = append(rawStats, character.stats)
+		depSnaps = append(depSnaps, character.SnapshotStatDeps())
+		return &proto.UnitStats{}
 	}
 
 	applyRaceEffects(agent)
@@ -359,6 +364,14 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyBuildPhaseAuras(CharacterBuildPhaseConsumes)
 	playerStats.ConsumesStats = measureStats()
 	playerStats.ConsumesStatsRaw = measureRawStats()
+
+	contrib := stats.AttributeStatDeps(rawStats[len(rawStats)-1], depSnaps)
+	var attributed stats.Stats
+	for i, raw := range []*proto.UnitStats{playerStats.BaseStatsRaw, playerStats.GearStatsRaw, playerStats.TalentsStatsRaw,
+		playerStats.BuffsStatsRaw, playerStats.ConsumesStatsRaw} {
+		attributed = attributed.Add(contrib[i])
+		raw.Stats = rawStats[i].Add(attributed).ToFloatArray()
+	}
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 
 	for _, petAgent := range character.PetAgents {

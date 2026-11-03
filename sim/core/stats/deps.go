@@ -273,19 +273,86 @@ func (sdm *StatDependencyManager) ApplyStatDependencies(s Stats) Stats {
 	return s
 }
 
-// ApplyStatMultipliers applies only the enabled multipliers of a stat on itself (Kings, +15% Intellect, ...), not
-// stats derived from other stats; primary stats are rounded down. The stat tooltip uses it so a multiplier shows
-// under its own source (Talents, Buffs) rather than "From other stats" (Part IL).
-func (sdm *StatDependencyManager) ApplyStatMultipliers(s Stats) Stats {
+// StatDepsSnapshot is the combined amount of every enabled dependency per (src, dst) pair at one moment: the product
+// of a stat's multipliers on itself, or the sum of another stat's conversion into it. Used for the stat tooltip.
+type StatDepsSnapshot [Len][Len]float64
+
+func (sdm *StatDependencyManager) SnapshotStatDeps() StatDepsSnapshot {
+	var snap StatDepsSnapshot
+	for i := range snap {
+		snap[i][i] = 1
+	}
 	for _, dep := range sdm.deps {
-		if dep.enabled && dep.src == dep.dst {
-			s[dep.dst] *= dep.amount
+		if !dep.enabled {
+			continue
+		}
+		if dep.src == dep.dst {
+			snap[dep.src][dep.dst] *= dep.amount
+		} else {
+			snap[dep.src][dep.dst] += dep.amount
+		}
+	}
+	return snap
+}
+
+// AttributeStatDeps applies the dependencies of the last snapshot to s, in the same order and with the same rounding
+// as ApplyStatDependencies, and returns what each snapshot's new dependencies added (contrib[i] for snaps[i]). A
+// stat's multipliers in snaps[0] (racials) count as contrib[0]; its conversions from other stats (AP from Strength,
+// mana from Intellect, ...) count nowhere: that is the tooltip's "From other stats" (Part IL).
+func AttributeStatDeps(s Stats, snaps []StatDepsSnapshot) []Stats {
+	contrib := make([]Stats, len(snaps))
+	lastMult := [Len]int{}
+	for i := range lastMult {
+		lastMult[i] = -1
+	}
+	// A primary stat's rounding down belongs with its last multiplier.
+	floorInto := func(st Stat) {
+		v := floorStat(s[st])
+		if lastMult[st] >= 0 {
+			contrib[lastMult[st]][st] += v - s[st]
+		}
+		s[st] = v
+	}
+	var floored [Spirit + 1]bool
+	for i, src := range safeDepsOrder {
+		for _, dst := range safeDepsOrder[i:] {
+			prev := 0.0
+			if src == dst {
+				prev = 1
+			}
+			for p, snap := range snaps {
+				amount := snap[src][dst]
+				if amount == prev {
+					continue
+				}
+				if src == dst {
+					if prev != 0 {
+						before := s[dst]
+						s[dst] *= amount / prev
+						contrib[p][dst] += s[dst] - before
+						lastMult[dst] = p
+					}
+				} else {
+					if IsPrimaryStat(src) && !floored[src] {
+						floorInto(src)
+						floored[src] = true
+					}
+					added := s[src] * (amount - prev)
+					s[dst] += added
+					if p > 0 {
+						contrib[p][dst] += added
+					}
+				}
+				prev = amount
+			}
 		}
 	}
 	for _, p := range PrimaryStats {
-		s[p] = floorStat(s[p])
+		if !floored[p] {
+			floorInto(p)
+		}
 	}
-	return s
+	return contrib
 }
 
 func (sdm *StatDependencyManager) SortAndApplyStatDependencies(s Stats) Stats {
