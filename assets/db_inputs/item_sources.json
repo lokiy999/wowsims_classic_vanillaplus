@@ -31206,7 +31206,6 @@
 "10999": [
 {
 "drop": {
-"zoneId": 1584,
 "npcId": 9056
 }
 }
@@ -33056,11 +33055,6 @@
 {
 "drop": {
 "npcId": 9502
-}
-},
-{
-"drop": {
-"npcId": 9543
 }
 }
 ],
@@ -35499,8 +35493,7 @@
 "12554": [
 {
 "drop": {
-"zoneId": 1584,
-"otherName": "Princess Moira Bronzebeard"
+"npcId": 8929
 }
 }
 ],
@@ -35515,15 +35508,15 @@
 "12556": [
 {
 "drop": {
-"npcId": 8929
+"zoneId": 1584,
+"otherName": "Princess Moira Bronzebeard"
 }
 }
 ],
 "12557": [
 {
 "drop": {
-"zoneId": 1584,
-"otherName": "Princess Moira Bronzebeard"
+"npcId": 8929
 }
 }
 ],
@@ -37843,18 +37836,6 @@
 {
 "drop": {
 "npcId": 10384
-}
-},
-{
-"drop": {
-"npcId": 11142
-}
-}
-],
-"13363": [
-{
-"drop": {
-"npcId": 11142
 }
 }
 ],
@@ -41406,7 +41387,7 @@
 },
 {
 "drop": {
-"npcId": 4468,
+"npcId": 2646,
 "zoneId": 47
 }
 }
@@ -42396,12 +42377,6 @@
 }
 ],
 "16222": [
-{
-"drop": {
-"npcId": 4282,
-"zoneId": 85
-}
-},
 {
 "drop": {
 "npcId": 9447,
@@ -43407,11 +43382,6 @@
 "drop": {
 "npcId": 10339
 }
-},
-{
-"drop": {
-"npcId": 10429
-}
 }
 ],
 "16670": [
@@ -43478,11 +43448,6 @@
 }
 ],
 "16678": [
-{
-"drop": {
-"npcId": 10430
-}
-},
 {
 "drop": {
 "npcId": 10440
@@ -43607,11 +43572,6 @@
 "16694": [
 {
 "drop": {
-"npcId": 10430
-}
-},
-{
-"drop": {
 "npcId": 10440
 }
 }
@@ -43662,11 +43622,6 @@
 }
 ],
 "16701": [
-{
-"drop": {
-"npcId": 10429
-}
-},
 {
 "drop": {
 "npcId": 10503
@@ -43877,11 +43832,6 @@
 "16728": [
 {
 "drop": {
-"npcId": 10430
-}
-},
-{
-"drop": {
 "npcId": 10440
 }
 }
@@ -43922,6 +43872,11 @@
 {
 "drop": {
 "npcId": 10440
+}
+},
+{
+"drop": {
+"npcId": 16066
 }
 }
 ],
@@ -54382,11 +54337,6 @@
 "drop": {
 "npcId": 14517
 }
-},
-{
-"drop": {
-"npcId": 25031
-}
 }
 ],
 "19721": [
@@ -54423,11 +54373,6 @@
 {
 "drop": {
 "npcId": 14517
-}
-},
-{
-"drop": {
-"npcId": 25031
 }
 }
 ],
@@ -54502,6 +54447,11 @@
 {
 "drop": {
 "npcId": 14517
+}
+},
+{
+"drop": {
+"npcId": 25031
 }
 }
 ],
@@ -54825,8 +54775,7 @@
 "19819": [
 {
 "drop": {
-"zoneId": 1977,
-"otherName": "Jinxed Hoodoo Pile"
+"npcId": 14882
 }
 }
 ],
@@ -62799,6 +62748,11 @@
 "22242": [
 {
 "drop": {
+"npcId": 8896
+}
+},
+{
+"drop": {
 "npcId": 9042
 }
 }
@@ -63007,13 +62961,6 @@
 "quest": {
 "id": 9029,
 "name": "A Bubbling Cauldron"
-}
-}
-],
-"22302": [
-{
-"drop": {
-"npcId": 16042
 }
 }
 ],
@@ -66461,7 +66408,8 @@
 "26065": [
 {
 "drop": {
-"npcId": 11668
+"zoneId": 2717,
+"otherName": "Trash Mobs (Molten Core)"
 }
 }
 ],
@@ -66873,6 +66821,56 @@
 }
 }
 ],
+"26178": [
+{
+"drop": {
+"npcId": 8561,
+"zoneId": 139
+}
+},
+{
+"drop": {
+"npcId": 8562,
+"zoneId": 139
+}
+}
+],
+"26179": [
+{
+"drop": {
+"npcId": 7369,
+"zoneId": 41
+}
+},
+{
+"drop": {
+"npcId": 7379,
+"zoneId": 41
+}
+}
+],
+"26181": [
+{
+"drop": {
+"npcId": 8580
+}
+}
+],
+"26182": [
+{
+"drop": {
+"npcId": 7267
+}
+}
+],
+"26183": [
+{
+"drop": {
+"npcId": 10802,
+"zoneId": 45
+}
+}
+],
 "26191": [
 {
 "drop": {
@@ -66943,7 +66941,8 @@
 "26194": [
 {
 "drop": {
-"npcId": 25031
+"zoneId": 1977,
+"otherName": "Azus the Bloodseeker"
 }
 }
 ],
@@ -66966,8 +66965,7 @@
 "26197": [
 {
 "drop": {
-"zoneId": 1977,
-"otherName": "Nameless Hermit"
+"npcId": 25030
 }
 }
 ],
@@ -66996,8 +66994,7 @@
 "26201": [
 {
 "drop": {
-"zoneId": 1977,
-"otherName": "Nameless Hermit"
+"npcId": 25030
 }
 }
 ],
@@ -67012,8 +67009,7 @@
 "26203": [
 {
 "drop": {
-"zoneId": 1977,
-"otherName": "Azus the Bloodseeker"
+"npcId": 25031
 }
 }
 ],
@@ -67259,7 +67255,8 @@
 "26291": [
 {
 "drop": {
-"npcId": 25229
+"zoneId": 796,
+"otherName": "Brigitte Abbendis"
 }
 }
 ],
@@ -67292,13 +67289,6 @@
 "drop": {
 "zoneId": 796,
 "otherName": "Brother Michael"
-}
-}
-],
-"26300": [
-{
-"drop": {
-"npcId": 25229
 }
 }
 ],
@@ -67430,13 +67420,6 @@
 }
 }
 ],
-"26326": [
-{
-"drop": {
-"npcId": 25224
-}
-}
-],
 "26327": [
 {
 "drop": {
@@ -67450,13 +67433,6 @@
 "drop": {
 "zoneId": 796,
 "otherName": "Vishas"
-}
-}
-],
-"26330": [
-{
-"drop": {
-"npcId": 25224
 }
 }
 ],
@@ -67564,14 +67540,6 @@
 }
 }
 ],
-"26348": [
-{
-"drop": {
-"zoneId": 796,
-"npcId": 3975
-}
-}
-],
 "26349": [
 {
 "drop": {
@@ -67599,7 +67567,8 @@
 "26354": [
 {
 "drop": {
-"npcId": 25221
+"zoneId": 796,
+"otherName": "Brother Michael"
 }
 }
 ],
@@ -67839,14 +67808,16 @@
 "26422": [
 {
 "drop": {
-"npcId": 25229
+"zoneId": 796,
+"otherName": "Brigitte Abbendis"
 }
 }
 ],
 "26423": [
 {
 "drop": {
-"npcId": 25224
+"zoneId": 796,
+"otherName": "Vishas"
 }
 }
 ],
@@ -67932,14 +67903,16 @@
 "34334": [
 {
 "drop": {
-"npcId": 12259
+"zoneId": 1584,
+"otherName": "Brohtos the Armorer"
 }
 }
 ],
 "34336": [
 {
 "drop": {
-"npcId": 11982
+"zoneId": 1584,
+"otherName": "Brohtos the Armorer"
 }
 }
 ],
@@ -67970,7 +67943,8 @@
 "34341": [
 {
 "drop": {
-"npcId": 12057
+"zoneId": 1584,
+"otherName": "Brohtos the Armorer"
 }
 }
 ],
@@ -67985,7 +67959,8 @@
 "34344": [
 {
 "drop": {
-"npcId": 11982
+"zoneId": 1584,
+"otherName": "Brohtos the Armorer"
 }
 }
 ],
@@ -68024,7 +67999,8 @@
 "34350": [
 {
 "drop": {
-"npcId": 12118
+"zoneId": 1584,
+"otherName": "Brohtos the Armorer"
 }
 }
 ],
@@ -68047,7 +68023,7 @@
 "34401": [
 {
 "drop": {
-"npcId": 14399
+"npcId": 14400
 }
 }
 ],
