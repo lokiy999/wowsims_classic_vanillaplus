@@ -16,7 +16,7 @@ export type SchoolCritMods = { arcane?: number; fire?: number; frost?: number; h
 // rangedCrit: extra crit % that only applies to ranged attacks (e.g. Lethal Shots), shown in the Melee Crit tooltip.
 export type StatMods = { talents?: Stats; buffs?: Stats; schoolCrit?: SchoolCritMods; rangedCrit?: number };
 
-// Casting speed comes from the sim as a multiplier (1.25 = 25% faster); shown as haste % so the sources add up (Part IM).
+// Casting speed comes from the sim as a multiplier (1.25 = 25% faster); shown as haste % (Part IM).
 function asHaste(s: Stats): Stats {
 	const v = s.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
 	return s.withPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier, v ? v - 1 : 0);
@@ -188,11 +188,17 @@ export class CharacterStats extends Component {
 		const buffsRaw = raw(playerStats.buffsStatsRaw, buffsStats);
 		const consumesRaw = raw(playerStats.consumesStatsRaw, consumesStats);
 
+		// Haste sources multiply (2% gear and 25% talents is 27.5%), so each source shows its own multiplier, not the
+		// difference from the source before it (that would show the talents as 25.5%; Part IO).
+		const ownHaste = (delta: Stats, cur: Stats, prev: Stats) => {
+			const cs = PseudoStat.PseudoStatCastSpeedMultiplier;
+			return delta.withPseudoStat(cs, (1 + cur.getPseudoStat(cs)) / (1 + prev.getPseudoStat(cs)) - 1);
+		};
 		const baseDelta = baseRaw;
-		const gearDelta = gearRaw.subtract(baseRaw).subtract(bonusStats);
-		const talentsDelta = talentsRaw.subtract(gearRaw).add(statMods.talents);
-		const buffsDelta = buffsRaw.subtract(talentsRaw).add(statMods.buffs);
-		const consumesDelta = consumesRaw.subtract(buffsRaw);
+		const gearDelta = ownHaste(gearRaw.subtract(baseRaw).subtract(bonusStats), gearRaw, baseRaw);
+		const talentsDelta = ownHaste(talentsRaw.subtract(gearRaw).add(statMods.talents), talentsRaw, gearRaw);
+		const buffsDelta = ownHaste(buffsRaw.subtract(talentsRaw).add(statMods.buffs), buffsRaw, talentsRaw);
+		const consumesDelta = ownHaste(consumesRaw.subtract(buffsRaw), consumesRaw, buffsRaw);
 		const derivedDelta = consumesStats.subtract(consumesRaw);
 
 		const finalStats = asHaste(Stats.fromProto(playerStats.finalStats)).add(statMods.talents).add(statMods.buffs).add(debuffStats);

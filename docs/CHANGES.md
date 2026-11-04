@@ -6198,3 +6198,14 @@ name matches to classic SM NPCs (Herod -> 3975) were wrong.
   Innervate (+300% mana regeneration, all of it while casting).
 - `sim/talents_in_test.go` (new): Ice Shards (5 casts in 20 sec with Cold Grip 2/2, damage per shard), Death and Decay
   (15 ticks of at most 60), Hurricane (one cast, 10 ticks of at least 134), Master Conjuror (Spellstone 1% -> 1.5%).
+
+## Part IO — casting speed tooltip: each source shows its own haste (2026-11-04)
+
+- Lokiy: the haste tooltip showed 25.5% from talents with 25% of talents (Improved Memory 5/5). On the smite and
+  healing priest pages the gear gives 2% too. Haste sources multiply (on the server and in the sim): 1.02 x 1.25 =
+  27.5% in total, which was right. But each tooltip row was the difference from the row before it, so Talents got
+  1.275 - 1.02 = 25.5%.
+- `ui/core/components/character_stats.tsx`: each source's Casting Speed row is now its own multiplier (this phase's
+  over the one before: 1.275 / 1.02 = 25%). The total is unchanged; the rows multiply to it, so they don't add up
+  exactly (2% + 25% shows a 27.5% total). Checked in the browser on the smite priest: Gear 2.00%, Talents 25.00%,
+  Total 27.50%.
