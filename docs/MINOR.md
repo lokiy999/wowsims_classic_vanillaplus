@@ -38,3 +38,7 @@ One line per change under its date (`## YYYY-MM-DD`), newest date at the bottom.
 ## 2026-11-03
 
 - TODO.md: the 2026-10-31 NEXT UP list (zone links, Season of Discovery, object pages) was done; moved to TODO_DONE.md.
+
+## 2026-11-12
+
+- db.lokiy.dev header (tools/itemdb/style.css): below 1150 px wide the nav wraps and the search box gets its own line (it shrank to 22 px and the page scrolled sideways at tablet widths); on a phone the header no longer sticks (it covered a fifth of the screen). From the website review.

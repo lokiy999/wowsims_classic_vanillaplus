@@ -249,6 +249,17 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 16
 	.obs { grid-column: auto; }
 	h1 { font-size: 1.35rem; }
 }
+/* Between phone and wide desktop the nav and the search box do not fit on one line: the search box shrank to
+   nothing and the page scrolled sideways. Wrap, and give the search its own line. On a phone the wrapped header
+   is tall, so it scrolls away with the page instead of sticking. (website review, 2026-11-12) */
+@media (max-width: 1150px) {
+	.top { flex-wrap: wrap; }
+	.nav { flex-wrap: wrap; gap: 4px 12px; }
+	.search { flex: 1 1 100%; max-width: none; margin-left: 0; }
+}
+@media (max-width: 640px) {
+	.top { position: static; }
+}
 
 /* NPC pages: DungeonJournal abilities / tactics (Part GN) */
 .dj-abilities, .dj-tactics { list-style: none; padding: 0; margin: .4rem 0; }
